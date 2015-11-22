@@ -1,0 +1,29 @@
+<!--
+    Copyright © 2015 JiangLin. All rights reserved.
+    File Name: book_intro.html
+    Author:JiangLin 
+    Mail:xiyang0807@gmail.com 
+    Created Time: 2015-11-19 05:05:52
+-->
+{% extends 'book/book_type_base.html' %}
+{% block content %}
+<div>
+    <div style="float:left;margin:0 30px">
+        <img src="{{ url_for('static',filename='book_image/'+books['name']+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
+    </div>
+    <p>
+    <ul>
+        <li> <b>书籍名称:</b>  {{ books['name'] }}</li>
+        <br />
+        <li> <b>类型:</b>  {{ books['tag'] }}</li>
+        <br />
+        <li> <b>title:</b>  {{ books['title'] }}</li>
+        <br />
+        <br />
+        <li> <b>作者简介:</b>  {{ books['author'] }}</li>
+        <br />
+        <li> <b>内容概要:</b>  {{ books['content'] }}</li>
+    </ul>
+    </p>
+</div>
+{% endblock %}

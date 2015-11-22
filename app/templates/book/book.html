@@ -1,0 +1,95 @@
+<!--
+    Copyright © 2015 JiangLin. All rights reserved.
+    File Name: linux.html
+    Author:JiangLin 
+    Mail:xiyang0807@gmail.com 
+    Created Time: 2015-11-18 08:15:05
+-->
+<!DOCTYPE html>
+{% extends 'book/book_base.html' %}
+{% block content %}
+<div>
+    <table style="text-align:center;width:100%;table-layout:fixed ;">
+        <tr>
+            {% for book in books[(number-1)*15:(number-1)*15+5] %}
+            <td width=20%>
+                <img src="{{ url_for('static',filename='book_image/'+book['name']+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
+                <br />
+                <a href="{{ url_for('book.book_intro',name=book['name']) }}">{{ book['name'] }}</a> 
+            </td>
+            {% endfor %}
+        </tr>
+        <tr> <td> <br /></td> </tr>
+        <tr>
+            {% for book in books[(number-1)*15+10:(number-1)*15+15] %}
+            <td width=20%>
+                <img src="{{ url_for('static',filename='book_image/'+book['name']+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
+                <br />
+                <a href="{{ url_for('book.book_intro',name=book['name']) }}">{{ book['name'] }}</a> 
+            </td>
+            {% endfor %}
+        </tr>
+        <tr> <td> <br /></td> </tr>
+        <tr>
+            {% for book in books[(number-1)*15+15:(number-1)*15+20] %}
+            <td width=20%>
+                <img src="{{ url_for('static',filename='book_image/'+book['name']+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
+                <br />
+                <a href="{{ url_for('book.book_intro',name=book['name']) }}">{{ book['name'] }}</a> 
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="5">
+                <ul class="pagination">
+                    {% if number == 1 %}
+                    <li class="disabled">
+                        <a href="{{ url_for('book.index_num',num=number-1) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{{ url_for('book.index_num',num=number-1) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if number > total-5 %}
+
+                    {% for i in range(add,total) %}
+                    {% if number == i+1 %}
+                    <li class="active"><a href="{{ url_for('book.index_num',num=i+1) }}">{{ i+1 }}</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('book.index_num',num=i+1) }}">{{ i+1 }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% else %}
+
+                    {% for i in range(add,add+5) %}
+                    {% if number == i+1 %}
+                    <li class="active"><a href="{{ url_for('book.index_num',num=i+1) }}">{{ i+1 }}</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('book.index_num',num=i+1) }}">{{ i+1 }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if number < total-5 %}
+                    <li><a href="{{ url_for('book.index_num',num=add+6) }}">......</a></li>
+                    <li><a href="{{ url_for('book.index_num',num=total-1) }}">{{ total-1 }}</a></li>
+                    <li><a href="{{ url_for('book.index_num',num=total) }}">{{ total }}</a></li>
+                    {% endif %}
+                    <li>
+                        <a href="{{ url_for('book.index_num',num=number+1) }}" aria-label="Previous">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </td> 
+        </tr>
+    </table>
+</div>
+{% endblock %}

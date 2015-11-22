@@ -1,0 +1,41 @@
+<!--
+    Copyright © 2015 JiangLin. All rights reserved.
+    File Name: page.html
+    Author:JiangLin 
+    Mail:xiyang0807@gmail.com 
+    Created Time: 2015-11-22 01:40:18
+-->
+{% extends 'blog/blog_type_base.html' %}
+{% block content %}
+<div>
+    <a href="{{ url_for('blog.index') }}">返回首页</a>
+    <table style="width:100%;">
+        <tr>
+            <td align="center">
+                <h2>{{ page.Title }}</h2>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                {{ page.Date  }} <br />
+                {% for tag in page.Tags %}
+                <span class="label label-primary" >
+                    <a href="{{ url_for('blog.tag',tag=tag) }}" style="color:#fff;">{{ tag }}</a>
+                </span>
+                &nbsp
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="border-bottom:1px dashed #000000;width:100%;"></div>
+            </td>
+        </tr>
+    </table>
+    <div width="100%" style="padding:0 60px;" >
+        <p>
+        {{ page.html|safe }}
+        </p>
+    </div>
+</div>
+{% endblock content %}

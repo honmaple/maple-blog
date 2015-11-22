@@ -1,0 +1,45 @@
+<!--
+    Copyright © 2015 JiangLin. All rights reserved.
+    File Name: login.html
+    Author:JiangLin 
+    Mail:xiyang0807@gmail.com 
+    Created Time: 2015-10-29 07:10:56
+-->
+
+{% extends "admin/logout.html" %}
+{% block body %}
+<div>
+    <a href="{{ url_for('admin.index') }}">返回首页</a>
+</div>
+<div style="text-align:center" >
+    {% if session.logged_in %}
+    <a href="{{ url_for('admin.logout') }}">log out</a>
+    {% endif %}
+</div>
+{% for message in get_flashed_messages() %}
+<div class=flash>{{ message }}</div>
+{% endfor %}
+
+<div  style="margin:10% 40%;box-shadow:0 0 5px #000; border-radius:10px;">
+    <div  style="padding:15px 15px;">
+        {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+        <form action="{{ url_for('admin.sign') }}" method="POST">
+            <dl>
+                <!--{{ form.csrf_token }}-->
+                {{ form.hidden_tag()}}
+                <dt>{{ form.name.label }}
+                <dd>{{ form.name(class="form-control") }}
+                <dt>{{ form.email.label }}
+                <dd>{{ form.email(class="form-control") }}
+                <dt>{{ form.passwd.label }}
+                <dd>{{ form.passwd(class="form-control") }}
+                <dd style="margin:10px auto;">
+                {{ form.sign_up(class="btn btn-primary") }}
+                </dd>
+            </dl>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+

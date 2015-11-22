@@ -1,0 +1,20 @@
+<!doctype html>
+
+{% assets "home_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% assets "home_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+{% endassets %}
+<!--<link rel=stylesheet type=text/css href="../static/bootstrap/css/bootstrap.min.css">-->
+<!--<script src="../static/bootstrap/js/jquery.min.js"></script>-->
+<!--<script src="../static/bootstrap/js/bootstrap.min.js"></script>-->
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>-->
+<!--<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">-->
+    <!--<div class="modal-dialog modal-sm">-->
+        <!--<div class="modal-content">-->
+            {% block body %}{% endblock %}
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
