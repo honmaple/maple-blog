@@ -16,13 +16,15 @@ def create_app():
     app = Flask(__name__)
     config = load_config()
     app.config.from_object(config)
+    return app
 
+
+def register(app):
     register_routes(app)
     register_assets(app)
     register_db(app)
     register_jinja2(app)
 
-    return app
 
 def register_pages():
     flatpages = FlatPages(create_app())
@@ -62,4 +64,6 @@ def register_assets(app):
     assets = Environment(app)
     assets.register(bundles)
 
+app = create_app()
+register(app)
 
