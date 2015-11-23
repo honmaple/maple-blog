@@ -8,13 +8,12 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint
-from flask_flatpages import FlatPages
-from .. import create_app
+#from flask_flatpages import FlatPages
+from app import register_pages
 
-site = Blueprint('blog',__name__)
+site = Blueprint('blog',__name__,url_prefix='/blog')
 
-app = create_app()
-flatpages = FlatPages(app)
+flatpages = register_pages()
 
 
 def len_index():

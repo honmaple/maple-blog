@@ -12,7 +12,7 @@ from flask import render_template, Blueprint, request, \
 from ..models import User, db
 from ..forms import UserForm
 
-site = Blueprint('admin',__name__)
+site = Blueprint('admin',__name__,url_prefix='')
 
 
 @site.route('/')

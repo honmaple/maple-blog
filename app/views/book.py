@@ -12,7 +12,7 @@ from flask import render_template, Blueprint, url_for, \
 from ..models import Books
 
 
-site = Blueprint('book',__name__)
+site = Blueprint('book',__name__,url_prefix='/book')
 
 @site.route('/')
 def index():

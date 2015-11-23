@@ -12,7 +12,6 @@ from flask.ext.assets import Environment, Bundle
 from flask_flatpages import FlatPages
 from config import load_config
 
-
 def create_app():
     app = Flask(__name__)
     config = load_config()
@@ -25,11 +24,16 @@ def create_app():
 
     return app
 
+def register_pages():
+    flatpages = FlatPages(create_app())
+    return flatpages
+
 def register_routes(app):
     from .views import admin, blog, book
     app.register_blueprint(admin.site, url_prefix='')
     app.register_blueprint(blog.site, url_prefix='/blog')
     app.register_blueprint(book.site, url_prefix='/book')
+
 
 def register_db(app):
     from .models import db
