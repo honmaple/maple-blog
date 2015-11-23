@@ -26,11 +26,11 @@
             <div class="main">
                 <div>
                     <nav class="navbar navbar-default navbar-static-top">
-                        <div class="container-fluid" style="padding: 0 150px;">
+                        <div class="container-fluid" style="padding: 0 11%;">
                             <div class="navbar-header">
                                 <a class="navbar-brand" href="{{ url_for('admin.index') }}">主页 </a>
                             </div>
-                            <div class="collapse navbar-collapse" style="0 150px 0 0">
+                            <div class="collapse navbar-collapse" style="0 11% 0 0">
                                 <ul class="nav navbar-nav" >
                                     <li><a href="{{ url_for('blog.index') }}">个人博客</a></li>
                                     <li><a href="{{ url_for('book.index') }}">书籍查询</a></li>
@@ -53,7 +53,7 @@
                                 </button>
                                 {% endif %}
                                 <form class="navbar-form navbar-left" role="search">
-                                    <div class="form-group " width="120px">
+                                    <div class="form-group " width="8%">
                                         <input type="text" class="form-control" placeholder="Search">
                                     </div>
                                     <button type="submit" class="btn btn-primary">Search</button>
@@ -62,7 +62,7 @@
                         </div>
                     </nav>
                 </div>
-                <div style="margin:0 150px;">
+                <div style="margin:0 11%;">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <ul>
