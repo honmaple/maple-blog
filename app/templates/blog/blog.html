@@ -1,109 +1,113 @@
 <!DOCTYPE html>
 {% extends 'blog/blog_base.html' %}
 {% block content %}
-<div style="float:left;width:78%;padding:0 60px 0 0;font-size:18px;">
-    <ul>
-        {% for page in pages %}
-        <li>
-            <span>
-                <a href="{{ url_for('blog.page',path=page.path) }}">{{ page['Title'] }}</a>
-                <br />
-                {{ page['Summary'] }}
-            </span>
-            <span style="display:block;text-align:right;width:100%;"> 
-                <a href="{{ url_for('blog.page',path=page.path) }}">more>></a>
-            </span>
-            <div style="border-bottom:1px dashed #000000;width:100%;padding:0;"></div>
-        </li>
-        {% else %}
-        <li>No post.</li>
-        {% endfor %}
-    </ul>
-    <div style="float:bottom;font-size:12px;text-align:center;">
-        <ul class="pagination">
-            {% if num == 1 %}
-            <li class="disabled">
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            {% else %}
+<div class="row">
+    <div class="col-sm-9" >
+        <ul>
+            {% for page in pages %}
             <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
+                <span>
+                    <h4><a href="{{ url_for('blog.page',path=page.path) }}">{{ page['Title'] }}</a></h4>
+                    <h5>
+                        {{ page['Summary'] }}
+                    </h5>
+                </span>
+                <span style="display:block;text-align:right;width:100%;"> 
+                    <a href="{{ url_for('blog.page',path=page.path) }}">more>></a>
+                </span>
+                <div style="border-bottom:1px dashed #000000;width:100%;padding:0;"></div>
             </li>
-            {% endif %}
-            {% for i in range(len_page) %}
-            {% if i == num-1 %}
-            <li class="active"><a href="{{ url_for('blog.index_num',number=i+1) }}">{{ i+1 }}</a></li>
             {% else %}
-            <li><a href="{{ url_for('blog.index_num',number=i+1) }}">{{ i+1 }}</a></li>
-            {% endif %}
+            <li>No post.</li>
             {% endfor %}
-            <li>
-                <a href="{{ url_for('blog.index_num',number=num + 1) }}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
+        </ul>
+        <div style="float:bottom;text-align:center;">
+            <ul class="pagination">
+                {% if num == 1 %}
+                <li class="disabled">
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% for i in range(len_page) %}
+                {% if i == num-1 %}
+                <li class="active"><a href="{{ url_for('blog.index_num',number=i+1) }}">{{ i+1 }}</a></li>
+                {% else %}
+                <li><a href="{{ url_for('blog.index_num',number=i+1) }}">{{ i+1 }}</a></li>
+                {% endif %}
+                {% endfor %}
+                <li>
+                    <a href="{{ url_for('blog.index_num',number=num + 1) }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <ul class="list-group">
+            <li class="list-group-item" style="text-align:center;">
+                <img src="{{ url_for('static',filename='images/header.png') }}" alt="头像" width="60%" /> <br />
+                <span style="display: inline-block;width:80%;" class="label label-default">
+                    <a href="{{url_for('admin.about')}}" style="color:#fff;"> 
+                        Author
+                    </a>
+                </span>
+                <span style="display: inline-block;width:80%;" class="label label-primary">
+                    About me
+                </span>
+                <br />
+                <span>
+                    <i>I like solitude, yearning for freedom </i>
+                </span>
+            </li>
+            <li class="list-group-item">Social
+                <br />
+                <a href="http://github.com/honmaple">GitHub</a>
+                <a href="http://github.com/honmaple">Google+</a>
+                <a href="http://github.com/honmaple">V2ex</a>
+                <a href="http://github.com/honmaple">Stackoverflow</a>
+            </li>
+            <li class="list-group-item">Tags: <br />
+                <span class="label label-primary">
+                    <a href="{{ url_for('blog.tag',tag='linux') }}" style="color:#fff;">Linux</a>
+                </span>
+                &nbsp
+                <span class="label label-primary">
+                    <a href="{{ url_for('blog.tag',tag='python') }}" style="color:#fff;">Python</a>
+                </span>
+                &nbsp
+                <span class="label label-primary">
+                    <a href="{{ url_for('blog.tag',tag='sql') }}" style="color:#fff;">Sql</a>
+                </span>
+                <br />
+                <span class="label label-primary" >
+                    <a href="{{ url_for('blog.tag',tag='flask') }}" style="color:#fff;">Flask</a>
+                </span>
+                &nbsp
+                <span class="label label-primary">
+                    <a href="{{ url_for('blog.tag',tag='html') }}" style="color:#fff;">HTML/CSS</a>
+                </span>
+                &nbsp
+                <span class="label label-primary">
+                    <a href="{{ url_for('blog.tag',tag='sqlite') }}" style="color:#fff;">Sqlite</a>
+                </span>
+            </li>
+            <li class="list-group-item">Links
+                <br />
+                <a href="http://honmaple.com">我的博客</a>
+                <br />
+                <a href="http://flask.pocoo.org/">flask官网</a> 
             </li>
         </ul>
     </div>
-</div>
-<div style="float:left;width:22%;">
-    <ul class="list-group">
-        <li class="list-group-item" style="text-align:center;">
-            <img src="{{ url_for('static',filename='images/header.png') }}" alt="头像" width="140px" /> <br />
-            <span style="display: inline-block;width:80%;" class="label label-default">
-                <a href="{{url_for('admin.about')}}" style="color:#fff;"> 
-                    Author
-                </a>
-            </span>
-            <span style="display: inline-block;width:80%;" class="label label-primary">
-                About me
-            </span>
-            <br />
-            <span>
-                <i>I like solitude, yearning for freedom </i>
-            </span>
-        </li>
-        <li class="list-group-item">Social
-            <br />
-            <a href="http://github.com/honmaple">GitHub</a>
-            <a href="http://github.com/honmaple">Google+</a>
-            <a href="http://github.com/honmaple">V2ex</a>
-            <a href="http://github.com/honmaple">Stackoverflow</a>
-        </li>
-        <li class="list-group-item">Tags: <br />
-            <span class="label label-primary">
-                <a href="{{ url_for('blog.tag',tag='linux') }}" style="color:#fff;">Linux</a>
-            </span>
-            &nbsp
-            <span class="label label-primary">
-                <a href="{{ url_for('blog.tag',tag='python') }}" style="color:#fff;">Python</a>
-            </span>
-            &nbsp
-            <span class="label label-primary">
-                <a href="{{ url_for('blog.tag',tag='sql') }}" style="color:#fff;">Sql</a>
-            </span>
-            <br />
-            <span class="label label-primary" >
-                <a href="{{ url_for('blog.tag',tag='flask') }}" style="color:#fff;">Flask</a>
-            </span>
-            &nbsp
-            <span class="label label-primary">
-                <a href="{{ url_for('blog.tag',tag='html') }}" style="color:#fff;">HTML/CSS</a>
-            </span>
-            &nbsp
-            <span class="label label-primary">
-                <a href="{{ url_for('blog.tag',tag='sqlite') }}" style="color:#fff;">Sqlite</a>
-            </span>
-        </li>
-        <li class="list-group-item">Links
-            <br />
-            <a href="http://honmaple.com">我的博客</a>
-            <br />
-            <a href="http://flask.pocoo.org/">flask官网</a> 
-    </ul>
 </div>
 {% endblock %}
 

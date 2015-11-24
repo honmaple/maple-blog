@@ -25,45 +25,53 @@
     <body>
         <div class="wrap">
             <div class="main">
-                <div>
-                    <nav class="navbar navbar-default navbar-static-top">
-                        <div class="container-fluid" style="padding: 0 150px;">
-                            <div class="navbar-header">
-                                <a class="navbar-brand" href="{{ url_for('book.index') }}">书籍主页</a>
-                            </div>
-                            <div class="collapse navbar-collapse" style="0 150px 0 0">
-                                <ul class="nav navbar-nav" >
-                                    <li><a href="{{ url_for('book.index') }}">哲学</a></li>
-                                    <li><a href="{{ url_for('book.index') }}">社会学</a></li>
-                                    <li ><a href="{{ url_for('admin.about') }}">关于我</a></li>
-                                </ul>
-                                {% if session.logged_in %}
-                                <div class="dropdown" style="float:right;top:10px;">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Admin
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a href="{{ url_for('admin.index') }}">我的主页</a></li>
-                                        <li><a href="{{ url_for('admin.logout') }}">退出</a></li>
-                                    </ul>
-                                </div>
-                                {% else %}
-                                <button type="button" class="btn btn-default navbar-btn" style="float:right;">
-                                <a href="{{ url_for('admin.login') }}">Sign in</a>
-                                </button>
-                                {% endif %}
-                                <form class="navbar-form navbar-left" role="search">
-                                    <div class="form-group " width="120px">
-                                        <input type="text" class="form-control" placeholder="Search">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Search</button>
-                                </form>
-                            </div>
+                <nav class="navbar navbar-default" style="padding:0 11%;">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="{{ url_for('book.index') }}">书籍主页</a>
                         </div>
-                    </nav>
-                </div>
-                <div style="margin:0 150px;">
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li><a href="{{ url_for('book.index') }}">哲学</a></li>
+                                <li><a href="{{ url_for('book.index') }}">社会学</a></li>
+                                <li><a href="{{ url_for('admin.about') }}">关于我</a></li>
+                            </ul>
+                            <form class="navbar-form navbar-left" role="search">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    {% if session.logged_in %}
+                                    <div class="dropdown">
+                                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            Admin
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                            <li><a href="{{ url_for('admin.index') }}">我的主页</a></li>
+                                            <li><a href="{{ url_for('admin.logout') }}">退出</a></li>
+                                        </ul>
+                                    </div>
+                                    {% else %}
+                                    <button type="button" class="btn btn-default navbar-btn" >
+                                        <a href="{{ url_for('admin.login') }}">Sign in</a>
+                                    </button>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <div style="margin:0 11%;">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <ul>

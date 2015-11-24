@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% extends 'book/book_base.html' %}
 {% block content %}
-<div>
+<div class="row">
     <table style="text-align:center;width:100%;table-layout:fixed ;">
         <tr>
             {% for book in books[(number-1)*15:(number-1)*15+5] %}
