@@ -44,10 +44,10 @@ def index():
     len_page = len_index()
     tag_list = tags_list()
     pages = (p for p in flatpages)
-    pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
     pages = (p for p in pages if 'Date' in p.meta)
     latest = sorted(pages, reverse=True,
                     key=lambda p: p.meta['Date'])
+    latest = latest[(num-1)*5:(num-1)*5+5]
     return render_template('blog/blog.html',
                            pages=latest,
                            tag_list = tag_list,
@@ -60,11 +60,10 @@ def index_num(number):
     len_page = len_index()
     tag_list = tags_list()
     pages = (p for p in flatpages)
-    pages = (p for i,p in enumerate(pages) if i <= number*5 and \
-             i >= number*5-5 )
     pages = (p for p in pages if 'Date' in p.meta)
     latest = sorted(pages, reverse=True,
                     key=lambda p: p.meta['Date'])
+    latest = latest[(num-1)*5:(num-1)*5+5]
     return render_template('blog/blog.html',
                            pages=latest,
                            tag_list = tag_list,
@@ -96,11 +95,10 @@ def type(type):
     len_page = len_type(type)
     tag_list = tags_list()
     pages = (p for p in flatpages if p['Category'] == type)
-    pages = (p for i,p in enumerate(pages) if i <= number*5 and \
-             i >= number*5-5 )
     pages = (p for p in pages if 'Date' in p.meta)
     latest = sorted(pages, reverse=True,
                     key=lambda p: p.meta['Date'])
+    latest = latest[(num-1)*5:(num-1)*5+5]
     return render_template('blog/blog_type.html',
                            pages = latest,
                            num = num,
@@ -119,6 +117,7 @@ def type_num(type,number):
     pages = (p for p in pages if 'Date' in p.meta)
     latest = sorted(pages, reverse=True,
                     key=lambda p: p.meta['Date'])
+    latest = latest[(num-1)*5:(num-1)*5+5]
     return render_template('blog/blog_type.html',
                            pages = latest,
                            num = num,
@@ -134,10 +133,10 @@ def tag(tag):
     blog_tag = tag
     tag_list = tags_list()
     pages = (p for p in flatpages for t in p['Tags'] if t == tag)
-    pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
     pages = (p for p in pages if 'Date' in p.meta)
     latest = sorted(pages, reverse=True,
                     key=lambda p: p.meta['Date'])
+    latest = latest[(num-1)*5:(num-1)*5+5]
     return render_template('blog/blog_tag.html',
                            pages = latest,
                            num = num,
@@ -152,10 +151,10 @@ def tag_num(tag,number):
     blog_tag = tag
     tag_list = tags_list()
     pages = (p for p in flatpages for t in p['Tags'] if t == tag)
-    pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
     pages = (p for p in pages if 'Date' in p.meta)
     latest = sorted(pages, reverse=True,
                     key=lambda p: p.meta['Date'])
+    latest = latest[(num-1)*5:(num-1)*5+5]
     return render_template('blog/blog_tag.html',
                            pages = latest,
                            num = num,

@@ -16,27 +16,29 @@ site = Blueprint('admin',__name__,url_prefix='/admin')
 
 @site.route('/')
 def index():
-    return render_template('admin/admin.html')
+    return redirect(url_for('index.index'))
+    #return render_template('admin/admin.html')
 
 @site.route('/login_in',methods=['GET','POST'])
 def login():
-    error = None
-    form = AdminForm()
-    if form.validate_on_submit():
-            name = form.name.data
-            form.name.data=''
-    if request.method == 'POST':
-        if request.form['name'] == 'jianglin':
-            if request.form['passwd'] != 'hello':
-                error = u'密码错误'
-            else:
-                session['logged_in'] = True
-                flash('You were logged in')
-                return redirect(url_for('admin.index'))
-        else:
-            error = u'用户名错误'
-    return render_template('admin/login.html',form = form,
-                           error = error)
+    return redirect(url_for('index.index'))
+    # error = None
+    # form = AdminForm()
+    # if form.validate_on_submit():
+            # name = form.name.data
+            # form.name.data=''
+    # if request.method == 'POST':
+        # if request.form['name'] == 'jianglin':
+            # if request.form['passwd'] != 'hello':
+                # error = u'密码错误'
+            # else:
+                # session['logged_in'] = True
+                # flash('You were logged in')
+                # return redirect(url_for('admin.index'))
+        # else:
+            # error = u'用户名错误'
+    # return render_template('admin/login.html',form = form,
+                           # error = error)
 
 @site.route('/logout')
 def logout():
@@ -46,30 +48,33 @@ def logout():
 
 @site.route('/pages_post', methods=['GET','POST'])
 def pages():
-    mkds = MarkDown.query.all()
-    form = MkdsForm()
-    if form.validate_on_submit():
-    # if request.method == 'POST':
-        pager = MarkDown(request.form['title'],request.form['datetime'], \
-                     request.form['category'],request.form['tags'], \
-                     request.form['summary'],request.form['body'])
-        db.session.add(pager)
-        db.session.commit()
-        session['post_in'] = True
-        flash('已提交')
-        return redirect(url_for('admin.pages'))
-    return render_template('admin/admin_post.html',form=form,mkds = mkds)
+    return redirect(url_for('index.index'))
+    # mkds = MarkDown.query.all()
+    # form = MkdsForm()
+    # if form.validate_on_submit():
+    # # if request.method == 'POST':
+        # pager = MarkDown(request.form['title'],request.form['datetime'], \
+                     # request.form['category'],request.form['tags'], \
+                     # request.form['summary'],request.form['body'])
+        # db.session.add(pager)
+        # db.session.commit()
+        # session['post_in'] = True
+        # flash('已提交')
+        # return redirect(url_for('admin.pages'))
+    # return render_template('admin/admin_post.html',form=form,mkds = mkds)
 
 @site.route('/post_out')
 def post_out():
-    session.pop('post_in', None)
-    return redirect(url_for('admin.pages'))
+    return redirect(url_for('index.index'))
+    # session.pop('post_in', None)
+    # return redirect(url_for('admin.pages'))
 
 @site.route('/<type>')
 def types(type):
-    admin_type = type
-    mkds = MarkDown.query.all()
-    return render_template('admin/admin_user.html',
-                           mkds = mkds,
-                           admin_type = admin_type)
+    return redirect(url_for('index.index'))
+    # admin_type = type
+    # mkds = MarkDown.query.all()
+    # return render_template('admin/admin_user.html',
+                           # mkds = mkds,
+                           # admin_type = admin_type)
 
