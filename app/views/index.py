@@ -25,7 +25,7 @@ def index():
     latest = sorted(pages, reverse=True,
                     key=lambda p: p.meta['Date'])
     return render_template('index/index.html',
-                           pages = latest)
+                           pages = latest[:6])
 
 @site.route('/login', methods=['GET','POST'])
 def login():

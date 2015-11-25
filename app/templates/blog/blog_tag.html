@@ -57,7 +57,7 @@
             <li class="list-group-item" style="text-align:center;">
                 <img src="{{ url_for('static',filename='images/header.png') }}" alt="头像" width="60%" /> <br />
                 <span style="display: inline-block;width:80%;" class="label label-default">
-                    <a href="{{url_for('admin.about')}}" style="color:#fff;"> 
+                    <a href="{{url_for('index.about')}}" style="color:#fff;"> 
                         Author
                     </a>
                 </span>
@@ -77,29 +77,11 @@
                 <a href="http://github.com/honmaple">Stackoverflow</a>
             </li>
             <li class="list-group-item">Tags: <br />
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='linux') }}" style="color:#fff;">Linux</a>
+                {% for tag in tag_list %}
+                <span class="label label-primary" style="display: inline-block;">
+                    <a href="{{ url_for('blog.tag',tag=tag) }}" style="color:#fff;">{{ tag }}</a>
                 </span>
-                &nbsp
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='python') }}" style="color:#fff;">Python</a>
-                </span>
-                &nbsp
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='sql') }}" style="color:#fff;">Sql</a>
-                </span>
-                <br />
-                <span class="label label-primary" >
-                    <a href="{{ url_for('blog.tag',tag='flask') }}" style="color:#fff;">Flask</a>
-                </span>
-                &nbsp
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='html') }}" style="color:#fff;">HTML/CSS</a>
-                </span>
-                &nbsp
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='sqlite') }}" style="color:#fff;">Sqlite</a>
-                </span>
+                {% endfor %}
             </li>
             <li class="list-group-item">Links
                 <br />

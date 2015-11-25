@@ -1,8 +1,26 @@
 {% extends 'book/book_type_base.html' %}
 {% block content %}
+
 <div class="row">
-    {% for book in books %}
-    <a href="{{ url_for('book.type',type=book['tag']) }}">{{ book['tag'] }}</a>
-    {% endfor %}
+    <div class="col-sm-9">
+        <div class="row">
+            {% for book in books %}
+            <div class="col-xs-4 col-sm-2 text-center">
+                <div style="height:160px;width:auto">
+                    <img src="{{ url_for('static',filename='book_image/'+book['name']+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
+                    <br />
+                    <a href="{{ url_for('book.book_intro',name=book['name']) }}">{{ book['name'] }}</a> 
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-sm-3">
+        {% for book_type in book_all_type %}
+        <span class="label label-info" style="display: inline-block;">
+            <a href="{{ url_for('book.type',type=book_type['tag']) }}" style="color:#fff;">{{ book_type['tag'] }}</a>
+        </span>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

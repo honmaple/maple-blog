@@ -25,13 +25,13 @@
             <ul class="pagination">
                 {% if num == 1 %}
                 <li class="disabled">
-                    <a href="#" aria-label="Previous">
+                    <a href="{{ url_for('blog.index_num',number=num-1) }}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 {% else %}
                 <li>
-                    <a href="#" aria-label="Previous">
+                    <a href="{{ url_for('blog.index_num',number=num-1) }}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -43,11 +43,19 @@
                 <li><a href="{{ url_for('blog.index_num',number=i+1) }}">{{ i+1 }}</a></li>
                 {% endif %}
                 {% endfor %}
+                {% if num == len_page %}
+                <li class="disabled">
+                    <a href="{{ url_for('blog.index_num',number=num + 1) }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% else %}
                 <li>
                     <a href="{{ url_for('blog.index_num',number=num + 1) }}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -76,29 +84,11 @@
                 <a href="http://github.com/honmaple">Stackoverflow</a>
             </li>
             <li class="list-group-item">Tags: <br />
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='linux') }}" style="color:#fff;">Linux</a>
+                {% for tag in tag_list %}
+                <span class="label label-primary" style="display: inline-block;">
+                    <a href="{{ url_for('blog.tag',tag=tag) }}" style="color:#fff;">{{ tag }}</a>
                 </span>
-                &nbsp
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='python') }}" style="color:#fff;">Python</a>
-                </span>
-                &nbsp
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='sql') }}" style="color:#fff;">Sql</a>
-                </span>
-                <br />
-                <span class="label label-primary" >
-                    <a href="{{ url_for('blog.tag',tag='flask') }}" style="color:#fff;">Flask</a>
-                </span>
-                &nbsp
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='html') }}" style="color:#fff;">HTML/CSS</a>
-                </span>
-                &nbsp
-                <span class="label label-primary">
-                    <a href="{{ url_for('blog.tag',tag='sqlite') }}" style="color:#fff;">Sqlite</a>
-                </span>
+                {% endfor %}
             </li>
             <li class="list-group-item">Links
                 <br />

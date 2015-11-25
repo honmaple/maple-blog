@@ -1,21 +1,10 @@
 {% extends 'index/base.html' %}
 {% block content %}
-<div class="jumbotron" style="border-radius:10px;padding:5% 10%">
-    <h1>Hello, honmaple!</h1>
-    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-</div>
-<a href="{{ url_for('admin.login') }}">后台管理</a>
-<div class="row">
-        <div class="col-sm-9" >
-            <h3>最近文章</h3>
-            {% for page in pages %}
-            
-            <!--{% if loop.index >= 8 %}{% break %}{% endif %}-->
-            <a href="{{ url_for('blog.page',path=page.path) }}">{{ page['Title'] }} {{ page['Date'] }}</a>
-            <p>
-            {{ page['Summary'] }}
-            </p>
-            {% endfor %}
-        </div>
+<div class="jumbotron">
+  <div class="container" style="padding-left:16%">
+<h1>Hello, Honmaple</h1>
+  <p>这是我的个人网站</p>
+  <p><a class="btn btn-primary btn-lg" href="{{ url_for('blog.index') }}" role="button">Learn more</a></p>
+  </div>
 </div>
 {% endblock %}

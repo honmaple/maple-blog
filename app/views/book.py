@@ -19,7 +19,7 @@ def index():
     books = Books.query.distinct(Books.name).all()
     number = 1
     add = 0
-    total = int(len(books)/15) + 1
+    total = int(len(books)/18) + 1
     return render_template('book/book.html',
                            books = books,
                            book_all_type = book_all_type,
@@ -31,7 +31,7 @@ def index():
 def index_num(num):
     book_all_type = Books.query.distinct(Books.tag)
     books = Books.query.distinct(Books.name).all()
-    total = int(len(books)/15) + 1
+    total = int(len(books)/18) + 1
     number = num
     add = number - 1
     if num == add + 6:
@@ -46,10 +46,10 @@ def index_num(num):
 @site.route('/type?=<type>')
 def type(type):
     book_all_type = Books.query.distinct(Books.tag)
-    books = Books.query.filter_by(tag=type)
+    books = Books.query.distinct(Books.name).filter_by(tag=type)
     return render_template('book/book_type.html',
-                           book_all_type = book_all_type,
-                           books = books)
+                           books = books,
+                           book_all_type = book_all_type)
 
 @site.route('/name=<name>')
 def book_intro(name):

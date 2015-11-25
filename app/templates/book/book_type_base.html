@@ -7,19 +7,19 @@
         <title>HonMaple</title>
 
         {% assets "home_js" %}
-            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
         {% assets "home_css" %}
-            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
         <style type="text/css">
             html,body{height:100%}
             .footer {margin-top:-30px;height:30px;}
             .wrap{min-height:100%}
             .main{padding-bottom:30px;overflow:hidden;}
-    li {
-        list-style:none;
-    }
+            li {
+                list-style:none;
+            }
         </style>
     </head>
     <body>
@@ -38,8 +38,9 @@
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                <li><a href="{{ url_for('book.index') }}">哲学</a></li>
-                                <li><a href="{{ url_for('book.index') }}">社会学</a></li>
+                                <li><a href="{{ url_for('book.type',type='哲学') }}">哲学</a></li>
+                                <li><a href="{{ url_for('book.type',type='社会学') }}">社会学</a></li>
+                                <li><a href="{{ url_for('book.type',type='工具书') }}">工具书</a></li>
                                 <li><a href="{{ url_for('index.about') }}">关于我</a></li>
                             </ul>
                             <form class="navbar-form navbar-left" role="search">

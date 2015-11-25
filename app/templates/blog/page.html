@@ -1,5 +1,6 @@
 {% extends 'blog/blog_type_base.html' %}
 {% block content %}
+
 <div>
     <a href="{{ url_for('blog.index') }}">返回首页</a>
     <table style="width:100%;">
@@ -25,10 +26,18 @@
             </td>
         </tr>
     </table>
-    <div width="100%" style="padding:0 60px;" >
+    <div width="100%" style="padding:0 4%;" >
         <p>
         {{ page.html|safe }}
         </p>
+    </div>
+    <div>
+        <nav>
+            <ul class="pager">
+                <li class="previous"><a href="{{ url_for('blog.page',path=page_previous.path) }}"><span aria-hidden="true">&larr;</span>上一篇:{{ page_previous['Title'] }}</a></li>
+                <li class="next"><a href="{{ url_for('blog.page',path=page_next.path) }}">下一篇:{{ page_next['Title'] }}<span aria-hidden="true">&rarr;</span></a></li>
+            </ul>
+        </nav>
     </div>
 </div>
 {% endblock content %}
