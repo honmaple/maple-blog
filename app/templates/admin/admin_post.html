@@ -1,0 +1,38 @@
+<!--
+    Copyright © 2015 JiangLin. All rights reserved.
+    File Name: admin.html
+    Author:JiangLin 
+    Mail:xiyang0807@gmail.com 
+    Created Time: 2015-11-25 05:13:25
+-->
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+
+<a href="{{ url_for('admin.types',type = 'pages') }}">查看文章列表</a>
+<div class="panel panel-default">
+    <div class="panel-heading">后台管理</div>
+    <div class="panel-body">
+        <p>...</p>
+    </div>
+    <div >
+        <form action="{{ url_for('admin.pages') }}" method="POST">
+            {{ form.hidden_tag()}}
+            {{ form.title.label }}
+            {{ form.title(class="form-control",placeholder="Title") }}
+            {{ form.datetime.label }}
+            {{ form.datetime(class="form-control",placeholder="Datetime xxxx-xx-xx") }}
+            {{ form.category.label }}
+            {{ form.category(class="form-control",placeholder="Category") }}
+            {{ form.tags.label }}
+            {{ form.tags(class="form-control",placeholder="Tags xx,xx,xx") }}
+            {{ form.summary.label }}
+            {{ form.summary(class="form-control",placeholder="Summary") }}
+            {{ form.body.label }}
+            {{ form.body(class="form-control",rows="10") }}
+            <br />
+            {{ form.post(class="btn btn-primary") }}   
+            {{ form.save(class="btn btn-primary") }}   
+        </form>
+    </div>
+</div>
+{% endblock %}

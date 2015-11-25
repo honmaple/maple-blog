@@ -7,21 +7,27 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-# from .base import db
 from .base import db
+
 
 class MarkDown(db.Model):
     __bind_key__ = 'mkds'
-    __tablename__ = 'mkd'
+    __tablename__ = 'mkds'
     id = db.Column(db.Integer,primary_key=True)
     title = db.Column(db.String(128))
+    datetime = db.Column(db.String(128))
+    category = db.Column(db.String(128))
+    tags = db.Column(db.String(128))
+    summary = db.Column(db.Text)
     body = db.Column(db.Text)
-    body_html = db.Column(db.Text)
 
-    def __init__(self, title,body,body_html):
+    def __init__(self, title,datetime,category,tags,summary,body):
         self.title = title
+        self.datetime = datetime
+        self.category = category
+        self.tags = tags
+        self.summary = summary
         self.body = body
-        self.body_html = body_html
 
     def __repr__(self):
         return "<MarkDown %r>" % self.title

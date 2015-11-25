@@ -1,0 +1,8 @@
+{% extends 'book/book_type_base.html' %}
+{% block content %}
+<div class="row">
+    {% for book in books %}
+    <a href="{{ url_for('book.type',type=book['tag']) }}">{{ book['tag'] }}</a>
+    {% endfor %}
+</div>
+{% endblock %}

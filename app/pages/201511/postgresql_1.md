@@ -1,6 +1,6 @@
 Title: postgresql学习
 Author: honmaple 
-date: 2015-11-24
+Date: 2015-11-24
 Category: linux
 Tags: [sql,postgresql,linux]
 Slug: postgresql.md

@@ -9,3 +9,4 @@
 # -*- coding=UTF-8 -*-
 from .login import *
 from .mkds import *
+from .administrator import *

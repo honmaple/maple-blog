@@ -1,0 +1,26 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+<div>
+    <ul class="nav nav-tabs"  role="tablist">
+        <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">个人资料</a></li>
+        <li role="presentation"><a href="#secure" aria-controls="secure" role="tab" data-toggle="tab">账户安全</a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">全部文章</a></li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="profile">
+            <p> <b> 个人简介</b> 
+            <a href="#">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </a>
+            </p>
+            <p> 河海大学 
+            </p>
+            <br />
+            <p> <b>联系方式</b></p>
+            <p>Mail:xiyang0807@gmail.com</p>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="secure">三四分三份</div>
+        <div role="tabpanel" class="tab-pane" id="messages">...</div>
+    </div>
+</div>
+{% endblock %}

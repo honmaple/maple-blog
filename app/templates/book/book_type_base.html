@@ -40,7 +40,7 @@
                             <ul class="nav navbar-nav">
                                 <li><a href="{{ url_for('book.index') }}">哲学</a></li>
                                 <li><a href="{{ url_for('book.index') }}">社会学</a></li>
-                                <li><a href="{{ url_for('admin.about') }}">关于我</a></li>
+                                <li><a href="{{ url_for('index.about') }}">关于我</a></li>
                             </ul>
                             <form class="navbar-form navbar-left" role="search">
                                 <div class="form-group">
@@ -63,7 +63,7 @@
                                     </div>
                                     {% else %}
                                     <button type="button" class="btn btn-default navbar-btn" >
-                                        <a href="{{ url_for('admin.login') }}">Sign in</a>
+                                        <a href="{{ url_for('index.login') }}">Sign in</a>
                                     </button>
                                     {% endif %}
                                 </li>

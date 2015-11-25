@@ -1,5 +1,8 @@
-{% extends "index/base.html" %}
-{% block content %}
+{% extends "admin/logout.html" %}
+{% block body %}
+<div>
+    <a href="{{ url_for('admin.index') }}">返回首页</a>
+</div>
 <div style="text-align:center" >
     {% if session.logged_in %}
     <a href="{{ url_for('admin.logout') }}">log out</a>
@@ -14,14 +17,16 @@
         {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
         <form action="{{ url_for('admin.login') }}" method="POST">
             <dl>
+                <!--{{ form.csrf_token }}-->
                 {{ form.hidden_tag()}}
                 <dt>{{ form.name.label }}
                 <dd>{{ form.name(class="form-control") }}
                 <dt>{{ form.passwd.label }}
                 <dd>{{ form.passwd(class="form-control") }}
                 <dd style="margin:10px auto;">
-                {{ form.login_in(class="btn btn-primary") }}   
+                {{ form.sign_in(class="btn btn-primary") }}   
                 </dd>
+                <a href="{{ url_for('admin.sign') }}">还未注册</a>
             </dl>
         </form>
     </div>

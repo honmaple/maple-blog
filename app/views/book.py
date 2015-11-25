@@ -7,8 +7,7 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-from flask import render_template, Blueprint, url_for, \
-    request
+from flask import render_template, Blueprint
 from ..models import Books
 
 
@@ -16,19 +15,22 @@ site = Blueprint('book',__name__,url_prefix='/book')
 
 @site.route('/')
 def index():
-    books = Books.query.all()
+    book_all_type = Books.query.distinct(Books.tag)
+    books = Books.query.distinct(Books.name).all()
     number = 1
     add = 0
     total = int(len(books)/15) + 1
     return render_template('book/book.html',
                            books = books,
+                           book_all_type = book_all_type,
                            add = add,
                            number = number,
                            total = total)
 
-@site.route('/page=<int:num>',methods=['GET','POST'])
+@site.route('/page=<int:num>')
 def index_num(num):
-    books = Books.query.all()
+    book_all_type = Books.query.distinct(Books.tag)
+    books = Books.query.distinct(Books.name).all()
     total = int(len(books)/15) + 1
     number = num
     add = number - 1
@@ -36,9 +38,18 @@ def index_num(num):
         add += 5
     return render_template('book/book.html',
                            books = books,
+                           book_all_type = book_all_type,
                            add = add,
                            number = number,
                            total = total)
+
+@site.route('/type?=<type>')
+def type(type):
+    book_all_type = Books.query.distinct(Books.tag)
+    books = Books.query.filter_by(tag=type)
+    return render_template('book/book_type.html',
+                           book_all_type = book_all_type,
+                           books = books)
 
 @site.route('/name=<name>')
 def book_intro(name):

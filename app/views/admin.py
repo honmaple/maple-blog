@@ -9,29 +9,25 @@
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint, request, \
     session, flash, redirect, url_for
-from ..models import User, db
-from ..forms import UserForm
+from ..models import MarkDown,User, db
+from ..forms import MkdsForm, AdminForm
 
-site = Blueprint('admin',__name__,url_prefix='')
-
+site = Blueprint('admin',__name__,url_prefix='/admin')
 
 @site.route('/')
-@site.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('admin/admin.html')
 
-@site.route('/login', methods=['GET','POST'])
+@site.route('/login_in',methods=['GET','POST'])
 def login():
-    name = None
     error = None
-    form = UserForm()
+    form = AdminForm()
     if form.validate_on_submit():
             name = form.name.data
             form.name.data=''
     if request.method == 'POST':
-        user = User.query.filter_by(name=request.form['name']).first()
-        if user != None:
-            if request.form['passwd'] != user.passwd:
+        if request.form['name'] == 'jianglin':
+            if request.form['passwd'] != 'hello':
                 error = u'密码错误'
             else:
                 session['logged_in'] = True
@@ -39,40 +35,41 @@ def login():
                 return redirect(url_for('admin.index'))
         else:
             error = u'用户名错误'
-    return render_template('admin/login.html',form=form,name=name,error=error)
+    return render_template('admin/login.html',form = form,
+                           error = error)
 
 @site.route('/logout')
 def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
-    return redirect(url_for('admin.index'))
+    return redirect(url_for('index.index'))
 
-@site.route('/sign', methods=['GET','POST'])
-def sign():
-    name = None
-    error = None
-    form = UserForm()
+@site.route('/pages_post', methods=['GET','POST'])
+def pages():
+    mkds = MarkDown.query.all()
+    form = MkdsForm()
     if form.validate_on_submit():
-            name = form.name.data
-            form.name.data=''
-    if request.method == 'POST':
-        useremail = User.query.filter_by(email=request.form['email']).first()
-        username = User.query.filter_by(name=request.form['name']).first()
-        if username:
-            error = u'用户名已存在'
-        elif useremail:
-            error = u'邮箱已被注册'
-        elif not request.form['name'] or not request.form['email']:
-            error = u'输入不能为空'
-        else:
-            account = User(request.form['name'],request.form['email'],request.form['passwd'])
-            db.session.add(account)
-            db.session.commit()
-            session['logged_in'] = True
-            flash('You were logged in')
-            return redirect(url_for('admin.index'))
-    return render_template('admin/sign_in.html',form=form,name=name,error=error)
+    # if request.method == 'POST':
+        pager = MarkDown(request.form['title'],request.form['datetime'], \
+                     request.form['category'],request.form['tags'], \
+                     request.form['summary'],request.form['body'])
+        db.session.add(pager)
+        db.session.commit()
+        session['post_in'] = True
+        flash('已提交')
+        return redirect(url_for('admin.pages'))
+    return render_template('admin/admin_post.html',form=form,mkds = mkds)
 
-@site.route('/about')
-def about():
-    return render_template('admin/about_me.html')
+@site.route('/post_out')
+def post_out():
+    session.pop('post_in', None)
+    return redirect(url_for('admin.pages'))
+
+@site.route('/<type>')
+def types(type):
+    admin_type = type
+    mkds = MarkDown.query.all()
+    return render_template('admin/admin_user.html',
+                           mkds = mkds,
+                           admin_type = admin_type)
+

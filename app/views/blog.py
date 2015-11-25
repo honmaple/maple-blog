@@ -35,8 +35,11 @@ def index():
     len_page = len_index()
     pages = (p for p in flatpages)
     pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
+    pages = (p for p in pages if 'Date' in p.meta)
+    latest = sorted(pages, reverse=True,
+                    key=lambda p: p.meta['Date'])
     return render_template('blog/blog.html',
-                           pages=pages,
+                           pages=latest,
                            num = num,
                            len_page = len_page)
 
@@ -46,8 +49,11 @@ def index_num(number):
     len_page = len_index()
     pages = (p for p in flatpages)
     pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
+    pages = (p for p in pages if 'Date' in p.meta)
+    latest = sorted(pages, reverse=True,
+                    key=lambda p: p.meta['Date'])
     return render_template('blog/blog.html',
-                           pages=pages,
+                           pages=latest,
                            num = num,
                            len_page = len_page)
 
@@ -64,8 +70,11 @@ def type(type):
     len_page = len_type(type)
     pages = (p for p in flatpages if p['Category'] == type)
     pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
+    pages = (p for p in pages if 'Date' in p.meta)
+    latest = sorted(pages, reverse=True,
+                    key=lambda p: p.meta['Date'])
     return render_template('blog/blog_type.html',
-                           pages = pages,
+                           pages = latest,
                            num = num,
                            blog_type = blog_type,
                            len_page = len_page)
@@ -77,8 +86,11 @@ def type_num(type,number):
     len_page = len_type(type)
     pages = (p for p in flatpages if p['Category'] == type)
     pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
+    pages = (p for p in pages if 'Date' in p.meta)
+    latest = sorted(pages, reverse=True,
+                    key=lambda p: p.meta['Date'])
     return render_template('blog/blog_type.html',
-                           pages = pages,
+                           pages = latest,
                            num = num,
                            blog_type = blog_type,
                            len_page = len_page)
@@ -91,8 +103,11 @@ def tag(tag):
     blog_tag = tag
     pages = (p for p in flatpages for t in p['Tags'] if t == tag)
     pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
+    pages = (p for p in pages if 'Date' in p.meta)
+    latest = sorted(pages, reverse=True,
+                    key=lambda p: p.meta['Date'])
     return render_template('blog/blog_tag.html',
-                           pages = pages,
+                           pages = latest,
                            num = num,
                            blog_tag = blog_tag,
                            len_page =len_page)
@@ -104,8 +119,11 @@ def tag_num(tag,number):
     blog_tag = tag
     pages = (p for p in flatpages for t in p['Tags'] if t == tag)
     pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
+    pages = (p for p in pages if 'Date' in p.meta)
+    latest = sorted(pages, reverse=True,
+                    key=lambda p: p.meta['Date'])
     return render_template('blog/blog_tag.html',
-                           pages = pages,
+                           pages = latest,
                            num = num,
                            blog_tag = blog_tag,
                            len_page =len_page)

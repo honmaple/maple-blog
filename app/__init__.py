@@ -31,10 +31,12 @@ def register_pages():
     return flatpages
 
 def register_routes(app):
-    from .views import admin, blog, book
-    app.register_blueprint(admin.site, url_prefix='')
-    app.register_blueprint(blog.site, url_prefix='/blog')
+    from .views import index,admin, book
+    app.register_blueprint(index.site, url_prefix='')
+    app.register_blueprint(admin.site, url_prefix='/admin')
     app.register_blueprint(book.site, url_prefix='/book')
+    from .views.blog import site
+    app.register_blueprint(site, url_prefix='/blog')
 
 
 def register_db(app):
@@ -52,12 +54,12 @@ def register_assets(app):
         'home_js': Bundle(
             'style/js/jquery.min.js',      #这里直接写static目录的子目录 ,如static/bootstrap是错误的
             'style/js/bootstrap.min.js',
-            output='assets/home.js',
+            output='style/assets/home.js',
             filters='jsmin'),
 
         'home_css': Bundle(
             'style/css/bootstrap.min.css',
-            output='assets/home.css',
+            output='style/assets/home.css',
             filters='cssmin')
         }
 

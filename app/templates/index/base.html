@@ -34,13 +34,13 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="{{ url_for('admin.index') }}">主页</a>
+                            <a class="navbar-brand" href="{{ url_for('index.index') }}">主页</a>
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li><a href="{{ url_for('blog.index') }}">个人博客</a></li>
                                 <li><a href="{{ url_for('book.index') }}">书籍查询</a></li>
-                                <li><a href="{{ url_for('admin.about') }}">关于我</a></li>
+                                <li><a href="{{ url_for('index.about') }}">关于我</a></li>
                             </ul>
                             <form class="navbar-form navbar-left" role="search">
                                 <div class="form-group">
@@ -58,12 +58,12 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                             <li><a href="{{ url_for('admin.index') }}">我的主页</a></li>
-                                            <li><a href="{{ url_for('admin.logout') }}">退出</a></li>
+                                            <li><a href="{{ url_for('index.logout') }}">退出</a></li>
                                         </ul>
                                     </div>
                                     {% else %}
                                     <button type="button" class="btn btn-default navbar-btn" >
-                                        <a href="{{ url_for('admin.login') }}">Sign in</a>
+                                        <a href="{{ url_for('index.login') }}">Sign in</a>
                                     </button>
                                     {% endif %}
                                 </li>
