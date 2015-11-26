@@ -2,7 +2,7 @@ Title: fedora22成功安装bumblebee-nvidia
 Author: honmaple 
 Date: 2015-10-15
 Category: linux 
-Tags: [ linux,fedora ]
+Tags: [ linux,fedora,nvidia ]
 Slug: bumvlebee
 Summary: 参考fedora安装[bumblebee官方wiki](http://fedoraproject.org/wiki/Bumblebee#Description) <br />写在前面：安装前最好更新系统，安装内核头文件等，如果有多余旧内核先删除 <br />安装驱动最好进入字符界面操作
 

@@ -1,9 +1,10 @@
 {% extends 'book/book_type_base.html' %}
 {% block content %}
-<div class="row">
-    <div style="float:left;margin:0 30px">
-        <img src="{{ url_for('static',filename='book_image/'+books['name']+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
+<div>
+    <div style="float:left;margin-right:2%;">
+        <img src="{{ url_for('static',filename='book_image/'+books['name']+'.jpg') }}" alt="book" style="width:80px;height:120px;" />
     </div>
+    <div>
     <p>
     <ul>
         <li> <b>书籍名称:</b>  {{ books['name'] }}</li>
@@ -18,5 +19,6 @@
         <li> <b>内容概要:</b>  {{ books['content'] }}</li>
     </ul>
     </p>
+    </div>
 </div>
 {% endblock %}

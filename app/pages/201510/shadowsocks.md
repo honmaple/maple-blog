@@ -2,7 +2,7 @@ Title: centos搭建shadowsocks服务端
 Author: honmaple 
 Date: 2015-10-15
 Category: linux
-Tags: [ linux ]
+Tags: [ linux,centos,shadowsocks ]
 Slug: shadowsocks
 Summary: 刚搭建好，记录下来，用的是centos
 

@@ -90,7 +90,7 @@
             <li class="list-group-item">Tags: <br />
                 {% for tag in tag_list %}
                 <span class="label label-primary" style="display: inline-block;">
-                    <a href="{{ url_for('blog.tag',tag=tag) }}" style="color:#fff;">{{ tag }}</a>
+                    <a href="{{ url_for('blog.tag_num',tag=tag) }}" style="color:#fff;">{{ tag }}</a>
                 </span>
                 {% endfor %}
             </li>

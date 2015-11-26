@@ -39,9 +39,9 @@
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                <li> <a href="{{ url_for('blog.type',type='linux') }}">Linux</a></li>
-                                <li> <a href="{{ url_for('blog.type',type='python') }}">Python</a></li>
-                                <li> <a href="{{ url_for('blog.type',type='python') }}">生活随笔</a></li>
+                                <li> <a href="{{ url_for('blog.type_num',type='linux') }}">Linux</a></li>
+                                <li> <a href="{{ url_for('blog.type_num',type='python') }}">Python</a></li>
+                                <li> <a href="{{ url_for('blog.type_num',type='python') }}">生活随笔</a></li>
                                 <li><a href="{{ url_for('index.about') }}">关于我</a></li>
                             </ul>
                             <form class="navbar-form navbar-left" role="search">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </nav>
-                <div style="padding:0 11%;">
+                <div style="padding:0 12%;">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <ul>

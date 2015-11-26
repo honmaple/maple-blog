@@ -37,24 +37,8 @@ def len_tag(tag):
     pages = (p for p in flatpages for t in p['Tags'] if t == tag)
     return int(len(list(pages))/6) + 1
 
-@site.route('/')
-def index():
-    number = 1
-    num = number
-    len_page = len_index()
-    tag_list = tags_list()
-    pages = (p for p in flatpages)
-    pages = (p for p in pages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
-    latest = latest[(num-1)*5:(num-1)*5+5]
-    return render_template('blog/blog.html',
-                           pages=latest,
-                           tag_list = tag_list,
-                           num = num,
-                           len_page = len_page)
-
-@site.route('/<int:number>')
+@site.route('/latest',defaults={'number':1})
+@site.route('/latest/view?=<int:number>')
 def index_num(number):
     num = number
     len_page = len_index()
@@ -69,6 +53,47 @@ def index_num(number):
                            tag_list = tag_list,
                            num = num,
                            len_page = len_page)
+
+
+@site.route('/type?=<type>',defaults={'number':1})
+@site.route('/type?=<type>/view?=<int:number>')
+def type_num(type,number):
+    num = number
+    blog_type = type
+    len_page = len_type(type)
+    tag_list = tags_list()
+    pages = (p for p in flatpages if p['Category'] == type)
+    pages = (p for p in pages if 'Date' in p.meta)
+    latest = sorted(pages, reverse=True,
+                    key=lambda p: p.meta['Date'])
+    latest = latest[(num-1)*5:(num-1)*5+5]
+    return render_template('blog/blog_type.html',
+                           pages = latest,
+                           num = num,
+                           tag_list = tag_list,
+                           blog_type = blog_type,
+                           len_page = len_page)
+
+
+@site.route('/tag?=<tag>',defaults={'number':1})
+@site.route('/tag?=<tag>/view?=<int:number>')
+def tag_num(tag,number):
+    num = number
+    len_page = len_tag(tag)
+    blog_tag = tag
+    tag_list = tags_list()
+    pages = (p for p in flatpages for t in p['Tags'] if t == tag)
+    pages = (p for p in pages if 'Date' in p.meta)
+    latest = sorted(pages, reverse=True,
+                    key=lambda p: p.meta['Date'])
+    latest = latest[(num-1)*5:(num-1)*5+5]
+    return render_template('blog/blog_tag.html',
+                           pages = latest,
+                           num = num,
+                           tag_list = tag_list,
+                           blog_tag = blog_tag,
+                           len_page =len_page)
+
 
 @site.route('/pages/<path:path>/')
 def page(path):
@@ -86,78 +111,3 @@ def page(path):
     return render_template('blog/page.html', page = page,
                            page_previous = page_previous,
                            page_next = page_next)
-
-@site.route('/type?=<type>')
-def type(type):
-    number = 1
-    num = number
-    blog_type = type
-    len_page = len_type(type)
-    tag_list = tags_list()
-    pages = (p for p in flatpages if p['Category'] == type)
-    pages = (p for p in pages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
-    latest = latest[(num-1)*5:(num-1)*5+5]
-    return render_template('blog/blog_type.html',
-                           pages = latest,
-                           num = num,
-                           tag_list = tag_list,
-                           blog_type = blog_type,
-                           len_page = len_page)
-
-@site.route('/type?=<type>/<int:number>')
-def type_num(type,number):
-    num = number
-    blog_type = type
-    len_page = len_type(type)
-    tag_list = tags_list()
-    pages = (p for p in flatpages if p['Category'] == type)
-    pages = (p for i,p in enumerate(pages) if i <= number*5 and i >= number*5-5 )
-    pages = (p for p in pages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
-    latest = latest[(num-1)*5:(num-1)*5+5]
-    return render_template('blog/blog_type.html',
-                           pages = latest,
-                           num = num,
-                           tag_list = tag_list,
-                           blog_type = blog_type,
-                           len_page = len_page)
-
-@site.route('/tag?=<tag>')
-def tag(tag):
-    number = 1
-    num = number
-    len_page = len_tag(tag)
-    blog_tag = tag
-    tag_list = tags_list()
-    pages = (p for p in flatpages for t in p['Tags'] if t == tag)
-    pages = (p for p in pages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
-    latest = latest[(num-1)*5:(num-1)*5+5]
-    return render_template('blog/blog_tag.html',
-                           pages = latest,
-                           num = num,
-                           tag_list = tag_list,
-                           blog_tag = blog_tag,
-                           len_page =len_page)
-
-@site.route('/tag?=<tag>/<int:number>')
-def tag_num(tag,number):
-    num = number
-    len_page = len_tag(tag)
-    blog_tag = tag
-    tag_list = tags_list()
-    pages = (p for p in flatpages for t in p['Tags'] if t == tag)
-    pages = (p for p in pages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
-    latest = latest[(num-1)*5:(num-1)*5+5]
-    return render_template('blog/blog_tag.html',
-                           pages = latest,
-                           num = num,
-                           tag_list = tag_list,
-                           blog_tag = blog_tag,
-                           len_page =len_page)

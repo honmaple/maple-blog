@@ -35,7 +35,7 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="{{ url_for('book.index') }}">书籍主页</a>
+                            <a class="navbar-brand" href="{{ url_for('book.index_num') }}">书籍主页</a>
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </nav>
-                <div style="margin:0 11%;">
+                <div style="margin:0 12%;">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <ul>

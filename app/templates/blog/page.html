@@ -2,7 +2,7 @@
 {% block content %}
 
 <div>
-    <a href="{{ url_for('blog.index') }}">返回首页</a>
+    <a href="{{ url_for('blog.index_num') }}">返回首页</a>
     <table style="width:100%;">
         <tr>
             <td align="center">
@@ -14,7 +14,7 @@
                 {{ page.Date  }} <br />
                 {% for tag in page.Tags %}
                 <span class="label label-primary" >
-                    <a href="{{ url_for('blog.tag',tag=tag) }}" style="color:#fff;">{{ tag }}</a>
+                    <a href="{{ url_for('blog.tag_num',tag=tag) }}" style="color:#fff;">{{ tag }}</a>
                 </span>
                 &nbsp
                 {% endfor %}

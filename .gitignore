@@ -1,4 +1,5 @@
 venv/
+in/
 **/__pycache__/
 *.swp
 *.pyc

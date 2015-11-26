@@ -13,21 +13,9 @@ from ..models import Books
 
 site = Blueprint('book',__name__,url_prefix='/book')
 
-@site.route('/')
-def index():
-    book_all_type = Books.query.distinct(Books.tag)
-    books = Books.query.distinct(Books.name).all()
-    number = 1
-    add = 0
-    total = int(len(books)/18) + 1
-    return render_template('book/book.html',
-                           books = books,
-                           book_all_type = book_all_type,
-                           add = add,
-                           number = number,
-                           total = total)
 
-@site.route('/page=<int:num>')
+@site.route('/latest',defaults={'num':1})
+@site.route('/latest/view?=<int:num>')
 def index_num(num):
     book_all_type = Books.query.distinct(Books.tag)
     books = Books.query.distinct(Books.name).all()

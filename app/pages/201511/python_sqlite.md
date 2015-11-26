@@ -2,7 +2,7 @@ Title: flask学习——数据库操作
 Author: honmaple 
 Date: 2015-11-10
 Category: python
-Tags: [ python,flask ]
+Tags: [ python,flask,sqlite,sql ]
 Slug: python_sqlite
 Summary : flask 作为后端数据库操作是必要的，现在记录一下一些flask数据库的相关操作</br>暂时使用较简单的sqlite作为例子
 
