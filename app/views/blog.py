@@ -15,6 +15,11 @@ site = Blueprint('blog',__name__,url_prefix='/blog')
 
 flatpages = register_pages()
 
+def latest_article(pages):
+    pages = (p for p in pages if 'Date' in p.meta)
+    latest = sorted(pages, reverse=True,
+                    key=lambda p: p.meta['Date'])
+    return latest
 
 def tags_list():
     pages = (p for p in flatpages)
@@ -37,6 +42,7 @@ def len_tag(tag):
     pages = (p for p in flatpages for t in p['Tags'] if t == tag)
     return int(len(list(pages))/6) + 1
 
+
 @site.route('/latest',defaults={'number':1})
 @site.route('/latest/view?=<int:number>')
 def index_num(number):
@@ -44,10 +50,8 @@ def index_num(number):
     len_page = len_index()
     tag_list = tags_list()
     pages = (p for p in flatpages)
-    pages = (p for p in pages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
-    latest = latest[(num-1)*5:(num-1)*5+5]
+    latest = latest_article(pages)
+    latest = latest[(num-1)*6:(num-1)*6+6]
     return render_template('blog/blog.html',
                            pages=latest,
                            tag_list = tag_list,
@@ -63,10 +67,8 @@ def type_num(type,number):
     len_page = len_type(type)
     tag_list = tags_list()
     pages = (p for p in flatpages if p['Category'] == type)
-    pages = (p for p in pages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
-    latest = latest[(num-1)*5:(num-1)*5+5]
+    latest = latest_article(pages)
+    latest = latest[(num-1)*6:(num-1)*6+6]
     return render_template('blog/blog_type.html',
                            pages = latest,
                            num = num,
@@ -83,10 +85,8 @@ def tag_num(tag,number):
     blog_tag = tag
     tag_list = tags_list()
     pages = (p for p in flatpages for t in p['Tags'] if t == tag)
-    pages = (p for p in pages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
-    latest = latest[(num-1)*5:(num-1)*5+5]
+    latest = latest_article(pages)
+    latest = latest[(num-1)*6:(num-1)*6+6]
     return render_template('blog/blog_tag.html',
                            pages = latest,
                            num = num,
@@ -98,16 +98,22 @@ def tag_num(tag,number):
 @site.route('/pages/<path:path>/')
 def page(path):
     page = flatpages.get_or_404(path)
-    pages = (p for p in flatpages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
+    pages = (p for p in flatpages)
+    latest = latest_article(pages)
     n = 0
     for pa in latest:
         if pa == page:
             break
         n += 1
-    page_next = latest[n+1]
-    page_previous = latest[n-1]
+    if n == 0:
+        page_previous = None
+        page_next = latest[n+1]
+    elif n == len(latest) - 1:
+        page_previous = latest[n-1]
+        page_next = None
+    else:
+        page_previous = latest[n-1]
+        page_next = latest[n+1]
     return render_template('blog/page.html', page = page,
                            page_previous = page_previous,
                            page_next = page_next)

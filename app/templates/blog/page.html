@@ -34,8 +34,17 @@
     <div>
         <nav>
             <ul class="pager">
+                {% if page_previous %}
                 <li class="previous"><a href="{{ url_for('blog.page',path=page_previous.path) }}"><span aria-hidden="true">&larr;</span>上一篇:{{ page_previous['Title'] }}</a></li>
+                {% else %}
+                <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span>上一篇:这已经是第一篇</a></li>
+                {% endif %}
+                {% if page_next %}
                 <li class="next"><a href="{{ url_for('blog.page',path=page_next.path) }}">下一篇:{{ page_next['Title'] }}<span aria-hidden="true">&rarr;</span></a></li>
+                {% else %}
+                <li class="next"><a href="#">下一篇:没有了<span aria-hidden="true">&rarr;</span></a></li>
+                {% endif %}
+                <li> <a href="#">返回顶部</a></li>
             </ul>
         </nav>
     </div>

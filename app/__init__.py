@@ -7,7 +7,7 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-from flask import Flask
+from flask import Flask, render_template
 from flask.ext.assets import Environment, Bundle
 from flask_flatpages import FlatPages
 from config import load_config
@@ -69,3 +69,6 @@ def register_assets(app):
 app = create_app()
 register(app)
 
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('index/error.html'), 404

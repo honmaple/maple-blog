@@ -10,8 +10,8 @@
 from flask import render_template, Blueprint,redirect, \
     url_for,session,flash
 from ..models import User, db
-from ..models import Books
-from ..forms import UserForm
+# from ..models import Books
+# from ..forms import UserForm
 from app import register_pages
 
 site = Blueprint('index',__name__,url_prefix='')
@@ -85,3 +85,4 @@ def sign():
 @site.route('/about')
 def about():
     return render_template('index/about_me.html')
+
