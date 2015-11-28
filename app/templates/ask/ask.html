@@ -1,0 +1,58 @@
+{% extends 'index/base.html' %}
+{% block content %}
+<style type="text/css" media="all">
+    .ask {
+        display: inline-block;
+        background-color: #a40000;
+        padding: 2px;
+        border: 1px solid #a40000;
+        font-size: 12px;
+        line-height: 12px;
+        font-weight: 400;
+        border-radius: 2px;
+        margin-right: 5px;
+        vertical-align: 1px;
+        text-decoration: none;
+        color: #FBFBFB;
+    }
+    .answer {
+        color: #ad1616;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-9">
+        {% for question in all_questions %} 
+            <div class="col-sm-6">
+                <span class="ask">问</span>
+                <span>
+                    <a href="{{ url_for('ask.ask_question',title=question['title']) }}" style="font-size:18px;">{{ question['title'] }}</a>
+                </span>
+                <br />
+                <span class="ask">描</span>
+                <i>
+                    {{ question['describ'] }}
+                </i>
+                <br />
+                <span class="ask">答</span>
+                <span style="font-size:16px">
+                    {{ question['answer'] }}
+                </span>
+                <br />
+                <br />
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-sm-3">
+        <form action="{{ url_for('ask.ask_post') }}" method="POST">
+            {{ form.hidden_tag()}}
+            {{ form.title.label }}
+            {{ form.title(class="form-control",placeholder="输入你的问题") }}
+            {{ form.describ.label }}
+            {{ form.describ(class="form-control",style="height:60px;",placeholder="请描述你的问题") }}
+            {{ form.answer.label }}
+            {{ form.answer(class="form-control",style="height:150px;",placeholder="写下你的答案") }}
+            {{ form.post(class="btn btn-primary") }}   
+        </form>
+    </div>
+</div>
+{% endblock %}

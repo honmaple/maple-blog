@@ -1,5 +1,6 @@
 venv/
 in/
+config/
 **/__pycache__/
 *.swp
 *.pyc

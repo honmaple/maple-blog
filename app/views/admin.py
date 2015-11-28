@@ -17,7 +17,7 @@ site = Blueprint('admin',__name__,url_prefix='/admin')
 @site.route('/')
 def index():
     return redirect(url_for('index.index'))
-    #return render_template('admin/admin.html')
+#    return render_template('admin/admin.html')
 
 @site.route('/login_in',methods=['GET','POST'])
 def login():
@@ -42,9 +42,10 @@ def login():
 
 @site.route('/logout')
 def logout():
-    session.pop('logged_in', None)
-    flash('You were logged out')
     return redirect(url_for('index.index'))
+    # session.pop('logged_in', None)
+    # flash('You were logged out')
+    # return redirect(url_for('index.index'))
 
 @site.route('/pages_post', methods=['GET','POST'])
 def pages():

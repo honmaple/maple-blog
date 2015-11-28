@@ -25,7 +25,7 @@
             <ul class="pagination">
                 {% if num == 1 %}
                 <li class="disabled">
-                    <a href="{{ url_for('blog.type_num',number=num-1,type=blog_type) }}" aria-label="Previous">
+                    <a href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -45,7 +45,7 @@
                 {% endfor %}
                 {% if num >= len_page %}
                 <li class="disabled">
-                    <a href="{{ url_for('blog.type_num',number=num + 1,type=blog_type) }}" aria-label="Next">
+                    <a href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

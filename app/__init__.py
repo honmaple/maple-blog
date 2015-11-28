@@ -10,6 +10,8 @@
 from flask import Flask, render_template
 from flask.ext.assets import Environment, Bundle
 from flask_flatpages import FlatPages
+from flask_mail import Mail
+from flask.ext.login import LoginManager
 from config import load_config
 
 def create_app():
@@ -24,6 +26,27 @@ def register(app):
     register_assets(app)
     register_db(app)
     register_jinja2(app)
+    # register_login(app)
+
+# def register_login(app):
+    # login_manager = LoginManager()
+    # login_manager.init_app(app)
+# def register_mail():
+    # mail = Mail()
+
+    # app = Flask(__name__)
+    # app.config.update(
+        # DEBUG = True,
+        # MAIL_SERVER = 'smtp.qq.com',
+        # MAIL_PROT = 25,
+        # MAIL_USE_TLS = True,
+        # MAIL_USE_SSL = False,
+        # MAIL_USERNAME = "1171501218@qq.com",
+        # MAIL_PASSWORD = "mwhduhlgimfgfgfc",
+        # MAIL_DEBUG = True
+    # )
+    # mail.init_app(app)
+    # return mail
 
 
 def register_pages():
@@ -35,6 +58,8 @@ def register_routes(app):
     app.register_blueprint(index.site, url_prefix='')
     app.register_blueprint(admin.site, url_prefix='/admin')
     app.register_blueprint(book.site, url_prefix='/book')
+    from .views import ask
+    app.register_blueprint(ask.site, url_prefix='/ask')
     from .views.blog import site
     app.register_blueprint(site, url_prefix='/blog')
 
@@ -67,6 +92,12 @@ def register_assets(app):
     assets.register(bundles)
 
 app = create_app()
+mail = Mail(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "index.login"
+login_manager.session_protection = "strong"
+login_manager.login_message = u"这个页面要求登陆，请登陆"
 register(app)
 
 @app.errorhandler(404)

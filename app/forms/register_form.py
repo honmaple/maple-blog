@@ -8,12 +8,14 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask.ext.wtf import Form
-from wtforms import StringField,SubmitField,PasswordField
+from wtforms import TextField,SubmitField,PasswordField,validators
 from wtforms.validators import Required, Email
+from wtforms.validators import DataRequired, ValidationError
 
-class UserForm(Form):
-    name = StringField('User:',validators=[Required()])
-    email = StringField('Email', validators=[Required(), Email()])
-    passwd=PasswordField('Password:',validators=[Required()])
-    sign_in = SubmitField('Sign in')
-    sign_up = SubmitField('Sign up')
+class RegisterForm(Form):
+    name = TextField('用户名', [validators.Length(min=4, max=25)])
+    email = TextField('邮箱', [validators.Length(min=4, max=25)])
+    passwd = PasswordField('密码', [
+        validators.Required()
+    ])
+    register = SubmitField('注册')

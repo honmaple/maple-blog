@@ -1,34 +1,40 @@
-{% extends "admin/logout.html" %}
-{% block body %}
-<div>
-    <a href="{{ url_for('admin.index') }}">返回首页</a>
-</div>
-<div style="text-align:center" >
-    {% if session.logged_in %}
-    <a href="{{ url_for('admin.logout') }}">log out</a>
-    {% endif %}
-</div>
-{% for message in get_flashed_messages() %}
-<div class=flash>{{ message }}</div>
-{% endfor %}
+{% extends "index/base.html" %}
+{% block content %}
 
-<div  style="margin:10% 40%;box-shadow:0 0 5px #000; border-radius:10px;">
-    <div  style="padding:15px 15px;">
-        {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-        <form action="{{ url_for('admin.login') }}" method="POST">
-            <dl>
-                <!--{{ form.csrf_token }}-->
-                {{ form.hidden_tag()}}
-                <dt>{{ form.name.label }}
-                <dd>{{ form.name(class="form-control") }}
-                <dt>{{ form.passwd.label }}
-                <dd>{{ form.passwd(class="form-control") }}
-                <dd style="margin:10px auto;">
-                {{ form.sign_in(class="btn btn-primary") }}   
-                </dd>
-                <a href="{{ url_for('admin.sign') }}">还未注册</a>
-            </dl>
+<!--<div  style="margin:10% 40%;box-shadow:0 0 5px #000; border-radius:10px;">-->
+<div class="row">
+    <div class="col-xs-2">
+    </div>
+    <div class="col-xs-8">
+        <br />
+        <form action="{{ url_for('index.login') }}" method="POST" class="form-horizontal">
+            {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+            {{ form.hidden_tag()}}
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{{ form.name.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.name(class="form-control",placeholder="name") }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{{ form.passwd.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.passwd(class="form-control",placeholder="password") }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    {{ form.sign_in(class="btn btn-primary") }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <a href="{{ url_for('index.sign') }}">还未注册</a>
+                </div>
+            </div>
         </form>
+    </div>
+    <div class="col-xs-2">
     </div>
 </div>
 {% endblock %}

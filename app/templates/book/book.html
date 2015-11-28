@@ -25,7 +25,7 @@
             <ul class="pagination">
                 {% if number == 1 %}
                 <li class="disabled">
-                    <a href="{{ url_for('book.index_num',num=number-1) }}" aria-label="Previous">
+                    <a href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -66,7 +66,7 @@
 
                 {% if number >= total %}
                 <li class="disabled">
-                    <a href="{{ url_for('book.index_num',num=number+1) }}" aria-label="Next">
+                    <a href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
