@@ -1,6 +1,7 @@
 venv/
 in/
 config/
+test/
 **/__pycache__/
 *.swp
 *.pyc
