@@ -26,27 +26,6 @@ def register(app):
     register_assets(app)
     register_db(app)
     register_jinja2(app)
-    # register_login(app)
-
-# def register_login(app):
-    # login_manager = LoginManager()
-    # login_manager.init_app(app)
-# def register_mail():
-    # mail = Mail()
-
-    # app = Flask(__name__)
-    # app.config.update(
-        # DEBUG = True,
-        # MAIL_SERVER = 'smtp.qq.com',
-        # MAIL_PROT = 25,
-        # MAIL_USE_TLS = True,
-        # MAIL_USE_SSL = False,
-        # MAIL_USERNAME = "1171501218@qq.com",
-        # MAIL_PASSWORD = "mwhduhlgimfgfgfc",
-        # MAIL_DEBUG = True
-    # )
-    # mail.init_app(app)
-    # return mail
 
 
 def register_pages():
