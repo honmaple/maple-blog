@@ -7,14 +7,17 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint,request,\
+    redirect,url_for
 #from flask_flatpages import FlatPages
+from flask.ext.login import current_user
 from app import register_pages
+from ..forms import CommentForm
+from ..models import Commentdb,db
 
 site = Blueprint('blog',__name__,url_prefix='/blog')
 
 flatpages = register_pages()
-
 def latest_article(pages):
     pages = (p for p in pages if 'Date' in p.meta)
     latest = sorted(pages, reverse=True,
@@ -95,8 +98,10 @@ def tag_num(tag,number):
                            len_page =len_page)
 
 
-@site.route('/pages/<path:path>/')
+@site.route('/pages/<path:path>/',methods=['GET','POST'])
 def page(path):
+    form = CommentForm()
+    all_comment = Commentdb.query.all()
     page = flatpages.get_or_404(path)
     pages = (p for p in flatpages)
     latest = latest_article(pages)
@@ -114,6 +119,52 @@ def page(path):
     else:
         page_previous = latest[n-1]
         page_next = latest[n+1]
+    if request.method == 'POST':
+        comments = Commentdb(name = current_user.name,
+                             comment = form.comment.data)
+        db.session.add(comments)
+        db.session.commit()
+        return redirect(url_for('blog.page',path=path))
     return render_template('blog/page.html', page = page,
                            page_previous = page_previous,
-                           page_next = page_next)
+                           page_next = page_next,
+                           all_comment = all_comment,
+                           path = path,
+                           form = form)
+@site.route('/pages/<path:path>/<comment_user>?comment')
+def comment(path,comment_user):
+    all_comment = Commentdb.query.all()
+    page = flatpages.get_or_404(path)
+    form = CommentForm()
+    if request.method == 'POST':
+        comments = Commentdb(name = current_user.name,
+                             comment = form.comment.data)
+        db.session.add(comments)
+        db.session.commit()
+        return redirect(url_for('blog.page',path=path))
+    return render_template('blog/comment.html',
+                           form = form,
+                           page = page,
+                           all_comment = all_comment)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

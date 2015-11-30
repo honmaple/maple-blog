@@ -103,7 +103,7 @@ def sign():
             '''email模板'''
             confirm_url = url_for('index.confirm', token=token, _external=True)
             html = render_template('email.html', confirm_url=confirm_url)
-            email_send(account.email,html)
+#            email_send(account.email,html)
 
             flash('一封验证邮件已发往你的邮箱，請查收.', 'success')
             return redirect(url_for('index.logined_user',name=account.name))
