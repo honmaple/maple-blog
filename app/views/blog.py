@@ -56,6 +56,7 @@ def index_num(number):
     latest = latest_article(pages)
     latest = latest[(num-1)*6:(num-1)*6+6]
     return render_template('blog/blog.html',
+                           title = u'HonMaple的个人博客',
                            pages=latest,
                            tag_list = tag_list,
                            num = num,
@@ -73,6 +74,7 @@ def type_num(type,number):
     latest = latest_article(pages)
     latest = latest[(num-1)*6:(num-1)*6+6]
     return render_template('blog/blog_type.html',
+                           title = '%s -HonMaple博客'%(type),
                            pages = latest,
                            num = num,
                            tag_list = tag_list,
@@ -91,6 +93,7 @@ def tag_num(tag,number):
     latest = latest_article(pages)
     latest = latest[(num-1)*6:(num-1)*6+6]
     return render_template('blog/blog_tag.html',
+                           title = '%s -HonMaple博客'%(tag),
                            pages = latest,
                            num = num,
                            tag_list = tag_list,
@@ -126,6 +129,7 @@ def page(path):
         db.session.commit()
         return redirect(url_for('blog.page',path=path))
     return render_template('blog/page.html', page = page,
+                           title = '%s -HonMaple博客'%(page['Title']),
                            page_previous = page_previous,
                            page_next = page_next,
                            all_comment = all_comment,

@@ -7,7 +7,7 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-from flask import Flask, render_template
+from flask import Flask, render_template,send_from_directory,request
 from flask.ext.assets import Environment, Bundle
 from flask_flatpages import FlatPages
 from flask_mail import Mail
@@ -15,7 +15,7 @@ from flask.ext.login import LoginManager
 from config import load_config
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__,static_folder='static')
     config = load_config()
     app.config.from_object(config)
     return app
@@ -82,3 +82,8 @@ register(app)
 @app.errorhandler(404)
 def not_found(error):
     return render_template('index/error.html'), 404
+
+@app.route('/robots.txt')
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
