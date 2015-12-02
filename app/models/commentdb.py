@@ -22,10 +22,12 @@ class Commentdb(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer,primary_key=True)
     # comment_name = db.Column(db.String, nullable=False)
-    comment_name = db.relationship('Replydb',
+    comment_user = db.relationship('Replydb',
                                    secondary=tags,
                                    backref=db.backref('pages', lazy='dynamic'))
-    comment = db.Column(db.Text,nullable=False)
+    # comment = db.Column(db.Text,nullable=False)
+    comment = db.relationship('Replydb', backref='reply',
+                                lazy='dynamic')
     comment_publish = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, comment_name,comment, comment_publish = datetime.datetime.now()):
@@ -39,8 +41,8 @@ class Commentdb(db.Model):
 class Replydb(db.Model):
     __tablename__ = 'replays'
     id = db.Column(db.Integer,primary_key=True)
-    reply_name = db.Column(db.String, nullable=False)
-    reply = db.Column(db.Text,nullable=False)
+    reply_user = db.Column(db.String, nullable=False)
+    reply_id = db.Column(db.Text,nullable=False)
     reply_publish = db.Column(db.DateTime, nullable=False)
 
 # from flask import Flask
