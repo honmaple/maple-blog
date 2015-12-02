@@ -4,6 +4,7 @@ You can have a look [here](http://honmaple.com)
 
 
 ## config/__init__.py
+    #__init__.py
     def load_config():
         try:
             from .development import DevelopmentConfig
