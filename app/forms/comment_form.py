@@ -8,12 +8,11 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask.ext.wtf import Form
-from wtforms import StringField,SubmitField, TextAreaField
+from wtforms import SubmitField,TextAreaField
 from wtforms.validators import Required
 
-class ArticleForm(Form):
-    title = StringField('问题:',validators=[Required()])
-    describ = TextAreaField('描述', validators=[Required()])
-    answer = TextAreaField('回答:',validators=[Required()])
-    # recaptcha = RecaptchaField()
-    post = SubmitField('提交')
+class CommentForm(Form):
+    comment = TextAreaField('评论', validators=[Required()])
+    reply = TextAreaField('回复', validators=[Required()])
+    post_comment = SubmitField('发表评论')
+    post_reply = SubmitField('发表回复')

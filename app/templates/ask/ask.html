@@ -23,9 +23,6 @@
     <div class="col-sm-9">
         {% for question in all_questions %} 
             <div class="col-sm-6">
-                <span style="float:right;">
-                    by {{ current_user.name }}
-                </span>
                 <span class="ask">问</span>
                 <span>
                     <a href="{{ url_for('ask.ask_question',title=question['title']) }}" style="font-size:18px;">{{ question['title'] }}</a>

@@ -8,12 +8,18 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask.ext.mail import Message
+from threading import Thread
+from app import app
 from app import mail
+
+def send_async_email(app,msg):
+    with app.app_context():
+        mail.send(msg)
 
 def email_send(to,template):
     subject = "Please confirm your email"
     msg = Message(subject,
                   recipients=[to],
-                  html=template,
-                  sender="1171501218@qq.com")
-    mail.send(msg)
+                  html=template)
+    thr = Thread(target=send_async_email,args=[app,msg])
+    thr.start()

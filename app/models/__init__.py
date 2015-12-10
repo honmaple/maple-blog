@@ -12,3 +12,4 @@ from .bookdb import *
 from .userdb import *
 from .mkdb import *
 from .articledb import *
+from .commentdb import *

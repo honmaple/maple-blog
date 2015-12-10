@@ -12,3 +12,4 @@ from .mkds_form import *
 from .admin_form import *
 from .article_form import *
 from .register_form import *
+from .comment_form import *
