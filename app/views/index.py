@@ -8,7 +8,7 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint,redirect, \
-    url_for,session,flash,request,g,abort
+    url_for,flash,request,g
 from flask.ext.login import login_user, logout_user, \
     current_user, login_required
 import datetime
@@ -36,12 +36,15 @@ def user_loader(id):
 @site.route('/')
 @site.route('/index')
 def index():
+    '''主页'''
     return render_template('index/index.html')
 
 @site.route('/login', methods=['GET','POST'])
 def login():
+    '''登陆'''
     error = None
     form = LoginForm()
+    '''如果已经登陆则重定向到主页'''
     if g.user is not None and g.user.is_authenticated:
         flash('你已经登陆,不能重复登陆')
         return redirect(url_for('index.index'))
@@ -64,12 +67,14 @@ def login():
 @site.route('/logout')
 @login_required
 def logout():
+    '''注销'''
     logout_user()
     return redirect(url_for('index.index'))
 
 
 @site.route('/sign', methods=['GET','POST'])
 def sign():
+    '''注册账户'''
     error = None
     form = RegisterForm()
     if g.user is not None and g.user.is_authenticated:
@@ -101,7 +106,7 @@ def sign():
             '''email模板'''
             confirm_url = url_for('index.confirm', token=token, _external=True)
             html = render_template('email.html', confirm_url=confirm_url)
-#            email_send(account.email,html)
+            email_send(account.email,html)
 
             flash('一封验证邮件已发往你的邮箱，請查收.', 'success')
             return redirect(url_for('index.logined_user',name=account.name))

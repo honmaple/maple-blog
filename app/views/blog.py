@@ -109,21 +109,23 @@ def page(path):
     '''该文章的所有评论'''
     all_comment = Comments.query.filter_by(page_title = page['Title']).all()
     pages = (p for p in flatpages)
-    latest = latest_article(pages)
+    '''按照时间排序'''
+    latest_pages = latest_article(pages)
+    '''n 查找文章位置，找到前一篇和后一篇'''
     n = 0
-    for pa in latest:
+    for pa in latest_pages:
         if pa == page:
             break
         n += 1
     if n == 0:
         page_previous = None
-        page_next = latest[n+1]
-    elif n == len(latest) - 1:
-        page_previous = latest[n-1]
+        page_next = latest_pages[n+1]
+    elif n == len(latest_pages) - 1:
+        page_previous = latest_pages[n-1]
         page_next = None
     else:
-        page_previous = latest[n-1]
-        page_next = latest[n+1]
+        page_previous = latest_pages[n-1]
+        page_next = latest_pages[n+1]
     return render_template('blog/page.html', page = page,
                            title = '%s -HonMaple博客'%(page['Title']),
                            page_previous = page_previous,

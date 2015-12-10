@@ -23,4 +23,3 @@ def email_send(to,template):
                   html=template)
     thr = Thread(target=send_async_email,args=[app,msg])
     thr.start()
-    return "OK"
