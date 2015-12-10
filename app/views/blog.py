@@ -8,12 +8,11 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint,request,\
-    redirect,url_for
-#from flask_flatpages import FlatPages
-from flask.ext.login import current_user
+    redirect,url_for,g
+from flask.ext.login import current_user,login_required
 from app import register_pages
 from ..forms import CommentForm
-from ..models import Commentdb,db
+from ..models import Comments,db,Replies
 
 site = Blueprint('blog',__name__,url_prefix='/blog')
 
@@ -45,6 +44,9 @@ def len_tag(tag):
     pages = (p for p in flatpages for t in p['Tags'] if t == tag)
     return int(len(list(pages))/6) + 1
 
+@site.before_request
+def before_request():
+    g.user = current_user
 
 @site.route('/latest',defaults={'number':1})
 @site.route('/latest/view?=<int:number>')
@@ -100,12 +102,12 @@ def tag_num(tag,number):
                            blog_tag = blog_tag,
                            len_page =len_page)
 
-
-@site.route('/pages/<path:path>/',methods=['GET','POST'])
+@site.route('/pages/<path:path>/')
 def page(path):
     form = CommentForm()
-    all_comment = Commentdb.query.all()
     page = flatpages.get_or_404(path)
+    '''该文章的所有评论'''
+    all_comment = Comments.query.filter_by(page_title = page['Title']).all()
     pages = (p for p in flatpages)
     latest = latest_article(pages)
     n = 0
@@ -122,12 +124,6 @@ def page(path):
     else:
         page_previous = latest[n-1]
         page_next = latest[n+1]
-    if request.method == 'POST':
-        comments = Commentdb(name = current_user.name,
-                             comment = form.comment.data)
-        db.session.add(comments)
-        db.session.commit()
-        return redirect(url_for('blog.page',path=path))
     return render_template('blog/page.html', page = page,
                            title = '%s -HonMaple博客'%(page['Title']),
                            page_previous = page_previous,
@@ -135,36 +131,33 @@ def page(path):
                            all_comment = all_comment,
                            path = path,
                            form = form)
-@site.route('/pages/<path:path>/<comment_user>?comment')
-def comment(path,comment_user):
-    all_comment = Commentdb.query.all()
+
+'''评论表单'''
+@site.route('/pages/<path:path>/comment',methods=['GET','POST'])
+@login_required
+def comment(path):
+    form = CommentForm()
     page = flatpages.get_or_404(path)
+    if request.method == 'POST':
+        post_comment = Comments(comment_user = current_user.name,
+                                comment_content = form.comment.data,
+                                page_title = page['Title'])
+        db.session.add(post_comment)
+        db.session.commit()
+        return redirect(url_for('blog.page',path=path,_anchor='comment'))
+
+'''回复表单'''
+@site.route('/pages/<path:path>/<comment_id>',methods=['GET','POST'])
+@login_required
+def reply(path,comment_id):
     form = CommentForm()
     if request.method == 'POST':
-        comments = Commentdb(name = current_user.name,
-                             comment = form.comment.data)
-        db.session.add(comments)
+        post_reply = Replies( reply_user = current_user.name,
+                             reply_content = form.reply.data,
+                             comments_id = comment_id)
+        db.session.add(post_reply)
         db.session.commit()
-        return redirect(url_for('blog.page',path=path))
-    return render_template('blog/comment.html',
-                           form = form,
-                           page = page,
-                           all_comment = all_comment)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return redirect(url_for('blog.page',path=path,_anchor='comment'))
 
 
 

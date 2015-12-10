@@ -79,7 +79,6 @@ def sign():
         useremail = User.query.filter_by(email=form.email.data).first()
         username = User.query.filter_by(name=form.name.data).first()
         email_format = email_validate(form.email.data)
-        print(email_format)
         if username:
             error = u'用户名已存在'
         elif useremail:
@@ -99,7 +98,6 @@ def sign():
             '''邮箱验证'''
             token = email_token(account.email)
             login_user(account)
-            print(token)
             '''email模板'''
             confirm_url = url_for('index.confirm', token=token, _external=True)
             html = render_template('email.html', confirm_url=confirm_url)

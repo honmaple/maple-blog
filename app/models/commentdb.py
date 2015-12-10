@@ -10,40 +10,48 @@
 from .base import db
 import datetime
 
-tags = db.Table('tags',
-                db.Column('comment_id',db.Integer,
-                          db.ForeignKey('comment.id')),
-                db.Column('reply_id',db.Integer,
-                          db.ForeignKey('reply.id'))
-                )
-
-class Commentdb(db.Model):
-    # __bind_key__ = 'comments'
+class Comments(db.Model):
+    __bind_key__ = 'comments'
     __tablename__ = 'comments'
     id = db.Column(db.Integer,primary_key=True)
-    # comment_name = db.Column(db.String, nullable=False)
-    comment_user = db.relationship('Replydb',
-                                   secondary=tags,
-                                   backref=db.backref('pages', lazy='dynamic'))
-    # comment = db.Column(db.Text,nullable=False)
-    comment = db.relationship('Replydb', backref='reply',
-                                lazy='dynamic')
+    page_title = db.Column(db.String, nullable=False)
+    comment_user = db.Column(db.String, nullable=False)
     comment_publish = db.Column(db.DateTime, nullable=False)
+    comment_content = db.Column(db.Text,nullable=False)
+    reply = db.relationship('Replies',backref='comments',lazy='dynamic')
 
-    def __init__(self, comment_name,comment, comment_publish = datetime.datetime.now()):
-        self.comment_name = comment_name
-        self.comment = comment
+    def __init__(self, page_title,
+                 comment_user,
+                 comment_content,
+                 comment_publish = datetime.datetime.now()):
+        self.page_title = page_title
+        self.comment_user = comment_user
+        self.comment_content = comment_content
         self.comment_publish = comment_publish
 
     def __repr__(self):
-        return "<Commentdb %r>" % self.comment
+        return "<Comments %r>" % self.comment_content
 
-class Replydb(db.Model):
-    __tablename__ = 'replays'
+class Replies(db.Model):
+    __bind_key__ = 'replies'
+    __tablename__ = 'replies'
     id = db.Column(db.Integer,primary_key=True)
     reply_user = db.Column(db.String, nullable=False)
-    reply_id = db.Column(db.Text,nullable=False)
     reply_publish = db.Column(db.DateTime, nullable=False)
+    reply_content = db.Column(db.Text,nullable=False)
+    comments_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
+
+    def __init__(self, reply_user,reply_content,
+                 reply_publish = datetime.datetime.now(),
+                 comments_id = comments_id):
+        self.reply_user = reply_user
+        self.reply_content = reply_content
+        self.reply_publish = reply_publish
+        self.comments_id = comments_id
+
+    def __repr__(self):
+        return "<Replies %r>" % self.reply_content
+
 
 # from flask import Flask
 # from flask.ext.sqlalchemy import SQLAlchemy
@@ -55,17 +63,42 @@ class Replydb(db.Model):
 
 # import datetime
 
-# class Commentdb(db.Model):
-# __tablename__ = 'comments'
-# id = db.Column(db.Integer,primary_key=True)
-# name = db.Column(db.String, nullable=False)
-# comment = db.Column(db.Text,nullable=False)
-# publish = db.Column(db.DateTime, nullable=False)
+# class Comments(db.Model):
+    # __tablename__ = 'comments'
+    # id = db.Column(db.Integer,primary_key=True)
+    # page_title = db.Column(db.String, nullable=False)
+    # comment_user = db.Column(db.String, nullable=False)
+    # comment_publish = db.Column(db.DateTime, nullable=False)
+    # comment_content = db.Column(db.Text,nullable=False)
+    # reply = db.relationship('Replies',backref='comments',lazy='dynamic')
 
-    # def __init__(self, name,comment, publish = datetime.datetime.now()):
-    # self.name = name
-    # self.comment = comment
-    # self.publish = publish
+    # def __init__(self, page_title,
+                 # comment_user,
+                 # comment_content,
+                 # comment_publish = datetime.datetime.now()):
+        # self.page_title = page_title
+        # self.comment_user = comment_user
+        # self.comment_content = comment_content
+        # self.comment_publish = comment_publish
 
     # def __repr__(self):
-    # return "<Commentdb %r>" % self.comment
+        # return "<Comments %r>" % self.comment_content
+
+# class Replies(db.Model):
+    # __tablename__ = 'replies'
+    # id = db.Column(db.Integer,primary_key=True)
+    # reply_user = db.Column(db.String, nullable=False)
+    # reply_publish = db.Column(db.DateTime, nullable=False)
+    # reply_content = db.Column(db.Text,nullable=False)
+    # comments_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
+
+    # def __init__(self, reply_user,reply_content,
+                 # reply_publish = datetime.datetime.now(),
+                 # comments_id = comments_id):
+        # self.reply_user = reply_user
+        # self.reply_content = reply_content
+        # self.reply_publish = reply_publish
+        # self.comments_id = comments_id
+
+    # def __repr__(self):
+        # return "<Replies %r>" % self.reply_content

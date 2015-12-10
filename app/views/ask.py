@@ -21,6 +21,7 @@ def before_request():
     g.user = current_user
 
 @site.route('/view?')
+@login_required
 def index():
     form = ArticleForm()
     all_questions = Articledb.query.all()
@@ -47,6 +48,7 @@ def ask_post():
                            form = form)
 
 @site.route('/view?question=<title>')
+@login_required
 def ask_question(title):
     question = Articledb.query.filter_by(title=title).first()
     return render_template('ask/question.html',
