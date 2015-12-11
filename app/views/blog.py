@@ -147,6 +147,7 @@ def comment(path):
         db.session.add(post_comment)
         db.session.commit()
         return redirect(url_for('blog.page',path=path,_anchor='comment'))
+    return redirect(url_for('blog.page',path=path,_anchor='comment'))
 
 '''回复表单'''
 @site.route('/pages/<path:path>/<comment_id>',methods=['GET','POST'])
@@ -160,6 +161,7 @@ def reply(path,comment_id):
         db.session.add(post_reply)
         db.session.commit()
         return redirect(url_for('blog.page',path=path,_anchor='comment'))
+    return redirect(url_for('blog.page',path=path,_anchor='comment'))
 
 
 

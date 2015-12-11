@@ -1,4 +1,5 @@
 User-agent: *
-Allow: /blog
-Allow: /ask
-Disallow: /
+Disallow: /sign
+Disallow: /logout
+Disallow: /login
+Disallow: /ask
