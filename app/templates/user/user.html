@@ -2,9 +2,10 @@
 {% block content %}
 <div>
     <ul class="nav nav-tabs text-center"  role="tablist">
-        <li style="width:33%;" role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">个人资料</a></li>
-        <li style="width:33%;" role="presentation"><a href="#secure" aria-controls="secure" role="tab" data-toggle="tab">账户安全</a></li>
-        <li style="width:33%;" role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">全部文章</a></li>
+        <li style="width:25%;" role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">个人资料</a></li>
+        <li style="width:25%;" role="presentation"><a href="#secure" aria-controls="secure" role="tab" data-toggle="tab">账户安全</a></li>
+        <li style="width:25%;" role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">全部文章</a></li>
+        <li style="width:25%;" role="presentation"><a href="#comment" aria-controls="comment" role="tab" data-toggle="tab">全部评论</a></li>
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="profile">
@@ -93,27 +94,49 @@
                 </div>
             </form>
         </div>
-        <div role="tabpanel" class="tab-pane" id="messages">
-<table class="table">
-    <tr>
-        <th>NO.</th>
-        <th>问题</th>
-        <th>描述</th>
-        <th>发表时间</th>
-        <th>作者</th>
-    </tr>
-    {% set i = 1 %}
-    {% for question in user_questions %}
-    <tr>
-        <td>{{ i }}</td>
-        <td> <a href="{{ url_for('ask.ask_question',title=question['title']) }}">{{ question['title'] }}</a></td>
-        <td>{{ question['describ'] }}</td>
-        <td>{{ question['publish'] }}</td>
-        <td>{{ question['name'] }}</td>
-    </tr>
-    {% set i = i + 1 %}
-    {% endfor %}
-</table>
+        <div role="tabpanel" class="tab-pane table-responsive" id="messages">
+            <table class="table">
+                <tr>
+                    <th>NO.</th>
+                    <th>问题</th>
+                    <th>描述</th>
+                    <th>发表时间</th>
+                    <th>作者</th>
+                </tr>
+                {% set i = 1 %}
+                {% for question in user_questions %}
+                <tr>
+                    <td>{{ i }}</td>
+                    <td> <a href="{{ url_for('question.question_view',title=question['title']) }}">{{ question['title'] }}</a></td>
+                    <td>{{ question['describ'] }}</td>
+                    <td>{{ question['publish'] }}</td>
+                    <td>{{ question['name'] }}</td>
+                </tr>
+                {% set i = i + 1 %}
+                {% endfor %}
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane table-responsive" id="comment">
+            <table class="table">
+                <tr>
+                    <th>NO.</th>
+                    <th>评论文章</th>
+                    <th>评论内容</th>
+                    <th>发表时间</th>
+                    <th>动作</th>
+                </tr>
+                {% set i = 1 %}
+                {% for comment in user_comments %}
+                <tr>
+                    <td>{{ i }}</td>
+                    <td>{{ comment['page_title'] }}</td>
+                    <td>{{ comment['comment_content'] }}</td>
+                    <td>{{ comment['comment_publish'] }}</td>
+                    <td> <a href="#">删除</a></td>
+                </tr>
+                {% set i = i + 1 %}
+                {% endfor %}
+            </table>
         </div>
     </div>
 </div>

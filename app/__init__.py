@@ -8,10 +8,10 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import Flask, render_template,send_from_directory,request
-from flask.ext.assets import Environment, Bundle
+from flask_assets import Environment, Bundle
 from flask_flatpages import FlatPages
 from flask_mail import Mail
-from flask.ext.login import LoginManager
+from flask_login import LoginManager
 from config import load_config
 
 def create_app():
@@ -37,8 +37,8 @@ def register_routes(app):
     app.register_blueprint(index.site, url_prefix='')
     app.register_blueprint(admin.site, url_prefix='/admin')
     app.register_blueprint(book.site, url_prefix='/book')
-    from .views import ask
-    app.register_blueprint(ask.site, url_prefix='/ask')
+    from .views import question
+    app.register_blueprint(question.site, url_prefix='/question')
     from .views.blog import site
     app.register_blueprint(site, url_prefix='/blog')
 

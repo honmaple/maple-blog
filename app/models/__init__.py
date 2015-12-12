@@ -8,8 +8,8 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from .base import db
-from .bookdb import *
-from .userdb import *
-from .mkdb import *
-from .articledb import *
-from .commentdb import *
+from .book_db import *
+from .account_db import *
+from .article_db import *
+from .question_db import *
+from .comment_db import *

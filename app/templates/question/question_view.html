@@ -1,7 +1,7 @@
 {% extends 'index/base.html' %}
 {% block content %}
 <style type="text/css" media="all">
-    .ask {
+    .question {
         display: inline-block;
         background-color: #a40000;
         padding: 2px;
@@ -21,17 +21,17 @@
 </style>
 <div class="row">
     <div class="col-sm-9">
-        <span class="ask">问</span>
+        <span class="question">问</span>
         <span style="font-size:18px;">
             {{ question['title'] }}
         </span>
         <br />
-        <span class="ask">描</span>
+        <span class="question">描</span>
         <i>
             {{ question['describ'] }}
         </i>
         <br />
-        <span class="ask">答</span>
+        <span class="question">答</span>
         <span style="font-size:16px">
             {{ question['answer'] }}
         </span>

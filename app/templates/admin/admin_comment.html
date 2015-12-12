@@ -1,0 +1,91 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+<ul class="nav nav-tabs text-center"  role="tablist">
+    <li style="width:50%;" role="presentation" class="active"><a href="#comment" aria-controls="comment" role="tab" data-toggle="tab">评论管理</a></li>
+    <li style="width:50%;" role="presentation"><a href="#reply" aria-controls="reply" role="tab" data-toggle="tab">回复管理</a></li>
+</ul>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="comment">
+        <div class="panel panel-default">
+            <table class="table table-hover">
+                <tr>
+                    <th>NO.</th>
+                    <th>评论文章</th>
+                    <th>评论内容</th>
+                    <th>评论用户</th>
+                    <th>评论时间</th>
+                    <th>操作</th>
+                </tr>
+                {% for comment in comments %}
+                <tr>
+                    <td>{{ comment['id'] }}</td>
+                    <td>{{ comment['page_title'] }}</td> 
+                    <td>{{ comment['comment_content'] }}</td> 
+                    <td> <a href="{{ url_for('index.logined_user',name=comment['comment_user']) }}">{{ comment['comment_user'] }}</a></td>
+                    <td>{{ comment['comment_publish'] }}</td>
+                    <td> 
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="#" style="white-space:nowrap;">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="reply">
+        <div class="panel panel-default">
+            <table class="table table-hover">
+                <tr>
+                    <th>NO.</th>
+                    <th>回复文章</th>
+                    <th>回复主题</th>
+                    <th>回复内容</th>
+                    <th>回复用户</th>
+                    <th>回复时间</th>
+                    <th>操作</th>
+                </tr>
+                {% for comment in comments %}
+                {% for reply in comment['reply'] %}
+                <tr>
+                    <td>{{ reply['id'] }}</td> 
+                    <td>{{ comment['page_title'] }}</td>
+                    <td>{{ comment['comment_content'] }}</td>
+                    <td>{{ reply['reply_content'] }}</td> 
+                    <td> <a href="{{ url_for('index.logined_user',name=reply['reply_user']) }}">{{ reply['reply_user'] }}</a></td>
+                    <td>{{ reply['reply_publish'] }}</td> 
+                    <td> 
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="#" style="white-space:nowrap;">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -18,20 +18,17 @@
         <form action="{{ url_for('admin.pages') }}" method="POST">
             {{ form.hidden_tag()}}
             {{ form.title.label }}
-            {{ form.title(class="form-control",placeholder="Title") }}
-            {{ form.datetime.label }}
-            {{ form.datetime(class="form-control",placeholder="Datetime xxxx-xx-xx") }}
+            {{ form.title(class="form-control",placeholder="Title",style="width:60%") }}
             {{ form.category.label }}
             {{ form.category(class="form-control",placeholder="Category") }}
             {{ form.tags.label }}
             {{ form.tags(class="form-control",placeholder="Tags xx,xx,xx") }}
             {{ form.summary.label }}
             {{ form.summary(class="form-control",placeholder="Summary") }}
-            {{ form.body.label }}
-            {{ form.body(class="form-control",rows="10") }}
+            {{ form.content.label }}
+            {{ form.content(class="form-control",rows="10") }}
             <br />
             {{ form.post(class="btn btn-primary") }}   
-            {{ form.save(class="btn btn-primary") }}   
         </form>
     </div>
 </div>

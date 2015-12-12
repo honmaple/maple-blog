@@ -18,7 +18,7 @@ from ..email import email_token,email_send,confirm_token,\
     email_validate
 from app import login_manager
 from app import register_pages
-from ..models import User,Articledb,db
+from ..models import User,Questions,Comments,Articles,db
 from ..forms import LoginForm,RegisterForm
 
 site = Blueprint('index',__name__,url_prefix='')
@@ -131,10 +131,11 @@ def confirm(token):
         flash('You have confirmed your account. Thanks!', 'success')
     return redirect(url_for('index.logined_user',name=user.name))
 
-@site.route('/u/<name>/view?')
+@site.route('/u/<name>/view')
 @login_required
 def logined_user(name):
-    user_questions = Articledb.query.filter_by(name=name).all()
+    user_questions = Questions.query.filter_by(name=name).all()
+    user_comments = Comments.query.filter_by(comment_user=name).all()
     user = User.query.filter_by(name=name).first()
     email = user.email
     confirmed = user.confirmed
@@ -146,6 +147,7 @@ def logined_user(name):
                             confirmed = confirmed,
                             registered_on = registered_on,
                             form = form,
+                            user_comments = user_comments,
                             user_questions = user_questions)
 
 # @site.route('/u/<name>/delete?question=<title>')
@@ -187,5 +189,10 @@ def about():
 #### Github主页:<https://github.com/honmaple>
 """
     content = Markup(markdown.markdown(content))
+    hello = Articles.query.filter_by(id=3).first()
+    world = hello.tags.split(',')
+    for w in world:
+        print(w)
+    hello = Markup(markdown.markdown(hello.content))
     return render_template('index/about_me.html',**locals())
 

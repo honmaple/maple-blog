@@ -8,8 +8,8 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from .login_form import *
-from .mkds_form import *
-from .admin_form import *
 from .article_form import *
+from .admin_form import *
+from .question_form import *
 from .register_form import *
 from .comment_form import *

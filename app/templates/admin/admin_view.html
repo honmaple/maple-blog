@@ -1,0 +1,23 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+
+{% for category in categories %}
+<div class="panel panel-default">
+    <ul>
+        {% for i in category.article %}
+        <li>
+            <span>
+                <h4> <a href="{{ url_for('admin.admin_views',title=i.title) }}">{{ i.title }}</a></h4>
+                <h5>
+                    {{ i.summary }}
+                </h5>
+            </span>
+            <span style="display:block;text-align:right;width:100%;"> 
+                <a href="#">more>></a>
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+{% endblock %}

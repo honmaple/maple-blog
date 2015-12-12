@@ -5,21 +5,21 @@
         <table class="table table-hover">
             <tr>
                 <th>NO.</th>
-                <th>用户名</th>
-                <th>注册邮箱</th>
-                <th>是否验证账户</th>
-                <th>是否为管理员权限</th>
-                <th>注册时间</th>
+                <th>问答题目</th>
+                <th>问答描述</th>
+                <th>问答答案</th>
+                <th>发表作者</th>
+                <th>发表时间</th>
                 <th>操作</th>
             </tr>
-            {% for user in users %}
+            {% for question in questions %}
             <tr>
-                <td>{{ user['id'] }}</td>
-                <td> <a href="{{ url_for('index.logined_user',name=user['name']) }}">{{ user['name'] }}</a></td> 
-                <td>{{ user['email'] }}</td> 
-                <td>{{ user['confirmed'] }}</td>
-                <td>{{ user['admin'] }}</td>
-                <td>{{ user['registered_on'] }}</td>
+                <td>{{ question['id'] }}</td>
+                <td>{{ question['title'] }}</td> 
+                <td>{{ question['describ'] }}</td>
+                <td>{{ question['answer'] }}</td>
+                <td>{{ question['user'] }}</td>
+                <td>{{ question['publish'] }}</td>
                 <td> 
                     <table>
                         <tr>
