@@ -26,22 +26,41 @@ def pages():
     # return redirect(url_for('index.index'))
     articles = Articles.query.all()
     form = ArticleForm()
+    # asd = Category.query.filter_by(name='linux').all()
+    # for i in asd:
+        # for j in i.articles:
+            # print(j.title)
+    # h = Articles.query.filter_by(id=18).first()
+    # print(h.tag_article)
+    # w = Tags.query.filter_by(name='linux').all()
+    # for i in w:
+        # print(i.tag_article)
     if request.method == 'POST':
-        post_tags = Tags(name=form.tags.data)
-        db.session.add(post_tags)
-        db.session.commit()
-        post_category = Category(name=form.category.data)
-        db.session.add(post_category)
-        db.session.commit()
-        '''外键'''
-        category = Category.query.filter_by(name=form.category.data).first()
-        tags = Tags.query.filter_by(name=form.tags.data).first()
+        '''分类节点'''
+        tags = form.tags.data.split(',')
+        post_tags = []
+        for tag in tags:
+            '''判断节点是否存在'''
+            existed_tag = Tags.query.filter_by(name=tag).first()
+            if existed_tag:
+                t = existed_tag
+            else:
+                t = Tags(name = tag)
+            post_tags.append(t)
+        '''判断分类是否存在'''
+        existed_category = Category.query.filter_by(name=\
+                                                    form.category.data).first()
+        if existed_category:
+            post_category = existed_category
+        else:
+            post_category = Category(name=form.category.data)
         post_article = Articles(user = current_user.name,
                                 title = form.title.data,
-                                category_id = category.id,
-                                tags_id = tags.id,
                                 summary = form.summary.data,
                                 content = form.content.data)
+        '''关系数据表'''
+        post_article.tag_article = post_tags
+        post_article.category = post_category
         db.session.add(post_article)
         db.session.commit()
         session['post_in'] = True
@@ -101,9 +120,8 @@ def admin_view():
 @site.route('/views<title>')
 def admin_views(title):
     article = Articles.query.filter_by(title=title).first()
+    tags = article.tag_article
     content = Markup(markdown.markdown(article.content))
-    tags = Tags.query.filter_by(id=article.tags_id).first()
-    tags = tags.name.split(',')
     return render_template('admin/page.html',
                            article = article,
                            content = content,

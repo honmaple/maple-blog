@@ -15,7 +15,7 @@
                 {{ article.publish }} <br />
                 {% for tag in tags %}
                 <span class="label label-primary" >
-                    <a href="{{ url_for('blog.tag_num',tag=tag) }}" style="color:#fff;">{{ tag }}</a>
+                    <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
                 </span>
                 &nbsp
                 {% endfor %}

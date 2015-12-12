@@ -14,7 +14,7 @@
             {% for article in articles %}
             <tr>
                 <td>{{ article['id'] }}</td>
-                <td>{{ article['title'] }}</td> 
+                <td> <a href="{{ url_for('admin.admin_views',title=article.title) }}">{{ article['title'] }}</a></td> 
                 <td>{{ article['summary'] }}</td>
                 <td>{{ article['user'] }}</td>
                 <td>{{ article['publish'] }}</td>

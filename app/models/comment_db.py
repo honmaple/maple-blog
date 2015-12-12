@@ -33,7 +33,7 @@ class Comments(db.Model):
         return "<Comments %r>" % self.comment_content
 
 class Replies(db.Model):
-    __bind_key__ = 'replies'
+    __bind_key__ = 'comments'
     __tablename__ = 'replies'
     id = db.Column(db.Integer,primary_key=True)
     reply_user = db.Column(db.String, nullable=False)
