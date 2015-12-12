@@ -2,6 +2,8 @@
 This is my own website by flask  
 You can have a look [here](http://honmaple.com)
 
+## flask-flatpages
+这个版本使用flask-flatpages从本地md文件读取文章内容
 
 ## config/__init__.py
     #__init__.py
