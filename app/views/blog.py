@@ -8,41 +8,14 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint,request,\
-    redirect,url_for,g
+    redirect,url_for,g,Markup
 from flask.ext.login import current_user,login_required
-from app import register_pages
+import markdown
 from ..forms import CommentForm
-from ..models import Comments,db,Replies
+from ..models import Comments,db,Replies,Articles,Tags,Category
 
 site = Blueprint('blog',__name__,url_prefix='/blog')
 
-flatpages = register_pages()
-def latest_article(pages):
-    pages = (p for p in pages if 'Date' in p.meta)
-    latest = sorted(pages, reverse=True,
-                    key=lambda p: p.meta['Date'])
-    return latest
-
-def tags_list():
-    pages = (p for p in flatpages)
-    li = []
-    for p in pages:
-        for i in p['Tags']:
-            li.append(i)
-    lis = list(set(li))
-    return lis
-
-def len_index():
-    pages = (p for p in flatpages)
-    return int(len(list(pages))/6) + 1
-
-def len_type(type):
-    pages = (p for p in flatpages if p['Category'] == type)
-    return int(len(list(pages))/6) + 1
-
-def len_tag(tag):
-    pages = (p for p in flatpages for t in p['Tags'] if t == tag)
-    return int(len(list(pages))/6) + 1
 
 @site.before_request
 def before_request():
@@ -51,108 +24,90 @@ def before_request():
 @site.route('/latest',defaults={'number':1})
 @site.route('/latest/view?=<int:number>')
 def index_num(number):
-    num = number
-    len_page = len_index()
-    tag_list = tags_list()
-    pages = (p for p in flatpages)
-    latest = latest_article(pages)
-    latest = latest[(num-1)*6:(num-1)*6+6]
+    articles = Articles.query.order_by(Articles.publish).\
+        offset((number-1)*9).limit(number*9)
+    all_tags = Tags.query.all()
+    count = Articles.query.count()
+    count = int(count/9) + 1
+    number = number
     return render_template('blog/blog.html',
                            title = u'HonMaple的个人博客',
-                           pages=latest,
-                           tag_list = tag_list,
-                           num = num,
-                           len_page = len_page)
+                           articles = articles,
+                           all_tags = all_tags,
+                           count = count,
+                           number = number)
 
 
-@site.route('/type?=<type>',defaults={'number':1})
-@site.route('/type?=<type>/view?=<int:number>')
-def type_num(type,number):
-    num = number
-    blog_type = type
-    len_page = len_type(type)
-    tag_list = tags_list()
-    pages = (p for p in flatpages if p['Category'] == type)
-    latest = latest_article(pages)
-    latest = latest[(num-1)*6:(num-1)*6+6]
-    return render_template('blog/blog_type.html',
-                           title = '%s -HonMaple博客'%(type),
-                           pages = latest,
-                           num = num,
-                           tag_list = tag_list,
-                           blog_type = blog_type,
-                           len_page = len_page)
+@site.route('/category=<category>',defaults={'number':1})
+@site.route('/category=<category>/view?=<int:number>')
+def category_num(category,number):
+    categories = Category.query.filter_by(name=category).first()
+    all_tags = Tags.query.all()
+    articles = categories.articles
+    count = articles.count()
+    count = int(count/9) + 1
+    number = number
+    category = category
+    return render_template('blog/blog_category.html',
+                           title = '%s -HonMaple博客'%(category),
+                           articles = articles,
+                           all_tags = all_tags,
+                           count = count,
+                           number = number,
+                           category = category)
 
 
-@site.route('/tag?=<tag>',defaults={'number':1})
-@site.route('/tag?=<tag>/view?=<int:number>')
+@site.route('/tag=<tag>',defaults={'number':1})
+@site.route('/tag=<tag>/view?=<int:number>')
 def tag_num(tag,number):
-    num = number
-    len_page = len_tag(tag)
-    blog_tag = tag
-    tag_list = tags_list()
-    pages = (p for p in flatpages for t in p['Tags'] if t == tag)
-    latest = latest_article(pages)
-    latest = latest[(num-1)*6:(num-1)*6+6]
+    tags = Tags.query.filter_by(name=tag).first()
+    all_tags = Tags.query.all()
+    articles = tags.tag_article
+    count = len(articles)
+    count = int(count/9) + 1
+    number = number
+    tag = tag
     return render_template('blog/blog_tag.html',
                            title = '%s -HonMaple博客'%(tag),
-                           pages = latest,
-                           num = num,
-                           tag_list = tag_list,
-                           blog_tag = blog_tag,
-                           len_page =len_page)
+                           articles = articles,
+                           number = number,
+                           count = count,
+                           tag = tag,
+                           all_tags = all_tags)
 
-@site.route('/pages/<path:path>/')
-def page(path):
+@site.route('/pages/<title>')
+def page(title):
     form = CommentForm()
-    page = flatpages.get_or_404(path)
-    '''该文章的所有评论'''
-    all_comment = Comments.query.filter_by(page_title = page['Title']).all()
-    pages = (p for p in flatpages)
-    '''按照时间排序'''
-    latest_pages = latest_article(pages)
-    '''n 查找文章位置，找到前一篇和后一篇'''
-    n = 0
-    for pa in latest_pages:
-        if pa == page:
-            break
-        n += 1
-    if n == 0:
-        page_previous = None
-        page_next = latest_pages[n+1]
-    elif n == len(latest_pages) - 1:
-        page_previous = latest_pages[n-1]
-        page_next = None
-    else:
-        page_previous = latest_pages[n-1]
-        page_next = latest_pages[n+1]
-    return render_template('blog/page.html', page = page,
-                           title = '%s -HonMaple博客'%(page['Title']),
-                           page_previous = page_previous,
-                           page_next = page_next,
+    article = Articles.query.filter_by(title=title).first()
+    tags = article.tag_article
+    content = Markup(markdown.markdown(article.content))
+    all_comment = Comments.query.filter_by(page_title=title).all()
+    return render_template('blog/blog_page.html',
+                           title = '%s -HonMaple博客'%(title),
+                           article = article,
+                           content = content,
+                           tags = tags,
                            all_comment = all_comment,
-                           path = path,
                            form = form)
-
 '''评论表单'''
-@site.route('/pages/<path:path>/comment',methods=['GET','POST'])
+@site.route('/pages/<title>/comment',methods=['GET','POST'])
 @login_required
-def comment(path):
+def comment(title):
     form = CommentForm()
-    page = flatpages.get_or_404(path)
+    article = Articles.query.filter_by(title=title).first()
     if request.method == 'POST':
         post_comment = Comments(comment_user = current_user.name,
                                 comment_content = form.comment.data,
-                                page_title = page['Title'])
+                                page_title = article.title)
         db.session.add(post_comment)
         db.session.commit()
-        return redirect(url_for('blog.page',path=path,_anchor='comment'))
-    return redirect(url_for('blog.page',path=path,_anchor='comment'))
+        return redirect(url_for('blog.page',title=title,_anchor='comment'))
+    return redirect(url_for('blog.page',title=title,_anchor='comment'))
 
 '''回复表单'''
-@site.route('/pages/<path:path>/<comment_id>',methods=['GET','POST'])
+@site.route('/pages/<title>/<comment_id>',methods=['GET','POST'])
 @login_required
-def reply(path,comment_id):
+def reply(title,comment_id):
     form = CommentForm()
     if request.method == 'POST':
         post_reply = Replies( reply_user = current_user.name,
@@ -160,8 +115,8 @@ def reply(path,comment_id):
                              comments_id = comment_id)
         db.session.add(post_reply)
         db.session.commit()
-        return redirect(url_for('blog.page',path=path,_anchor='comment'))
-    return redirect(url_for('blog.page',path=path,_anchor='comment'))
+        return redirect(url_for('blog.page',title=title,_anchor='comment'))
+    return redirect(url_for('blog.page',title=title,_anchor='comment'))
 
 
 

@@ -2,6 +2,7 @@
 This is my own website by flask  
 You can have a look [here](http://honmaple.com)
 
+这个版本将文章内容存入数据库，而不是直接从md文件中读取
 
 ## config/__init__.py
     #__init__.py

@@ -1,23 +1,31 @@
 <!DOCTYPE html>
-{% if num > 1 %}
-{% extends 'blog/blog_type_base.html' %}
-{% else %}
+{% if number == 1 %}
 {% extends 'blog/blog_base.html' %}
+{% else %}
+{% extends 'blog/blog_category_base.html' %}
 {% endif %}
 {% block content %}
 <div class="row ">
     <div class="col-sm-9" >
         <ul>
-            {% for page in pages %}
+            {% for article in articles %}
             <li>
                 <span>
-                    <h4><a href="{{ url_for('blog.page',path=page.path) }}">{{ page['Title'] }}</a></h4>
+                    <h4> <a href="{{ url_for('blog.page',title=article.title) }}" target=_blank>{{ article.title }}</a></h4>
                     <h5>
-                        {{ page['Summary'] }}
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        {{ article.publish }}
+                        <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                        {% for tag in article.tag_article %}
+                        <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#000">{{ tag.name }}</a>
+                        {% endfor %}
+                        <br />
+                        <br />
+                        {{ article.summary }}
                     </h5>
                 </span>
                 <span style="display:block;text-align:right;width:100%;"> 
-                    <a href="{{ url_for('blog.page',path=page.path) }}">more>></a>
+                    <a href="{{ url_for('blog.page',title=article.title) }}">more>></a>
                 </span>
                 <div style="border-bottom:1px dashed #000000;width:100%;padding:0;"></div>
             </li>
@@ -25,9 +33,9 @@
             <li>No post.</li>
             {% endfor %}
         </ul>
-        <div style="float:bottom;text-align:center;">
+        <div style="text-align:center;">
             <ul class="pagination">
-                {% if num == 1 %}
+                {% if number == 1 %}
                 <li class="disabled">
                     <a href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
@@ -35,19 +43,22 @@
                 </li>
                 {% else %}
                 <li>
-                    <a href="{{ url_for('blog.index_num',number=num-1) }}" aria-label="Previous">
+                    <a href="{{ url_for('blog.index_num',number=number-1) }}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 {% endif %}
-                {% for i in range(len_page) %}
-                {% if i == num-1 %}
-                <li class="active"><a href="{{ url_for('blog.index_num',number=i+1) }}">{{ i+1 }}</a></li>
+
+                {% for num in range(count) %}
+                {% set num = num + 1 %}
+                {% if num == number %}
+                <li class="active"><a href="{{ url_for('blog.index_num',number=num) }}">{{ num }}</a></li>
                 {% else %}
-                <li><a href="{{ url_for('blog.index_num',number=i+1) }}">{{ i+1 }}</a></li>
+                <li><a href="{{ url_for('blog.index_num',number=num) }}">{{ num }}</a></li>
                 {% endif %}
                 {% endfor %}
-                {% if num == len_page %}
+
+                {% if number == count %}
                 <li class="disabled">
                     <a href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
@@ -55,7 +66,7 @@
                 </li>
                 {% else %}
                 <li>
-                    <a href="{{ url_for('blog.index_num',number=num + 1) }}" aria-label="Next">
+                    <a href="{{ url_for('blog.index_num',number=number+1) }}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -88,9 +99,9 @@
                 <a href="http://github.com/honmaple">Stackoverflow</a>
             </li>
             <li class="list-group-item">Tags: <br />
-                {% for tag in tag_list %}
+                {% for tag in all_tags %}
                 <span class="label label-primary" style="display: inline-block;">
-                    <a href="{{ url_for('blog.tag_num',tag=tag) }}" style="color:#fff;">{{ tag }}</a>
+                    <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
                 </span>
                 {% endfor %}
             </li>

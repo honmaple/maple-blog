@@ -17,13 +17,11 @@ from werkzeug.security import check_password_hash
 from ..email import email_token,email_send,confirm_token,\
     email_validate
 from app import login_manager
-from app import register_pages
 from ..models import User,Questions,Comments,Articles,db
 from ..forms import LoginForm,RegisterForm
 
 site = Blueprint('index',__name__,url_prefix='')
 
-flatpages = register_pages()
 
 
 @site.before_request

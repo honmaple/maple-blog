@@ -13,10 +13,12 @@ from flask.ext.login import current_user
 import markdown
 from ..models import Articles,db,User,Comments,Questions,Tags,Category
 from ..forms import ArticleForm
+from ..utils import Permission
 
 site = Blueprint('admin',__name__,url_prefix='/admin')
 
 @site.route('/')
+@Permission('admin')
 def index():
     # return redirect(url_for('index.index'))
    return render_template('admin/admin.html')

@@ -9,7 +9,6 @@
 # -*- coding=UTF-8 -*-
 from flask import Flask, render_template,send_from_directory,request
 from flask_assets import Environment, Bundle
-from flask_flatpages import FlatPages
 from flask_mail import Mail
 from flask_login import LoginManager
 from config import load_config
@@ -27,10 +26,6 @@ def register(app):
     register_db(app)
     register_jinja2(app)
 
-
-def register_pages():
-    flatpages = FlatPages(create_app())
-    return flatpages
 
 def register_routes(app):
     from .views import index,admin, book

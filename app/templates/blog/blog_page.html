@@ -1,0 +1,90 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+
+
+<div class="row">
+    <table style="width:100%;">
+        <tr>
+            <td align="center">
+                <h2>{{ article.title }}</h2>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                {{ article.publish }}
+                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                {% for tag in tags %}
+                <!--<span class="label label-primary" style="display:inline-block;">-->
+                <a href="{{ url_for('blog.tag_num',tag=tag.name) }}">{{ tag.name }}</a>
+                <!--</span>-->
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                作者:{{ article.user }}
+                文章为作者原创,版权所有
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="border-bottom:1px dashed #000000;width:100%;"></div>
+            </td>
+        </tr>
+    </table>
+    <div width="100%" style="padding:0 4%;" >
+        <p>
+        {{ content }}
+        </p>
+    </div>
+</div>
+<div class="panel panel-default" id="#comment">
+    <div class="panel-heading">评论</div>
+    <div class="panel-body">
+        <form action="{{ url_for('blog.comment',title=article.title) }}" method="POST">
+            {{ form.hidden_tag()}}
+            {{ form.comment(class="form-control",placeholder="写下你的评论" ,style="height:80px;") }}
+            <br />
+            {{ form.post_comment(class="btn btn-primary") }}
+        </form>
+    </div>
+    <div class="panel panel-info">
+        {% set i = 0 %}
+        {% for comment in all_comment %}
+        <div class="panel-heading">
+            {{ comment['comment_user'] }}于
+            {{ comment['comment_publish'] }}发表:
+        </div>
+        <div class="panel-body">
+            {{ comment['comment_content'] }}
+            <br />
+            <a class="btn btn-primary btn-sm" role="button" data-toggle="collapse" href="#reply{{ i }}" aria-expanded="false" aria-controls="reply{{ i }}">
+                查看并回复此评论
+            </a>
+            <div class="collapse" id="reply{{ i }}">
+                <div class="panel panel-info">
+                    {% for reply in comment['reply'] %} 
+                    <div class="panel-heading" style="padding:0 10px;">
+                        {{ reply['reply_user'] }}于
+                        {{ reply['reply_publish'] }}回复:
+                    </div>
+                    <div class="panel-body">
+                        {{ reply['reply_content'] }}
+                    </div>
+                    {% endfor %}
+                    <form action="{{ url_for('blog.reply',title=article.title,
+                    comment_id=comment['id']) }}" method="POST">
+                        {{ form.hidden_tag()}}
+                        {{ form.reply(class="form-control",placeholder="写下你的回复" ,style="height:80px;") }}
+                        <br />
+                        {{ form.post_reply(class="btn btn-primary btn-sm") }}
+                    </form>
+                </div>
+            </div>
+            {% set i=i+1 %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
