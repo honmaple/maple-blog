@@ -8,46 +8,36 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint, request, \
-    session, flash, redirect, url_for ,Markup
+    flash, redirect, url_for
 from flask.ext.login import current_user
-import markdown
 from ..models import Articles,db,User,Comments,Questions,Tags,Category
-from ..forms import ArticleForm
-from ..utils import Permission
+from ..forms import ArticleForm,QuestionForm,RegisterForm
+from ..utils import super_permission
+from ..utils import DeleteManager,EditManager
 
 site = Blueprint('admin',__name__,url_prefix='/admin')
 
 @site.route('/')
-@Permission('admin')
+@super_permission.require(404)
 def index():
-    # return redirect(url_for('index.index'))
    return render_template('admin/admin.html')
 
 @site.route('/pages_post', methods=['GET','POST'])
-def pages():
-    # return redirect(url_for('index.index'))
+@super_permission.require(404)
+def admin_post():
     articles = Articles.query.all()
     form = ArticleForm()
-    # asd = Category.query.filter_by(name='linux').all()
-    # for i in asd:
-        # for j in i.articles:
-            # print(j.title)
-    # h = Articles.query.filter_by(id=18).first()
-    # print(h.tag_article)
-    # w = Tags.query.filter_by(name='linux').all()
-    # for i in w:
-        # print(i.tag_article)
     if request.method == 'POST':
         '''分类节点'''
         tags = form.tags.data.split(',')
         post_tags = []
         for tag in tags:
             '''判断节点是否存在'''
-            existed_tag = Tags.query.filter_by(name=tag).first()
-            if existed_tag:
-                t = existed_tag
-            else:
-                t = Tags(name = tag)
+            # existed_tag = Tags.query.filter_by(name=tag).first()
+            # if existed_tag:
+                # t = existed_tag
+            # else:
+            t = Tags(name = tag)
             post_tags.append(t)
         '''判断分类是否存在'''
         existed_category = Category.query.filter_by(name=\
@@ -65,20 +55,14 @@ def pages():
         post_article.category = post_category
         db.session.add(post_article)
         db.session.commit()
-        session['post_in'] = True
         flash('已提交')
-        return redirect(url_for('admin.pages'))
+        return redirect(url_for('admin.admin_post'))
     return render_template('admin/admin_post.html',
                            form=form,
                            articles = articles)
 
-@site.route('/post_out')
-def post_out():
-    # return redirect(url_for('index.index'))
-    session.pop('post_in', None)
-    return redirect(url_for('admin.pages'))
-
 @site.route('/<type>')
+@super_permission.require(404)
 def types(type):
     return redirect(url_for('index.index'))
     # admin_type = type
@@ -88,43 +72,114 @@ def types(type):
                            # admin_type = admin_type)
 
 @site.route('/account')
+@super_permission.require(404)
 def admin_account():
     users = User.query.all()
     return render_template('admin/admin_user.html',
                            users = users)
 
 @site.route('/article')
+@super_permission.require(404)
 def admin_article():
+    form = ArticleForm()
     articles = Articles.query.all()
     return render_template('admin/admin_article.html',
-                           articles = articles)
+                           articles = articles,
+                           form = form)
 
 @site.route('/question')
+@super_permission.require(404)
 def admin_question():
     questions = Questions.query.all()
     return render_template('admin/admin_question.html',
                            questions = questions)
 
 @site.route('/comment')
+@super_permission.require(404)
 def admin_comment():
     comments = Comments.query.all()
-    print(comments)
     return render_template('admin/admin_comment.html',
                            comments = comments)
 
+@site.route('/<category>/<post_id>/delete')
+@super_permission.require(404)
+def admin_delete(category,post_id):
+    action = DeleteManager(post_id)
+    if category == 'article':
+        action.delete_article()
+        return redirect(url_for('admin.admin_article'))
+    elif category == 'comment':
+        action.delete_comment()
+        return redirect(url_for('admin.admin_comment'))
+    elif category == 'reply':
+        action.delete_reply()
+        return redirect(url_for('admin.admin_comment'))
+    elif category == 'user':
+        action.delete_user()
+        return redirect(url_for('admin.admin_account'))
+    elif category == 'question':
+        action.delete_question()
+        return redirect(url_for('admin.admin_question'))
+    else:
+        return redirect(url_for('admin.index'))
 
-@site.route('/page_views')
-def admin_view():
-    categories = Category.query.all()
-    return render_template('admin/admin_view.html',
-                           categories = categories)
+@site.route('/<category>/<post_id>/edit')
+@super_permission.require(404)
+def admin_edit(category,post_id):
+    if category == 'article':
+        article = Articles.query.filter_by(id=post_id).first()
+        form = ArticleForm()
+        form.content.data = article.content
+        form.summary.data = article.summary
+        form.title.data = article.title
+        tags = []
+        for tag in article.tags:
+            tags.append(tag.name)
+        form.tags.data = tags
+    if category == 'question':
+        question = Questions.query.filter_by(id=post_id).first()
+        form = QuestionForm()
+        form.title.data = question.title
+        form.describ.data = question.describ
+        form.answer.data = question.describ
+    if category == 'user':
+        user = User.query.filter_by(id=post_id).first()
+        form = RegisterForm()
+        print(user.roles)
+        print(user.is_superuser)
+        print(user.is_confirmed)
+        form.name.data = user.name
+        form.is_superuser.data = user.is_superuser
+        form.roles.data = user.roles
+        form.is_confirmed.data = user.is_confirmed
 
-@site.route('/views<title>')
-def admin_views(title):
-    article = Articles.query.filter_by(title=title).first()
-    tags = article.tag_article
-    content = Markup(markdown.markdown(article.content))
-    return render_template('admin/page.html',
-                           article = article,
-                           content = content,
-                           tags = tags)
+    category = category
+    post_id = post_id
+    return render_template('admin/admin_edit.html',
+                           form = form,
+                           category = category,
+                           post_id = post_id)
+
+@site.route('/<category>/<post_id>/save',methods=['GET','POST'])
+def admin_edit_save(category,post_id):
+    if category == 'article':
+        form = ArticleForm()
+    elif category == 'question':
+        form = QuestionForm()
+    else:
+        form = RegisterForm()
+
+    action = EditManager(post_id,form)
+
+    if request.method == 'POST':
+        if category == 'article':
+            action.edit_article()
+            return redirect(url_for('admin.admin_article'))
+        elif category == 'question':
+            action.edit_question()
+            return redirect(url_for('admin.admin_question'))
+        elif category == 'user':
+            action.edit_user()
+            return redirect(url_for('admin.admin_account'))
+        else:
+            return redirect(url_for('admin.index'))

@@ -14,7 +14,7 @@
             {% for article in articles %}
             <tr>
                 <td>{{ article['id'] }}</td>
-                <td> <a href="{{ url_for('admin.admin_views',title=article.title) }}">{{ article['title'] }}</a></td> 
+                <td> <a href="{{ url_for('blog.page',title=article.title) }}">{{ article['title'] }}</a></td> 
                 <td>{{ article['summary'] }}</td>
                 <td>{{ article['user'] }}</td>
                 <td>{{ article['publish'] }}</td>
@@ -22,14 +22,32 @@
                     <table>
                         <tr>
                             <td>
-                                <a href="#" style="white-space:nowrap;">
+                                <a href="{{ url_for('admin.admin_edit',category='article',post_id=article.id) }}" style="white-space:nowrap;" target=_blank>
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 </a>
                             </td>
                             <td>
-                                <a href="#">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
+                                <span class="glyphicon glyphicon-trash" 
+                                      data-toggle="modal" data-target="#delete" aria-hidden="true" style="color:#337ab7">
+                                </span>
+                                <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="deleteLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="margin:20% 27%;">
+                                            <div class="modal-body">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="deleteLabel">是否确认删除?</h4>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary">
+                                                    <a href="{{ url_for('admin.admin_delete',category='article',post_id=article.id) }}" 
+                                                       style="white-space:nowrap;color:#fff">
+                                                        确认删除
+                                                    </a>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </table>

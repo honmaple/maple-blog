@@ -17,7 +17,7 @@ tag_article = db.Table('tag_article',
 )
 
 class Category(db.Model):
-    __bind_key__ = 'articles'
+    __bind_key__ = 'blog'
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
@@ -29,7 +29,7 @@ class Category(db.Model):
         return '<Category %r>' % self.name
 
 class Tags(db.Model):
-    __bind_key__ = 'articles'
+    __bind_key__ = 'blog'
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
@@ -44,7 +44,7 @@ class Tags(db.Model):
         return '<Tags %r>' % self.name
 
 class Articles(db.Model):
-    __bind_key__ = 'articles'
+    __bind_key__ = 'blog'
     __tablename__ = 'articles'
     id = db.Column(db.Integer,primary_key=True)
     title = db.Column(db.String(50), nullable=False)

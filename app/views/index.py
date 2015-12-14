@@ -8,21 +8,23 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint,redirect, \
-    url_for,flash,request,g,Markup
-from flask.ext.login import login_user, logout_user, \
+    url_for,flash,request,g,Markup,current_app,session
+from flask_login import login_user, logout_user, \
     current_user, login_required
+from flask_principal import Identity, AnonymousIdentity, \
+     identity_changed
+from werkzeug.security import check_password_hash
+from ..email import email_token,email_send,confirm_token,email_validate
+from app import login_manager
+from ..models import User,Questions,Comments,db
+from ..forms import LoginForm,RegisterForm
+from ..utils import writer_permission
 import datetime
 import markdown
-from werkzeug.security import check_password_hash
-from ..email import email_token,email_send,confirm_token,\
-    email_validate
-from app import login_manager
-from ..models import User,Questions,Comments,Articles,db
-from ..forms import LoginForm,RegisterForm
+
+
 
 site = Blueprint('index',__name__,url_prefix='')
-
-
 
 @site.before_request
 def before_request():
@@ -54,9 +56,12 @@ def login():
                 error = u'密码错误'
             else:
                 login_user(user)
+
+                identity_changed.send(current_app._get_current_object(),
+                                  identity=Identity(user.name))
                 flash('你已成功登陆.')
                 '''next是必需的,登陆前请求的页面'''
-                return redirect(url_for('index.index'))
+                return redirect(request.args.get('next') or url_for('index.index'))
         else:
             error = u'用户名错误'
     return render_template('index/login.html',
@@ -68,7 +73,11 @@ def login():
 def logout():
     '''注销'''
     logout_user()
-    return redirect(url_for('index.index'))
+    for key in ('identity.name', 'identity.auth_type'):
+        session.pop(key, None)
+    identity_changed.send(current_app._get_current_object(),
+                          identity=AnonymousIdentity())
+    return redirect(request.args.get('next') or url_for( 'index.index'))
 
 
 @site.route('/sign', methods=['GET','POST'])
@@ -94,8 +103,7 @@ def sign():
         else:
             account = User(name = form.name.data,
                            email = form.email.data,
-                           passwd = form.passwd.data,
-                           confirmed = False)
+                           passwd = form.passwd.data)
             db.session.add(account)
             db.session.commit()
 
@@ -122,8 +130,8 @@ def confirm(token):
     if user.confirmed:
         flash('账户已经验证. Please login.', 'success')
     else:
-        user.confirmed = True
-        user.confirmed_on = datetime.datetime.now()
+        user.is_confirmed = True
+        user.confirmed_time = datetime.datetime.now()
         db.session.add(user)
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
@@ -132,18 +140,18 @@ def confirm(token):
 @site.route('/u/<name>/view')
 @login_required
 def logined_user(name):
-    user_questions = Questions.query.filter_by(name=name).all()
+    user_questions = Questions.query.filter_by(user=name).all()
     user_comments = Comments.query.filter_by(comment_user=name).all()
     user = User.query.filter_by(name=name).first()
     email = user.email
-    confirmed = user.confirmed
-    registered_on = user.registered_on
+    confirmed = user.is_confirmed
+    registered_time = user.registered_time
     form = LoginForm()
     return render_template('user/user.html',
                             name = name,
                             email = email,
                             confirmed = confirmed,
-                            registered_on = registered_on,
+                            registered_time = registered_time,
                             form = form,
                             user_comments = user_comments,
                             user_questions = user_questions)
@@ -153,6 +161,7 @@ def logined_user(name):
     # db.session.delete(title=title)
 
 @site.route('/about')
+@writer_permission.require(http_exception=403)
 def about():
     content = """
 ### **个人介绍**
@@ -187,10 +196,5 @@ def about():
 #### Github主页:<https://github.com/honmaple>
 """
     content = Markup(markdown.markdown(content))
-    hello = Articles.query.filter_by(id=3).first()
-    world = hello.tags.split(',')
-    for w in world:
-        print(w)
-    hello = Markup(markdown.markdown(hello.content))
     return render_template('index/about_me.html',**locals())
 

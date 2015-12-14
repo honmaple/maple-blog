@@ -8,3 +8,4 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from .permissions import *
+from .manager import *

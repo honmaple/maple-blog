@@ -7,27 +7,34 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-# from ..models import User
-# from flask import g
-from functools import wraps
-from flask import flash,redirect,url_for
+from app import app
 from flask_login import current_user
+from flask_principal import Permission, RoleNeed, UserNeed, identity_loaded
 
-class Permission(object):
-    def __init__(self, permission):
-        self.user = current_user
-        self.permission = permission
 
-    def __call__(self, func):
-        @wraps(func)
-        def decorated_function(*args, **kwargs):
-            self.confirm_permission(self.permission)
-            return func(*args, **kwargs)
-        return decorated_function
+super_permission = Permission(RoleNeed('super'))
+admin_permission = Permission(RoleNeed('admin')).union(super_permission)
+editor_permission = Permission(RoleNeed('editor')).union(admin_permission)
+writer_permission = Permission(RoleNeed('writer')).union(editor_permission)
+visitor_permission = Permission(RoleNeed('visitor')).union(writer_permission)
 
-    def confirm_permission(self,permission):
-        if permission == 'admin':
-            if not self.user.admin:
-                print(self.user.admin)
-                flash("你没有超级管理员权限进行操作")
-                return redirect(url_for('index.index'))
+@identity_loaded.connect_via(app)
+def on_identity_loaded(sender, identity):
+    identity.user = current_user
+
+    if hasattr(current_user, 'name'):
+        identity.provides.add(UserNeed(current_user.name))
+
+    if hasattr(current_user, 'roles'):
+        identity.provides.add(RoleNeed(current_user.roles))
+    
+    if hasattr(current_user, 'is_superuser') and current_user.is_superuser:
+        identity.provides.add(RoleNeed('super'))
+
+    if hasattr(current_user, 'is_confirmed') and current_user.is_confirmed:
+        identity.provides.add(RoleNeed('writer'))
+
+    # identity.allow_admin = admin_permission.allows(identity)
+    # identity.allow_edit = editor_permission.allows(identity)
+    # identity.allow_write = writer_permission.allows(identity)
+

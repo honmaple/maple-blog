@@ -8,14 +8,8 @@
 {% extends 'admin/admin_base.html' %}
 {% block content %}
 
-<a href="{{ url_for('admin.types',type = 'pages') }}">查看文章列表</a>
-<div class="panel panel-default">
-    <div class="panel-heading">后台管理</div>
-    <div class="panel-body">
-        <p>...</p>
-    </div>
-    <div >
-        <form action="{{ url_for('admin.pages') }}" method="POST">
+<div>
+        <form action="{{ url_for('admin.admin_post') }}" method="POST">
             {{ form.hidden_tag()}}
             {{ form.title.label }}
             {{ form.title(class="form-control",placeholder="Title",style="width:60%") }}
@@ -30,6 +24,5 @@
             <br />
             {{ form.post(class="btn btn-primary") }}   
         </form>
-    </div>
 </div>
 {% endblock %}

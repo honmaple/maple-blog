@@ -21,7 +21,7 @@
                         {% endfor %}
                         <br />
                         <br />
-                        {{ article.summary }}
+                        {{ article.content|safe|truncate(200, True) }}
                     </h5>
                 </span>
                 <span style="display:block;text-align:right;width:100%;"> 

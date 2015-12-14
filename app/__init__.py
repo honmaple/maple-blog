@@ -11,6 +11,7 @@ from flask import Flask, render_template,send_from_directory,request
 from flask_assets import Environment, Bundle
 from flask_mail import Mail
 from flask_login import LoginManager
+from flask_principal import Principal
 from config import load_config
 
 def create_app():
@@ -65,13 +66,19 @@ def register_assets(app):
     assets = Environment(app)
     assets.register(bundles)
 
+def register_login(app):
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = "index.login"
+    login_manager.session_protection = "strong"
+    login_manager.login_message = u"这个页面要求登陆，请登陆"
+    return login_manager
+
+
 app = create_app()
 mail = Mail(app)
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "index.login"
-login_manager.session_protection = "strong"
-login_manager.login_message = u"这个页面要求登陆，请登陆"
+login_manager = register_login(app)
+principals = Principal(app)
 register(app)
 
 @app.errorhandler(404)

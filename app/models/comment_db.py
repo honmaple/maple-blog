@@ -11,7 +11,7 @@ from .base import db
 import datetime
 
 class Comments(db.Model):
-    __bind_key__ = 'comments'
+    __bind_key__ = 'blog'
     __tablename__ = 'comments'
     id = db.Column(db.Integer,primary_key=True)
     page_title = db.Column(db.String, nullable=False)
@@ -33,7 +33,7 @@ class Comments(db.Model):
         return "<Comments %r>" % self.comment_content
 
 class Replies(db.Model):
-    __bind_key__ = 'comments'
+    __bind_key__ = 'blog'
     __tablename__ = 'replies'
     id = db.Column(db.Integer,primary_key=True)
     reply_user = db.Column(db.String, nullable=False)
@@ -57,7 +57,7 @@ class Replies(db.Model):
 # from flask.ext.sqlalchemy import SQLAlchemy
 
 # app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:qaz123@localhost/commentdb'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:qaz123@localhost/articledb'
 # db = SQLAlchemy(app)
 
 

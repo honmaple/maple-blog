@@ -43,13 +43,13 @@
                                 <li><a href="{{ url_for('admin.admin_comment') }}">评论管理</a></li>
                                 <li><a href="{{ url_for('admin.admin_article') }}">文章管理</a></li>
                                 <li><a href="{{ url_for('admin.admin_question') }}">问答管理</a></li>
-                            </ul>
+                                <li><a href="{{ url_for('admin.admin_post') }}">增加文章</a></li>
+                                <li>
                             <form class="navbar-form navbar-left" role="search">
-                                <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Search">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Search</button>
                             </form>
+                                </li>
+                            </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 {% if current_user.is_authenticated %}
                                 <li class="dropdown">

@@ -11,13 +11,13 @@ from .base import db
 import datetime
 
 class Questions(db.Model):
-    __bind_key__ = 'questions'
+    __bind_key__ = 'blog'
     __tablename__ = 'questions'
     id = db.Column(db.Integer,primary_key=True)
     user = db.Column(db.String, nullable=False)
     title = db.Column(db.String,nullable=False)
-    describ = db.Column(db.Text,nullable=False)
-    answer = db.Column(db.Text,nullable=False)
+    describ = db.Column(db.Text)
+    answer = db.Column(db.Text)
     publish = db.Column(db.DateTime, nullable=False)
 
     def __init__(self,
@@ -36,7 +36,7 @@ class Questions(db.Model):
 # from flask.ext.sqlalchemy import SQLAlchemy
 
 # app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:qaz123@localhost/questiondb'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:qaz123@localhost/articledb'
 # db = SQLAlchemy(app)
 
 
@@ -54,12 +54,11 @@ class Questions(db.Model):
     # def __init__(self,
                  # user,questiion_title,
                  # describ,answer,
-                 # publish):
+                 # publish = datetime.datetime.now().strftime('%F %X')):
         # self.user = user
         # self.questiion_title = questiion_title
         # self.describ = describ
         # self.answer = answer
-        # self.publish = publish.datetime.datetime.now().\
-            # strftime('%F %X')
+        # self.publish = publish
     # def __repr__(self):
         # return "<Questions %r>" % self.title
