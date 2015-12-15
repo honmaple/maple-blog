@@ -124,7 +124,7 @@
                     <th>评论/回复文章</th>
                     <th>评论/回复内容</th>
                     <th>评论/回复时间</th>
-                    <th>动作</th>
+                    <th>评论/回复</th>
                 </tr>
                 {% set i = 1 %}
                 {% for comment in user_comments %}
@@ -133,11 +133,7 @@
                     <td> <a href="{{ url_for('blog.page',id=comment.article.id) }}">{{ comment.article.title }}</a></td>
                     <td>{{ comment.content }}</td>
                     <td>{{ comment.publish }}</td>
-                    <td>
-                        <a href="{{ url_for('admin.admin_delete',category='comment',post_id=comment.id) }}">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </a>
-                    </td>
+                    <td>评论</td>
                 </tr>
                 {% for reply in comment.replies %}
                 <tr>
@@ -145,11 +141,7 @@
                     <td> <a href="{{ url_for('blog.page',id=comment.article.id) }}">{{ comment.article.title }}</a></td>
                     <td>{{ reply.content }}</td>
                     <td>{{ reply.publish }}</td>
-                    <td>
-                        <a href="{{ url_for('admin.admin_delete',category='reply',post_id=reply.id) }}">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </a>
-                    </td>
+                    <td>回复</td>
                 </tr>
                 {% set i = i + 1 %}
                 {% endfor %}

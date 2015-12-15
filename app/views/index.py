@@ -80,7 +80,7 @@ def login():
 def logout():
     '''注销'''
     logout_user()
-    for key in ('identity.name', 'identity.auth_type'):
+    for key in ('identity.id', 'identity.auth_type'):
         session.pop(key, None)
     identity_changed.send(current_app._get_current_object(),
                           identity=AnonymousIdentity())
@@ -121,7 +121,8 @@ def sign():
             '''email模板'''
             confirm_url = url_for('index.confirm', token=token, _external=True)
             html = render_template('email.html', confirm_url=confirm_url)
-            email_send(account.email,html)
+            subject = "Please confirm your email"
+            email_send(account.email,html,subject)
 
             flash('一封验证邮件已发往你的邮箱，請查收.', 'success')
             return redirect(url_for('index.logined_user',name=account.name))
@@ -140,6 +141,8 @@ def confirm(token):
     else:
         user.is_confirmed = True
         user.confirmed_time = datetime.datetime.now()
+        '''账户验证后可以评论'''
+        user.roles = 'writer'
         db.session.add(user)
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
@@ -147,37 +150,38 @@ def confirm(token):
 
 @site.route('/forget',methods=['GET','POST'])
 def forget():
+    '''忘记密码'''
     form = RegisterForm()
     if request.method == 'POST':
-        '''加密的验证链接'''
-        exsited_email = User.query.filter_by(email=\
-                                             form.confirm_email.data).first()
-        print(form.confirm_email.data)
-        if exsited_email:
-            token = email_token(form.confirm_email.data)
-            '''email模板'''
-            confirm_url = url_for('index.forget_confirm', token=token, _external=True)
-            html = render_template('forget.html', confirm_url=confirm_url)
-            email_send(form.confirm_email.data,html)
-            flash('邮件已发送到你的邮箱')
+        '''验证邮箱格式'''
+        email_format = email_validate(form.confirm_email.data)
+        if email_format:
+            '''邮箱是否存在'''
+            exsited_email = User.query.filter_by(email=\
+                                                form.confirm_email.data).first()
+            if exsited_email:
+                token = email_token(form.confirm_email.data)
+                '''email模板'''
+                confirm_url = url_for('index.forget_confirm', token=token, _external=True)
+                html = render_template('forget.html', confirm_url=confirm_url)
+                subject = "Please revise your password"
+                email_send(form.confirm_email.data,html,subject)
+                flash('邮件已发送到你的邮箱')
+                return redirect(url_for('index.index'))
+            else:
+                flash('邮箱未注册')
         else:
-            flash('邮箱未注册')
+            flash('邮箱格式错误')
     return render_template('index/forget.html',
                            form=form)
 
-@site.route('/forget/<token>')
+@site.route('/forget/<token>',methods=['GET','POST'])
 def forget_confirm(token):
     form = RegisterForm()
+    '''验证链接'''
     email = confirm_token(token)
     if not email:
         abort(404)
-    return render_template('index/revise_passwd.html',
-                           form=form,
-                           email = email)
-
-@site.route('/revise/<email>',methods=['GET','POST'])
-def revise_passwd(email):
-    form = RegisterForm()
     exsited_user = User.query.filter_by(email=email).first()
     if request.method == 'POST':
         if form.retry_new_passwd.data != form.new_passwd.data:
@@ -190,7 +194,24 @@ def revise_passwd(email):
             return redirect(url_for('index.login'))
     return render_template('index/revise_passwd.html',
                            form=form,
-                           email = email)
+                           token = token)
+
+# @site.route('/revise/<email>',methods=['GET','POST'])
+# def revise_passwd(email):
+    # form = RegisterForm()
+    # exsited_user = User.query.filter_by(email=email).first()
+    # if request.method == 'POST':
+        # if form.retry_new_passwd.data != form.new_passwd.data:
+            # flash('两次密码不一致,请重新输入')
+        # else:
+            # new_passwd = form.retry_new_passwd.data
+            # exsited_user.passwd = generate_password_hash(new_passwd)
+            # db.session.commit()
+            # flash('密码修改成功,请登录')
+            # return redirect(url_for('index.login'))
+    # return render_template('index/revise_passwd.html',
+                           # form=form,
+                           # email = email)
 
 
 
@@ -221,16 +242,24 @@ def user_infor_edit(post_id):
         if check_password_hash(user.passwd, form.passwd.data):
             if form.retry_new_passwd.data == form.new_passwd.data:
                 action.edit_user_infor()
-                flash('资料更新成功')
+                flash('资料更新成功,请重新登陆')
+                '''修改密码后重新登陆'''
+                logout_user()
+                for key in ('identity.id', 'identity.auth_type'):
+                    session.pop(key, None)
+                identity_changed.send(current_app._get_current_object(),
+                          identity=AnonymousIdentity())
+                return redirect(url_for('index.login'))
             else:
                 flash('两次密码输入不一致，请重新输入')
         else:
             flash('密码错误，请重新输入')
-    return redirect(url_for('index.logined_user',name=user.name))
+        return redirect(url_for('index.logined_user',
+                                name=user.name))
+    return redirect(url_for('index.index'))
 
 
 @site.route('/about')
-@writer_permission.require(http_exception=403)
 def about():
     content = """
 ### **个人介绍**

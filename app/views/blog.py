@@ -12,6 +12,7 @@ from flask import render_template, Blueprint,request,\
 from flask.ext.login import current_user,login_required
 from ..forms import CommentForm
 from ..models import Comments,db,Replies,Articles,Tags
+from ..utils import writer_permission
 
 site = Blueprint('blog',__name__,url_prefix='/blog')
 
@@ -88,6 +89,7 @@ def page(id):
 '''评论表单'''
 @site.route('/pages/<id>/comment',methods=['GET','POST'])
 @login_required
+@writer_permission.require(404)
 def comment(id):
     form = CommentForm()
     if request.method == 'POST':
@@ -102,6 +104,7 @@ def comment(id):
 '''回复表单'''
 @site.route('/pages/<id>/<comment_id>',methods=['GET','POST'])
 @login_required
+@writer_permission.require(404)
 def reply(id,comment_id):
     form = CommentForm()
     if request.method == 'POST':

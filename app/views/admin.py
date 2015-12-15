@@ -94,7 +94,7 @@ def admin_comment():
                            comments = comments)
 
 @site.route('/<category>/<post_id>/delete')
-# @super_permission.require(404)
+@super_permission.require(404)
 def admin_delete(category,post_id):
     action = DeleteManager(post_id)
     if category == 'article':
@@ -158,6 +158,7 @@ def admin_edit(category,post_id):
                            post_id = post_id)
 
 @site.route('/<category>/<post_id>/save',methods=['GET','POST'])
+@super_permission.require(404)
 def admin_edit_save(category,post_id):
     if category == 'article':
         form = ArticleForm()
