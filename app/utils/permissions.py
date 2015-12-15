@@ -22,8 +22,8 @@ visitor_permission = Permission(RoleNeed('visitor')).union(writer_permission)
 def on_identity_loaded(sender, identity):
     identity.user = current_user
 
-    if hasattr(current_user, 'name'):
-        identity.provides.add(UserNeed(current_user.name))
+    if hasattr(current_user, 'id'):
+        identity.provides.add(UserNeed(current_user.id))
 
     if hasattr(current_user, 'roles'):
         identity.provides.add(RoleNeed(current_user.roles))
@@ -34,6 +34,8 @@ def on_identity_loaded(sender, identity):
     if hasattr(current_user, 'is_confirmed') and current_user.is_confirmed:
         identity.provides.add(RoleNeed('writer'))
 
+    # if hasattr(current_user, 'name'):
+        # identity.provides.add(RoleNeed(current_user.name))
     # identity.allow_admin = admin_permission.allows(identity)
     # identity.allow_edit = editor_permission.allows(identity)
     # identity.allow_write = writer_permission.allows(identity)

@@ -8,17 +8,17 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint,redirect, \
-    url_for,flash,request,g,Markup,current_app,session
+    url_for,flash,request,g,Markup,current_app,session,abort
 from flask_login import login_user, logout_user, \
     current_user, login_required
 from flask_principal import Identity, AnonymousIdentity, \
      identity_changed
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash,generate_password_hash
 from ..email import email_token,email_send,confirm_token,email_validate
 from app import login_manager
 from ..models import User,Questions,Comments,db
 from ..forms import LoginForm,RegisterForm
-from ..utils import writer_permission
+from ..utils import writer_permission,EditManager
 import datetime
 import markdown
 
@@ -45,12 +45,17 @@ def login():
     '''登陆'''
     error = None
     form = LoginForm()
+    '''验证码'''
+    # validate = ValidateCode()
+    # validate_code = validate.start()
+    # print(validate_code[1])
     '''如果已经登陆则重定向到主页'''
     if g.user is not None and g.user.is_authenticated:
         flash('你已经登陆,不能重复登陆')
         return redirect(url_for('index.index'))
     if request.method == 'POST':
         user = User.query.filter_by(name=form.name.data).first()
+        # if form.validate_code.data == validate_code[1]:
         if user:
             if not check_password_hash(user.passwd, form.passwd.data):
                 error = u'密码错误'
@@ -58,12 +63,14 @@ def login():
                 login_user(user)
 
                 identity_changed.send(current_app._get_current_object(),
-                                  identity=Identity(user.name))
+                                identity=Identity(user.id))
                 flash('你已成功登陆.')
                 '''next是必需的,登陆前请求的页面'''
                 return redirect(request.args.get('next') or url_for('index.index'))
         else:
             error = u'用户名错误'
+        # else:
+            # error = u'验证码错误'
     return render_template('index/login.html',
                            form=form,
                            error = error)
@@ -103,7 +110,8 @@ def sign():
         else:
             account = User(name = form.name.data,
                            email = form.email.data,
-                           passwd = form.passwd.data)
+                           passwd = form.passwd.data,
+                           roles = 'visitor')
             db.session.add(account)
             db.session.commit()
 
@@ -127,7 +135,7 @@ def confirm(token):
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
     user = User.query.filter_by(email=email).first_or_404()
-    if user.confirmed:
+    if user.is_confirmed:
         flash('账户已经验证. Please login.', 'success')
     else:
         user.is_confirmed = True
@@ -137,28 +145,89 @@ def confirm(token):
         flash('You have confirmed your account. Thanks!', 'success')
     return redirect(url_for('index.logined_user',name=user.name))
 
+@site.route('/forget',methods=['GET','POST'])
+def forget():
+    form = RegisterForm()
+    if request.method == 'POST':
+        '''加密的验证链接'''
+        exsited_email = User.query.filter_by(email=\
+                                             form.confirm_email.data).first()
+        print(form.confirm_email.data)
+        if exsited_email:
+            token = email_token(form.confirm_email.data)
+            '''email模板'''
+            confirm_url = url_for('index.forget_confirm', token=token, _external=True)
+            html = render_template('forget.html', confirm_url=confirm_url)
+            email_send(form.confirm_email.data,html)
+            flash('邮件已发送到你的邮箱')
+        else:
+            flash('邮箱未注册')
+    return render_template('index/forget.html',
+                           form=form)
+
+@site.route('/forget/<token>')
+def forget_confirm(token):
+    form = RegisterForm()
+    email = confirm_token(token)
+    if not email:
+        abort(404)
+    return render_template('index/revise_passwd.html',
+                           form=form,
+                           email = email)
+
+@site.route('/revise/<email>',methods=['GET','POST'])
+def revise_passwd(email):
+    form = RegisterForm()
+    exsited_user = User.query.filter_by(email=email).first()
+    if request.method == 'POST':
+        if form.retry_new_passwd.data != form.new_passwd.data:
+            flash('两次密码不一致,请重新输入')
+        else:
+            new_passwd = form.retry_new_passwd.data
+            exsited_user.passwd = generate_password_hash(new_passwd)
+            db.session.commit()
+            flash('密码修改成功,请登录')
+            return redirect(url_for('index.login'))
+    return render_template('index/revise_passwd.html',
+                           form=form,
+                           email = email)
+
+
+
 @site.route('/u/<name>/view')
 @login_required
 def logined_user(name):
+    '''不能进别人主页'''
+    if current_user.name != name:
+        abort(404)
     user_questions = Questions.query.filter_by(user=name).all()
-    user_comments = Comments.query.filter_by(comment_user=name).all()
+    user_comments = Comments.query.filter_by(user=name).all()
     user = User.query.filter_by(name=name).first()
-    email = user.email
-    confirmed = user.is_confirmed
-    registered_time = user.registered_time
-    form = LoginForm()
+    form = RegisterForm()
+    form.email.data = user.email
     return render_template('user/user.html',
-                            name = name,
-                            email = email,
-                            confirmed = confirmed,
-                            registered_time = registered_time,
                             form = form,
+                            user = user,
                             user_comments = user_comments,
                             user_questions = user_questions)
 
-# @site.route('/u/<name>/delete?question=<title>')
-# def ask_delete(name,title):
-    # db.session.delete(title=title)
+@site.route('/u/<post_id>/edit',methods=['GET','POST'])
+@login_required
+def user_infor_edit(post_id):
+    form = RegisterForm()
+    action = EditManager(post_id,form)
+    if request.method == 'POST':
+        user = User.query.filter_by(id=post_id).first()
+        if check_password_hash(user.passwd, form.passwd.data):
+            if form.retry_new_passwd.data == form.new_passwd.data:
+                action.edit_user_infor()
+                flash('资料更新成功')
+            else:
+                flash('两次密码输入不一致，请重新输入')
+        else:
+            flash('密码错误，请重新输入')
+    return redirect(url_for('index.logined_user',name=user.name))
+
 
 @site.route('/about')
 @writer_permission.require(http_exception=403)

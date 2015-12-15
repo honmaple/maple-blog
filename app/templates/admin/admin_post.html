@@ -14,11 +14,9 @@
             {{ form.title.label }}
             {{ form.title(class="form-control",placeholder="Title",style="width:60%") }}
             {{ form.category.label }}
-            {{ form.category(class="form-control",placeholder="Category") }}
+            {{ form.category(class="form-control") }}
             {{ form.tags.label }}
-            {{ form.tags(class="form-control",placeholder="Tags xx,xx,xx") }}
-            {{ form.summary.label }}
-            {{ form.summary(class="form-control",placeholder="Summary") }}
+            {{ form.tags(class="form-control",placeholder="请以英文逗号隔开 xx,xx,xx") }}
             {{ form.content.label }}
             {{ form.content(class="form-control",rows="10") }}
             <br />

@@ -1,7 +1,6 @@
 {% extends "index/base.html" %}
 {% block content %}
 
-<!--<div  style="margin:10% 40%;box-shadow:0 0 5px #000; border-radius:10px;">-->
 <div class="row">
     <div class="col-xs-2">
     </div>
@@ -12,23 +11,33 @@
             {{ form.hidden_tag()}}
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ form.name.label }}</label>
-                <div class="col-sm-9">
+                <div class="col-sm-6">
                     {{ form.name(class="form-control",placeholder="name") }}
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ form.passwd.label }}</label>
-                <div class="col-sm-9">
+                <div class="col-sm-6">
                     {{ form.passwd(class="form-control",placeholder="password") }}
                 </div>
             </div>
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">{{ form.validate_code.label }}</label>-->
+                <!--<div class="col-sm-3">-->
+                    <!--{{ form.validate_code(class="form-control") }}-->
+                <!--</div>-->
+                <!--<div class="col-sm-3">-->
+                    <!--<img src="{{ url_for('static',filename='images/validate.png') }}" alt="看不清，换一张"/>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    {{ form.sign_in(class="btn btn-primary") }}
+                <div class="col-sm-offset-3 col-sm-9">
+                    {{ form.sign_in(class="btn btn-primary",style="margin-right:10px") }}
+                    <a href="{{ url_for('index.forget') }}">忘记密码?</a>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
+                <div class="col-sm-offset-3 col-sm-9">
                     <a href="{{ url_for('index.sign') }}">还未注册</a>
                 </div>
             </div>

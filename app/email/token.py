@@ -15,7 +15,6 @@ from flask import current_app
 
 def email_token(email):
     config = current_app.config
-    print(config['SECRET_KEY'])
     serializer = URLSafeTimedSerializer(config['SECRET_KEY'])
     token = serializer.dumps(email,salt=config['SECURITY_PASSWORD_SALT'])
     return token

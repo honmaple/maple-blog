@@ -10,7 +10,7 @@
 from flask import render_template, Blueprint, request, \
     flash, redirect, url_for
 from flask.ext.login import current_user
-from ..models import Articles,db,User,Comments,Questions,Tags,Category
+from ..models import Articles,db,User,Comments,Questions,Tags
 from ..forms import ArticleForm,QuestionForm,RegisterForm
 from ..utils import super_permission
 from ..utils import DeleteManager,EditManager
@@ -39,20 +39,12 @@ def admin_post():
             # else:
             t = Tags(name = tag)
             post_tags.append(t)
-        '''判断分类是否存在'''
-        existed_category = Category.query.filter_by(name=\
-                                                    form.category.data).first()
-        if existed_category:
-            post_category = existed_category
-        else:
-            post_category = Category(name=form.category.data)
         post_article = Articles(user = current_user.name,
                                 title = form.title.data,
-                                summary = form.summary.data,
+                                category = form.category.data,
                                 content = form.content.data)
         '''关系数据表'''
         post_article.tag_article = post_tags
-        post_article.category = post_category
         db.session.add(post_article)
         db.session.commit()
         flash('已提交')
@@ -102,7 +94,7 @@ def admin_comment():
                            comments = comments)
 
 @site.route('/<category>/<post_id>/delete')
-@super_permission.require(404)
+# @super_permission.require(404)
 def admin_delete(category,post_id):
     action = DeleteManager(post_id)
     if category == 'article':
@@ -110,10 +102,18 @@ def admin_delete(category,post_id):
         return redirect(url_for('admin.admin_article'))
     elif category == 'comment':
         action.delete_comment()
-        return redirect(url_for('admin.admin_comment'))
+        if not current_user.is_superuser:
+            return redirect(url_for('index.logined_user',
+                                    name=current_user.name))
+        else:
+            return redirect(url_for('admin.admin_comment'))
     elif category == 'reply':
         action.delete_reply()
-        return redirect(url_for('admin.admin_comment'))
+        if  not current_user.is_superuser:
+            return redirect(url_for('index.logined_user',
+                                    name=current_user.name))
+        else:
+            return redirect(url_for('admin.admin_comment'))
     elif category == 'user':
         action.delete_user()
         return redirect(url_for('admin.admin_account'))
@@ -130,28 +130,25 @@ def admin_edit(category,post_id):
         article = Articles.query.filter_by(id=post_id).first()
         form = ArticleForm()
         form.content.data = article.content
-        form.summary.data = article.summary
         form.title.data = article.title
-        tags = []
+        tags = ''
         for tag in article.tags:
-            tags.append(tag.name)
+            tags += tag.name + ','
+            print(tag)
         form.tags.data = tags
     if category == 'question':
         question = Questions.query.filter_by(id=post_id).first()
         form = QuestionForm()
         form.title.data = question.title
         form.describ.data = question.describ
-        form.answer.data = question.describ
+        form.answer.data = question.answer
     if category == 'user':
         user = User.query.filter_by(id=post_id).first()
         form = RegisterForm()
-        print(user.roles)
-        print(user.is_superuser)
-        print(user.is_confirmed)
         form.name.data = user.name
-        form.is_superuser.data = user.is_superuser
         form.roles.data = user.roles
-        form.is_confirmed.data = user.is_confirmed
+        form.is_superuser.data = str(user.is_superuser)
+        form.is_confirmed.data = str(user.is_confirmed)
 
     category = category
     post_id = post_id

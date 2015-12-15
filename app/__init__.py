@@ -7,12 +7,14 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-from flask import Flask, render_template,send_from_directory,request
+from flask import Flask, render_template,send_from_directory,request,\
+    Markup
 from flask_assets import Environment, Bundle
 from flask_mail import Mail
 from flask_login import LoginManager
 from flask_principal import Principal
 from config import load_config
+import markdown
 
 def create_app():
     app = Flask(__name__,static_folder='static')
@@ -46,6 +48,9 @@ def register_db(app):
 
 
 def register_jinja2(app):
+    def safe_markdown(text): 
+        return Markup(markdown.markdown(text))
+    app.jinja_env.filters['safe_markdown'] = safe_markdown 
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 def register_assets(app):

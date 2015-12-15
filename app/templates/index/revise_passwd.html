@@ -1,0 +1,36 @@
+{% extends "index/base.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-xs-2">
+    </div>
+    <div class="col-xs-8">
+        <br />
+        <form action="{{ url_for('index.revise_passwd',email=email) }}" method="POST" class="form-horizontal">
+            {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+            {{ form.hidden_tag()}}
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{{ form.new_passwd.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.new_passwd(class="form-control",placeholder="new password") }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{{ form.retry_new_passwd.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.retry_new_passwd(class="form-control",placeholder="new password") }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    {{ form.confirm(class="btn btn-primary") }}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-xs-2">
+    </div>
+</div>
+{% endblock %}
+
+

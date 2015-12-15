@@ -8,11 +8,10 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint,request,\
-    redirect,url_for,g,Markup
+    redirect,url_for,g
 from flask.ext.login import current_user,login_required
-import markdown
 from ..forms import CommentForm
-from ..models import Comments,db,Replies,Articles,Tags,Category
+from ..models import Comments,db,Replies,Articles,Tags
 
 site = Blueprint('blog',__name__,url_prefix='/blog')
 
@@ -24,9 +23,10 @@ def before_request():
 @site.route('/latest',defaults={'number':1})
 @site.route('/latest/view?=<int:number>')
 def index_num(number):
+    '''每页显示9篇'''
     articles = Articles.query.order_by(Articles.publish).\
         offset((number-1)*9).limit(number*9)
-    all_tags = Tags.query.all()
+    all_tags = Tags.query.distinct(Tags.name).all()
     count = Articles.query.count()
     count = int(count/9) + 1
     number = number
@@ -41,15 +41,14 @@ def index_num(number):
 @site.route('/category=<category>',defaults={'number':1})
 @site.route('/category=<category>/view?=<int:number>')
 def category_num(category,number):
-    categories = Category.query.filter_by(name=category).first()
-    all_tags = Tags.query.all()
-    articles = categories.articles
-    count = articles.count()
+    articles = Articles.query.filter_by(category=category).all()
+    all_tags = Tags.query.distinct(Tags.name).all()
+    count = len(articles)
     count = int(count/9) + 1
     number = number
     category = category
     return render_template('blog/blog_category.html',
-                           title = '%s -HonMaple博客'%(category),
+                           title = '%s - HonMaple博客'%(category),
                            articles = articles,
                            all_tags = all_tags,
                            count = count,
@@ -61,62 +60,58 @@ def category_num(category,number):
 @site.route('/tag=<tag>/view?=<int:number>')
 def tag_num(tag,number):
     tags = Tags.query.filter_by(name=tag).first()
-    all_tags = Tags.query.all()
+    all_tags = Tags.query.distinct(Tags.name).all()
     articles = tags.tag_article
     count = len(articles)
     count = int(count/9) + 1
     number = number
     tag = tag
     return render_template('blog/blog_tag.html',
-                           title = '%s -HonMaple博客'%(tag),
+                           title = '%s - HonMaple博客'%(tag),
                            articles = articles,
                            number = number,
                            count = count,
                            tag = tag,
                            all_tags = all_tags)
 
-@site.route('/pages/<title>')
-def page(title):
+@site.route('/pages/<id>')
+def page(id):
     form = CommentForm()
-    article = Articles.query.filter_by(title=title).first()
+    article = Articles.query.filter_by(id=id).first()
     tags = article.tag_article
-    content = Markup(markdown.markdown(article.content))
-    all_comment = Comments.query.filter_by(page_title=title).all()
+    title = article.title
     return render_template('blog/blog_page.html',
-                           title = '%s -HonMaple博客'%(title),
+                           title = '%s - HonMaple博客'%(title),
                            article = article,
-                           content = content,
                            tags = tags,
-                           all_comment = all_comment,
                            form = form)
 '''评论表单'''
-@site.route('/pages/<title>/comment',methods=['GET','POST'])
+@site.route('/pages/<id>/comment',methods=['GET','POST'])
 @login_required
-def comment(title):
+def comment(id):
     form = CommentForm()
-    article = Articles.query.filter_by(title=title).first()
     if request.method == 'POST':
-        post_comment = Comments(comment_user = current_user.name,
-                                comment_content = form.comment.data,
-                                page_title = article.title)
+        post_comment = Comments(user = current_user.name,
+                                content = form.comment.data)
+        post_comment.articles_id = id
         db.session.add(post_comment)
         db.session.commit()
-        return redirect(url_for('blog.page',title=title,_anchor='comment'))
-    return redirect(url_for('blog.page',title=title,_anchor='comment'))
+        return redirect(url_for('blog.page',id=id,_anchor='comment'))
+    return redirect(url_for('blog.page',id=id,_anchor='comment'))
 
 '''回复表单'''
-@site.route('/pages/<title>/<comment_id>',methods=['GET','POST'])
+@site.route('/pages/<id>/<comment_id>',methods=['GET','POST'])
 @login_required
-def reply(title,comment_id):
+def reply(id,comment_id):
     form = CommentForm()
     if request.method == 'POST':
-        post_reply = Replies( reply_user = current_user.name,
-                             reply_content = form.reply.data,
-                             comments_id = comment_id)
+        post_reply = Replies( user = current_user.name,
+                             content = form.reply.data)
+        post_reply.comments_id = comment_id
         db.session.add(post_reply)
         db.session.commit()
-        return redirect(url_for('blog.page',title=title,_anchor='comment'))
-    return redirect(url_for('blog.page',title=title,_anchor='comment'))
+        return redirect(url_for('blog.page',id=id,_anchor='comment'))
+    return redirect(url_for('blog.page',id=id,_anchor='comment'))
 
 
 

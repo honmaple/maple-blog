@@ -11,7 +11,7 @@
             {% for article in articles %}
             <li>
                 <span>
-                    <h4> <a href="{{ url_for('blog.page',title=article.title) }}" target=_blank>{{ article.title }}</a></h4>
+                    <h4> <a href="{{ url_for('blog.page',id=article.id) }}" target=_blank>{{ article.title }}</a></h4>
                     <h5>
                         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                         {{ article.publish }}
@@ -21,11 +21,11 @@
                         {% endfor %}
                         <br />
                         <br />
-                        {{ article.content|safe|truncate(200, True) }}
+                        {{ article.content | truncate(255, True)| safe_markdown }}
                     </h5>
                 </span>
                 <span style="display:block;text-align:right;width:100%;"> 
-                    <a href="{{ url_for('blog.page',title=article.title) }}">more>></a>
+                    <a href="{{ url_for('blog.page',id=article.id) }}">more>></a>
                 </span>
                 <div style="border-bottom:1px dashed #000000;width:100%;padding:0;"></div>
             </li>

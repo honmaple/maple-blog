@@ -7,7 +7,8 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-from ..models import Comments,Articles,Replies,User,Questions,db
+from ..models import Comments,Articles,Replies,User,Questions,Tags,db
+from werkzeug.security import generate_password_hash
 
 class DeleteManager(object):
     def __init__(self,post_id):
@@ -66,13 +67,38 @@ class EditManager(object):
         user.is_confirmed = self.form.is_confirmed.data
         db.session.commit()
 
+    def edit_user_infor(self):
+        '''编辑用户'''
+        user = User.query.filter_by(id=self.post_id).first()
+        new_passwd = self.form.retry_new_passwd.data
+        user.passwd = generate_password_hash(new_passwd)
+        db.session.commit()
+
     def edit_article(self):
         '''编辑文章'''
         article = Articles.query.filter_by(id=self.post_id).first()
         article.title = self.form.title.data
-        article.summary = self.form.summary.data
         article.content = self.form.content.data
-        article.title = self.form.title.data
+        article.category = self.form.category.data
+        '''tags看着有些复杂'''
+        tags = self.form.tags.data.split(',')
+        '''先查找article的关联节点'''
+        exsited_tag = []
+        for s in article.tags:
+            t = Tags.query.filter_by(id = s.id).first()
+            exsited_tag.append(t)
+        '''更新节点'''
+        i = 0
+        post_tags = []
+        for tag in tags:
+            if i < len(exsited_tag):
+                exsited_tag[i].name = tag
+                post_tags.append(exsited_tag[i])
+            else:
+                new_tag = Tags(name=tag)
+                post_tags.append(new_tag)
+            i += 1
+        article.tags = post_tags
         db.session.commit()
 
     def edit_question(self):

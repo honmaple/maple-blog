@@ -14,10 +14,10 @@ from wtforms.validators import Required
 
 class ArticleForm(Form):
     title = StringField('标题',validators=[Required()])
-    summary = TextAreaField('概要',validators=[Required()])
     content = TextAreaField('内容',validators=[Required()])
     category = SelectField('分类',
-                           choices=[('linux', 'Linux'), ('python', 'Python')],
+                           choices=[('linux', 'Linux'), ('python', 'Python'),
+                                    ('生活随笔','生活随笔')],
                            validators=[Required()])
     tags = StringField('标签', validators=[Required()])
     post = SubmitField('提交')
