@@ -19,18 +19,13 @@
                 {% for comment in comments %}
                 <tr>
                     <td>{{ comment['id'] }}</td>
-                    <td>{{ comment['page_title'] }}</td> 
-                    <td>{{ comment['comment_content'] }}</td> 
-                    <td> <a href="{{ url_for('index.logined_user',name=comment['comment_user']) }}">{{ comment['comment_user'] }}</a></td>
-                    <td>{{ comment['comment_publish'] }}</td>
+                    <td> <a href="{{ url_for('blog.page',id=comment.article.id) }}" target=_blank>{{ comment.article.title }}</a></td> 
+                    <td>{{ comment.content }}</td> 
+                    <td> <a href="{{ url_for('index.logined_user',name=comment['user']) }}">{{ comment['user'] }}</a></td>
+                    <td>{{ comment['publish'] }}</td>
                     <td> 
                         <table>
                             <tr>
-                                <td>
-                                    <a href="{{ url_for('admin.admin_edit',category='comment',post_id=comment.id) }}" style="white-space:nowrap;">
-                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                    </a>
-                                </td>
                                 <td>
                                     <span class="glyphicon glyphicon-trash" 
                                           data-toggle="modal" data-target="#delete" aria-hidden="true" style="color:#337ab7">
@@ -75,22 +70,17 @@
                     <th>操作</th>
                 </tr>
                 {% for comment in comments %}
-                {% for reply in comment['reply'] %}
+                {% for reply in comment.replies %}
                 <tr>
-                    <td>{{ reply['id'] }}</td> 
-                    <td>{{ comment['page_title'] }}</td>
-                    <td>{{ comment['comment_content'] }}</td>
-                    <td>{{ reply['reply_content'] }}</td> 
-                    <td> <a href="{{ url_for('index.logined_user',name=reply['reply_user']) }}">{{ reply['reply_user'] }}</a></td>
-                    <td>{{ reply['reply_publish'] }}</td> 
+                    <td>{{ reply.id }}</td> 
+                    <td> <a href="{{ url_for('blog.page',id=comment.article.id) }}" target=_blank>{{ comment.article.title }}</a></td> 
+                    <td>{{ comment.content }}</td>
+                    <td>{{ reply.content }}</td> 
+                    <td> <a href="{{ url_for('index.logined_user',name=reply['user']) }}">{{ reply['user'] }}</a></td>
+                    <td>{{ reply.publish }}</td> 
                     <td> 
                         <table>
                             <tr>
-                                <td>
-                                    <a href="{{ url_for('admin.admin_edit',category='reply',post_id=reply.id) }}" style="white-space:nowrap;">
-                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                    </a>
-                                </td>
                                 <td>
                                     <a href="{{ url_for('admin.admin_delete',category='reply',post_id=reply.id) }}" 
                                        style="white-space:nowrap;">

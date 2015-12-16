@@ -102,18 +102,10 @@ def admin_delete(category,post_id):
         return redirect(url_for('admin.admin_article'))
     elif category == 'comment':
         action.delete_comment()
-        if not current_user.is_superuser:
-            return redirect(url_for('index.logined_user',
-                                    name=current_user.name))
-        else:
-            return redirect(url_for('admin.admin_comment'))
+        return redirect(url_for('admin.admin_comment'))
     elif category == 'reply':
         action.delete_reply()
-        if  not current_user.is_superuser:
-            return redirect(url_for('index.logined_user',
-                                    name=current_user.name))
-        else:
-            return redirect(url_for('admin.admin_comment'))
+        return redirect(url_for('admin.admin_comment'))
     elif category == 'user':
         action.delete_user()
         return redirect(url_for('admin.admin_account'))
@@ -131,10 +123,15 @@ def admin_edit(category,post_id):
         form = ArticleForm()
         form.content.data = article.content
         form.title.data = article.title
+        '''得到节点内容'''
         tags = ''
+        leng = 1
         for tag in article.tags:
-            tags += tag.name + ','
-            print(tag)
+            if leng == article.tags.count():
+                tags += tag.name
+            else:
+                tags += tag.name + ','
+            leng += 1
         form.tags.data = tags
     if category == 'question':
         question = Questions.query.filter_by(id=post_id).first()
