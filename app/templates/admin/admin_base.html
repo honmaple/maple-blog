@@ -28,7 +28,7 @@
                 <div class="navbar navbar-default" style="padding:0 11%;">
                     <div class="container-fluid">
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#manager" aria-expanded="false">
                                 <span class="sr-only"></span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
@@ -36,7 +36,7 @@
                             </button>
                             <a class="navbar-brand" href="{{ url_for('admin.index') }}">后台管理</a>
                         </div>
-                        <div class="collapse navbar-collapse">
+                        <div class="collapse navbar-collapse" id="manager">
                             <ul class="nav navbar-nav">
                                 <li><a href="{{ url_for('index.index') }}">主页</a></li>
                                 <li><a href="{{ url_for('admin.admin_account') }}">用户管理</a></li>
