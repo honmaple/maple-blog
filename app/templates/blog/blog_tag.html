@@ -4,7 +4,8 @@
 <div class="row ">
     <div class="col-sm-9" >
         <ul>
-            {% for article in articles %}
+            {% for tag in tags %}
+            {% for article in tag.tag_article %}
             <li>
                 <span>
                     <h4> <a href="{{ url_for('blog.page',id=article.id) }}" target=_blank>{{ article.title }}</a></h4>
@@ -25,6 +26,7 @@
                 </span>
                 <div style="border-bottom:1px dashed #000000;width:100%;padding:0;"></div>
             </li>
+            {% endfor %}
             {% else %}
             <li>No post.</li>
             {% endfor %}

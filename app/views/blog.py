@@ -60,16 +60,15 @@ def category_num(category,number):
 @site.route('/tag=<tag>',defaults={'number':1})
 @site.route('/tag=<tag>/view?=<int:number>')
 def tag_num(tag,number):
-    tags = Tags.query.filter_by(name=tag).first()
+    tags = Tags.query.filter_by(name=tag).all()
     all_tags = Tags.query.distinct(Tags.name).all()
-    articles = tags.tag_article
-    count = len(articles)
+    count = len(tags)
     count = int(count/9) + 1
     number = number
     tag = tag
     return render_template('blog/blog_tag.html',
                            title = '%s - HonMaple博客'%(tag),
-                           articles = articles,
+                           tags = tags,
                            number = number,
                            count = count,
                            tag = tag,
