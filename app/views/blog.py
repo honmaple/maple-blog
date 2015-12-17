@@ -32,11 +32,11 @@ def index_num(number):
     count = int(count/9) + 1
     number = number
     return render_template('blog/blog.html',
-                           title = u'HonMaple的个人博客',
-                           articles = articles,
-                           all_tags = all_tags,
-                           count = count,
-                           number = number)
+                        title = u'HonMaple的个人博客',
+                        articles = articles,
+                        all_tags = all_tags,
+                        count = count,
+                        number = number)
 
 
 @site.route('/category=<category>',defaults={'number':1})

@@ -91,6 +91,7 @@ def not_found(error):
     return render_template('index/error.html'), 404
 
 @app.route('/robots.txt')
+@app.route('/favicon.ico')
 @app.route('/sitemap.xml')
 def static_from_root():
     return send_from_directory(app.static_folder, request.path[1:])
