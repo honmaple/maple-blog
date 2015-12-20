@@ -73,9 +73,9 @@
     {% for article in articles %}
     {%- if loop.index >= 3 %}{% break %}{% endif %}
     <div class="category">
-        <h4>
+        <h3>
             <a href="{{ url_for('blog.page',id=article.id) }}">{{ article.title }}</a>
-        </h4>
+        </h3>
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
         {{ article.publish }}
         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>

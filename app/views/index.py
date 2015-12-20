@@ -40,7 +40,8 @@ def user_loader(id):
 def index():
     '''主页'''
     articles = Articles.query.order_by(Articles.publish.desc()).limit(9)
-    questions = Questions.query.order_by(Questions.publish.desc()).limit(9)
+    questions = Questions.query.order_by(Questions.publish.desc()).\
+        filter_by(private=False).limit(9)
     return render_template('index/index.html',
                            articles = articles,
                            questions = questions)
