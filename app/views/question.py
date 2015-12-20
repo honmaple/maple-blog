@@ -12,6 +12,7 @@ from flask import render_template, Blueprint, \
 from flask.ext.login import  current_user, login_required
 from ..forms import QuestionForm
 from ..models import Questions,db
+from ..utils import writer_permission
 
 site = Blueprint('question',__name__,url_prefix='/question')
 
@@ -20,15 +21,20 @@ site = Blueprint('question',__name__,url_prefix='/question')
 def before_request():
     g.user = current_user
 
-@site.route('/view',methods=['GET','POST'])
-@login_required
+@site.route('/view')
 def index():
     form = QuestionForm()
     all_questions = Questions.query.filter_by(private=False).all()
-    print (form.validate_on_submit())
+    return render_template('question/question.html',
+                           all_questions = all_questions,
+                           form = form)
+
+@site.route('/view/post',methods=['GET','POST'])
+@login_required
+@writer_permission.require(404)
+def post():
+    form = QuestionForm()
     if form.validate_on_submit() and request.method == "POST":
-        # if notnull(form):
-            # print('asd')
         post_question = Questions(user = current_user.name,
                                   title = form.title.data,
                                   describ = form.describ.data,
@@ -40,11 +46,8 @@ def index():
         db.session.add(post_question)
         db.session.commit()
         flash('感谢你的提交')
-        return redirect(url_for('question.index'))
-    return render_template('question/question.html',
-                           all_questions = all_questions,
-                           form = form)
-
+    return redirect(url_for('question.index'))
+    
 @site.route('/view/private')
 @login_required
 def private():

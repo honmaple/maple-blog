@@ -11,7 +11,7 @@
             <div class="item active">
                 <img src="{{ url_for('static',filename='images/back.png') }}" alt="moon" style="width:100%;">
                 <div class="carousel-caption">
-                    新增功能:{{ question.answer }}
+                    新增功能:{{ questions[0].answer }}
                 </div>
             </div>
             <div class="item">
@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6" style="font-size:16px;">
+    <div class="col-sm-3" style="font-size:16px;">
         <h3>
             <a href="{{ url_for('blog.index_num') }}" style="color:#333">
                 最近文章
@@ -44,6 +44,26 @@
         {{ date }}天前
         {% endif %}
         <a href="{{ url_for('blog.page',id=article.id) }}" style="margin-left:10px">{{ article.title }}</a>
+        <br />
+        {% endfor %}
+        </p>
+    </div>
+    <div class="col-sm-3" style="font-size:16px;">
+        <h3>
+            <a href="{{ url_for('question.index') }}" style="color:#333">
+                最近问答
+            </a>
+        </h3>
+        <p>
+        {% for question in questions %}
+        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+        {% set date = (question.publish.today() - question.publish).days %}
+        {% if date == 0 %}
+        今天
+        {% else %}
+        {{ date }}天前
+        {% endif %}
+        <a href="{{ url_for('question.question_view',id=question.id) }}" style="margin-left:10px">{{ question.title }}</a>
         <br />
         {% endfor %}
         </p>

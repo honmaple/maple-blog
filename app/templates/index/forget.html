@@ -7,7 +7,6 @@
     <div class="col-xs-8">
         <br />
         <form action="{{ url_for('index.forget') }}" method="POST" class="form-horizontal">
-            {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
             {{ form.hidden_tag()}}
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ form.confirm_email.label }}</label>

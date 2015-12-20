@@ -30,17 +30,23 @@ class User(db.Model,UserMixin):
     is_confirmed = db.Column(db.Boolean, nullable=False, default=False)
     registered_time = db.Column(db.DateTime, nullable=False)
     confirmed_time = db.Column(db.DateTime, nullable=True)
+    introduce = db.Column(db.Text,nullable=True)
+    school = db.Column(db.String,nullable=True)
 
     def __init__(self, name,email, passwd,
                  roles,
                  registered_time = datetime.datetime.now(),
-                 confirmed_time=None):
+                 confirmed_time=None,
+                 introduce = None,
+                 school = None):
         self.name = name
         self.email = email
         self.passwd = self.set_password(passwd)
         self.registered_time = registered_time
         self.confirmed_time = confirmed_time
         self.roles = roles
+        self.school = school
+        self.introduce = introduce
 
     def set_password(self, password):
         self.pw_hash = generate_password_hash(password)

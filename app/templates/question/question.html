@@ -22,28 +22,29 @@
 <div class="row">
     <div class="col-sm-9">
         {% for question in all_questions %} 
-            <div class="col-sm-6">
-                <span class="question">问</span>
-                <span>
-                    <a href="{{ url_for('question.question_view',id=question['id']) }}" style="font-size:18px;">{{ question['title'] }}</a>
-                </span>
-                <br />
-                <span class="question">描</span>
-                <i>
-                    {{ question['describ'] }}
-                </i>
-                <br />
-                <span class="question">答</span>
-                <span style="font-size:16px">
-                    {{ question['answer'] }}
-                </span>
-                <br />
-                <br />
-            </div>
+        <div class="col-sm-6">
+            <span class="question">问</span>
+            <span>
+                <a href="{{ url_for('question.question_view',id=question['id']) }}" style="font-size:18px;">{{ question['title'] }}</a>
+            </span>
+            <br />
+            <span class="question">描</span>
+            <i>
+                {{ question['describ'] }}
+            </i>
+            <br />
+            <span class="question">答</span>
+            <span style="font-size:16px">
+                {{ question['answer'] }}
+            </span>
+            <br />
+            <br />
+        </div>
         {% endfor %}
     </div>
+    {% if current_user.is_authenticated %}
     <div class="col-sm-3">
-        <form action="{{ url_for('question.index') }}" method="POST">
+        <form action="{{ url_for('question.post') }}" method="POST">
             {{ form.hidden_tag()}}
             {{ form.title.label }}
             {{ form.title(class="form-control",placeholder="输入你的问题") }}
@@ -57,5 +58,6 @@
             {{ form.post(class="btn btn-primary") }}   
         </form>
     </div>
+    {% endif %}
 </div>
 {% endblock %}

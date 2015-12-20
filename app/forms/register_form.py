@@ -8,8 +8,7 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask.ext.wtf import Form
-from wtforms import StringField,SubmitField,PasswordField,validators,SelectField
-from wtforms.validators import Required
+from wtforms import StringField,SubmitField,PasswordField,validators
 
 class RegisterForm(Form):
     name = StringField('用户名', [validators.Length(min=4, max=25)])
@@ -17,28 +16,25 @@ class RegisterForm(Form):
     passwd = PasswordField('密码', [validators.Required()])
     register = SubmitField('注册')
 
-class EditUserForm(Form):
-    name = StringField('用户名', [validators.Length(min=4, max=25)])
-    passwd = PasswordField('密码', [validators.Required()])
-    new_passwd = PasswordField('新密码', [validators.Required()])
-    retry_new_passwd = PasswordField('重复新密码', [validators.Required()])
-    edit = SubmitField('修改')
+class LoginForm(Form):
+    name = StringField('用户名:', [validators.Length(min=4, max=25)])
+    passwd = PasswordField('密码:', [validators.Required()])
+    # validate_code = StringField('验证码:', [validators.Length(min=4, max=6)])
+    sign_in = SubmitField('登陆')
 
-class ForgetForm(Form):
+    # def validate_name(self, field):
+        # if field.data != name:
+            # raise ValidationError("用户名不存在")
+
+    # def validate_passwd(self, field):
+        # if field.data != passwd:
+            # raise ValidationError("密码错误")
+
+class ForgetPasswdForm(Form):
     confirm_email = StringField('注册邮箱', [validators.Length(min=4, max=25)])
     confirm = SubmitField('确认')
 
-class EditRegisterForm(Form):
-    is_superuser = SelectField('是否授予超级管理员权限',
-                           choices=[('True','True'), ('False', 'False')],
-                           validators=[Required()])
-    roles = SelectField('用户组',
-                           choices=[('super','Super'),('admin', 'Admin'), 
-                                    ('writer', 'Writer'),('editor','Editor'),
-                                    ('visitor','Visitor')],
-                           validators=[Required()])
-    is_confirmed = SelectField('修改用户验证状态',
-                               choices=[('True','True'), ('False', 'False')],
-                               validators=[Required()])
-    edit = SubmitField('修改')
-
+class NewPasswdForm(Form):
+    new_passwd = PasswordField('新密码', [validators.Required()])
+    retry_new_passwd = PasswordField('重复新密码', [validators.Required()])
+    confirm = SubmitField('确认')
