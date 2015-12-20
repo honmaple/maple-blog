@@ -25,8 +25,10 @@ def before_request():
 def index():
     form = QuestionForm()
     all_questions = Questions.query.filter_by(private=False).all()
-    if request.method == "POST":
-        print(form.private.data)
+    print (form.validate_on_submit())
+    if form.validate_on_submit() and request.method == "POST":
+        # if notnull(form):
+            # print('asd')
         post_question = Questions(user = current_user.name,
                                   title = form.title.data,
                                   describ = form.describ.data,

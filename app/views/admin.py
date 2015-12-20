@@ -27,7 +27,7 @@ def index():
 def admin_post():
     articles = Articles.query.all()
     form = ArticleForm()
-    if request.method == 'POST':
+    if form.validate_on_submit() and request.method == "POST":
         '''分类节点'''
         tags = form.tags.data.split(',')
         post_tags = []

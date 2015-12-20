@@ -15,7 +15,7 @@
             {% for question in questions %}
             <tr>
                 <td>{{ question.id }}</td>
-                <td> <a href="{{ url_for('question.question_view',title=question.title) }}">{{ question.title }}</a></td> 
+                <td> <a href="{{ url_for('question.question_view',id=question.id) }}">{{ question.title }}</a></td> 
                 <td>{{ question.describ }}</td>
                 {% if question.private %}
                 <td>私人</td>

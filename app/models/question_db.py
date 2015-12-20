@@ -40,6 +40,7 @@ class Questions(db.Model):
         self.describ = describ
         self.answer = answer
         self.publish = publish
+
     def __repr__(self):
         return "<Questions %r>" % self.title
 

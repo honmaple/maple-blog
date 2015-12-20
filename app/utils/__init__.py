@@ -9,4 +9,4 @@
 # -*- coding=UTF-8 -*-
 from .permissions import *
 from .manager import *
-from .validate_code import *
+# from .validate_code import *

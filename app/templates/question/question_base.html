@@ -3,7 +3,6 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <title>HonMaple</title>
 
         {% assets "home_js" %}
@@ -43,7 +42,6 @@
                                 <li><a href="{{ url_for('index.index') }}">主页</a></li>
                                 <li><a href="{{ url_for('question.index') }}">所有问题</a></li>
                                 <li><a href="{{ url_for('question.private') }}">私人问题</a></li>
-                                <li><a href="{{ url_for('index.about') }}">关于我</a></li>
                             </ul>
                             <form class="navbar-form navbar-left" role="search">
                                 <div class="form-group">

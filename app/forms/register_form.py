@@ -15,8 +15,20 @@ class RegisterForm(Form):
     name = StringField('用户名', [validators.Length(min=4, max=25)])
     email = StringField('邮箱', [validators.Length(min=4, max=25)])
     passwd = PasswordField('密码', [validators.Required()])
+    register = SubmitField('注册')
+
+class EditUserForm(Form):
+    name = StringField('用户名', [validators.Length(min=4, max=25)])
+    passwd = PasswordField('密码', [validators.Required()])
     new_passwd = PasswordField('新密码', [validators.Required()])
     retry_new_passwd = PasswordField('重复新密码', [validators.Required()])
+    edit = SubmitField('修改')
+
+class ForgetForm(Form):
+    confirm_email = StringField('注册邮箱', [validators.Length(min=4, max=25)])
+    confirm = SubmitField('确认')
+
+class EditRegisterForm(Form):
     is_superuser = SelectField('是否授予超级管理员权限',
                            choices=[('True','True'), ('False', 'False')],
                            validators=[Required()])
@@ -29,8 +41,4 @@ class RegisterForm(Form):
                                choices=[('True','True'), ('False', 'False')],
                                validators=[Required()])
     edit = SubmitField('修改')
-    register = SubmitField('注册')
-
-    confirm_email = StringField('注册邮箱', [validators.Length(min=4, max=25)])
-    confirm = SubmitField('确认')
 
