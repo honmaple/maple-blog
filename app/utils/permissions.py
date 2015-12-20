@@ -11,7 +11,6 @@ from app import app
 from flask_login import current_user
 from flask_principal import Permission, RoleNeed, UserNeed, identity_loaded
 
-
 super_permission = Permission(RoleNeed('super'))
 admin_permission = Permission(RoleNeed('admin')).union(super_permission)
 editor_permission = Permission(RoleNeed('editor')).union(admin_permission)

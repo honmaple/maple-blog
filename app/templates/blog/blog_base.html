@@ -17,9 +17,21 @@
             .footer {margin-top:-30px;height:30px;}
             .wrap{min-height:100%}
             .main{padding-bottom:30px;overflow:hidden;}
-    ul {margin:0px;padding:0;}
+            ul {margin:0px;padding:0;}
             li {
                 list-style:none;
+            }
+            .category {
+            margin-bottom:15px;
+            padding:15px;
+            background:#fff;
+            border:1px solid #ddd;
+            box-shadow:0px 0px 1px #ddd;
+            border-radius: 3px;
+            transition:1s;
+            }
+            .category:hover {
+                box-shadow:0px 0px 3px #ddddd0;
             }
         </style>
     </head>
@@ -35,14 +47,15 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="{{ url_for('index.index') }}">主页</a>
+                            <a class="navbar-brand" href="{{ url_for('blog.index_num') }}">博客主页</a>
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
+                                <li> <a href="{{ url_for('index.index') }}">主页</a></li>
                                 <li> <a href="{{ url_for('blog.category_num',category='linux') }}">Linux</a></li>
                                 <li> <a href="{{ url_for('blog.category_num',category='python') }}">Python</a></li>
                                 <li> <a href="{{ url_for('blog.category_num',category='生活随笔') }}">生活随笔</a></li>
-                                <li><a href="{{ url_for('index.about') }}">关于我</a></li>
+                                <li> <a href="{{ url_for('blog.archives') }}">Archives</a></li>
                             </ul>
                             <form class="navbar-form navbar-left" role="search">
                                 <div class="form-group">
@@ -69,17 +82,67 @@
                         </div>
                     </div>
                 </nav>
-                <div style="padding:0 12%;">
+                <div class="row" style="padding:0 12%;">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
+                    <div class="alert alert-info" style="padding:8px">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     <ul>
                         {% for message in messages %}
                         <li>{{ message }} </li>
                         {% endfor %}
                     </ul>
+                    </div>
                     {% endif %}
                     {% endwith %}
-                    {% block content %}{% endblock %}
+                    <div class="col-sm-9" >
+                        {% block content %}{% endblock %}
+                    </div>
+                        <div class="col-sm-3">
+                            <ul class="list-group">
+                                <li class="list-group-item" style="text-align:center;">
+                                    <img src="{{ url_for('static',filename='images/header.png') }}" alt="头像" width="60%" /> <br />
+                                    <span style="display: inline-block;width:80%;" class="label label-default">
+                                        <a href="{{url_for('index.about')}}" style="color:#fff;"> 
+                                            Author
+                                        </a>
+                                    </span>
+                                    <span style="display: inline-block;width:80%;" class="label label-primary">
+                                        About me
+                                    </span>
+                                    <br />
+                                    <span>
+                                        <i>I like solitude, yearning for freedom </i>
+                                    </span>
+                                </li>
+                                <li class="list-group-item">Social
+                                    <br />
+                                    <a href="http://github.com/honmaple">GitHub</a>
+                                </li>
+                                <li class="list-group-item">Tags: <br />
+                                    {% for tag in all_tags %}
+                                    <span class="label label-primary" style="display: inline-block;">
+                                        <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
+                                    </span>
+                                    {% endfor %}
+                                </li>
+                                <li class="list-group-item">Links
+                                    <br />
+                                    <a href="http://honmaple.com">我的博客</a>
+                                    <br />
+                                    <a href="http://honmaple.gq">我的静态博客站点</a>
+                                    <br />
+                                    <a href="http://flask.pocoo.org/">flask官网</a> 
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="position:fixed; bottom:0;left:30%;width:100%;">
+                            <ul class="pager">
+                                <li> <a href="#">返回顶部</a></li>
+                            </ul>
+                        </div>
                 </div>
             </div>
         </div>

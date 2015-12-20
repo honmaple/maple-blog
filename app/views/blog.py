@@ -10,11 +10,19 @@
 from flask import render_template, Blueprint,request,\
     redirect,url_for,g
 from flask.ext.login import current_user,login_required
-from ..forms import CommentForm
+from ..forms import CommentForm,ReplyForm
 from ..models import Comments,db,Replies,Articles,Tags
 from ..utils import writer_permission
 
 site = Blueprint('blog',__name__,url_prefix='/blog')
+
+def count_sum(count):
+    '''文章总数'''
+    if count%6 == 0:
+        count = int(count/6)
+    else:
+        count = int(count/6) + 1
+    return count
 
 
 @site.before_request
@@ -24,28 +32,30 @@ def before_request():
 @site.route('/latest',defaults={'number':1})
 @site.route('/latest/view?=<int:number>')
 def index_num(number):
-    '''每页显示9篇'''
-    articles = Articles.query.order_by(Articles.publish).\
-        offset((number-1)*9).limit(number*9)
+    '''每页显示6篇,且按照时间排序 '''
+    articles = Articles.query.order_by(Articles.publish.desc()).\
+        offset((number-1)*6).limit(number*6)
     all_tags = Tags.query.distinct(Tags.name).all()
     count = Articles.query.count()
-    count = int(count/9) + 1
+    count = count_sum(count)
     number = number
     return render_template('blog/blog.html',
-                           title = u'HonMaple的个人博客',
-                           articles = articles,
-                           all_tags = all_tags,
-                           count = count,
-                           number = number)
+                        title = u'HonMaple的个人博客',
+                        articles = articles,
+                        all_tags = all_tags,
+                        count = count,
+                        number = number)
 
 
 @site.route('/category=<category>',defaults={'number':1})
 @site.route('/category=<category>/view?=<int:number>')
 def category_num(category,number):
-    articles = Articles.query.filter_by(category=category).all()
+    articles = Articles.query.order_by(Articles.publish.desc()).\
+        filter_by(category=category).\
+        offset((number-1)*6).limit(number*6)
     all_tags = Tags.query.distinct(Tags.name).all()
-    count = len(articles)
-    count = int(count/9) + 1
+    count = Articles.query.filter_by(category=category).count()
+    count = count_sum(count)
     number = number
     category = category
     return render_template('blog/blog_category.html',
@@ -63,7 +73,7 @@ def tag_num(tag,number):
     tags = Tags.query.filter_by(name=tag).all()
     all_tags = Tags.query.distinct(Tags.name).all()
     count = len(tags)
-    count = int(count/9) + 1
+    count = count_sum(count)
     number = number
     tag = tag
     return render_template('blog/blog_tag.html',
@@ -76,22 +86,36 @@ def tag_num(tag,number):
 
 @site.route('/pages/<id>')
 def page(id):
-    form = CommentForm()
+    comment_form = CommentForm()
+    reply_form = ReplyForm()
     article = Articles.query.filter_by(id=id).first()
+    all_tags = Tags.query.distinct(Tags.name).all()
     tags = article.tag_article
     title = article.title
     return render_template('blog/blog_page.html',
                            title = '%s - HonMaple博客'%(title),
                            article = article,
+                           all_tags = all_tags,
                            tags = tags,
-                           form = form)
+                           comment_form = comment_form,
+                           reply_form = reply_form)
+
+@site.route('/archives')
+def archives():
+    articles = Articles.query.order_by(Articles.publish.desc())
+    all_tags = Tags.query.distinct(Tags.name).all()
+    return render_template('blog/blog_archives.html',
+                           title = 'Archives - HonMaple博客',
+                           articles = articles,
+                           all_tags = all_tags)
+
 '''评论表单'''
 @site.route('/pages/<id>/comment',methods=['GET','POST'])
 @login_required
 @writer_permission.require(404)
 def comment(id):
     form = CommentForm()
-    if request.method == 'POST':
+    if form.validate_on_submit() and request.method == "POST":
         post_comment = Comments(user = current_user.name,
                                 content = form.comment.data)
         post_comment.articles_id = id
@@ -105,8 +129,8 @@ def comment(id):
 @login_required
 @writer_permission.require(404)
 def reply(id,comment_id):
-    form = CommentForm()
-    if request.method == 'POST':
+    form = ReplyForm()
+    if form.validate_on_submit() and request.method == "POST":
         post_reply = Replies( user = current_user.name,
                              content = form.reply.data)
         post_reply.comments_id = comment_id

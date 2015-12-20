@@ -8,12 +8,17 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask.ext.wtf import Form
-from wtforms import StringField,SubmitField, TextAreaField
+from wtforms import StringField,SubmitField, TextAreaField, BooleanField
 from wtforms.validators import Required
+
+# class MultiCheckboxField(SelectMultipleField): 
+    # widget = widgets.ListWidget(prefix_label=True) 
+    # option_widget = widgets.CheckboxInput() 
 
 class QuestionForm(Form):
     title = StringField('问题:',validators=[Required()])
     describ = TextAreaField('描述', validators=[Required()])
     answer = TextAreaField('回答:',validators=[Required()])
+    private = BooleanField('保存为私人日记', default=False)
     # recaptcha = RecaptchaField()
     post = SubmitField('提交')

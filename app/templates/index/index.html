@@ -1,10 +1,96 @@
 {% extends 'index/base.html' %}
 {% block content %}
-<div class="jumbotron">
-    <div class="container" style="padding-left:16%">
-        <h1>Hello, Honmaple</h1>
-        <p>这是我的个人网站,欢迎访问并为我提供意见</p>
-        <p><a class="btn btn-primary btn-lg" href="{{ url_for('blog.index_num') }}" role="button">Learn more</a></p>
+<div class="row category">
+    <div id="index" class="carousel slide col-sm-6" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#index" data-slide-to="0" class="active"></li>
+            <li data-target="#index" data-slide-to="1"></li>
+            <li data-target="#index" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img src="{{ url_for('static',filename='images/back.png') }}" alt="moon" style="width:100%;">
+                <div class="carousel-caption">
+                    新增功能:{{ questions[0].answer }}
+                </div>
+            </div>
+            <div class="item">
+                <img src="{{ url_for('static',filename='images/back.png') }}" alt="moon" style="width:100%;">
+                <div class="carousel-caption">
+                    Hello HonMaple
+                </div>
+            </div>
+            <div class="item">
+                <img src="{{ url_for('static',filename='images/back.png') }}" alt="moon" style="width:100%;">
+                <div class="carousel-caption">
+                    这是我的个人网站,欢迎访问并为我提供意见
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="col-sm-3" style="font-size:16px;">
+        <h3>
+            <a href="{{ url_for('blog.index_num') }}" style="color:#333">
+                最近文章
+            </a>
+        </h3>
+        <p>
+        {% for article in articles %}
+        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+        {% set date = (article.publish.today() - article.publish).days %}
+        {% if date == 0 %}
+        今天
+        {% else %}
+        {{ date }}天前
+        {% endif %}
+        <a href="{{ url_for('blog.page',id=article.id) }}" style="margin-left:10px">{{ article.title }}</a>
+        <br />
+        {% endfor %}
+        </p>
+    </div>
+    <div class="col-sm-3" style="font-size:16px;">
+        <h3>
+            <a href="{{ url_for('question.index') }}" style="color:#333">
+                最近问答
+            </a>
+        </h3>
+        <p>
+        {% for question in questions %}
+        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+        {% set date = (question.publish.today() - question.publish).days %}
+        {% if date == 0 %}
+        今天
+        {% else %}
+        {{ date }}天前
+        {% endif %}
+        <a href="{{ url_for('question.question_view',id=question.id) }}" style="margin-left:10px">{{ question.title }}</a>
+        <br />
+        {% endfor %}
+        </p>
+    </div>
+</div>
+<div class="row" style="margin-top:15px">
+    {% for article in articles %}
+    {%- if loop.index >= 3 %}{% break %}{% endif %}
+    <div class="category">
+        <h4>
+            <a href="{{ url_for('blog.page',id=article.id) }}">{{ article.title }}</a>
+        </h4>
+        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+        {{ article.publish }}
+        <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+        {% for tag in article.tag_article %}
+        <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#000">{{ tag.name }}</a>
+        {% endfor %}
+        <p>
+        {{ article.content | truncate(255, True)| safe_markdown }}
+        </p>
+    </div>
+    {% endfor %}
+    <p >
+    <a class="btn btn-primary" href="{{ url_for('blog.index_num') }}" role="button">
+        查看更多
+    </a>
+    </p>
 </div>
 {% endblock %}

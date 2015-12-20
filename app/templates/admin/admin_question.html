@@ -7,19 +7,23 @@
                 <th>NO.</th>
                 <th>问答题目</th>
                 <th>问答描述</th>
-                <th>问答答案</th>
+                <th>类型</th>
                 <th>发表作者</th>
                 <th>发表时间</th>
                 <th>操作</th>
             </tr>
             {% for question in questions %}
             <tr>
-                <td>{{ question['id'] }}</td>
-                <td> <a href="{{ url_for('question.question_view',title=question.title) }}">{{ question['title'] }}</a></td> 
-                <td>{{ question['describ'] }}</td>
-                <td>{{ question['answer'] }}</td>
-                <td>{{ question['user'] }}</td>
-                <td>{{ question['publish'] }}</td>
+                <td>{{ question.id }}</td>
+                <td> <a href="{{ url_for('question.question_view',id=question.id) }}">{{ question.title }}</a></td> 
+                <td>{{ question.describ }}</td>
+                {% if question.private %}
+                <td>私人</td>
+                {% else %}
+                <td>公开</td>
+                {% endif %}
+                <td>{{ question.user }}</td>
+                <td>{{ question.publish }}</td>
                 <td> 
                     <table>
                         <tr>
@@ -30,9 +34,9 @@
                             </td>
                             <td>
                                 <span class="glyphicon glyphicon-trash" 
-                                    data-toggle="modal" data-target="#delete" aria-hidden="true" style="color:#337ab7">
+                                      data-toggle="modal" data-target="#delete{{ question.id }}" aria-hidden="true" style="color:#337ab7">
                                 </span>
-                                <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="deleteLabel">
+                                <div class="modal fade" id="delete{{ question.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteLabel">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content" style="margin:20% 27%;">
                                             <div class="modal-body">
@@ -41,7 +45,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary">
-                                                    <a href="{{ url_for('admin.admin_delete',category='qestion',post_id=question.id) }}" 
+                                                    <a href="{{ url_for('admin.admin_delete',category='question',post_id=question.id) }}" 
                                                         style="white-space:nowrap;color:#fff">
                                                         确认删除
                                                     </a>

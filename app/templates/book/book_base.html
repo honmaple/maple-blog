@@ -35,10 +35,11 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="{{ url_for('index.index') }}">主页</a>
+                            <a class="navbar-brand" href="{{ url_for('book.index_num') }}">书籍主页</a>
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
+                                <li><a href="{{ url_for('index.index') }}">主页</a></li>
                                 <li><a href="{{ url_for('book.type',type='哲学') }}">哲学</a></li>
                                 <li><a href="{{ url_for('book.type',type='社会学') }}">社会学</a></li>
                                 <li><a href="{{ url_for('book.type',type='工具书') }}">工具书</a></li>

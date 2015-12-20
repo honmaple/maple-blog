@@ -68,10 +68,12 @@ class EditManager(object):
         db.session.commit()
 
     def edit_user_infor(self):
-        '''编辑用户'''
+        '''编辑用户信息'''
         user = User.query.filter_by(id=self.post_id).first()
         new_passwd = self.form.retry_new_passwd.data
         user.passwd = generate_password_hash(new_passwd)
+        user.school = self.form.school.data
+        user.introduce = self.form.introduce.data
         db.session.commit()
 
     def edit_article(self):

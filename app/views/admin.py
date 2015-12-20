@@ -11,7 +11,7 @@ from flask import render_template, Blueprint, request, \
     flash, redirect, url_for
 from flask.ext.login import current_user
 from ..models import Articles,db,User,Comments,Questions,Tags
-from ..forms import ArticleForm,QuestionForm,RegisterForm
+from ..forms import ArticleForm,QuestionForm,EditRegisterForm
 from ..utils import super_permission
 from ..utils import DeleteManager,EditManager
 
@@ -25,9 +25,10 @@ def index():
 @site.route('/pages_post', methods=['GET','POST'])
 @super_permission.require(404)
 def admin_post():
+    '''增加文章'''
     articles = Articles.query.all()
     form = ArticleForm()
-    if request.method == 'POST':
+    if form.validate_on_submit() and request.method == "POST":
         '''分类节点'''
         tags = form.tags.data.split(',')
         post_tags = []
@@ -53,20 +54,10 @@ def admin_post():
                            form=form,
                            articles = articles)
 
-@site.route('/<type>')
-@super_permission.require(404)
-def types(type):
-    return redirect(url_for('index.index'))
-    # admin_type = type
-    # mkds = Articles.query.all()
-    # return render_template('admin/admin_user.html',
-                           # mkds = mkds,
-                           # admin_type = admin_type)
-
 @site.route('/account')
 @super_permission.require(404)
 def admin_account():
-    users = User.query.all()
+    users = User.query.order_by(User.registered_time.desc()).all()
     return render_template('admin/admin_user.html',
                            users = users)
 
@@ -74,7 +65,7 @@ def admin_account():
 @super_permission.require(404)
 def admin_article():
     form = ArticleForm()
-    articles = Articles.query.all()
+    articles = Articles.query.order_by(Articles.publish.desc()).all()
     return render_template('admin/admin_article.html',
                            articles = articles,
                            form = form)
@@ -82,14 +73,14 @@ def admin_article():
 @site.route('/question')
 @super_permission.require(404)
 def admin_question():
-    questions = Questions.query.all()
+    questions = Questions.query.order_by(Questions.publish.desc()).all()
     return render_template('admin/admin_question.html',
                            questions = questions)
 
 @site.route('/comment')
 @super_permission.require(404)
 def admin_comment():
-    comments = Comments.query.all()
+    comments = Comments.query.order_by(Comments.publish.desc()).all()
     return render_template('admin/admin_comment.html',
                            comments = comments)
 
@@ -141,7 +132,7 @@ def admin_edit(category,post_id):
         form.answer.data = question.answer
     if category == 'user':
         user = User.query.filter_by(id=post_id).first()
-        form = RegisterForm()
+        form = EditRegisterForm()
         form.name.data = user.name
         form.roles.data = user.roles
         form.is_superuser.data = str(user.is_superuser)
@@ -162,11 +153,11 @@ def admin_edit_save(category,post_id):
     elif category == 'question':
         form = QuestionForm()
     else:
-        form = RegisterForm()
+        form = EditRegisterForm()
 
     action = EditManager(post_id,form)
 
-    if request.method == 'POST':
+    if form.validate_on_submit() and request.method == "POST":
         if category == 'article':
             action.edit_article()
             return redirect(url_for('admin.admin_article'))

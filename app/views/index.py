@@ -14,11 +14,12 @@ from flask_login import login_user, logout_user, \
 from flask_principal import Identity, AnonymousIdentity, \
      identity_changed
 from werkzeug.security import check_password_hash,generate_password_hash
-from ..email import email_token,email_send,confirm_token,email_validate
 from app import login_manager
-from ..models import User,Questions,Comments,db
-from ..forms import LoginForm,RegisterForm
-from ..utils import writer_permission,EditManager
+from ..email import email_token,email_send,confirm_token,email_validate
+from ..models import User,Questions,Comments,Articles,db
+from ..forms import LoginForm,RegisterForm,NewPasswdForm,\
+    EditUserInforForm,ForgetPasswdForm
+from ..utils import EditManager,writer_permission
 import datetime
 import markdown
 
@@ -38,7 +39,11 @@ def user_loader(id):
 @site.route('/index')
 def index():
     '''主页'''
-    return render_template('index/index.html')
+    articles = Articles.query.order_by(Articles.publish.desc()).limit(9)
+    questions = Questions.query.order_by(Questions.publish.desc()).limit(9)
+    return render_template('index/index.html',
+                           articles = articles,
+                           questions = questions)
 
 @site.route('/login', methods=['GET','POST'])
 def login():
@@ -53,7 +58,7 @@ def login():
     if g.user is not None and g.user.is_authenticated:
         flash('你已经登陆,不能重复登陆')
         return redirect(url_for('index.index'))
-    if request.method == 'POST':
+    if form.validate_on_submit() and request.method == "POST":
         user = User.query.filter_by(name=form.name.data).first()
         # if form.validate_code.data == validate_code[1]:
         if user:
@@ -95,7 +100,7 @@ def sign():
     if g.user is not None and g.user.is_authenticated:
         flash('你已经登陆,不能重复登陆')
         return redirect(url_for('index.index'))
-    if request.method == 'POST':
+    if form.validate_on_submit() and request.method == "POST":
         useremail = User.query.filter_by(email=form.email.data).first()
         username = User.query.filter_by(name=form.name.data).first()
         email_format = email_validate(form.email.data)
@@ -151,8 +156,8 @@ def confirm(token):
 @site.route('/forget',methods=['GET','POST'])
 def forget():
     '''忘记密码'''
-    form = RegisterForm()
-    if request.method == 'POST':
+    form = ForgetPasswdForm()
+    if form.validate_on_submit() and request.method == "POST":
         '''验证邮箱格式'''
         email_format = email_validate(form.confirm_email.data)
         if email_format:
@@ -177,13 +182,13 @@ def forget():
 
 @site.route('/forget/<token>',methods=['GET','POST'])
 def forget_confirm(token):
-    form = RegisterForm()
+    form = NewPasswdForm()
     '''验证链接'''
     email = confirm_token(token)
     if not email:
         abort(404)
     exsited_user = User.query.filter_by(email=email).first()
-    if request.method == 'POST':
+    if form.validate_on_submit() and request.method == "POST":
         if form.retry_new_passwd.data != form.new_passwd.data:
             flash('两次密码不一致,请重新输入')
         else:
@@ -196,24 +201,6 @@ def forget_confirm(token):
                            form=form,
                            token = token)
 
-# @site.route('/revise/<email>',methods=['GET','POST'])
-# def revise_passwd(email):
-    # form = RegisterForm()
-    # exsited_user = User.query.filter_by(email=email).first()
-    # if request.method == 'POST':
-        # if form.retry_new_passwd.data != form.new_passwd.data:
-            # flash('两次密码不一致,请重新输入')
-        # else:
-            # new_passwd = form.retry_new_passwd.data
-            # exsited_user.passwd = generate_password_hash(new_passwd)
-            # db.session.commit()
-            # flash('密码修改成功,请登录')
-            # return redirect(url_for('index.login'))
-    # return render_template('index/revise_passwd.html',
-                           # form=form,
-                           # email = email)
-
-
 
 @site.route('/u/<name>/view')
 @login_required
@@ -224,8 +211,9 @@ def logined_user(name):
     user_questions = Questions.query.filter_by(user=name).all()
     user_comments = Comments.query.filter_by(user=name).all()
     user = User.query.filter_by(name=name).first()
-    form = RegisterForm()
-    form.email.data = user.email
+    form = EditUserInforForm()
+    form.school.data = user.school
+    form.introduce.data = user.introduce
     return render_template('user/user.html',
                             form = form,
                             user = user,
@@ -234,29 +222,48 @@ def logined_user(name):
 
 @site.route('/u/<post_id>/edit',methods=['GET','POST'])
 @login_required
+@writer_permission.require(404)
 def user_infor_edit(post_id):
-    form = RegisterForm()
+    form = EditUserInforForm()
     action = EditManager(post_id,form)
-    if request.method == 'POST':
+    if request.method == "POST":
         user = User.query.filter_by(id=post_id).first()
         if check_password_hash(user.passwd, form.passwd.data):
-            if form.retry_new_passwd.data == form.new_passwd.data:
-                action.edit_user_infor()
-                flash('资料更新成功,请重新登陆')
-                '''修改密码后重新登陆'''
-                logout_user()
-                for key in ('identity.id', 'identity.auth_type'):
-                    session.pop(key, None)
-                identity_changed.send(current_app._get_current_object(),
-                          identity=AnonymousIdentity())
-                return redirect(url_for('index.login'))
+            '''如果修改密码'''
+            if form.new_passwd.data or form.retry_new_passwd.data:
+                if form.retry_new_passwd.data == form.new_passwd.data:
+                    action.edit_user_infor()
+                    flash('资料更新成功,请重新登陆')
+                    '''修改密码后重新登陆'''
+                    logout_user()
+                    for key in ('identity.id', 'identity.auth_type'):
+                        session.pop(key, None)
+                    identity_changed.send(current_app._get_current_object(),
+                            identity=AnonymousIdentity())
+                    return redirect(url_for('index.login'))
+                else:
+                    flash('两次密码输入不一致，请重新输入')
             else:
-                flash('两次密码输入不一致，请重新输入')
+                '''没有修改密码'''
+                user.school = form.school.data
+                user.introduce = form.introduce.data
+                db.session.commit()
         else:
             flash('密码错误，请重新输入')
         return redirect(url_for('index.logined_user',
-                                name=user.name))
+                                name=user.name,
+                                _anchor='secure'))
     return redirect(url_for('index.index'))
+
+
+# @site.route('/search?')
+# def search():
+    # thing = request.args.get('search')
+    # print(thing)
+    # results = Articles.query.filter_by(Articles.content.like("%linux%")).all()
+    # return render_template('index/search.html',
+                           # results = results)
+    
 
 
 @site.route('/about')
