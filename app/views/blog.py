@@ -13,6 +13,7 @@ from flask.ext.login import current_user,login_required
 from ..forms import CommentForm,ReplyForm
 from ..models import Comments,db,Replies,Articles,Tags
 from ..utils import writer_permission
+from datetime import datetime
 
 site = Blueprint('blog',__name__,url_prefix='/blog')
 
@@ -34,7 +35,7 @@ def before_request():
 def index_num(number):
     '''每页显示6篇,且按照时间排序 '''
     articles = Articles.query.order_by(Articles.publish.desc()).\
-        offset((number-1)*6).limit(number*6)
+        offset((number-1)*6).limit(6)
     all_tags = Tags.query.distinct(Tags.name).all()
     count = Articles.query.count()
     count = count_sum(count)
@@ -52,7 +53,7 @@ def index_num(number):
 def category_num(category,number):
     articles = Articles.query.order_by(Articles.publish.desc()).\
         filter_by(category=category).\
-        offset((number-1)*6).limit(number*6)
+        offset((number-1)*6).limit(6)
     all_tags = Tags.query.distinct(Tags.name).all()
     count = Articles.query.filter_by(category=category).count()
     count = count_sum(count)
@@ -70,9 +71,10 @@ def category_num(category,number):
 @site.route('/tag=<tag>',defaults={'number':1})
 @site.route('/tag=<tag>/view?=<int:number>')
 def tag_num(tag,number):
-    tags = Tags.query.filter_by(name=tag).all()
+    tags = Tags.query.filter_by(name=tag).\
+        offset((number-1)*6).limit(6)
     all_tags = Tags.query.distinct(Tags.name).all()
-    count = len(tags)
+    count = Tags.query.filter_by(name=tag).count()
     count = count_sum(count)
     number = number
     tag = tag
@@ -119,6 +121,7 @@ def comment(id):
         post_comment = Comments(user = current_user.name,
                                 content = form.comment.data)
         post_comment.articles_id = id
+        post_comment.publish = datetime.now()
         db.session.add(post_comment)
         db.session.commit()
         return redirect(url_for('blog.page',id=id,_anchor='comment'))
@@ -134,6 +137,7 @@ def reply(id,comment_id):
         post_reply = Replies( user = current_user.name,
                              content = form.reply.data)
         post_reply.comments_id = comment_id
+        post_reply.publish = datetime.now()
         db.session.add(post_reply)
         db.session.commit()
         return redirect(url_for('blog.page',id=id,_anchor='comment'))

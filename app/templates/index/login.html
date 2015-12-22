@@ -21,8 +21,11 @@
                     {{ form.passwd(class="form-control",placeholder="password") }}
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top:-5px">
                 <div class="col-sm-offset-3 col-sm-9">
+                {{ form.remember_me() }} 
+                记住我
+                <br />
                     {{ form.sign_in(class="btn btn-primary",style="margin-right:10px") }}
                     <a href="{{ url_for('index.forget') }}">忘记密码?</a>
                 </div>

@@ -20,7 +20,7 @@ from ..models import User,Questions,Comments,Articles,db
 from ..forms import LoginForm,RegisterForm,NewPasswdForm,\
     EditUserInforForm,ForgetPasswdForm
 from ..utils import EditManager,writer_permission
-import datetime
+from datetime import datetime
 import markdown
 
 
@@ -61,11 +61,14 @@ def login():
         return redirect(url_for('index.index'))
     if form.validate_on_submit() and request.method == "POST":
         user = User.query.filter_by(name=form.name.data).first()
-        # if form.validate_code.data == validate_code[1]:
         if user:
             if not check_password_hash(user.passwd, form.passwd.data):
                 error = u'密码错误'
             else:
+                if form.remember_me.data:
+                    '''cookie加密'''
+                    session['name'] = generate_password_hash(form.name.data)
+
                 login_user(user)
 
                 identity_changed.send(current_app._get_current_object(),
@@ -75,8 +78,6 @@ def login():
                 return redirect(request.args.get('next') or url_for('index.index'))
         else:
             error = u'用户名错误'
-        # else:
-            # error = u'验证码错误'
     return render_template('index/login.html',
                            form=form,
                            error = error)
@@ -86,6 +87,7 @@ def login():
 def logout():
     '''注销'''
     logout_user()
+    session.clear()
     for key in ('identity.id', 'identity.auth_type'):
         session.pop(key, None)
     identity_changed.send(current_app._get_current_object(),
@@ -118,6 +120,7 @@ def sign():
                            email = form.email.data,
                            passwd = form.passwd.data,
                            roles = 'visitor')
+            account.registered_time = datetime.now()
             db.session.add(account)
             db.session.commit()
 
@@ -146,7 +149,7 @@ def confirm(token):
         flash('账户已经验证. Please login.', 'success')
     else:
         user.is_confirmed = True
-        user.confirmed_time = datetime.datetime.now()
+        user.confirmed_time = datetime.now()
         '''账户验证后可以评论'''
         user.roles = 'writer'
         db.session.add(user)
@@ -264,7 +267,7 @@ def user_infor_edit(post_id):
     # results = Articles.query.filter_by(Articles.content.like("%linux%")).all()
     # return render_template('index/search.html',
                            # results = results)
-    
+
 
 
 @site.route('/about')
@@ -274,7 +277,7 @@ def about():
 
 #### 我是一个爱好自由的人,目前正在读大三,专业自动化
 
-### **目前技能**  
+### **目前技能**
 
 #### python: 熟悉基本语法，熟悉re,BeautifulSoup,request,flask等模块
 #### html/css: 能够熟练掌握,并用html/css写出较漂亮的网页
@@ -285,18 +288,18 @@ def about():
 
 ### **项目**
 
-#### 利用python爬虫爬取豆瓣读书，学校新闻，图书馆书籍等  
+#### 利用python爬虫爬取豆瓣读书，学校新闻，图书馆书籍等
 [项目链接]( https://github.com/honmaple/python )
 
-#### 利用flask搭建个人网站(就是现在这个网站)  
->前端大部分采用bootstrap模板，少部分自己写的布局  
-后端利用flask + gunicorn + supervisord + ngnix + postgresql  
-博客文章利用markdown标记语言  
-书籍查询抓取自豆瓣读书  
+#### 利用flask搭建个人网站(就是现在这个网站)
+>前端大部分采用bootstrap模板，少部分自己写的布局
+后端利用flask + gunicorn + supervisord + ngnix + postgresql
+博客文章利用markdown标记语言
+书籍查询抓取自豆瓣读书
 
 [项目链接](https://github.com/honmaple/website)
 
-### **联系方式**  
+### **联系方式**
 
 #### Mail:xiyang0807@gmail.com
 #### Github主页:<https://github.com/honmaple>

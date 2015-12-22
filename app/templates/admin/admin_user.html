@@ -21,7 +21,7 @@
                 <td>{{ user.is_confirmed }}</td>
                 <td>{{ user.is_superuser }}</td>
                 <td>{{ user.roles }}</td>
-                <td>{{ user.registered_time }}</td>
+                <td>{{ user.registered_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 <td> 
                     <table>
                         <tr>

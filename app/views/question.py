@@ -13,6 +13,7 @@ from flask.ext.login import  current_user, login_required
 from ..forms import QuestionForm
 from ..models import Questions,db
 from ..utils import writer_permission
+from datetime import datetime
 
 site = Blueprint('question',__name__,url_prefix='/question')
 
@@ -40,6 +41,7 @@ def post():
                                   describ = form.describ.data,
                                   answer = form.answer.data)
         '''简单私人日记实现'''
+        post_question.publish = datetime.now()
         post_question.private = form.private.data
         if form.private.data:
             post_question.private_id = current_user.id
@@ -47,7 +49,7 @@ def post():
         db.session.commit()
         flash('感谢你的提交')
     return redirect(url_for('question.index'))
-    
+
 @site.route('/view/private')
 @login_required
 def private():

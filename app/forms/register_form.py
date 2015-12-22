@@ -8,7 +8,8 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask.ext.wtf import Form
-from wtforms import StringField,SubmitField,PasswordField,validators
+from wtforms import StringField,SubmitField,PasswordField,BooleanField,\
+    validators
 
 class RegisterForm(Form):
     name = StringField('用户名', [validators.Length(min=4, max=25)])
@@ -19,6 +20,7 @@ class RegisterForm(Form):
 class LoginForm(Form):
     name = StringField('用户名:', [validators.Length(min=4, max=25)])
     passwd = PasswordField('密码:', [validators.Required()])
+    remember_me = BooleanField('remember me', default=False)
     # validate_code = StringField('验证码:', [validators.Length(min=4, max=6)])
     sign_in = SubmitField('登陆')
 

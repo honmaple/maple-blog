@@ -8,7 +8,7 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import Flask, render_template,send_from_directory,request,\
-    Markup
+    Markup,session
 from flask_assets import Environment, Bundle
 from flask_mail import Mail
 from flask_login import LoginManager
@@ -46,11 +46,17 @@ def register_db(app):
 
     db.init_app(app)
 
+# def register_cache(app):
+
+    # cache = Cache(config={'CACHE_TYPE': 'simple'})
+    # cache.init_app(app)
+    # return cache
+
 
 def register_jinja2(app):
-    def safe_markdown(text): 
+    def safe_markdown(text):
         return Markup(markdown.markdown(text))
-    app.jinja_env.filters['safe_markdown'] = safe_markdown 
+    app.jinja_env.filters['safe_markdown'] = safe_markdown
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 def register_assets(app):
@@ -85,6 +91,10 @@ mail = Mail(app)
 login_manager = register_login(app)
 principals = Principal(app)
 register(app)
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
 
 @app.errorhandler(404)
 def not_found(error):
