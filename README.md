@@ -20,8 +20,7 @@ You can have a look [here](http://honmaple.com)
         SECRET_KEY
         SECURITY_PASSWORD_SALT
 
-        FLATPAGES_AUTO_RELOAD = True
-        FLATPAGES_EXTENSION = '.md'
+        PERMANENT_SESSION_LIFETIME = timedelta(days=3)
 
         MAIL_SERVER
         MAIL_PORT
