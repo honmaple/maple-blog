@@ -8,7 +8,6 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from .base import db
-import datetime
 
 # from flask import Flask
 # from flask.ext.sqlalchemy import SQLAlchemy
@@ -25,23 +24,20 @@ class Questions(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     user = db.Column(db.String, nullable=False)
     title = db.Column(db.String,nullable=False)
-    describ = db.Column(db.Text)
-    answer = db.Column(db.Text)
+    describ = db.Column(db.Text,nullable=False)
+    answer = db.Column(db.Text,nullable=False)
     private = db.Column(db.Boolean,nullable=False,default=False)
     private_id = db.Column(db.Integer,nullable=True)
     publish = db.Column(db.DateTime, nullable=False)
 
     def __init__(self,
                  user,title,
-                 describ,answer,
-                 publish = datetime.datetime.now().strftime('%F %X')):
+                 describ,answer):
         self.user = user
         self.title = title
         self.describ = describ
         self.answer = answer
-        self.publish = publish
 
     def __repr__(self):
         return "<Questions %r>" % self.title
-
 

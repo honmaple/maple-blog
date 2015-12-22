@@ -14,6 +14,7 @@ from ..models import Articles,db,User,Comments,Questions,Tags
 from ..forms import ArticleForm,QuestionForm,EditRegisterForm
 from ..utils import super_permission
 from ..utils import DeleteManager,EditManager
+from datetime import datetime
 
 site = Blueprint('admin',__name__,url_prefix='/admin')
 
@@ -44,6 +45,7 @@ def admin_post():
                                 title = form.title.data,
                                 category = form.category.data,
                                 content = form.content.data)
+        post_article.publish = datetime.now()
         '''关系数据表'''
         post_article.tag_article = post_tags
         db.session.add(post_article)
@@ -114,6 +116,7 @@ def admin_edit(category,post_id):
         form = ArticleForm()
         form.content.data = article.content
         form.title.data = article.title
+        form.category.data = article.category
         '''得到节点内容'''
         tags = ''
         leng = 1
