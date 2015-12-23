@@ -97,4 +97,44 @@
         </div>
     </div>
 </div>
+<div style="text-align:center;margin-top:-15px">
+    <ul class="pagination">
+        {% if number == 1 %}
+        <li class="disabled">
+            <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li>
+            <a href="{{ url_for('admin.admin_comment',number=number-1) }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for num in range(count) %}
+        {% set num = num + 1 %}
+        {% if num == number %}
+        <li class="active"><a href="{{ url_for('admin.admin_comment',number=num) }}">{{ num }}</a></li>
+        {% else %}
+        <li><a href="{{ url_for('admin.admin_comment',number=num) }}">{{ num }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if number == count %}
+        <li class="disabled">
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li>
+            <a href="{{ url_for('admin.admin_comment',number=number+1) }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
 {% endblock %}
