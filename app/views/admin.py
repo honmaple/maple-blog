@@ -18,6 +18,14 @@ from datetime import datetime
 
 site = Blueprint('admin',__name__,url_prefix='/admin')
 
+def count_sum(count):
+    '''文章总数'''
+    if count%10 == 0:
+        count = int(count/10)
+    else:
+        count = int(count/10) + 1
+    return count
+
 @site.route('/')
 @super_permission.require(404)
 def index():
@@ -56,35 +64,61 @@ def admin_post():
                            form=form,
                            articles = articles)
 
-@site.route('/account')
+@site.route('/account',defaults={'number':1})
+@site.route('/account/<int:number>')
 @super_permission.require(404)
-def admin_account():
-    users = User.query.order_by(User.registered_time.desc()).all()
+def admin_account(number):
+    users = User.query.order_by(User.registered_time.desc()).\
+        offset((number-1)*10).limit(10)
+    count = User.query.count()
+    count = count_sum(count)
+    number = number
     return render_template('admin/admin_user.html',
-                           users = users)
+                           users = users,
+                           count = count,
+                           number = number)
 
-@site.route('/article')
+@site.route('/article',defaults={'number':1})
+@site.route('/article/<int:number>')
 @super_permission.require(404)
-def admin_article():
-    form = ArticleForm()
-    articles = Articles.query.order_by(Articles.publish.desc()).all()
+def admin_article(number):
+    articles = Articles.query.order_by(Articles.publish.desc()).\
+        offset((number-1)*10).limit(10)
+    count = Articles.query.count()
+    count = count_sum(count)
+    number = number
     return render_template('admin/admin_article.html',
                            articles = articles,
-                           form = form)
+                           count = count,
+                           number = number)
 
-@site.route('/question')
+@site.route('/question',defaults={'number':1})
+@site.route('/question/<int:number>')
 @super_permission.require(404)
-def admin_question():
-    questions = Questions.query.order_by(Questions.publish.desc()).all()
+def admin_question(number):
+    questions = Questions.query.order_by(Questions.publish.desc()).\
+        offset((number-1)*10).limit(10)
+    count = Questions.query.count()
+    count = count_sum(count)
+    number = number
     return render_template('admin/admin_question.html',
-                           questions = questions)
+                           questions = questions,
+                           count = count,
+                           number = number)
 
-@site.route('/comment')
+@site.route('/comment',defaults={'number':1})
+@site.route('/comment/<int:number>')
 @super_permission.require(404)
-def admin_comment():
-    comments = Comments.query.order_by(Comments.publish.desc()).all()
+def admin_comment(number):
+    comments = Comments.query.order_by(Comments.publish.desc()).\
+        offset((number-1)*10).limit(10)
+    count = Comments.query.count()
+    count = count_sum(count)
+    number = number
     return render_template('admin/admin_comment.html',
-                           comments = comments)
+                           comments = comments,
+                           count = count,
+                           number = number)
 
 @site.route('/<category>/<post_id>/delete')
 @super_permission.require(404)

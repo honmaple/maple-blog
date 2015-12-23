@@ -8,7 +8,7 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint,redirect, \
-    url_for,flash,request,g,Markup,current_app,session,abort
+    url_for,flash,request,g,current_app,session,abort
 from flask_login import login_user, logout_user, \
     current_user, login_required
 from flask_principal import Identity, AnonymousIdentity, \
@@ -21,7 +21,6 @@ from ..forms import LoginForm,RegisterForm,NewPasswdForm,\
     EditUserInforForm,ForgetPasswdForm
 from ..utils import EditManager,writer_permission
 from datetime import datetime
-import markdown
 
 
 
@@ -272,38 +271,8 @@ def user_infor_edit(post_id):
 
 @site.route('/about')
 def about():
-    content = """
-### **个人介绍**
-
-#### 我是一个爱好自由的人,目前正在读大三,专业自动化
-
-### **目前技能**
-
-#### python: 熟悉基本语法，熟悉re,BeautifulSoup,request,flask等模块
-#### html/css: 能够熟练掌握,并用html/css写出较漂亮的网页
-#### Javascript: 基本语法
-#### C: 对于除链表之外的内容熟练掌握
-#### linux: 掌握linux基本命令，能够利用linux搭建基础服务 并且日常使用
-#### 数据库: 熟悉数据库相关的基础知识，熟悉 sqlite,postgresql
-
-### **项目**
-
-#### 利用python爬虫爬取豆瓣读书，学校新闻，图书馆书籍等
-[项目链接]( https://github.com/honmaple/python )
-
-#### 利用flask搭建个人网站(就是现在这个网站)
->前端大部分采用bootstrap模板，少部分自己写的布局
-后端利用flask + gunicorn + supervisord + ngnix + postgresql
-博客文章利用markdown标记语言
-书籍查询抓取自豆瓣读书
-
-[项目链接](https://github.com/honmaple/website)
-
-### **联系方式**
-
-#### Mail:xiyang0807@gmail.com
-#### Github主页:<https://github.com/honmaple>
-"""
-    content = Markup(markdown.markdown(content))
-    return render_template('index/about_me.html',**locals())
+    about = Articles.query.filter_by(id=35).first()
+    content = about.content
+    return render_template('index/about_me.html',
+                           content = content)
 

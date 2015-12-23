@@ -1,8 +1,8 @@
 #*************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: manager.py
-#   Author:JiangLin 
-#   Mail:xiyang0807@gmail.com 
+#   Author:JiangLin
+#   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-12-13 19:57:29
 #*************************************************************************
 #!/usr/bin/env python
