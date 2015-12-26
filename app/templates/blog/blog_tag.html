@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% extends 'blog/blog_base.html' %}
 {% block content %}
-<ul>
+<ul class="nopoint">
     {% for tag in tags %}
     {% for article in tag.tag_article %}
     <li class="category">

@@ -14,7 +14,7 @@ from flask_mail import Mail
 from flask_login import LoginManager
 from flask_principal import Principal
 from config import load_config
-import markdown
+from misaka import Markdown, HtmlRenderer
 
 def create_app():
     app = Flask(__name__,static_folder='static')
@@ -55,7 +55,9 @@ def register_db(app):
 
 def register_jinja2(app):
     def safe_markdown(text):
-        return Markup(markdown.markdown(text))
+        html = HtmlRenderer()
+        markdown = Markdown(html)
+        return Markup(markdown(text))
     app.jinja_env.filters['safe_markdown'] = safe_markdown
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 

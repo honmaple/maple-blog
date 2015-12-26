@@ -36,5 +36,7 @@ You can have a look [here](http://honmaple.com)
         SQLALCHEMY_BINDS
 
 ## if you want to use
+
+    pip install -r requirements.txt
     gunicorn run:app -c gunicorn.conf 
 

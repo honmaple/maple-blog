@@ -6,6 +6,7 @@
         <span aria-hidden="true">&times;</span>
     </button>
     你的账户未验证,请尽快验证,否则无法评论或回复或发表问题
+    <a href="{{ url_for('index.confirm_email') }}" class="btn btn-info btn-sm" role="button">验证账户</a>
 </div>
 {% endif %}
 <div>
