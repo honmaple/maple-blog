@@ -19,7 +19,7 @@ def email_token(email):
     token = serializer.dumps(email,salt=config['SECURITY_PASSWORD_SALT'])
     return token
 
-def confirm_token(token, expiration=3600):
+def confirm_token(token, expiration=360):
     config = current_app.config
     serializer = URLSafeTimedSerializer(config['SECRET_KEY'])
     try:

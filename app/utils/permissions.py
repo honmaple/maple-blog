@@ -1,8 +1,8 @@
 #*************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: permissions.py
-#   Author:JiangLin 
-#   Mail:xiyang0807@gmail.com 
+#   Author:JiangLin
+#   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-12-12 20:28:00
 #*************************************************************************
 #!/usr/bin/env python
@@ -26,7 +26,7 @@ def on_identity_loaded(sender, identity):
 
     if hasattr(current_user, 'roles'):
         identity.provides.add(RoleNeed(current_user.roles))
-    
+
     if hasattr(current_user, 'is_superuser') and current_user.is_superuser:
         identity.provides.add(RoleNeed('super'))
 

@@ -1,7 +1,6 @@
 {% extends 'blog/blog_base.html' %}
 {% block content %}
 
-
 <table style="width:100%;">
     <tr>
         <td align="center">
@@ -11,7 +10,7 @@
     <tr>
         <td align="right">
             <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-            {{ article.publish }}
+            {{ article.publish.strftime('%Y-%m-%d %H:%M:%S') }}
             <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
             {% for tag in tags %}
             <span class="label label-primary" style="display:inline-block;">
@@ -33,9 +32,7 @@
         </td>
     </tr>
 </table>
-<p>
 {{ article.content | safe_markdown }}
-</p>
 <div class="panel panel-default" id="#comment">
     <div class="panel-heading">评论</div>
     <div class="panel-body">

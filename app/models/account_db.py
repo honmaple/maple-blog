@@ -39,6 +39,7 @@ class User(db.Model,UserMixin):
     is_confirmed = db.Column(db.Boolean, nullable=False, default=False)
     registered_time = db.Column(db.DateTime, nullable=False)
     confirmed_time = db.Column(db.DateTime, nullable=True)
+    send_email_time = db.Column(db.DateTime, nullable=True)
     introduce = db.Column(db.Text,nullable=True)
     school = db.Column(db.String,nullable=True)
 

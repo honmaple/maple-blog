@@ -19,7 +19,7 @@ from ..email import email_token,email_send,confirm_token,email_validate
 from ..models import User,Questions,Comments,Articles,db
 from ..forms import LoginForm,RegisterForm,NewPasswdForm,\
     EditUserInforForm,ForgetPasswdForm
-from ..utils import EditManager,writer_permission
+from ..utils import EditManager,writer_permission,check_overtime
 from datetime import datetime
 
 
@@ -120,8 +120,6 @@ def sign():
                            passwd = form.passwd.data,
                            roles = 'visitor')
             account.registered_time = datetime.now()
-            db.session.add(account)
-            db.session.commit()
 
             '''邮箱验证'''
             token = email_token(account.email)
@@ -131,19 +129,44 @@ def sign():
             html = render_template('email.html', confirm_url=confirm_url)
             subject = "Please confirm your email"
             email_send(account.email,html,subject)
-
             flash('一封验证邮件已发往你的邮箱，請查收.', 'success')
+
+            account.send_email_time = datetime.now()
+            db.session.add(account)
+            db.session.commit()
             return redirect(url_for('index.logined_user',name=account.name))
     return render_template('index/sign_in.html',form=form,error=error)
+
+@site.route('/confirm_email')
+@login_required
+@check_overtime
+def confirm_email():
+    if current_user.is_confirmed:
+        flash('你的账户已验证,不能重复验证')
+        return redirect(url_for('index.logined_user',name=current_user.name))
+
+    token = email_token(current_user.email)
+    '''email模板'''
+    confirm_url = url_for('index.confirm', token=token, _external=True)
+    html = render_template('email.html', confirm_url=confirm_url)
+    subject = "Please confirm your email"
+    email_send(current_user.email,html,subject)
+    flash('一封验证邮件已发往你的邮箱，請查收.', 'success')
+
+    current_user.send_email_time = datetime.now()
+    db.session.commit()
+    return redirect(url_for('index.logined_user',name=current_user.name))
+
 
 @site.route('/confirm/<token>')
 @login_required
 def confirm(token):
-    try:
-        email = confirm_token(token)
-    except:
-        flash('The confirmation link is invalid or has expired.', 'danger')
-    user = User.query.filter_by(email=email).first_or_404()
+    email = confirm_token(token)
+    if not email:
+        flash('验证链接已过期,请重新获取', 'danger')
+        abort(404)
+
+    user = User.query.filter_by(email=email).first()
     if user.is_confirmed:
         flash('账户已经验证. Please login.', 'success')
     else:
@@ -189,7 +212,9 @@ def forget_confirm(token):
     '''验证链接'''
     email = confirm_token(token)
     if not email:
+        flash('验证链接已过期,请重新获取', 'danger')
         abort(404)
+
     exsited_user = User.query.filter_by(email=email).first()
     if form.validate_on_submit() and request.method == "POST":
         if form.retry_new_passwd.data != form.new_passwd.data:
