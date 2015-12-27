@@ -3,7 +3,7 @@ This is my own website by flask
 You can have a look [here](http://honmaple.com)
 
 ## flask-flatpages
-这个版本使用flask-flatpages从本地md文件读取文章内容
+This version I use flask-flatpages to open the md file and read the contents of file
 
 ## config/__init__.py
     #__init__.py
