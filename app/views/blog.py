@@ -8,12 +8,13 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint,request,\
-    redirect,url_for,g,abort
+    redirect,url_for,abort
 from flask.ext.login import current_user,login_required
 from ..forms import CommentForm,ReplyForm
 from ..models import Comments,db,Replies,Articles,Tags
 from ..utils import writer_permission
 from datetime import datetime
+from app import redis_data
 
 site = Blueprint('blog',__name__,url_prefix='/blog')
 
@@ -24,11 +25,6 @@ def count_sum(count):
     else:
         count = int(count/6) + 1
     return count
-
-
-@site.before_request
-def before_request():
-    g.user = current_user
 
 @site.route('/latest',defaults={'number':1})
 @site.route('/latest/view?=<int:number>')
@@ -92,6 +88,8 @@ def tag_num(tag,number):
 
 @site.route('/pages/<id>')
 def page(id):
+    '''记录用户浏览次数'''
+    redis_data.incr("visit:%s:totals"%str(id))
     comment_form = CommentForm()
     reply_form = ReplyForm()
     article = Articles.query.filter_by(id=id).first()
@@ -156,10 +154,3 @@ def reply(id,comment_id):
         db.session.commit()
         return redirect(url_for('blog.page',id=id,_anchor='comment'))
     return redirect(url_for('blog.page',id=id,_anchor='comment'))
-
-
-
-
-
-
-

@@ -9,6 +9,9 @@
 # -*- coding=UTF-8 -*-
 import random
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+import os
+import re
+from flask import session
 
 class ValidateCode(object):
     _letter_cases = "abcdefghjkmnpqrstuvwxy" # 小写字母，去除可能干扰的i，l，o，z
@@ -19,7 +22,7 @@ class ValidateCode(object):
 
     def create_validate_code(self,size=(120, 30),
                             chars=init_chars,
-                            img_type="GIF",
+                            img_type="PNG",
                             mode="RGB",
                             bg_color=(255, 255, 255),
                             fg_color=(0, 0, 255),
@@ -93,5 +96,17 @@ class ValidateCode(object):
 
     def start(self):
         code_img = self.create_validate_code()
-        code_img[0].save("/home/jianglin/git/website/app/static/images/validate.png", "PNG")
-        return code_img
+        path = '/home/jianglin/git/website/app/static/images/'
+        filelist=os.listdir(path)
+        '''正则匹配文件名'''
+        for i in filelist:
+            filename = re.search(r'validate[0-9].(.*)',i)
+            if filename:
+                break
+        pathname = path + filename.group(0)
+        code_img[0].save(pathname, "PNG")
+        validate_name = 'validate' + str(random.uniform(0,10)) + '.png'
+        os.rename(pathname,path + validate_name)
+        session['code'] = code_img[1]
+        return validate_name
+

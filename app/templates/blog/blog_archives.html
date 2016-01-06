@@ -1,6 +1,6 @@
 {% extends 'blog/blog_base.html' %}
 {% block content %}
-
+<div class="category">
 <h2>Archives of honmaple</h2>
 {% for article in articles %}
 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
@@ -8,6 +8,7 @@
 <a href="{{ url_for('blog.page',id=article.id) }}">{{ article.title }}</a>
 <br />
 {% endfor %}
+</div>
 <div style="text-align:center;margin-top:-15px">
     <ul class="pagination">
         {% if number == 1 %}

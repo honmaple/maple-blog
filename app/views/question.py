@@ -17,17 +17,13 @@ from datetime import datetime
 
 site = Blueprint('question',__name__,url_prefix='/question')
 
-
-@site.before_request
-def before_request():
-    g.user = current_user
-
 @site.route('/view')
 def index():
     form = QuestionForm()
     all_questions = Questions.query.filter_by(private=False).all()
     return render_template('question/question.html',
                            all_questions = all_questions,
+                           title = '自问自答-HonMaple',
                            form = form)
 
 @site.route('/view/post',methods=['GET','POST'])
@@ -57,6 +53,7 @@ def private():
     all_questions = Questions.query.filter_by(private_id=current_user.id).all()
     return render_template('question/question.html',
                            all_questions = all_questions,
+                           title = '自问自答-HonMaple',
                            form = form)
 
 @site.route('/view/question=<id>')
@@ -67,6 +64,7 @@ def question_view(id):
         flash('你没有权限查看')
         return redirect(url_for('question.index'))
     return render_template('question/question_view.html',
+                           title = '%s - HonMaple自问自答'%(question.title),
                            question = question)
 
 

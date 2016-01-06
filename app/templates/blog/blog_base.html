@@ -14,6 +14,7 @@
         {% endassets %}
         <style type="text/css">
             html,body{height:100%}
+            img {width:100%}
             .footer {margin-top:-30px;height:30px;}
             .wrap{min-height:100%}
             .main{padding-bottom:30px;overflow:hidden;}
@@ -31,21 +32,21 @@
             }
         </style>
     </head>
-    <body>
+    <body style="background:#f8f8f8;">
         <div class="wrap">
             <div class="main">
-                <nav class="navbar navbar-default" style="padding:0 11%;">
+                <nav class="navbar navbar-default" style="padding:0 8%;background:#fff;">
                     <div class="container-fluid">
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-header" aria-expanded="false">
                                 <span class="sr-only"></span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="{{ url_for('blog.index_num') }}">博客主页</a>
+                            <a class="navbar-brand" href="{{ url_for('blog.index_num') }}" style="color:#EB5424;">博客主页</a>
                         </div>
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <div class="collapse navbar-collapse" id="bs-header">
                             <ul class="nav navbar-nav">
                                 <li> <a href="{{ url_for('index.index') }}">主页</a></li>
                                 <li> <a href="{{ url_for('blog.category_num',category='linux') }}">Linux</a></li>
@@ -78,7 +79,7 @@
                         </div>
                     </div>
                 </nav>
-                <div class="row" style="padding:0 12%;">
+                <div class="row" style="margin:0 8%;">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <div class="alert alert-info" style="padding:8px">
@@ -117,14 +118,14 @@
                                     <br />
                                     <a href="http://github.com/honmaple">GitHub</a>
                                 </li>
-                                <li class="list-group-item">Tags: <br />
+                                <li class="list-group-item">标签: <br />
                                     {% for tag in all_tags %}
                                     <span class="label label-primary" style="display: inline-block;">
                                         <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
                                     </span>
                                     {% endfor %}
                                 </li>
-                                <li class="list-group-item">Links
+                                <li class="list-group-item">链接:
                                     <br />
                                     <a href="http://honmaple.com">我的博客</a>
                                     <br />
@@ -144,7 +145,7 @@
         </div>
         <div class="footer">
             <div style="text-align:center">
-                Copyright © 2015 JiangLin. All rights reserved.
+                Copyright © 2015-2016 honmaple. All rights reserved.
             </div>
         </div>
     </body>

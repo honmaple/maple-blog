@@ -1,6 +1,5 @@
 {% extends "index/base.html" %}
 {% block content %}
-
 <div class="row">
     <div class="col-xs-2">
     </div>
@@ -12,23 +11,23 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ form.name.label }}</label>
                 <div class="col-sm-9">
-                    {{ form.name(class="form-control",placeholder="name") }}
+                    {{ form.name(class="form-control",placeholder="name",style="width:240px;") }}
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ form.email.label }}</label>
                 <div class="col-sm-9">
-                    {{ form.email(class="form-control",placeholder="email") }}
+                    {{ form.email(class="form-control",placeholder="email",style="width:240px;") }}
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ form.passwd.label }}</label>
                 <div class="col-sm-9">
-                    {{ form.passwd(class="form-control",placeholder="password") }}
+                    {{ form.passwd(class="form-control",placeholder="password",style="width:240px;") }}
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
+                <div class="col-sm-offset-3 col-sm-10">
                     {{ form.register(class="btn btn-primary") }}   
                 </div>
             </div>

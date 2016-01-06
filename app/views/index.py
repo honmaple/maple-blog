@@ -22,13 +22,7 @@ from ..forms import LoginForm,RegisterForm,NewPasswdForm,\
 from ..utils import EditManager,writer_permission,check_overtime
 from datetime import datetime
 
-
-
 site = Blueprint('index',__name__,url_prefix='')
-
-@site.before_request
-def before_request():
-    g.user = current_user
 
 @login_manager.user_loader
 def user_loader(id):
@@ -38,9 +32,9 @@ def user_loader(id):
 @site.route('/index')
 def index():
     '''主页'''
-    articles = Articles.query.order_by(Articles.publish.desc()).limit(9)
+    articles = Articles.query.order_by(Articles.publish.desc()).limit(7)
     questions = Questions.query.order_by(Questions.publish.desc()).\
-        filter_by(private=False).limit(9)
+        filter_by(private=False).limit(7)
     return render_template('index/index.html',
                            articles = articles,
                            questions = questions)
@@ -51,21 +45,28 @@ def login():
     error = None
     form = LoginForm()
     '''验证码'''
+
     # validate = ValidateCode()
-    # validate_code = validate.start()
-    # print(validate_code[1])
+    # validate.start()
+    # if session['code']:
+        # validate_code = session['code']
+    # else:
+        # session['code'] = 'Welcome To HonMaple'
+        # validate_code = None
     '''如果已经登陆则重定向到主页'''
     if g.user is not None and g.user.is_authenticated:
         flash('你已经登陆,不能重复登陆')
         return redirect(url_for('index.index'))
     if form.validate_on_submit() and request.method == "POST":
         user = User.query.filter_by(name=form.name.data).first()
+        # if form.validate_code.data.lower()  == validate_code.lower():
         if user:
             if not check_password_hash(user.passwd, form.passwd.data):
                 error = u'密码错误'
             else:
                 if form.remember_me.data:
                     '''cookie加密'''
+                    session.permanent = True
                     session['name'] = generate_password_hash(form.name.data)
 
                 login_user(user)
@@ -77,6 +78,8 @@ def login():
                 return redirect(request.args.get('next') or url_for('index.index'))
         else:
             error = u'用户名错误'
+        # else:
+            # error = u'验证码错误'
     return render_template('index/login.html',
                            form=form,
                            error = error)
@@ -126,7 +129,7 @@ def sign():
             login_user(account)
             '''email模板'''
             confirm_url = url_for('index.confirm', token=token, _external=True)
-            html = render_template('email.html', confirm_url=confirm_url)
+            html = render_template('templet/email.html', confirm_url=confirm_url)
             subject = "Please confirm your email"
             email_send(account.email,html,subject)
             flash('一封验证邮件已发往你的邮箱，請查收.', 'success')
@@ -148,7 +151,7 @@ def confirm_email():
     token = email_token(current_user.email)
     '''email模板'''
     confirm_url = url_for('index.confirm', token=token, _external=True)
-    html = render_template('email.html', confirm_url=confirm_url)
+    html = render_template('templet/email.html', confirm_url=confirm_url)
     subject = "Please confirm your email"
     email_send(current_user.email,html,subject)
     flash('一封验证邮件已发往你的邮箱，請查收.', 'success')
@@ -194,7 +197,7 @@ def forget():
                 token = email_token(form.confirm_email.data)
                 '''email模板'''
                 confirm_url = url_for('index.forget_confirm', token=token, _external=True)
-                html = render_template('forget.html', confirm_url=confirm_url)
+                html = render_template('templet/forget.html', confirm_url=confirm_url)
                 subject = "Please revise your password"
                 email_send(form.confirm_email.data,html,subject)
                 flash('邮件已发送到你的邮箱')
@@ -284,15 +287,25 @@ def user_infor_edit(post_id):
     return redirect(url_for('index.index'))
 
 
-# @site.route('/search?')
+# @site.route('/search',methods=['GET','POST'])
 # def search():
-    # thing = request.args.get('search')
-    # print(thing)
-    # results = Articles.query.filter_by(Articles.content.like("%linux%")).all()
+    # form = SearchForm()
+    # if request.method == "POST":
+        # search_content = '%%%s%%'%form.content.data
+        # print(search_content)
+        # results = Articles.query.filter(Articles.content.like(search_content)).all()
+        # print(results)
+        # # return redirect(url_for('index.search',results=results))
     # return render_template('index/search.html',
                            # results = results)
 
-
+# @site.route('/validate')
+# def validate_code():
+    # validate = ValidateCode()
+    # validate_name = validate.start()
+    # return 'static/images/' + validate_name
+    # return send_file('static/images/validate.png',
+                     # mimetype='image/png')
 
 @site.route('/about')
 def about():

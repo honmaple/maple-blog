@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /sign
 Disallow: /logout
 Disallow: /login
-Disallow: /ask
+Disallow: /question
