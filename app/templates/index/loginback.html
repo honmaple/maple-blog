@@ -1,5 +1,16 @@
 {% extends "index/base.html" %}
 {% block content %}
+<script type=text/javascript>
+  $(function() {
+    $("#refresh").click(function() {
+        {% set rangeber = range(0,59)|random %}
+        $.get("{{ url_for('index.validate_code') }}",function(data) {
+            $("#result").attr("src",data);
+      });
+      return false;
+    });
+  });
+</script>
 <div class="row">
     <div class="col-xs-2">
     </div>
@@ -18,6 +29,16 @@
                 <label class="col-sm-3 control-label">{{ form.passwd.label }}</label>
                 <div class="col-sm-6">
                     {{ form.passwd(class="form-control",placeholder="password",style="width:240px") }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-3">
+                    {{ form.validate_code(class="form-control",placeholder="验证码",style="width:180px;") }}
+                </div>
+                <div class="col-sm-3">
+                    <a id="refresh" href="#">
+                    <img id="result" src="{{ url_for('static',filename='images/validate.png') }}" alt="验证码" style="width:120px;"/>
+                    </a>
                 </div>
             </div>
             <div class="form-group" style="margin-top:-5px">

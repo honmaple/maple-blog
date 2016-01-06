@@ -15,6 +15,7 @@ from ..forms import ArticleForm,QuestionForm,EditRegisterForm
 from ..utils import super_permission
 from ..utils import DeleteManager,EditManager
 from datetime import datetime
+from app import redis_data
 
 site = Blueprint('admin',__name__,url_prefix='/admin')
 

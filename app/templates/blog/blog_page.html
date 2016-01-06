@@ -1,41 +1,43 @@
 {% extends 'blog/blog_base.html' %}
 {% block content %}
-
-<table style="width:100%;">
-    <tr>
-        <td align="center">
-            <h2>{{ article.title }}</h2>
-        </td>
-    </tr>
-    <tr>
-        <td align="right">
-            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-            {{ article.publish.strftime('%Y-%m-%d %H:%M:%S') }}
-            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-            {% for tag in tags %}
-            <span class="label label-primary" style="display:inline-block;">
-                <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#fff">{{ tag.name }}</a>
-            </span>
-            {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <td align="right">
-            作者:{{ article.user }}
-            <br />
-            版权所有,转载请注明出处
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div style="border-bottom:1px dashed #000000;width:100%;"></div>
-        </td>
-    </tr>
-</table>
-{{ article.content | safe_markdown }}
-<div class="panel panel-default" id="#comment">
-    <div class="panel-heading">评论</div>
-    <div class="panel-body">
+<div class="category">
+    <table style="width:100%;">
+        <tr>
+            <td align="center">
+                <h2>{{ article.title }}</h2>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                {{ article.publish.strftime('%Y-%m-%d %H:%M:%S') }}
+                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                {% for tag in tags %}
+                <span class="label label-primary" style="display:inline-block;">
+                    <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#fff">{{ tag.name }}</a>
+                </span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                作者:{{ article.user }}
+                <br>
+                浏览次数:{{ article.id | visit_total }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="border-bottom:1px dashed #000000;width:100%;"></div>
+            </td>
+        </tr>
+    </table>
+    {{ article.content | safe_markdown }}
+    <div style="border-bottom:1px dashed #000000;width:60%;"></div>
+    版权所有,转载请注明出处
+</div>
+<div class="panel panel-default category" id="#comment">
+    <div class="panel-body" style="padding:0px;">
         <form action="{{ url_for('blog.comment',id=article.id) }}" method="POST">
             {{ comment_form.hidden_tag()}}
             {{ comment_form.comment(class="form-control",placeholder="写下你的评论" ,style="height:80px;") }}

@@ -3,8 +3,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>HonMaple</title>
-
+        <title>{{ title }}</title>
         {% assets "home_js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
@@ -21,12 +20,19 @@
             li {
                 list-style:none;
             }
+            .category {
+                padding:10px;
+                background:#fff;
+                border:1px solid #ddd;
+                box-shadow:0px 0px 1px #ddd;
+                border-radius: 3px;
+            }
         </style>
     </head>
     <body>
         <div class="wrap">
             <div class="main">
-                <nav class="navbar navbar-default" style="padding:0 11%;">
+                <nav class="navbar navbar-default" style="padding:0 8%;">
                     <div class="container-fluid">
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -35,7 +41,7 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="{{ url_for('question.index') }}">问答主页</a>
+                            <a class="navbar-brand" href="{{ url_for('question.index') }}" style="color:#EB5424;">问答主页</a>
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
@@ -68,19 +74,19 @@
                         </div>
                     </div>
                 </nav>
-                <div style="margin:0 12%;">
+                <div style="margin:0 8%;">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <div class="alert alert-info" style="padding:8px">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                    <ul>
-                        {% for message in messages %}
-                        <li>{{ message }} </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }} </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                     {% endif %}
                     {% endwith %}
                     {% block content %}{% endblock %}
@@ -89,7 +95,7 @@
         </div>
         <div class="footer">
             <div style="text-align:center">
-                Copyright © 2015 JiangLin. All rights reserved.
+                Copyright © 2015-2016 honmaple. All rights reserved.
             </div>
         </div>
     </body>

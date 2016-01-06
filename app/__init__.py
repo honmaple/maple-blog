@@ -8,13 +8,14 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import Flask, render_template,send_from_directory,request,\
-    Markup,session
+    Markup,g
 from flask_assets import Environment, Bundle
 from flask_mail import Mail
-from flask_login import LoginManager
+from flask_login import LoginManager,current_user
 from flask_principal import Principal
 from config import load_config
 from misaka import Markdown, HtmlRenderer
+from redis import StrictRedis
 
 def create_app():
     app = Flask(__name__,static_folder='static')
@@ -58,7 +59,15 @@ def register_jinja2(app):
         html = HtmlRenderer()
         markdown = Markdown(html)
         return Markup(markdown(text))
+    def visit_total(id):
+        visit_total = redis_data.get("visit:%s:totals"%str(id))
+        if visit_total:
+            visit_total = str(visit_total,'utf-8')
+        else:
+            visit_total = '0'
+        return visit_total
     app.jinja_env.filters['safe_markdown'] = safe_markdown
+    app.jinja_env.filters['visit_total'] = visit_total
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 def register_assets(app):
@@ -92,18 +101,19 @@ app = create_app()
 mail = Mail(app)
 login_manager = register_login(app)
 principals = Principal(app)
+redis_data = StrictRedis()
 register(app)
 
+
 @app.before_request
-def make_session_permanent():
-    session.permanent = True
+def before_request():
+    g.user = current_user
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('index/error.html'), 404
+    return render_template('templet/error_404.html'), 404
 
 @app.route('/robots.txt')
 @app.route('/favicon.ico')
-@app.route('/sitemap.xml')
 def static_from_root():
     return send_from_directory(app.static_folder, request.path[1:])

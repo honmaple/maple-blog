@@ -20,8 +20,8 @@ class RegisterForm(Form):
 class LoginForm(Form):
     name = StringField('用户名:', [validators.Length(min=4, max=25)])
     passwd = PasswordField('密码:', [validators.Required()])
-    remember_me = BooleanField('remember me', default=False)
     # validate_code = StringField('验证码:', [validators.Length(min=4, max=6)])
+    remember_me = BooleanField('remember me', default=False)
     sign_in = SubmitField('登陆')
 
     # def validate_name(self, field):

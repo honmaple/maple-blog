@@ -1,8 +1,10 @@
 {% extends "index/base.html" %}
 {% block content %}
-<div>
+<div class="category" style="font-size:16px">
     {% for result in results %}
-    {{ result }}
+    <a href="{{ url_for('blog.page',id=result.id) }}">{{ result.title }}</a>
+    {{ result.content | truncate(50, True)| safe_markdown |safe }}
+    <br />
     {% endfor %}
 </div>
 {% endblock %}

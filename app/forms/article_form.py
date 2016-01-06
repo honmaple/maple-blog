@@ -21,3 +21,7 @@ class ArticleForm(Form):
                            validators=[Required()])
     tags = StringField('标签', validators=[Required()])
     post = SubmitField('提交')
+
+class SearchForm(Form):
+    content = StringField('搜索',validators=[Required()])
+    search = SubmitField('Search')
