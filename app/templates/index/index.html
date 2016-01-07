@@ -55,12 +55,6 @@
         <p>
         {% for question in questions %}
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-        {% set date = (question.publish.today() - question.publish).days %}
-        {% if date == 0 %}
-        今天
-        {% else %}
-        {{ date }}天前
-        {% endif %}
         <a href="{{ url_for('question.question_view',id=question.id) }}">{{ question.title }}</a>
         <br />
         {% endfor %}

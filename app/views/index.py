@@ -24,9 +24,11 @@ from datetime import datetime
 
 site = Blueprint('index',__name__,url_prefix='')
 
+
 @login_manager.user_loader
 def user_loader(id):
-    return User.query.get(int(id))
+    user = User.query.get(int(id))
+    return user
 
 @site.route('/')
 @site.route('/index')
@@ -123,10 +125,8 @@ def sign():
                            passwd = form.passwd.data,
                            roles = 'visitor')
             account.registered_time = datetime.now()
-
             '''邮箱验证'''
             token = email_token(account.email)
-            login_user(account)
             '''email模板'''
             confirm_url = url_for('index.confirm', token=token, _external=True)
             html = render_template('templet/email.html', confirm_url=confirm_url)
@@ -137,6 +137,10 @@ def sign():
             account.send_email_time = datetime.now()
             db.session.add(account)
             db.session.commit()
+
+            login_user(account)
+            identity_changed.send(current_app._get_current_object(),
+                            identity=Identity(account.id))
             return redirect(url_for('index.logined_user',name=account.name))
     return render_template('index/sign_in.html',form=form,error=error)
 
