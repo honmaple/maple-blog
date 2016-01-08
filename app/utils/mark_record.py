@@ -12,6 +12,15 @@ from datetime import datetime
 from app import redis_data
 from flask import current_app
 
+def get_article_count(article_id):
+    '''获取文章阅读次数'''
+    article_count = redis_data.zscore("visited:article",
+                                      "article:%s"%str(article_id))
+    if article_count is None:
+        article_count = 0.0
+    article_count = int(article_count)
+    return article_count
+
 def mark_visited(user_ip,page_name):
     '''记录访问过的用户操作'''
     pipe = redis_data.pipeline()
@@ -22,17 +31,17 @@ def mark_visited(user_ip,page_name):
     '''实时查询'''
     page_count = redis_data.zscore(visited_users,visited_pages)
     '''记录访问某个页面的次数'''
-    if page_count == None:
+    if page_count is None:
         page_count = 1
         pipe.zadd(visited_users,page_count,visited_pages)
     redis_data.zincrby(visited_users,visited_pages,1)
     '''记录访问的时间'''
     now_time = int(time())
     last_time = redis_data.zscore(visited_users,'time')
-    if last_time == None:
+    if last_time is None:
         last_time = now_time
     '''十分钟'''
-    if now_time - last_time >= 10:
+    if now_time - last_time >= 10 or now_time < last_time:
         pipe.zadd(visited_users,last_time,'last_time')
     pipe.zadd(visited_users,now_time,'time')
     pipe.execute()
@@ -46,12 +55,16 @@ def get_visited_time(user_ip):
     '''得到访问时间'''
     visited_users = 'visited_users:%s' % user_ip
     visited_time = redis_data.zscore(visited_users,'time')
+    if visited_time is None:
+        visited_time = time()
     return datetime.utcfromtimestamp(int(visited_time))
 
 def get_visited_last_time(user_ip):
     '''得到上次访问时间'''
     visited_users = 'visited_users:%s' % user_ip
     visited_last_time = redis_data.zscore(visited_users,'last_time')
+    if visited_last_time is None:
+        visited_last_time = time()
     return datetime.utcfromtimestamp(int(visited_last_time))
 
 def get_visited_pages(user_ip):
@@ -64,7 +77,7 @@ def get_visited_pages(user_ip):
         if ':' in page.decode():
             '''得到访问的页面的次数'''
             visited_count = redis_data.zscore(visited_users,page)
-            count.append(visited_count)
+            count.append(int(visited_count))
             p = page.decode()
             p = p.split(':',1)
             pages.append(p[1])
@@ -89,7 +102,7 @@ def mark_online(user_ip):
 def get_user_last_activity(user_ip):
     last_active = redis_data.get('user_activity:%s' % user_ip)
     if last_active is None:
-        return None
+        last_active = time()
     return datetime.utcfromtimestamp(int(last_active))
 
 def get_online_users():
