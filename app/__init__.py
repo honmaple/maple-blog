@@ -23,13 +23,11 @@ def create_app():
     app.config.from_object(config)
     return app
 
-
 def register(app):
     register_routes(app)
     register_assets(app)
     register_db(app)
     register_jinja2(app)
-
 
 def register_routes(app):
     from .views import index,admin, book
@@ -41,7 +39,6 @@ def register_routes(app):
     from .views.blog import site
     app.register_blueprint(site, url_prefix='/blog')
 
-
 def register_db(app):
     from .models import db
 
@@ -52,7 +49,6 @@ def register_db(app):
     # cache = Cache(config={'CACHE_TYPE': 'simple'})
     # cache.init_app(app)
     # return cache
-
 
 def register_jinja2(app):
     def safe_markdown(text):
