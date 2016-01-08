@@ -32,7 +32,7 @@ def count_sum(count):
 def index():
     user_online = get_online_users()
     user_visited = get_visited_users()
-    if not user_online:
+    if user_online is None:
         user_online = b'127.0.0.1'
     return render_template('admin/admin.html',
                            user_online = user_online,
