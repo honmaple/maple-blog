@@ -14,6 +14,7 @@ from ..forms import CommentForm,ReplyForm
 from ..models import Comments,db,Replies,Articles,Tags
 from ..utils import writer_permission
 from datetime import datetime
+from app import redis_data
 
 site = Blueprint('blog',__name__,url_prefix='/blog')
 
@@ -88,6 +89,7 @@ def tag_num(tag,number):
 @site.route('/pages/<id>')
 def page(id):
     '''记录用户浏览次数'''
+    redis_data.zincrby('visited:article','article:%s'%str(id),1)
     comment_form = CommentForm()
     reply_form = ReplyForm()
     article = Articles.query.filter_by(id=id).first()

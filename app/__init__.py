@@ -60,15 +60,10 @@ def register_jinja2(app):
         markdown = Markdown(html)
         return Markup(markdown(text))
 
-    def visit_total(id):
+    def visit_total(article_id):
         '''文章浏览次数'''
-        redis_data.incr("visit:%s:totals"%str(id))
-        visit_total = redis_data.get("visit:%s:totals"%str(id))
-        if visit_total:
-            visit_total = str(visit_total,'utf-8')
-        else:
-            visit_total = '0'
-        return visit_total
+        from .utils import get_article_count
+        return get_article_count(article_id)
 
     def last_online_time(ip):
         from .utils import get_user_last_activity
@@ -148,7 +143,6 @@ def before_request():
     else:
         path = request.path
         mark_visited(request.remote_addr,path)
-    # mark_visited(request.remote_addr,path)
 
 @app.errorhandler(404)
 def not_found(error):
