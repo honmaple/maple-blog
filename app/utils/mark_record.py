@@ -22,7 +22,8 @@ def mark_visited(user_ip,page_name):
     '''实时查询'''
     page_count = redis_data.zscore(visited_users,visited_pages)
     '''记录访问某个页面的次数'''
-    if page_count == None:
+    print(page_count)
+    if page_count is None:
         page_count = 1
         pipe.zadd(visited_users,page_count,visited_pages)
     redis_data.zincrby(visited_users,visited_pages,1)
@@ -46,12 +47,18 @@ def get_visited_time(user_ip):
     '''得到访问时间'''
     visited_users = 'visited_users:%s' % user_ip
     visited_time = redis_data.zscore(visited_users,'time')
+    if visited_time is None:
+        visited_time = time()
+        print('hellosas world')
     return datetime.utcfromtimestamp(int(visited_time))
 
 def get_visited_last_time(user_ip):
     '''得到上次访问时间'''
     visited_users = 'visited_users:%s' % user_ip
     visited_last_time = redis_data.zscore(visited_users,'last_time')
+    if visited_last_time is None:
+        visited_last_time = time()
+        print('hello')
     return datetime.utcfromtimestamp(int(visited_last_time))
 
 def get_visited_pages(user_ip):
@@ -89,7 +96,7 @@ def mark_online(user_ip):
 def get_user_last_activity(user_ip):
     last_active = redis_data.get('user_activity:%s' % user_ip)
     if last_active is None:
-        return None
+        last_active = int(time())
     return datetime.utcfromtimestamp(int(last_active))
 
 def get_online_users():
