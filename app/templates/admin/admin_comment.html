@@ -1,12 +1,12 @@
 {% extends 'admin/admin_base.html' %}
 {% block content %}
-<ul class="nav nav-tabs text-center"  role="tablist">
+<ul class="nav nav-tabs text-center" role="tablist">
     <li style="width:50%;" role="presentation" class="active"><a href="#comment" aria-controls="comment" role="tab" data-toggle="tab">评论管理</a></li>
     <li style="width:50%;" role="presentation"><a href="#reply" aria-controls="reply" role="tab" data-toggle="tab">回复管理</a></li>
 </ul>
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="comment">
-        <div class="panel panel-default">
+        <div class="panel panel-default table-responsive">
             <table class="table table-hover">
                 <tr>
                     <th>NO.</th>
@@ -58,7 +58,7 @@
         </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="reply">
-        <div class="panel panel-default">
+        <div class="panel panel-default table-responsive">
             <table class="table table-hover">
                 <tr>
                     <th>NO.</th>

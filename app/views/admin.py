@@ -14,8 +14,8 @@ from ..models import Articles,db,User,Comments,Questions,Tags
 from ..forms import ArticleForm,QuestionForm,EditRegisterForm
 from ..utils import super_permission
 from ..utils import DeleteManager,EditManager
+from ..utils import get_online_users,get_visited_users
 from datetime import datetime
-from app import redis_data
 
 site = Blueprint('admin',__name__,url_prefix='/admin')
 
@@ -30,7 +30,13 @@ def count_sum(count):
 @site.route('/')
 @super_permission.require(404)
 def index():
-   return render_template('admin/admin.html')
+    user_online = get_online_users()
+    user_visited = get_visited_users()
+    if not user_online:
+        user_online = b'127.0.0.1'
+    return render_template('admin/admin.html',
+                           user_online = user_online,
+                           user_visited = user_visited)
 
 @site.route('/pages_post', methods=['GET','POST'])
 @super_permission.require(404)
