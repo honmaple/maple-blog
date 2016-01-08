@@ -10,4 +10,5 @@
 from .permissions import *
 from .manager import *
 from .overtime import *
+from .mark_record import *
 # from .validate_code import *

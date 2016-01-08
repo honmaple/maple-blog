@@ -1,31 +1,75 @@
 {% extends "admin/admin_base.html" %}
 {% block content %}
-<div>
-    <ul class="nav nav-tabs"  role="tablist">
-        <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">个人资料</a></li>
-        <li role="presentation"><a href="#secure" aria-controls="secure" role="tab" data-toggle="tab">账户安全</a></li>
-        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">全部文章</a></li>
-    </ul>
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="profile">
-            <p> <b> 个人简介</b> 
-            <a href="#">
-                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-            </a>
-            </p>
-            <p> 河海大学 
-            </p>
-            <br />
-            <p> <b>联系方式</b></p>
-            <p>Mail:xiyang0807@gmail.com</p>
+<ul class="nav nav-tabs text-center"  role="tablist" >
+    <li role="presentation" class="active" style="width:33%;"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">在线用户</a></li>
+    <li role="presentation" style="width:33%;"><a href="#secure" aria-controls="secure" role="tab" data-toggle="tab">访问记录</a></li>
+    <li role="presentation" style="width:33%;"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">访问统计</a></li>
+</ul>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="profile">
+        <div class="panel panel-default table-responsive">
+            <table class="table table-hover">
+                <tr>
+                    <th>在线用户</th>
+                    <th>上次在线时间</th>
+                    <th>地址</th>
+                </tr>
+                {% for ip_online in user_online %}
+                <tr>
+                    <td>{{ ip_online.decode() }}</td>
+                    <td>{{ ip_online | last_online_time }}</td>
+                    <td></td> 
+                </tr>
+                {% endfor %}
+            </table>
         </div>
-        <div role="tabpanel" class="tab-pane" id="secure">
-            修改密码
-            <a href="#">
-                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-            </a>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="secure">
+        <div class="panel panel-default table-responsive">
+            <table class="table table-hover">
+                <tr>
+                    <th>访问用户</th>
+                    <th>访问时间</th>
+                    <th>上次访问时间</th>
+                </tr>
+                {% for ip_visited in user_visited %}
+                <tr>
+                    <td>{{ ip_visited.decode() }}</td>
+                    <td>{{ ip_visited | visited_time }}</td>
+                    <td>{{ ip_visited | visited_last_time }}</td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
-        <div role="tabpanel" class="tab-pane" id="messages">...</div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="messages">
+        <div class="panel panel-default table-responsive">
+            <table class="table table-hover">
+                <tr>
+                    <th>访问用户</th>
+                    <th>访问页面</th>
+                    <th>访问次数</th>
+                </tr>
+                {% for ip_visited in user_visited %}
+                <tr>
+                    {% set pages,counts = ip_visited | visited_pages %}
+                    <td>{{ ip_visited.decode() }}</td>
+                    <td>
+                        {% for page in pages %}
+                        {{ page }} 
+                        <br>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for count in counts %} 
+                        {{ count }}
+                        <br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

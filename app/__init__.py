@@ -59,15 +59,43 @@ def register_jinja2(app):
         html = HtmlRenderer()
         markdown = Markdown(html)
         return Markup(markdown(text))
+
     def visit_total(id):
+        '''文章浏览次数'''
+        redis_data.incr("visit:%s:totals"%str(id))
         visit_total = redis_data.get("visit:%s:totals"%str(id))
         if visit_total:
             visit_total = str(visit_total,'utf-8')
         else:
             visit_total = '0'
         return visit_total
+
+    def last_online_time(ip):
+        from .utils import get_user_last_activity
+        ip = str(ip,'utf-8')
+        return get_user_last_activity(ip)
+
+    def visited_time(ip):
+        from .utils import get_visited_time
+        ip = str(ip,'utf-8')
+        return get_visited_time(ip)
+
+    def visited_last_time(ip):
+        from .utils import get_visited_last_time
+        ip = str(ip,'utf-8')
+        return get_visited_last_time(ip)
+
+    def visited_pages(ip):
+        from .utils import get_visited_pages
+        ip = str(ip,'utf-8')
+        return get_visited_pages(ip)
+
     app.jinja_env.filters['safe_markdown'] = safe_markdown
     app.jinja_env.filters['visit_total'] = visit_total
+    app.jinja_env.filters['last_online_time'] = last_online_time
+    app.jinja_env.filters['visited_time'] = visited_time
+    app.jinja_env.filters['visited_last_time'] = visited_last_time
+    app.jinja_env.filters['visited_pages'] = visited_pages
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 def register_assets(app):
@@ -108,6 +136,19 @@ register(app)
 @app.before_request
 def before_request():
     g.user = current_user
+    from .utils import mark_online
+    mark_online(request.remote_addr)
+    from .utils import mark_visited
+    if '/static/'in request.path:
+        pass
+    elif '/favicon.ico' in request.path:
+        pass
+    elif '/robots.txt' in request.path:
+        pass
+    else:
+        path = request.path
+        mark_visited(request.remote_addr,path)
+    # mark_visited(request.remote_addr,path)
 
 @app.errorhandler(404)
 def not_found(error):

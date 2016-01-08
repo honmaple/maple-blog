@@ -313,7 +313,7 @@ def user_infor_edit(post_id):
 
 @site.route('/about')
 def about():
-    about = Articles.query.filter_by(id=35).first()
+    about = Articles.query.filter_by(id=26).first()
     content = about.content
     return render_template('index/about_me.html',
                            content = content)
