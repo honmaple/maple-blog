@@ -97,6 +97,13 @@ def get_visited_pages(user_ip):
             pass
     return pages,count
 
+def delete_visited_users(user_ip):
+    '''删除访问记录'''
+    visited_users = 'visited_users:%s' % user_ip
+    redis_data.srem('visited:users',user_ip)
+    redis_data.delete(visited_users)
+
+
 def mark_online(user_ip):
     '''记录在线用户'''
     config = current_app.config

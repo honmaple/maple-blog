@@ -81,12 +81,16 @@ def register_jinja2(app):
         ip = str(ip,'utf-8')
         return get_visited_pages(ip)
 
+    def query_ip(ip):
+        from IP import find
+        return find(ip)
     app.jinja_env.filters['safe_markdown'] = safe_markdown
     app.jinja_env.filters['visit_total'] = visit_total
     app.jinja_env.filters['last_online_time'] = last_online_time
     app.jinja_env.filters['visited_time'] = visited_time
     app.jinja_env.filters['visited_last_time'] = visited_last_time
     app.jinja_env.filters['visited_pages'] = visited_pages
+    app.jinja_env.filters['query_ip'] = query_ip
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 def register_assets(app):
@@ -126,6 +130,8 @@ register(app)
 
 @app.before_request
 def before_request():
+    from .utils import allow_ip
+    allow_ip(request.remote_addr)
     g.user = current_user
     from .utils import mark_online
     mark_online(request.remote_addr)

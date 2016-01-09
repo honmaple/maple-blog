@@ -12,13 +12,18 @@
                 <tr>
                     <th>在线用户</th>
                     <th>上次在线时间</th>
-                    <th>地址</th>
+                    <th>IP地址</th>
+                    <th>权限管理</th>
                 </tr>
                 {% for ip_online in user_online %}
                 <tr>
                     <td>{{ ip_online.decode() }}</td>
                     <td>{{ ip_online | last_online_time }}</td>
-                    <td></td> 
+                    <td>{{ ip_online | query_ip }}</td> 
+                    <td>
+                        <a href="{{ url_for('admin.add_blacklist',ip=ip_online.decode()) }}" title="加入黑名单"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+                        <a href="{{ url_for('admin.add_writelist',ip=ip_online.decode()) }}" title="加入白名单"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
@@ -31,12 +36,19 @@
                     <th>访问用户</th>
                     <th>访问时间</th>
                     <th>上次访问时间</th>
+                    <th>权限管理</th>
+                    <th>删除记录</th>
                 </tr>
                 {% for ip_visited in user_visited %}
                 <tr>
                     <td>{{ ip_visited.decode() }}</td>
                     <td>{{ ip_visited | visited_time }}</td>
                     <td>{{ ip_visited | visited_last_time }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.add_blacklist',ip=ip_visited.decode()) }}" title="加入黑名单"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+                        <a href="{{ url_for('admin.add_writelist',ip=ip_visited.decode()) }}" title="加入白名单"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+                    </td>
+                    <td><a href="{{ url_for('admin.delete',ip=ip_visited.decode()) }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -49,6 +61,8 @@
                     <th>访问用户</th>
                     <th>访问页面</th>
                     <th>访问次数</th>
+                    <th>权限管理</th>
+                    <th>删除记录</th>
                 </tr>
                 {% for ip_visited in user_visited %}
                 <tr>
@@ -66,6 +80,11 @@
                         <br>
                         {% endfor %}
                     </td>
+                    <td>
+                        <a href="{{ url_for('admin.add_blacklist',ip=ip_visited.decode()) }}" title="加入黑名单"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+                        <a href="{{ url_for('admin.add_writelist',ip=ip_visited.decode()) }}" title="加入白名单"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+                    </td>
+                    <td><a href="{{ url_for('admin.delete',ip=ip_visited.decode()) }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
                 </tr>
                 {% endfor %}
             </table>

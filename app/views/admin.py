@@ -38,6 +38,30 @@ def index():
                            user_online = user_online,
                            user_visited = user_visited)
 
+@site.route('/delete/record=<ip>')
+@super_permission.require(404)
+def delete(ip):
+    '''删除记录'''
+    from ..utils import delete_visited_users
+    delete_visited_users(ip)
+    return redirect(url_for('admin.index'))
+
+@site.route('/add/blacklist=<ip>')
+@super_permission.require(404)
+def add_blacklist(ip):
+    '''加入黑名单'''
+    from ..utils import set_blacklist
+    set_blacklist(ip)
+    return redirect(url_for('admin.index'))
+
+@site.route('/add/writelist=<ip>')
+@super_permission.require(404)
+def add_writelist(ip):
+    '''加入白名单'''
+    from ..utils import set_writelist
+    set_writelist(ip)
+    return redirect(url_for('admin.index'))
+
 @site.route('/pages_post', methods=['GET','POST'])
 @super_permission.require(404)
 def admin_post():
