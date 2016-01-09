@@ -8,8 +8,11 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from app import app
+from app import redis_data
 from flask_login import current_user
 from flask_principal import Permission, RoleNeed, UserNeed, identity_loaded
+# from functools import wraps
+from flask import abort
 
 super_permission = Permission(RoleNeed('super'))
 admin_permission = Permission(RoleNeed('admin')).union(super_permission)
@@ -39,3 +42,30 @@ def on_identity_loaded(sender, identity):
     # identity.allow_edit = editor_permission.allows(identity)
     # identity.allow_write = writer_permission.allows(identity)
 
+def set_blacklist(user_ip):
+    '''设置黑名单'''
+    redis_data.sadd('users:blacklist',user_ip)
+
+def set_writelist(user_ip):
+    '''设置白名单'''
+    redis_data.sadd('users:writelist',user_ip)
+
+def allow_ip(user_ip):
+    visited_users = redis_data.smembers('users:blacklist')
+    if user_ip.encode() in visited_users:
+        abort(501)
+    else:
+        pass
+
+# def allow_ip(user_ip):
+    # def decorator(f):
+        # @wraps(f)
+        # def decorated_function(*args, **kwargs):
+            # '''查询IP是否在黑名单中'''
+            # visited_users = redis_data.smembers('blacklist')
+            # if user_ip in visited_users:
+                # abort(404)
+            # else:
+                # pass
+        # return decorated_function
+    # return decorator
