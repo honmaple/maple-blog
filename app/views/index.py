@@ -16,7 +16,7 @@ from flask_principal import Identity, AnonymousIdentity, \
 from werkzeug.security import check_password_hash,generate_password_hash
 from app import login_manager
 from ..email import email_token,email_send,confirm_token,email_validate
-from ..models import User,Questions,Comments,Articles,db
+from ..models import User,Questions,Comments,Articles,Notices,db
 from ..forms import LoginForm,RegisterForm,NewPasswdForm,\
     EditUserInforForm,ForgetPasswdForm
 from ..utils import EditManager,writer_permission,check_overtime
@@ -37,9 +37,11 @@ def index():
     articles = Articles.query.order_by(Articles.publish.desc()).limit(7)
     questions = Questions.query.order_by(Questions.publish.desc()).\
         filter_by(private=False).limit(7)
+    notice = Notices.query.order_by(Notices.publish.desc()).first()
     return render_template('index/index.html',
                            articles = articles,
-                           questions = questions)
+                           questions = questions,
+                           notice = notice)
 
 @site.route('/login', methods=['GET','POST'])
 def login():

@@ -12,3 +12,4 @@ from .book_db import *
 from .account_db import *
 from .article_db import *
 from .question_db import *
+from .notice_db import *

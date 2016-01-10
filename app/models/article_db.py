@@ -47,6 +47,7 @@ class Articles(db.Model):
     content = db.Column(db.Text,nullable=False)
     user = db.Column(db.String, nullable=False)
     category = db.Column(db.String,nullable=False)
+    copy = db.Column(db.Boolean,nullable=False,default=False)
     '''多个标签对多篇文章'''
     tag_article = db.relationship('Tags', secondary=tag_article,
                                   backref=db.backref('articles',

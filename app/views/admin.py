@@ -10,8 +10,8 @@
 from flask import render_template, Blueprint, request, \
     flash, redirect, url_for
 from flask.ext.login import current_user
-from ..models import Articles,db,User,Comments,Questions,Tags
-from ..forms import ArticleForm,QuestionForm,EditRegisterForm
+from ..models import Articles,db,User,Comments,Questions,Tags,Notices
+from ..forms import ArticleForm,QuestionForm,EditRegisterForm,NoticesForm
 from ..utils import super_permission
 from ..utils import DeleteManager,EditManager
 from ..utils import get_online_users,get_visited_users
@@ -40,10 +40,18 @@ def index():
 
 @site.route('/delete/record=<ip>')
 @super_permission.require(404)
-def delete(ip):
+def delete_ip(ip):
     '''删除记录'''
     from ..utils import delete_visited_users
     delete_visited_users(ip)
+    return redirect(url_for('admin.index'))
+
+@site.route('/delete/page/record=<ip>')
+@super_permission.require(404)
+def delete_page(ip):
+    '''删除记录'''
+    from ..utils import delete_visited_pages
+    delete_visited_pages(ip)
     return redirect(url_for('admin.index'))
 
 @site.route('/add/blacklist=<ip>')
@@ -61,6 +69,23 @@ def add_writelist(ip):
     from ..utils import set_writelist
     set_writelist(ip)
     return redirect(url_for('admin.index'))
+
+@site.route('/notice_post', methods=['GET','POST'])
+@super_permission.require(404)
+def post_notice():
+    '''发布公告'''
+    notices = Notices.query.all()
+    form = NoticesForm()
+    if form.validate_on_submit() and request.method == "POST":
+        post_notice = Notices(notice = form.notice.data)
+        post_notice.publish = datetime.now()
+        db.session.add(post_notice)
+        db.session.commit()
+        flash('已提交')
+        return redirect(url_for('admin.post_notice'))
+    return render_template('admin/admin_notice.html',
+                           form=form,
+                           notices = notices)
 
 @site.route('/pages_post', methods=['GET','POST'])
 @super_permission.require(404)
@@ -85,6 +110,7 @@ def admin_post():
                                 category = form.category.data,
                                 content = form.content.data)
         post_article.publish = datetime.now()
+        post_article.copy = form.copy.data
         '''关系数据表'''
         post_article.tag_article = post_tags
         db.session.add(post_article)

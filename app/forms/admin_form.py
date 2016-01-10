@@ -16,7 +16,7 @@ from wtforms.validators import Required
 class EditUserInforForm(Form):
     passwd = PasswordField('密码', [validators.Required()])
     new_passwd = PasswordField('新密码', [validators.Length(min=4, max=25)])
-    retry_new_passwd = PasswordField('重复新密码', 
+    retry_new_passwd = PasswordField('重复新密码',
                                      [validators.Length(min=4, max=25)])
     introduce = TextAreaField('个人介绍', [validators.Required()])
     school = StringField('学校/公司', [validators.Required()])
@@ -28,7 +28,7 @@ class EditRegisterForm(Form):
                            choices=[('True','True'), ('False', 'False')],
                            validators=[Required()])
     roles = SelectField('用户组',
-                           choices=[('super','Super'),('admin', 'Admin'), 
+                           choices=[('super','Super'),('admin', 'Admin'),
                                     ('writer', 'Writer'),('editor','Editor'),
                                     ('visitor','Visitor')],
                            validators=[Required()])
@@ -37,3 +37,6 @@ class EditRegisterForm(Form):
                                validators=[Required()])
     edit = SubmitField('修改')
 
+class NoticesForm(Form):
+    notice = TextAreaField('公告内容', [validators.Required()])
+    confirm = SubmitField('发布公告')

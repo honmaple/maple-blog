@@ -37,13 +37,21 @@ def mark_visited(user_ip,page_name):
     redis_data.zincrby(visited_users,visited_pages,1)
     '''记录访问的时间'''
     now_time = int(time())
-    last_time = redis_data.zscore(visited_users,'time')
-    if last_time is None:
-        last_time = now_time
+    query_last_time = redis_data.zscore(visited_users,'last_time')
+    query_now_time = redis_data.zscore(visited_users,'time')
+    if query_last_time is None:
+        query_last_time = now_time
+        pipe.zadd(visited_users,query_last_time,'last_time')
+    if query_now_time is None:
+        query_now_time = now_time
     '''十分钟'''
-    if now_time - last_time >= 10 or now_time < last_time:
-        pipe.zadd(visited_users,last_time,'last_time')
-    pipe.zadd(visited_users,now_time,'time')
+    if now_time - query_last_time >= 600:
+        pipe.zadd(visited_users,query_now_time,'last_time')
+        pipe.zadd(visited_users,now_time,'time')
+    else:
+        pipe.zadd(visited_users,now_time,'time')
+    pipe.expire('visited:users',604800)
+    pipe.expire(visited_users,259200)
     pipe.execute()
 
 def get_visited_users():
@@ -91,6 +99,13 @@ def delete_visited_users(user_ip):
     redis_data.srem('visited:users',user_ip)
     redis_data.delete(visited_users)
 
+def delete_visited_pages(user_ip):
+    '''删除访问页面'''
+    visited_users = 'visited_users:%s' % user_ip
+    visited_pages = redis_data.zrange(visited_users,0,-1)
+    for page in visited_pages:
+        if ':' in page.decode():
+            redis_data.zrem(visited_users,page)
 
 def mark_online(user_ip):
     '''记录在线用户'''
