@@ -6,12 +6,12 @@
         <span>
             <h3> <a href="{{ url_for('blog.page',id=article.id) }}" target=_blank>{{ article.title }}</a></h3>
             <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-            {{ article.publish.strftime('%Y-%m-%d %H:%M:%S') }}
-            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-            {% for tag in article.tag_article %}
-            <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#eb5424;">{{ tag.name }}</a>
-            {% endfor %}
-            浏览次数:{{ article.id | visit_total }}
+            <span class="tags">
+                {{ article.publish.strftime('%Y-%m-%d %H:%M:%S') }} | 标签:
+                {% for tag in article.tag_article %}
+                <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#eb5424;">{{ tag.name }}</a>
+                {% endfor %} | 浏览次数:{{ article.id | visit_total }}
+            </span>
             <br />
             <br />
             {{ article.content | truncate(255, True)| safe_markdown }}

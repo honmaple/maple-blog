@@ -1,18 +1,31 @@
 {% extends 'admin/admin_base.html' %}
 {% block content %}
-<div>
-        <form action="{{ url_for('admin.admin_post') }}" method="POST">
-            {{ form.hidden_tag()}}
-            {{ form.title.label }}
-            {{ form.title(class="form-control",placeholder="Title",style="width:60%") }}
-            {{ form.category.label }}
-            {{ form.category(class="form-control") }}
-            {{ form.tags.label }}
-            {{ form.tags(class="form-control",placeholder="请以英文逗号隔开 xx,xx,xx") }}
-            {{ form.content.label }}
-            {{ form.content(class="form-control",rows="10") }}
-            <br />
-            {{ form.post(class="btn btn-primary") }}   
-        </form>
+<script type="text/javascript">
+function previewTopicContent(){
+    $.get("{{ url_for('blog.preview') }}", {
+        content: $("#content").val(),
+    }, function(data) {
+        $("#showPreview").html(data);
+    });
+};
+</script>
+<div class="col-sm-9">
+    <form action="{{ url_for('admin.admin_post') }}" method="POST">
+        {{ form.hidden_tag()}}
+        {{ form.title.label }}
+        {{ form.title(class="form-control",placeholder="Title",style="width:60%") }}
+        {{ form.category.label }}
+        {{ form.category(class="form-control") }}
+        {{ form.tags.label }}
+        {{ form.tags(class="form-control",placeholder="请以英文逗号隔开 xx,xx,xx") }}
+        {{ form.content.label }}
+        {{ form.content(class="form-control",rows="10") }}
+        {{ form.copy.label }} {{ form.copy }}
+        <br />
+        {{ form.post(class="btn btn-primary") }}   
+        <button type="button" class="btn btn-primary" onclick="previewTopicContent()">预览</button>
+    </form>
+</div>
+<div class="col-sm-3" id="showPreview">
 </div>
 {% endblock %}

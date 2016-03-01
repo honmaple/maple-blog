@@ -28,8 +28,10 @@ def index():
 
 @site.route('/view/post',methods=['GET','POST'])
 @login_required
-@writer_permission.require(404)
 def post():
+    if not writer_permission.can():
+        flash('你没有验证账户，不能发表问题')
+        return redirect(url_for('question.index'))
     form = QuestionForm()
     if form.validate_on_submit() and request.method == "POST":
         post_question = Questions(user = current_user.name,

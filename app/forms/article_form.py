@@ -9,7 +9,7 @@
 # -*- coding=UTF-8 -*-
 from flask.ext.wtf import Form
 from wtforms import StringField,SubmitField,TextAreaField,\
-    SelectField
+    SelectField,BooleanField
 from wtforms.validators import Required
 
 class ArticleForm(Form):
@@ -20,6 +20,7 @@ class ArticleForm(Form):
                                     ('生活随笔','生活随笔')],
                            validators=[Required()])
     tags = StringField('标签', validators=[Required()])
+    copy = BooleanField('是否为转载', default=False)
     post = SubmitField('提交')
 
 class SearchForm(Form):

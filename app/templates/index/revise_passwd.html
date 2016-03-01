@@ -1,35 +1,59 @@
 {% extends "index/base.html" %}
-{% block content %}
-
-<div class="row category">
-    <div class="col-xs-2">
-    </div>
-    <div class="col-xs-8">
-        <br />
-        <form action="{{ url_for('index.forget_confirm',token=token) }}" method="POST" class="form-horizontal">
-            {{ form.hidden_tag()}}
-            <div class="form-group">
-                <label class="col-sm-3 control-label">{{ form.new_passwd.label }}</label>
-                <div class="col-sm-9">
-                    {{ form.new_passwd(class="form-control",placeholder="new password") }}
-                </div>
+{%- block content -%}
+<script type=text/javascript>
+$(document).ready(function(){
+    $('button#ajax').click(function() {
+        $.ajax ({
+            type : "POST",
+            url : "{{ url_for('index.forget_confirm',token=token) }}",
+            data:JSON.stringify({
+                new_passwd: $('#new_passwd').val(),
+                retry_new_passwd: $('#retry_new_passwd').val()
+            }),
+            contentType: 'application/json;charset=UTF-8',
+            success: function(result) {
+                if (result.judge == true)
+                {
+                    window.location = '{{ url_for('index.login') }}';
+                }
+                else 
+                {
+                    $("#showerror").show();
+                    $("#error").text(result.error);
+                }
+            }
+        });
+    });
+});
+</script>
+<table align="center" style="font-size:14px;">
+    <tr>
+        <td colspan="2">
+            <div class="alert alert-info" id="showerror" style="padding:8px;">
+                <button type="button" class="close" id="hide">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <ul>
+                    <li id="error"></li>
+                </ul>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">{{ form.retry_new_passwd.label }}</label>
-                <div class="col-sm-9">
-                    {{ form.retry_new_passwd(class="form-control",placeholder="new password") }}
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                    {{ form.confirm(class="btn btn-primary") }}
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-xs-2">
-    </div>
-</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-right:5px;">{{ form.new_passwd.label }}</td>
+        <td style="padding-bottom:10px;">{{ form.new_passwd(class="form-control",placeholder="new password") }}</td>
+    </tr>
+    <tr>
+        <td style="padding-right:5px;">{{ form.retry_new_passwd.label }}</td>
+        <td style="padding-bottom:10px;">{{ form.retry_new_passwd(class="form-control",placeholder="new password") }}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="padding-bottom:10px;">
+            <button type="button" class="btn btn-primary" id="ajax">确认</button> 
+        </td>    
+    </tr>
+</table>
 {% endblock %}
 
 

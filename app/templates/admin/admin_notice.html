@@ -1,0 +1,44 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+<style type="text/css">
+    .question {
+        display: inline-block;
+        background-color: #a40000;
+        padding: 2px;
+        border: 1px solid #a40000;
+        font-size: 12px;
+        line-height: 12px;
+        font-weight: 400;
+        border-radius: 2px;
+        margin-right: 5px;
+        vertical-align: 1px;
+        text-decoration: none;
+        color: #FBFBFB;
+    }
+</style>
+<div class="col-sm-9" style="padding:0px;">
+    {% set i = 1 %}
+    {% for notice in notices %}
+    <div class="col-sm-3" style="margin-bottom:10px;">
+        <span class="question">发布时间</span>
+        {{ notice.publish.strftime('%Y-%m-%d %H:%M:%S') }}
+        <br>
+        <span class="question">公告内容</span>
+        {{ notice.notice }}
+    </div>
+    {% if i%4 == 0 %}
+    <div style="display:inline-block;width:100%;"></div>
+    {% endif %}
+    {% set i = i + 1 %}
+    {% endfor %}
+</div>
+<div class="col-sm-3">
+    <form action="{{ url_for('admin.post_notice') }}" method="POST">
+        {{ form.hidden_tag()}}
+        {{ form.notice.label }}
+        {{ form.notice(class="form-control",rows="10",placeholder="公告内容") }}
+        <br />
+        {{ form.confirm(class="btn btn-primary") }}   
+    </form>
+</div>
+{% endblock %}

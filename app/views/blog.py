@@ -8,7 +8,7 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint,request,\
-    redirect,url_for,abort
+    redirect,url_for,abort,Markup
 from flask.ext.login import current_user,login_required
 from ..forms import CommentForm,ReplyForm
 from ..models import Comments,db,Replies,Articles,Tags
@@ -16,6 +16,7 @@ from ..utils import writer_permission
 from datetime import datetime
 from app import redis_data
 
+# site = Blueprint('blog',__name__,url_prefix='/blog')
 site = Blueprint('blog',__name__,url_prefix='/blog')
 
 def count_sum(count):
@@ -122,6 +123,14 @@ def archives(number):
                            all_tags = all_tags,
                            count = count,
                            number = number)
+
+@site.route('/pages/preview')
+def preview():
+    from misaka import Markdown, HtmlRenderer
+    content = request.args.get('content')
+    html = HtmlRenderer()
+    markdown = Markdown(html)
+    return Markup(markdown(content))
 
 '''评论表单'''
 @site.route('/pages/<id>/comment',methods=['GET','POST'])

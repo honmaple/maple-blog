@@ -5,13 +5,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ title }}</title>
-
-        {% assets "home_js" %}
+        {% assets "home_js" -%}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-        {% endassets %}
-        {% assets "home_css" %}
+        {% endassets -%}
+        {%- assets "home_css" -%}
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
-        {% endassets %}
+        {% endassets -%}
         <style type="text/css">
             html,body{height:100%}
             img {width:100%}
@@ -32,6 +31,9 @@
             border:1px solid #ddd;
             box-shadow:0px 0px 1px #ddd;
             border-radius: 3px;
+            }
+            .tags {
+                color:#999;
             }
         </style>
     </head>
@@ -83,22 +85,22 @@
                     </div>
                 </nav>
                 <div class="row" style="margin:0 8%;">
-                    {% with messages = get_flashed_messages() %}
+                    {%- with messages = get_flashed_messages() -%}
                     {% if messages %}
                     <div class="alert alert-info" style="padding:8px">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     <ul>
-                        {% for message in messages %}
+                        {%- for message in messages -%}
                         <li>{{ message }} </li>
                         {% endfor %}
                     </ul>
                     </div>
                     {% endif %}
-                    {% endwith %}
+                    {% endwith -%}
                     <div class="col-sm-9" >
-                        {% block content %}{% endblock %}
+                        {%- block content %}{% endblock -%}
                     </div>
                         <div class="col-sm-3">
                             <ul class="list-group">
@@ -122,11 +124,11 @@
                                     <a href="http://github.com/honmaple">GitHub</a>
                                 </li>
                                 <li class="list-group-item">标签: <br />
-                                    {% for tag in all_tags %}
+                                    {% for tag in all_tags -%}
                                     <span class="label label-primary" style="display: inline-block;">
                                         <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
                                     </span>
-                                    {% endfor %}
+                                    {% endfor -%}
                                 </li>
                                 <li class="list-group-item">链接:
                                     <br />

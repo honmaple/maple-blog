@@ -1,6 +1,11 @@
 {% extends "index/base.html" %}
 {% block content %}
-<div class="category">
+<style type="text/css">
+    blockquote {
+        font-size:16px;
+    }
+</style>
+<div class="category" style="font-size:16px;">
     {{ content | safe_markdown }}
 </div>
 {% endblock %}

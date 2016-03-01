@@ -27,6 +27,7 @@ def register(app):
     register_routes(app)
     register_assets(app)
     register_db(app)
+    register_form(app)
     register_jinja2(app)
 
 def register_routes(app):
@@ -37,12 +38,17 @@ def register_routes(app):
     from .views import question
     app.register_blueprint(question.site, url_prefix='/question')
     from .views.blog import site
-    app.register_blueprint(site, url_prefix='/blog')
+    app.register_blueprint(site,url_prefix='/blog')
 
 def register_db(app):
     from .models import db
 
     db.init_app(app)
+
+def register_form(app):
+    from flask_wtf.csrf import CsrfProtect
+    csrf = CsrfProtect()
+    csrf.init_app(app)
 
 # def register_cache(app):
 
@@ -119,12 +125,17 @@ def register_login(app):
     login_manager.login_message = u"这个页面要求登陆，请登陆"
     return login_manager
 
+def register_redis(app):
+    config = app.config
+    redis_data = StrictRedis(password=config['REDIS_PASSWORD'])
+    return redis_data
+
 
 app = create_app()
 mail = Mail(app)
 login_manager = register_login(app)
 principals = Principal(app)
-redis_data = StrictRedis()
+redis_data = register_redis(app)
 register(app)
 
 

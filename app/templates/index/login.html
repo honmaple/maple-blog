@@ -1,53 +1,68 @@
 {% extends "index/base.html" %}
-{% block content %}
-<div class="row">
-    <div class="col-xs-2">
-    </div>
-    <div class="col-xs-8">
-        <br />
-        <form action="{{ url_for('index.login') }}" method="POST" class="form-horizontal">
-            {% if error %}
-            <div class="alert alert-info" style="padding:8px">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+{%- block content -%}
+<script type=text/javascript>
+$(document).ready(function(){
+    $('button#ajax').click(function() {
+        $.ajax ({
+            type : "POST",
+            url : "{{ url_for('index.login') }}",
+            data:JSON.stringify({
+                name: $('input[name="name"]').val(),
+                passwd: $('input[name="passwd"]').val()
+            }),
+            contentType: 'application/json;charset=UTF-8',
+            success: function(result) {
+                if (result.judge == true)
+                {
+                    window.location = '{{ request.args.get('next') or '/' }}';
+                }
+                else 
+                {
+                    $("#showerror").show();
+                    $("#error").text(result.error);
+                }
+            }
+        });
+    });
+});
+</script>
+<table align="center" style="font-size:14px;">
+    <tr>
+        <td colspan="2">
+            <div class="alert alert-info" id="showerror" style="padding:8px;">
+                <button type="button" class="close" id="hide">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <ul>
-                    <li>ERROR:{{ error }}</li>
+                    <li id="error"></li>
                 </ul>
             </div>
-            {% endif %}
-            {{ form.hidden_tag()}}
-            <div class="form-group">
-                <label class="col-sm-3 control-label">{{ form.name.label }}</label>
-                <div class="col-sm-6">
-                    {{ form.name(class="form-control",placeholder="name",style="width:240px") }}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">{{ form.passwd.label }}</label>
-                <div class="col-sm-6">
-                    {{ form.passwd(class="form-control",placeholder="password",style="width:240px") }}
-                </div>
-            </div>
-            <div class="form-group" style="margin-top:-5px">
-                <div class="col-sm-offset-3 col-sm-9">
-                    {{ form.sign_in(class="btn btn-primary",style="margin-right:10px") }}
-                    <a href="{{ url_for('index.forget') }}">忘记密码?</a>
-                    <br />
-                    {{ form.remember_me() }} 
-                    记住我
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                    <a href="{{ url_for('index.sign') }}">还未注册</a>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-xs-2">
-    </div>
-</div>
+        </td>
+    </tr>
+    <tr>
+        <td>{{ form.name.label }}</td>
+        <td style="padding-bottom:10px;"> {{ form.name(class="form-control",placeholder="name",style="width:240px") }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.passwd.label }}</td>
+        <td style="padding-bottom:10px;">{{ form.passwd(class="form-control",placeholder="password",style="width:240px") }}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="padding-bottom:10px;">
+            <button type="button" class="btn btn-primary" id="ajax">登陆</button> 
+            <a href="{{ url_for('index.forget') }}">忘记密码?</a>
+        </td>    
+    </tr>
+    <tr>
+        <td></td>
+        <td>{{ form.remember_me() }} 记住我</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><a href="{{ url_for('index.sign') }}">还未注册</a></td>
+    </tr>
+</table>
 {% endblock %}
 
 
