@@ -18,10 +18,18 @@ from .base import db
 
 # import datetime
 
-tag_article = db.Table('tag_article',
-    db.Column('tags_id', db.Integer, db.ForeignKey('tags.id')),
-    db.Column('articles_id', db.Integer, db.ForeignKey('articles.id'))
+tag_article = db.Table(
+    'tag_article',
+    db.Column('tags_id',
+              db.Integer,
+              db.ForeignKey('tags.id')
+              ),
+    db.Column('articles_id',
+                db.Integer,
+                db.ForeignKey('articles.id')
+                )
 )
+
 
 class Tags(db.Model):
     __bind_key__ = 'blog'
@@ -38,23 +46,24 @@ class Tags(db.Model):
     def __repr__(self):
         return '<Tags %r>' % self.name
 
+
 class Articles(db.Model):
     __bind_key__ = 'blog'
     __tablename__ = 'articles'
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     publish = db.Column(db.DateTime, nullable=False)
-    content = db.Column(db.Text,nullable=False)
+    content = db.Column(db.Text, nullable=False)
     user = db.Column(db.String, nullable=False)
-    category = db.Column(db.String,nullable=False)
-    copy = db.Column(db.Boolean,nullable=False,default=False)
+    category = db.Column(db.String, nullable=False)
+    copy = db.Column(db.Boolean, nullable=False, default=False)
     '''多个标签对多篇文章'''
     tag_article = db.relationship('Tags', secondary=tag_article,
                                   backref=db.backref('articles',
                                                      lazy='dynamic'))
 
     def __init__(self,
-                 title, user,content,category):
+                 title, user, content, category):
         self.user = user
         self.title = title
         self.content = content
@@ -63,39 +72,40 @@ class Articles(db.Model):
     def __repr__(self):
         return "<Articles %r>" % self.title
 
+
 class Comments(db.Model):
     __bind_key__ = 'blog'
     __tablename__ = 'comments'
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.String, nullable=False)
     publish = db.Column(db.DateTime, nullable=False)
-    content = db.Column(db.Text,nullable=False)
+    content = db.Column(db.Text, nullable=False)
     articles_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
     article = db.relationship('Articles', backref=db.backref('comments',
-                                                              lazy='dynamic'))
+                                                             lazy='dynamic'))
 
-    def __init__(self,user, content):
+    def __init__(self, user, content):
         self.user = user
         self.content = content
 
     def __repr__(self):
         return "<Comments %r>" % self.content
 
+
 class Replies(db.Model):
     __bind_key__ = 'blog'
     __tablename__ = 'replies'
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.String, nullable=False)
     publish = db.Column(db.DateTime, nullable=False)
-    content = db.Column(db.Text,nullable=False)
+    content = db.Column(db.Text, nullable=False)
     comments_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
     comment = db.relationship('Comments', backref=db.backref('replies',
-                                                              lazy='dynamic'))
+                                                             lazy='dynamic'))
 
-    def __init__(self, user,content):
+    def __init__(self, user, content):
         self.user = user
         self.content = content
 
     def __repr__(self):
         return "<Replies %r>" % self.content
-

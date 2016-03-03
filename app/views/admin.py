@@ -10,22 +10,24 @@
 from flask import render_template, Blueprint, request, \
     flash, redirect, url_for
 from flask.ext.login import current_user
-from ..models import Articles,db,User,Comments,Questions,Tags,Notices
-from ..forms import ArticleForm,QuestionForm,EditRegisterForm,NoticesForm
+from ..models import Articles, db, User, Comments, Questions, Tags, Notices
+from ..forms import ArticleForm, QuestionForm, EditRegisterForm, NoticesForm
 from ..utils import super_permission
-from ..utils import DeleteManager,EditManager
-from ..utils import get_online_users,get_visited_users
+from ..utils import DeleteManager, EditManager
+from ..utils import get_online_users, get_visited_users
 from datetime import datetime
 
-site = Blueprint('admin',__name__,url_prefix='/admin')
+site = Blueprint('admin', __name__, url_prefix='/admin')
+
 
 def count_sum(count):
     '''文章总数'''
-    if count%10 == 0:
+    if count % 10 == 0:
         count = int(count/10)
     else:
         count = int(count/10) + 1
     return count
+
 
 @site.route('/')
 @super_permission.require(404)
@@ -35,8 +37,9 @@ def index():
     if user_online is None:
         user_online = b'127.0.0.1'
     return render_template('admin/admin.html',
-                           user_online = user_online,
-                           user_visited = user_visited)
+                           user_online=user_online,
+                           user_visited=user_visited)
+
 
 @site.route('/delete/record=<ip>')
 @super_permission.require(404)
@@ -46,6 +49,7 @@ def delete_ip(ip):
     delete_visited_users(ip)
     return redirect(url_for('admin.index'))
 
+
 @site.route('/delete/page/record=<ip>')
 @super_permission.require(404)
 def delete_page(ip):
@@ -53,6 +57,7 @@ def delete_page(ip):
     from ..utils import delete_visited_pages
     delete_visited_pages(ip)
     return redirect(url_for('admin.index'))
+
 
 @site.route('/add/blacklist=<ip>')
 @super_permission.require(404)
@@ -62,6 +67,7 @@ def add_blacklist(ip):
     set_blacklist(ip)
     return redirect(url_for('admin.index'))
 
+
 @site.route('/add/writelist=<ip>')
 @super_permission.require(404)
 def add_writelist(ip):
@@ -70,14 +76,15 @@ def add_writelist(ip):
     set_writelist(ip)
     return redirect(url_for('admin.index'))
 
-@site.route('/notice_post', methods=['GET','POST'])
+
+@site.route('/notice_post', methods=['GET', 'POST'])
 @super_permission.require(404)
 def post_notice():
     '''发布公告'''
     notices = Notices.query.all()
     form = NoticesForm()
     if form.validate_on_submit() and request.method == "POST":
-        post_notice = Notices(notice = form.notice.data)
+        post_notice = Notices(notice=form.notice.data)
         post_notice.publish = datetime.now()
         db.session.add(post_notice)
         db.session.commit()
@@ -85,9 +92,10 @@ def post_notice():
         return redirect(url_for('admin.post_notice'))
     return render_template('admin/admin_notice.html',
                            form=form,
-                           notices = notices)
+                           notices=notices)
 
-@site.route('/pages_post', methods=['GET','POST'])
+
+@site.route('/pages_post', methods=['GET', 'POST'])
 @super_permission.require(404)
 def admin_post():
     '''增加文章'''
@@ -101,14 +109,14 @@ def admin_post():
             '''判断节点是否存在'''
             # existed_tag = Tags.query.filter_by(name=tag).first()
             # if existed_tag:
-                # t = existed_tag
+            # t = existed_tag
             # else:
-            t = Tags(name = tag)
+            t = Tags(name=tag)
             post_tags.append(t)
-        post_article = Articles(user = current_user.name,
-                                title = form.title.data,
-                                category = form.category.data,
-                                content = form.content.data)
+        post_article = Articles(user=current_user.name,
+                                title=form.title.data,
+                                category=form.category.data,
+                                content=form.content.data)
         post_article.publish = datetime.now()
         post_article.copy = form.copy.data
         '''关系数据表'''
@@ -119,9 +127,10 @@ def admin_post():
         return redirect(url_for('admin.admin_post'))
     return render_template('admin/admin_post.html',
                            form=form,
-                           articles = articles)
+                           articles=articles)
 
-@site.route('/account',defaults={'number':1})
+
+@site.route('/account', defaults={'number': 1})
 @site.route('/account/<int:number>')
 @super_permission.require(404)
 def admin_account(number):
@@ -131,11 +140,12 @@ def admin_account(number):
     count = count_sum(count)
     number = number
     return render_template('admin/admin_user.html',
-                           users = users,
-                           count = count,
-                           number = number)
+                           users=users,
+                           count=count,
+                           number=number)
 
-@site.route('/article',defaults={'number':1})
+
+@site.route('/article', defaults={'number': 1})
 @site.route('/article/<int:number>')
 @super_permission.require(404)
 def admin_article(number):
@@ -145,11 +155,12 @@ def admin_article(number):
     count = count_sum(count)
     number = number
     return render_template('admin/admin_article.html',
-                           articles = articles,
-                           count = count,
-                           number = number)
+                           articles=articles,
+                           count=count,
+                           number=number)
 
-@site.route('/question',defaults={'number':1})
+
+@site.route('/question', defaults={'number': 1})
 @site.route('/question/<int:number>')
 @super_permission.require(404)
 def admin_question(number):
@@ -159,11 +170,12 @@ def admin_question(number):
     count = count_sum(count)
     number = number
     return render_template('admin/admin_question.html',
-                           questions = questions,
-                           count = count,
-                           number = number)
+                           questions=questions,
+                           count=count,
+                           number=number)
 
-@site.route('/comment',defaults={'number':1})
+
+@site.route('/comment', defaults={'number': 1})
 @site.route('/comment/<int:number>')
 @super_permission.require(404)
 def admin_comment(number):
@@ -173,13 +185,14 @@ def admin_comment(number):
     count = count_sum(count)
     number = number
     return render_template('admin/admin_comment.html',
-                           comments = comments,
-                           count = count,
-                           number = number)
+                           comments=comments,
+                           count=count,
+                           number=number)
+
 
 @site.route('/<category>/<post_id>/delete')
 @super_permission.require(404)
-def admin_delete(category,post_id):
+def admin_delete(category, post_id):
     action = DeleteManager(post_id)
     if category == 'article':
         action.delete_article()
@@ -199,9 +212,10 @@ def admin_delete(category,post_id):
     else:
         return redirect(url_for('admin.index'))
 
+
 @site.route('/<category>/<post_id>/edit')
 @super_permission.require(404)
-def admin_edit(category,post_id):
+def admin_edit(category, post_id):
     if category == 'article':
         article = Articles.query.filter_by(id=post_id).first()
         form = ArticleForm()
@@ -235,13 +249,14 @@ def admin_edit(category,post_id):
     category = category
     post_id = post_id
     return render_template('admin/admin_edit.html',
-                           form = form,
-                           category = category,
-                           post_id = post_id)
+                           form=form,
+                           category=category,
+                           post_id=post_id)
 
-@site.route('/<category>/<post_id>/save',methods=['GET','POST'])
+
+@site.route('/<category>/<post_id>/save', methods=['GET', 'POST'])
 @super_permission.require(404)
-def admin_edit_save(category,post_id):
+def admin_edit_save(category, post_id):
     if category == 'article':
         form = ArticleForm()
     elif category == 'question':
@@ -249,7 +264,7 @@ def admin_edit_save(category,post_id):
     else:
         form = EditRegisterForm()
 
-    action = EditManager(post_id,form)
+    action = EditManager(post_id, form)
 
     if form.validate_on_submit() and request.method == "POST":
         if category == 'article':

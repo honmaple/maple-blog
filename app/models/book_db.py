@@ -9,6 +9,7 @@
 # -*- coding=UTF-8 -*-
 from .base import db
 
+
 class Books(db.Model):
     __bind_key__ = 'books'
     __tablename__ = 'books'
@@ -18,7 +19,8 @@ class Books(db.Model):
     title = db.Column(db.Text)
     author = db.Column(db.Text)
     content = db.Column(db.Text)
-    def __init__(self, tag,name,title,author,content):
+
+    def __init__(self, tag, name, title, author, content):
         self.name = name
         self.tag = tag
         self.title = title

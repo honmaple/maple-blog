@@ -8,34 +8,36 @@
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
 from flask import render_template, Blueprint, \
-    flash, redirect, url_for,g,request
-from flask.ext.login import  current_user, login_required
+    flash, redirect, url_for, g, request
+from flask.ext.login import current_user, login_required
 from ..forms import QuestionForm
-from ..models import Questions,db
+from ..models import Questions, db
 from ..utils import writer_permission
 from datetime import datetime
 
-site = Blueprint('question',__name__,url_prefix='/question')
+site = Blueprint('question', __name__, url_prefix='/question')
+
 
 @site.route('/view')
 def index():
     form = QuestionForm()
     all_questions = Questions.query.filter_by(private=False).all()
     return render_template('question/question.html',
-                           all_questions = all_questions,
-                           title = '自问自答-HonMaple',
-                           form = form)
+                           all_questions=all_questions,
+                           title='自问自答-HonMaple',
+                           form=form)
 
-@site.route('/view/post',methods=['GET','POST'])
+
+@site.route('/view/post', methods=['GET', 'POST'])
 @login_required
 @writer_permission.require(404)
 def post():
     form = QuestionForm()
     if form.validate_on_submit() and request.method == "POST":
-        post_question = Questions(user = current_user.name,
-                                  title = form.title.data,
-                                  describ = form.describ.data,
-                                  answer = form.answer.data)
+        post_question = Questions(user=current_user.name,
+                                  title=form.title.data,
+                                  describ=form.describ.data,
+                                  answer=form.answer.data)
         '''简单私人日记实现'''
         post_question.publish = datetime.now()
         post_question.private = form.private.data
@@ -46,15 +48,17 @@ def post():
         flash('感谢你的提交')
     return redirect(url_for('question.index'))
 
+
 @site.route('/view/private')
 @login_required
 def private():
     form = QuestionForm()
     all_questions = Questions.query.filter_by(private_id=current_user.id).all()
     return render_template('question/question.html',
-                           all_questions = all_questions,
-                           title = '自问自答-HonMaple',
-                           form = form)
+                           all_questions=all_questions,
+                           title='自问自答-HonMaple',
+                           form=form)
+
 
 @site.route('/view/question=<id>')
 @login_required
@@ -64,20 +68,5 @@ def question_view(id):
         flash('你没有权限查看')
         return redirect(url_for('question.index'))
     return render_template('question/question_view.html',
-                           title = '%s - HonMaple自问自答'%(question.title),
-                           question = question)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                           title='%s - HonMaple自问自答' % (question.title),
+                           question=question)

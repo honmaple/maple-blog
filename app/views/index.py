@@ -7,28 +7,29 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-from flask import render_template, Blueprint,redirect, \
-    url_for,flash,request,g,current_app,session,abort
+from flask import render_template, Blueprint, redirect, \
+    url_for, flash, request, g, current_app, session, abort
 from flask_login import login_user, logout_user, \
     current_user, login_required
 from flask_principal import Identity, AnonymousIdentity, \
      identity_changed
-from werkzeug.security import check_password_hash,generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from app import login_manager
-from ..email import email_token,email_send,confirm_token,email_validate
-from ..models import User,Questions,Comments,Articles,Notices,db
-from ..forms import LoginForm,RegisterForm,NewPasswdForm,\
-    EditUserInforForm,ForgetPasswdForm
-from ..utils import EditManager,writer_permission,check_overtime
+from ..email import email_token, email_send, confirm_token, email_validate
+from ..models import User, Questions, Comments, Articles, Notices, db
+from ..forms import LoginForm, RegisterForm, NewPasswdForm,\
+    EditUserInforForm, ForgetPasswdForm
+from ..utils import EditManager, writer_permission, check_overtime
 from datetime import datetime
 
-site = Blueprint('index',__name__,url_prefix='')
+site = Blueprint('index', __name__, url_prefix='')
 
 
 @login_manager.user_loader
 def user_loader(id):
     user = User.query.get(int(id))
     return user
+
 
 @site.route('/')
 @site.route('/index')
@@ -39,11 +40,12 @@ def index():
         filter_by(private=False).limit(7)
     notice = Notices.query.order_by(Notices.publish.desc()).first()
     return render_template('index/index.html',
-                           articles = articles,
-                           questions = questions,
-                           notice = notice)
+                           articles=articles,
+                           questions=questions,
+                           notice=notice)
 
-@site.route('/login', methods=['GET','POST'])
+
+@site.route('/login', methods=['GET', 'POST'])
 def login():
     '''登陆'''
     error = None
@@ -53,10 +55,10 @@ def login():
     # validate = ValidateCode()
     # validate.start()
     # if session['code']:
-        # validate_code = session['code']
+    # validate_code = session['code']
     # else:
-        # session['code'] = 'Welcome To HonMaple'
-        # validate_code = None
+    # session['code'] = 'Welcome To HonMaple'
+    # validate_code = None
     '''如果已经登陆则重定向到主页'''
     if g.user is not None and g.user.is_authenticated:
         flash('你已经登陆,不能重复登陆')
@@ -76,17 +78,19 @@ def login():
                 login_user(user)
 
                 identity_changed.send(current_app._get_current_object(),
-                                identity=Identity(user.id))
+                                      identity=Identity(user.id))
                 flash('你已成功登陆.')
                 '''next是必需的,登陆前请求的页面'''
-                return redirect(request.args.get('next') or url_for('index.index'))
+                return redirect(request.args.get('next')
+                                or url_for('index.index'))
         else:
             error = u'用户名错误'
         # else:
             # error = u'验证码错误'
     return render_template('index/login.html',
                            form=form,
-                           error = error)
+                           error=error)
+
 
 @site.route('/logout')
 @login_required
@@ -98,10 +102,10 @@ def logout():
         session.pop(key, None)
     identity_changed.send(current_app._get_current_object(),
                           identity=AnonymousIdentity())
-    return redirect(request.args.get('next') or url_for( 'index.index'))
+    return redirect(request.args.get('next') or url_for('index.index'))
 
 
-@site.route('/sign', methods=['GET','POST'])
+@site.route('/sign', methods=['GET', 'POST'])
 def sign():
     '''注册账户'''
     error = None
@@ -122,18 +126,20 @@ def sign():
         elif not form.name.data or not form.email.data:
             error = u'输入不能为空'
         else:
-            account = User(name = form.name.data,
-                           email = form.email.data,
-                           passwd = form.passwd.data,
-                           roles = 'visitor')
+            account = User(name=form.name.data,
+                           email=form.email.data,
+                           passwd=form.passwd.data,
+                           roles='visitor')
             account.registered_time = datetime.now()
             '''邮箱验证'''
             token = email_token(account.email)
             '''email模板'''
             confirm_url = url_for('index.confirm', token=token, _external=True)
-            html = render_template('templet/email.html', confirm_url=confirm_url)
+            html = render_template(
+                'templet/email.html',
+                confirm_url=confirm_url)
             subject = "Please confirm your email"
-            email_send(account.email,html,subject)
+            email_send(account.email, html, subject)
             flash('一封验证邮件已发往你的邮箱，請查收.', 'success')
 
             account.send_email_time = datetime.now()
@@ -142,9 +148,10 @@ def sign():
 
             login_user(account)
             identity_changed.send(current_app._get_current_object(),
-                            identity=Identity(account.id))
-            return redirect(url_for('index.logined_user',name=account.name))
-    return render_template('index/sign_in.html',form=form,error=error)
+                                  identity=Identity(account.id))
+            return redirect(url_for('index.logined_user', name=account.name))
+    return render_template('index/sign_in.html', form=form, error=error)
+
 
 @site.route('/confirm_email')
 @login_required
@@ -152,19 +159,19 @@ def sign():
 def confirm_email():
     if current_user.is_confirmed:
         flash('你的账户已验证,不能重复验证')
-        return redirect(url_for('index.logined_user',name=current_user.name))
+        return redirect(url_for('index.logined_user', name=current_user.name))
 
     token = email_token(current_user.email)
     '''email模板'''
     confirm_url = url_for('index.confirm', token=token, _external=True)
     html = render_template('templet/email.html', confirm_url=confirm_url)
     subject = "Please confirm your email"
-    email_send(current_user.email,html,subject)
+    email_send(current_user.email, html, subject)
     flash('一封验证邮件已发往你的邮箱，請查收.', 'success')
 
     current_user.send_email_time = datetime.now()
     db.session.commit()
-    return redirect(url_for('index.logined_user',name=current_user.name))
+    return redirect(url_for('index.logined_user', name=current_user.name))
 
 
 @site.route('/confirm/<token>')
@@ -186,9 +193,10 @@ def confirm(token):
         db.session.add(user)
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('index.logined_user',name=user.name))
+    return redirect(url_for('index.logined_user', name=user.name))
 
-@site.route('/forget',methods=['GET','POST'])
+
+@site.route('/forget', methods=['GET', 'POST'])
 def forget():
     '''忘记密码'''
     form = ForgetPasswdForm()
@@ -197,15 +205,17 @@ def forget():
         email_format = email_validate(form.confirm_email.data)
         if email_format:
             '''邮箱是否存在'''
-            exsited_email = User.query.filter_by(email=\
-                                                form.confirm_email.data).first()
+            exsited_email = User.query.filter_by(
+                email=form.confirm_email.data).first()
             if exsited_email:
                 token = email_token(form.confirm_email.data)
                 '''email模板'''
-                confirm_url = url_for('index.forget_confirm', token=token, _external=True)
-                html = render_template('templet/forget.html', confirm_url=confirm_url)
+                confirm_url = url_for(
+                    'index.forget_confirm', token=token, _external=True)
+                html = render_template(
+                    'templet/forget.html', confirm_url=confirm_url)
                 subject = "Please revise your password"
-                email_send(form.confirm_email.data,html,subject)
+                email_send(form.confirm_email.data, html, subject)
                 flash('邮件已发送到你的邮箱')
                 return redirect(url_for('index.index'))
             else:
@@ -215,7 +225,8 @@ def forget():
     return render_template('index/forget.html',
                            form=form)
 
-@site.route('/forget/<token>',methods=['GET','POST'])
+
+@site.route('/forget/<token>', methods=['GET', 'POST'])
 def forget_confirm(token):
     form = NewPasswdForm()
     '''验证链接'''
@@ -236,7 +247,7 @@ def forget_confirm(token):
             return redirect(url_for('index.login'))
     return render_template('index/revise_passwd.html',
                            form=form,
-                           token = token)
+                           token=token)
 
 
 @site.route('/u/<name>/view')
@@ -252,17 +263,18 @@ def logined_user(name):
     form.school.data = user.school
     form.introduce.data = user.introduce
     return render_template('user/user.html',
-                            form = form,
-                            user = user,
-                            user_comments = user_comments,
-                            user_questions = user_questions)
+                           form=form,
+                           user=user,
+                           user_comments=user_comments,
+                           user_questions=user_questions)
 
-@site.route('/u/<post_id>/edit',methods=['GET','POST'])
+
+@site.route('/u/<post_id>/edit', methods=['GET', 'POST'])
 @login_required
 @writer_permission.require(404)
 def user_infor_edit(post_id):
     form = EditUserInforForm()
-    action = EditManager(post_id,form)
+    action = EditManager(post_id, form)
     if request.method == "POST":
         user = User.query.filter_by(id=post_id).first()
         if check_password_hash(user.passwd, form.passwd.data):
@@ -276,7 +288,7 @@ def user_infor_edit(post_id):
                     for key in ('identity.id', 'identity.auth_type'):
                         session.pop(key, None)
                     identity_changed.send(current_app._get_current_object(),
-                            identity=AnonymousIdentity())
+                                          identity=AnonymousIdentity())
                     return redirect(url_for('index.login'))
                 else:
                     flash('两次密码输入不一致，请重新输入')
@@ -297,13 +309,13 @@ def user_infor_edit(post_id):
 # def search():
     # form = SearchForm()
     # if request.method == "POST":
-        # search_content = '%%%s%%'%form.content.data
-        # print(search_content)
-        # results = Articles.query.filter(Articles.content.like(search_content)).all()
-        # print(results)
-        # # return redirect(url_for('index.search',results=results))
+    # search_content = '%%%s%%'%form.content.data
+    # print(search_content)
+    # results = Articles.query.filter(Articles.content.like(search_content)).all()
+    # print(results)
+    # # return redirect(url_for('index.search',results=results))
     # return render_template('index/search.html',
-                           # results = results)
+    # results = results)
 
 # @site.route('/validate')
 # def validate_code():
@@ -311,12 +323,11 @@ def user_infor_edit(post_id):
     # validate_name = validate.start()
     # return 'static/images/' + validate_name
     # return send_file('static/images/validate.png',
-                     # mimetype='image/png')
+    # mimetype='image/png')
 
 @site.route('/about')
 def about():
     about = Articles.query.filter_by(id=26).first()
     content = about.content
     return render_template('index/about_me.html',
-                           content = content)
-
+                           content=content)

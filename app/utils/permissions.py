@@ -20,6 +20,7 @@ editor_permission = Permission(RoleNeed('editor')).union(admin_permission)
 writer_permission = Permission(RoleNeed('writer')).union(editor_permission)
 visitor_permission = Permission(RoleNeed('visitor')).union(writer_permission)
 
+
 @identity_loaded.connect_via(app)
 def on_identity_loaded(sender, identity):
     identity.user = current_user
@@ -42,13 +43,16 @@ def on_identity_loaded(sender, identity):
     # identity.allow_edit = editor_permission.allows(identity)
     # identity.allow_write = writer_permission.allows(identity)
 
+
 def set_blacklist(user_ip):
     '''设置黑名单'''
-    redis_data.sadd('users:blacklist',user_ip)
+    redis_data.sadd('users:blacklist', user_ip)
+
 
 def set_writelist(user_ip):
     '''设置白名单'''
-    redis_data.sadd('users:writelist',user_ip)
+    redis_data.sadd('users:writelist', user_ip)
+
 
 def allow_ip(user_ip):
     visited_users = redis_data.smembers('users:blacklist')
@@ -61,11 +65,11 @@ def allow_ip(user_ip):
     # def decorator(f):
         # @wraps(f)
         # def decorated_function(*args, **kwargs):
-            # '''查询IP是否在黑名单中'''
-            # visited_users = redis_data.smembers('blacklist')
-            # if user_ip in visited_users:
-                # abort(404)
-            # else:
-                # pass
+        # '''查询IP是否在黑名单中'''
+        # visited_users = redis_data.smembers('blacklist')
+        # if user_ip in visited_users:
+        # abort(404)
+        # else:
+        # pass
         # return decorated_function
     # return decorator

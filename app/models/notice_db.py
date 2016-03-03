@@ -15,16 +15,17 @@ from .base import db
 # app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:qaz123@localhost/articledb'
 # db = SQLAlchemy(app)
+
+
 class Notices(db.Model):
     __bind_key__ = 'blog'
     __tablename__ = 'notices'
-    id = db.Column(db.Integer,primary_key=True)
-    notice = db.Column(db.Text,nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    notice = db.Column(db.Text, nullable=False)
     publish = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self,notice):
+    def __init__(self, notice):
         self.notice = notice
 
     def __repr__(self):
         return "<Notices %r>" % self.title
-

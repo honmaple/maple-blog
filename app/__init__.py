@@ -7,21 +7,23 @@
 #*************************************************************************
 #!/usr/bin/env python
 # -*- coding=UTF-8 -*-
-from flask import Flask, render_template,send_from_directory,request,\
-    Markup,g
+from flask import Flask, render_template, send_from_directory, request,\
+    Markup, g
 from flask_assets import Environment, Bundle
 from flask_mail import Mail
-from flask_login import LoginManager,current_user
+from flask_login import LoginManager, current_user
 from flask_principal import Principal
 from config import load_config
 from misaka import Markdown, HtmlRenderer
 from redis import StrictRedis
 
+
 def create_app():
-    app = Flask(__name__,static_folder='static')
+    app = Flask(__name__, static_folder='static')
     config = load_config()
     app.config.from_object(config)
     return app
+
 
 def register(app):
     register_routes(app)
@@ -29,8 +31,9 @@ def register(app):
     register_db(app)
     register_jinja2(app)
 
+
 def register_routes(app):
-    from .views import index,admin, book
+    from .views import index, admin, book
     app.register_blueprint(index.site, url_prefix='')
     app.register_blueprint(admin.site, url_prefix='/admin')
     app.register_blueprint(book.site, url_prefix='/book')
@@ -38,6 +41,7 @@ def register_routes(app):
     app.register_blueprint(question.site, url_prefix='/question')
     from .views.blog import site
     app.register_blueprint(site, url_prefix='/blog')
+
 
 def register_db(app):
     from .models import db
@@ -49,6 +53,7 @@ def register_db(app):
     # cache = Cache(config={'CACHE_TYPE': 'simple'})
     # cache.init_app(app)
     # return cache
+
 
 def register_jinja2(app):
     def safe_markdown(text):
@@ -63,22 +68,22 @@ def register_jinja2(app):
 
     def last_online_time(ip):
         from .utils import get_user_last_activity
-        ip = str(ip,'utf-8')
+        ip = str(ip, 'utf-8')
         return get_user_last_activity(ip)
 
     def visited_time(ip):
         from .utils import get_visited_time
-        ip = str(ip,'utf-8')
+        ip = str(ip, 'utf-8')
         return get_visited_time(ip)
 
     def visited_last_time(ip):
         from .utils import get_visited_last_time
-        ip = str(ip,'utf-8')
+        ip = str(ip, 'utf-8')
         return get_visited_last_time(ip)
 
     def visited_pages(ip):
         from .utils import get_visited_pages
-        ip = str(ip,'utf-8')
+        ip = str(ip, 'utf-8')
         return get_visited_pages(ip)
 
     def query_ip(ip):
@@ -93,11 +98,12 @@ def register_jinja2(app):
     app.jinja_env.filters['query_ip'] = query_ip
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
+
 def register_assets(app):
     bundles = {
 
         'home_js': Bundle(
-            'style/js/jquery.min.js',      #这里直接写static目录的子目录 ,如static/bootstrap是错误的
+            'style/js/jquery.min.js',  # 这里直接写static目录的子目录 ,如static/bootstrap是错误的
             'style/js/bootstrap.min.js',
             output='style/assets/home.js',
             filters='jsmin'),
@@ -110,6 +116,7 @@ def register_assets(app):
 
     assets = Environment(app)
     assets.register(bundles)
+
 
 def register_login(app):
     login_manager = LoginManager()
@@ -144,11 +151,13 @@ def before_request():
         pass
     else:
         path = request.path
-        mark_visited(request.remote_addr,path)
+        mark_visited(request.remote_addr, path)
+
 
 @app.errorhandler(404)
 def not_found(error):
     return render_template('templet/error_404.html'), 404
+
 
 @app.route('/robots.txt')
 @app.route('/favicon.ico')
