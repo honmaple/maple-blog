@@ -1,15 +1,9 @@
+#!/usr/bin/env python
+# -*- coding=UTF-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
-#   File Name: run.py
+#   File Name: __init__.py
 #   Author:JiangLin
 #   Mail:xiyang0807@gmail.com
-#   Created Time: 2015-11-14 21:19:56
+#   Created Time: 2015-11-27 23:21:49
 # *************************************************************************
-# !/usr/bin/env python
-# -*- coding=UTF-8 -*-
-from maple import app
-from werkzeug.contrib.fixers import ProxyFix
-
-app.wsgi_app = ProxyFix(app.wsgi_app)
-if __name__ == '__main__':
-    app.run()

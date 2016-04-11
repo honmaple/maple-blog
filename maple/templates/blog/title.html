@@ -1,0 +1,8 @@
+{% extends 'base/base.html' %}
+{% import 'base/header.html' as header %}
+{% block header -%}
+{{ header.header('blog') }}
+{% endblock %}
+{% block list -%}
+{{ header.list('blog') }}
+{% endblock %}

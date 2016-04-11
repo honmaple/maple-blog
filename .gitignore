@@ -1,6 +1,6 @@
 venv/
-in/
 config/
+migrations/
 test/
 **/__pycache__/
 *.swp

@@ -1,0 +1,26 @@
+{% macro header(class) -%}
+{% if class == "blog" %}
+<a class="navbar-brand" href="{{ url_for('blog.index_num') }}" style="color:#EB5424;">博客主页</a>
+{% else %}
+<a class="navbar-brand" href="{{ url_for('index.index') }}" style="color:#EB5424;">HonMaple</a>
+{% endif %}
+{%- endmacro %}
+
+{% macro list(class) -%}
+{% if class == "blog" %}
+<ul class="nav navbar-nav">
+    <li> <a href="{{ url_for('index.index') }}">主页</a></li>
+    <li> <a href="{{ url_for('blog.category_num',category='linux') }}">Linux</a></li>
+    <li> <a href="{{ url_for('blog.category_num',category='python') }}">Python</a></li>
+    <li> <a href="{{ url_for('blog.category_num',category='生活随笔') }}">生活随笔</a></li>
+    <li> <a href="{{ url_for('blog.archives') }}">Archives</a></li>
+</ul>
+{% else %}
+<ul class="nav navbar-nav">
+    <li><a href="{{ url_for('blog.index_num') }}">个人博客</a></li>
+    <li><a href="{{ url_for('book.index_num') }}">书籍查询</a></li>
+    <li><a href="{{ url_for('question.index') }}">自问自答</a></li>
+    <li><a href="{{ url_for('index.about') }}">关于我</a></li>
+</ul>
+{% endif %}
+{%- endmacro %}
