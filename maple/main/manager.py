@@ -6,15 +6,26 @@
 #   Author:JiangLin
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-12-13 19:57:29
+<<<<<<< HEAD:maple/main/manager.py
 # *************************************************************************
 from maple import db
 from maple.blog.models import Articles, Comments, Replies, Tags
 from maple.question.models import Questions
 from maple.user.models import User
+=======
+#*************************************************************************
+#!/usr/bin/env python
+# -*- coding=UTF-8 -*-
+from ..models import Comments, Articles, Replies, User, Questions, Tags, db
+>>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/utils/manager.py
 from werkzeug.security import generate_password_hash
 
 
 class DeleteManager(object):
+<<<<<<< HEAD:maple/main/manager.py
+=======
+
+>>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/utils/manager.py
     def __init__(self, post_id):
         self.post_id = post_id
 
@@ -58,6 +69,10 @@ class DeleteManager(object):
 
 
 class EditManager(object):
+<<<<<<< HEAD:maple/main/manager.py
+=======
+
+>>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/utils/manager.py
     def __init__(self, post_id, form):
         self.post_id = post_id
         self.form = form
