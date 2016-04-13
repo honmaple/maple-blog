@@ -24,7 +24,6 @@ itsdangerous==0.24
 Jinja2==2.8
 jsmin==2.2.0
 kombu==3.0.35
-Mako==1.0.4
 MarkupSafe==0.23
 misaka==2.0.0
 Pillow==3.1.1
