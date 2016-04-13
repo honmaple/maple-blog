@@ -2,6 +2,7 @@ venv/
 config/
 migrations/
 test/
+fabfile.py
 **/__pycache__/
 *.swp
 *.pyc
