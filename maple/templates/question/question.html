@@ -1,4 +1,11 @@
-{% extends 'question/question_base.html' %}
+{% extends 'base/base.html' %}
+{% import 'base/header.html' as header %}
+{% block header -%}
+{{ header.header('question') }}
+{% endblock %}
+{% block list -%}
+{{ header.list('question') }}
+{% endblock %}
 {% block content %}
 <style type="text/css" media="all">
  .question {

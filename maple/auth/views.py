@@ -70,7 +70,7 @@ def logout():
         session.pop(key, None)
     identity_changed.send(current_app._get_current_object(),
                           identity=AnonymousIdentity())
-    return redirect(request.args.get('next') or url_for('forums.forums'))
+    return redirect(request.args.get('next') or url_for('index.index'))
 
 
 @site.route('/register', methods=['GET', 'POST'])
@@ -131,18 +131,16 @@ def confirm(token):
     email = confirm_token(token)
     if not email:
         flash('验证链接已过期,请重新获取', 'danger')
-        return redirect(url_for('user.index', user_url=current_user.name))
+        return redirect(url_for('user.logined_user', name=current_user.name))
     user = User.query.filter_by(email=email).first()
     if user.is_confirmed:
         flash('账户已经验证. Please login.', 'success')
     else:
         user.is_confirmed = True
         user.confirmed_time = datetime.now()
-        role = Role(name='member', rank=3)
-        user.roles.append(role)
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('forums.forums'))
+    return redirect(url_for('index.index'))
 
 
 @site.route('/confirm_email', methods=['GET', 'POST'])

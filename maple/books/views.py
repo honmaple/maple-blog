@@ -31,10 +31,10 @@ def index_num(num):
                            total=total)
 
 
-@site.route('/type?=<type>')
-def type(type):
+@site.route('/tag?=<tag>')
+def tag(tag):
     book_all_type = Books.query.distinct(Books.tag)
-    books = Books.query.distinct(Books.name).filter_by(tag=type)
+    books = Books.query.distinct(Books.name).filter_by(tag=tag)
     return render_template('book/book_type.html',
                            books=books,
                            book_all_type=book_all_type)

@@ -1,8 +1,14 @@
-{% extends "index/base.html" %}
+{% import 'base/header.html' as header %}
+{% extends 'base/base.html' %}
+{% block header -%}
+{{ header.header('index') }}
+{% endblock %}
+{% block list -%}
+{{ header.list('index') }}
+{% endblock %}
 {% block content %}
 <div style="text-align:center;">
 <h1>404</h1>
     <h3>对不起，你输入的页面不存在</h3>
 </div>
-
 {% endblock %}

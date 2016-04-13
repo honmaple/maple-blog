@@ -65,12 +65,13 @@
                         <div class="collapse navbar-collapse" id="bs-header">
                             {% block list %}{% endblock %}
                             <ul class="nav navbar-nav navbar-right">
-                                {% if current_user.is_authenticated %}
+                                {% if g.user.is_authenticated %}
                                 <li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {{ current_user.name }} <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
+                                        <li><a href="{{ url_for('user.logined_user',name=current_user.name) }}">我的主页</a></li>
                                         <li><a href="{{ url_for('auth.logout') }}">注销</a></li>
                                     </ul>
                                 </li>

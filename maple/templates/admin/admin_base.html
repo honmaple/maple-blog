@@ -61,13 +61,13 @@
                                         {{ current_user.name }} <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{{ url_for('index.logined_user',name=current_user.name) }}">我的的主页</a></li>
-                                        <li><a href="{{ url_for('index.logout') }}">注销</a></li>
+                                        <li><a href="{{ url_for('user.logined_user',name=current_user.name) }}">我的的主页</a></li>
+                                        <li><a href="{{ url_for('auth.logout') }}">注销</a></li>
                                     </ul>
                                 </li>
                                 {% else %}
-                                <li><a href="{{ url_for('index.login') }}">登陆</a></li>
-                                <li><a href="{{ url_for('index.sign') }}">注册</a></li>
+                                <li><a href="{{ url_for('auth.login') }}">登陆</a></li>
+                                <li><a href="{{ url_for('auth.sign') }}">注册</a></li>
                                 {% endif %}
                             </ul>
                         </div>

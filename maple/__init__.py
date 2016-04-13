@@ -39,6 +39,8 @@ def register_routes(app):
     app.register_blueprint(site, url_prefix='')
     from maple.auth.views import site
     app.register_blueprint(site, url_prefix='')
+    from maple.user.views import site
+    app.register_blueprint(site, url_prefix='/u')
     from maple.blog.views import site
     app.register_blueprint(site, url_prefix='/blog')
     from maple.question.views import site

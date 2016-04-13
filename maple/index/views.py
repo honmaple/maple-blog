@@ -14,7 +14,7 @@ from maple.blog.models import Articles
 from maple.question.models import Questions
 from maple.admin.models import Notices
 
-site = Blueprint('index', __name__, url_prefix='')
+site = Blueprint('index', __name__)
 
 
 @login_manager.user_loader
@@ -26,10 +26,9 @@ def user_loader(id):
 @site.route('/')
 @site.route('/index')
 def index():
-    articles = Articles.query.order_by(Articles.publish.desc()).limit(7)
-    questions = Questions.query.order_by(Questions.publish.desc()).\
-        filter_by(private=False).limit(7)
-    notice = Notices.query.order_by(Notices.publish.desc()).first()
+    articles = Articles.query.limit(7)
+    questions = Questions.query.filter_by(private=False).limit(7)
+    notice = Notices.query.first()
     return render_template('index/index.html',
                            articles=articles,
                            questions=questions,
@@ -38,6 +37,4 @@ def index():
 
 @site.route('/about')
 def about():
-    about = Articles.query.filter_by(id=26).first()
-    content = about.content
-    return render_template('index/about_me.html', content=content)
+    return render_template('index/about_me.html')

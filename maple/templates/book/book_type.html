@@ -1,6 +1,12 @@
-{% extends 'book/book_base.html' %}
+{% extends 'base/base.html' %}
+{% import 'base/header.html' as header %}
+{% block header -%}
+{{ header.header('book') }}
+{% endblock %}
+{% block list -%}
+{{ header.list('book') }}
+{% endblock %}
 {% block content %}
-
 <div class="row">
     <div class="col-sm-9">
         <div class="row">
@@ -18,7 +24,7 @@
     <div class="col-sm-3">
         {% for book_type in book_all_type %}
         <span class="label label-info" style="display: inline-block;">
-            <a href="{{ url_for('book.type',type=book_type['tag']) }}" style="color:#fff;">{{ book_type['tag'] }}</a>
+            <a href="{{ url_for('book.tag',tag=book_type['tag']) }}" style="color:#fff;">{{ book_type['tag'] }}</a>
         </span>
         {% endfor %}
     </div>

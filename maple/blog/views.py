@@ -69,8 +69,7 @@ def category_num(category, number):
 @site.route('/tag=<tag>', defaults={'number': 1})
 @site.route('/tag=<tag>/page?=<int:number>')
 def tag_num(tag, number):
-    a = Articles.query.join(Articles.tags).filter(
-        Tags.name == tag)
+    a = Articles.query.join(Articles.tags).filter(Tags.name == tag)
     articles = a.offset((number - 1) * 6).limit(6)
     all_tags = Tags.query.distinct(Tags.name).all()
     count = a.count()
@@ -133,36 +132,32 @@ def preview():
     return Markup(markdown(content))
 
 
-'''评论表单'''
-
-
 @site.route('/pages/<id>/comment', methods=['GET', 'POST'])
 @login_required
 def comment(id):
+    '''评论表单'''
     form = CommentForm()
     if form.validate_on_submit() and request.method == "POST":
-        post_comment = Comments(user=current_user.name,
+        post_comment = Comments(author=current_user.name,
                                 content=form.comment.data)
         post_comment.articles_id = id
         post_comment.publish = datetime.now()
         db.session.add(post_comment)
         db.session.commit()
-        return redirect(url_for('blog.page', id=id, _anchor='comment'))
-    return redirect(url_for('blog.page', id=id, _anchor='comment'))
-
-
-'''回复表单'''
+        return redirect(url_for('blog.view', id=id, _anchor='comment'))
+    return redirect(url_for('blog.view', id=id, _anchor='comment'))
 
 
 @site.route('/pages/<id>/<comment_id>', methods=['GET', 'POST'])
 @login_required
 def reply(id, comment_id):
+    '''回复表单'''
     form = ReplyForm()
     if form.validate_on_submit() and request.method == "POST":
-        post_reply = Replies(user=current_user.name, content=form.reply.data)
+        post_reply = Replies(author=current_user.name, content=form.reply.data)
         post_reply.comments_id = comment_id
         post_reply.publish = datetime.now()
         db.session.add(post_reply)
         db.session.commit()
-        return redirect(url_for('blog.page', id=id, _anchor='comment'))
-    return redirect(url_for('blog.page', id=id, _anchor='comment'))
+        return redirect(url_for('blog.view', id=id, _anchor='comment'))
+    return redirect(url_for('blog.view', id=id, _anchor='comment'))

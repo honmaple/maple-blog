@@ -56,7 +56,7 @@ class OwnPermission(MyPermission):
             return False
 
     def action(self):
-        return redirect(url_for('user.setting', user_url=current_user.name))
+        return redirect(url_for('index.index'))
 
 
 class GuestPermission(MyPermission):
@@ -68,7 +68,7 @@ class GuestPermission(MyPermission):
 
     def action(self):
         flash('你已经登陆,不能重复登陆')
-        return redirect(url_for('forums.forums'))
+        return redirect(url_for('index.index'))
 
 
 class TimePermission(MyPermission):

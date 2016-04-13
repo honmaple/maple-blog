@@ -1,6 +1,12 @@
-{% extends "index/base.html" %}
+{% extends 'base/base.html' %}
+{% import 'base/header.html' as header %}
+{% block header -%}
+{{ header.header('index') }}
+{% endblock %}
+{% block list -%}
+{{ header.list('index') }}
+{% endblock %}
 {% block content %}
-
 <script type=text/javascript>
 function Information()
 {
@@ -24,7 +30,7 @@ function Information()
     {
         $.ajax ({
             type : "POST",
-            url : "{{ url_for('index.user_infor_edit',post_id=current_user.id) }}",
+            url : "{{ url_for('user.user_infor_edit',post_id=current_user.id) }}",
             data:JSON.stringify({
                 school: $("#school").val(),
                 introduce: $("#introduce").val()
@@ -59,7 +65,7 @@ $(document).ready(function(){
     $('button#ajax').click(function(){
         $.ajax ({
             type : "POST",
-            url : "{{ url_for('index.user_passwd_edit',post_id=current_user.id) }}",
+            url : "{{ url_for('user.user_passwd_edit',post_id=current_user.id) }}",
             data:JSON.stringify({
                 passwd: $("#passwd").val(),
                 new_passwd: $("#new_passwd").val(),
@@ -69,7 +75,7 @@ $(document).ready(function(){
             success: function(result) {
                 if (result.judge == true)
                 {
-                    window.location = '{{ url_for('index.login') }}';
+                    window.location = '{{ url_for('auth.login') }}';
                 }
                 else 
                 {
@@ -101,7 +107,7 @@ $(document).ready(function(){
         <span aria-hidden="true">&times;</span>
     </button>
     你的账户未验证,请尽快验证,否则无法评论或回复或发表问题
-    <a href="{{ url_for('index.confirm_email') }}" class="btn btn-info btn-sm">验证账户</a>
+    <a href="{{ url_for('auth.confirm_email') }}" class="btn btn-info btn-sm">验证账户</a>
 </div>
 {% endif %}
 <div class="category">
@@ -217,7 +223,7 @@ $(document).ready(function(){
                 {% for comment in user_comments %}
                 <tr>
                     <td>{{ i }}</td>
-                    <td> <a href="{{ url_for('blog.page',id=comment.article.id) }}">{{ comment.article.title }}</a></td>
+                    <td> <a href="{{ url_for('blog.view',id=comment.article.id) }}">{{ comment.article.title }}</a></td>
                     <td>{{ comment.content }}</td>
                     <td>{{ comment.publish }}</td>
                     <td>评论</td>
@@ -225,7 +231,7 @@ $(document).ready(function(){
                 {% for reply in comment.replies %}
                 <tr>
                     <td>{{ i + 1 }}</td>
-                    <td> <a href="{{ url_for('blog.page',id=comment.article.id) }}">{{ comment.article.title }}</a></td>
+                    <td> <a href="{{ url_for('blog.view',id=comment.article.id) }}">{{ comment.article.title }}</a></td>
                     <td>{{ reply.content }}</td>
                     <td>{{ reply.publish }}</td>
                     <td>回复</td>

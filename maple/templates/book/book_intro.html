@@ -1,4 +1,11 @@
-{% extends 'book/book_base.html' %}
+{% extends 'base/base.html' %}
+{% import 'base/header.html' as header %}
+{% block header -%}
+{{ header.header('book') }}
+{% endblock %}
+{% block list -%}
+{{ header.list('book') }}
+{% endblock %}
 {% block content %}
 <div>
     <div style="float:left;margin-right:2%;">

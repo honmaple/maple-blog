@@ -1,6 +1,10 @@
 {% macro header(class) -%}
 {% if class == "blog" %}
 <a class="navbar-brand" href="{{ url_for('blog.index_num') }}" style="color:#EB5424;">博客主页</a>
+{% elif class == "book" %}
+<a class="navbar-brand" href="{{ url_for('book.index_num') }}" style="color:#EB5424;">书籍主页</a>
+{% elif class == "question" %}
+<a class="navbar-brand" href="{{ url_for('question.index') }}" style="color:#EB5424;">问答主页</a>
 {% else %}
 <a class="navbar-brand" href="{{ url_for('index.index') }}" style="color:#EB5424;">HonMaple</a>
 {% endif %}
@@ -14,6 +18,20 @@
     <li> <a href="{{ url_for('blog.category_num',category='python') }}">Python</a></li>
     <li> <a href="{{ url_for('blog.category_num',category='生活随笔') }}">生活随笔</a></li>
     <li> <a href="{{ url_for('blog.archives') }}">Archives</a></li>
+</ul>
+{% elif class == "book" %}
+<ul class="nav navbar-nav">
+    <li><a href="{{ url_for('index.index') }}">主页</a></li>
+    <li><a href="{{ url_for('book.tag',tag='哲学') }}">哲学</a></li>
+    <li><a href="{{ url_for('book.tag',tag='社会学') }}">社会学</a></li>
+    <li><a href="{{ url_for('book.tag',tag='工具书') }}">工具书</a></li>
+    <li><a href="{{ url_for('index.about') }}">关于我</a></li>
+</ul>
+{% elif class == "question" %}
+<ul class="nav navbar-nav">
+    <li><a href="{{ url_for('index.index') }}">主页</a></li>
+    <li><a href="{{ url_for('question.index') }}">所有问题</a></li>
+    <li><a href="{{ url_for('question.private') }}">私人问题</a></li>
 </ul>
 {% else %}
 <ul class="nav navbar-nav">

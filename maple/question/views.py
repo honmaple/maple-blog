@@ -12,7 +12,7 @@ from flask import (render_template, Blueprint, flash, redirect, url_for,
 from flask_login import current_user, login_required
 from maple.question.forms import QuestionForm
 from maple.question.models import Questions, db
-from maple.forms.forms import return_errors
+from maple.forms.forms import flash_errors
 from datetime import datetime
 
 site = Blueprint('question', __name__)
@@ -33,7 +33,7 @@ def index():
 def post():
     form = QuestionForm()
     if form.validate_on_submit() and request.method == "POST":
-        post_question = Questions(user=current_user.name,
+        post_question = Questions(author=current_user.name,
                                   title=form.title.data,
                                   describ=form.describ.data,
                                   answer=form.answer.data)
@@ -43,9 +43,12 @@ def post():
         db.session.add(post_question)
         db.session.commit()
         flash('感谢你的提交')
+        return redirect(url_for('question.index'))
     else:
         if form.errors:
-            return return_errors()
+            flash_errors(form)
+        else:
+            pass
         return redirect(url_for('question.index'))
 
 
