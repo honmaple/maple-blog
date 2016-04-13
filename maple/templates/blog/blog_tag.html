@@ -6,6 +6,11 @@
 {% block list -%}
 {{ header.list('blog') }}
 {% endblock %}
+
+{% block title -%}
+{{ tag }} - HonMaple的个人博客
+{% endblock %}
+
 {% block content %}
 <div class="col-sm-9" style="padding:0 4px;">
     {% include "blog/link.html" %}

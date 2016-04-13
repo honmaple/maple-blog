@@ -1,3 +1,4 @@
+
 {% import 'base/header.html' as header %}
 {% extends 'base/base.html' %}
 {% block header -%}
@@ -6,6 +7,11 @@
 {% block list -%}
 {{ header.list('index') }}
 {% endblock %}
+
+{% block title -%}
+about - HonMaple
+{% endblock %}
+
 {% block content %}
 <style type="text/css" media="all">
     li {

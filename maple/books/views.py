@@ -37,6 +37,7 @@ def tag(tag):
     books = Books.query.distinct(Books.name).filter_by(tag=tag)
     return render_template('book/book_type.html',
                            books=books,
+                           tag = tag,
                            book_all_type=book_all_type)
 
 
