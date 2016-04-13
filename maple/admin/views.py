@@ -6,7 +6,6 @@
 #   Author:JiangLin
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-18 08:11:38
-<<<<<<< HEAD:maple/admin/views.py
 # *************************************************************************
 from flask import (render_template, Blueprint, request, flash, redirect,
                    url_for)
@@ -25,32 +24,12 @@ from maple.main.permissions import super_permission
 from datetime import datetime
 
 site = Blueprint('admin', __name__)
-=======
-#*************************************************************************
-#!/usr/bin/env python
-# -*- coding=UTF-8 -*-
-from flask import render_template, Blueprint, request, \
-    flash, redirect, url_for
-from flask.ext.login import current_user
-from ..models import Articles, db, User, Comments, Questions, Tags, Notices
-from ..forms import ArticleForm, QuestionForm, EditRegisterForm, NoticesForm
-from ..utils import super_permission
-from ..utils import DeleteManager, EditManager
-from ..utils import get_online_users, get_visited_users
-from datetime import datetime
-
-site = Blueprint('admin', __name__, url_prefix='/admin')
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/views/admin.py
 
 
 def count_sum(count):
     '''文章总数'''
     if count % 10 == 0:
-<<<<<<< HEAD:maple/admin/views.py
         count = int(count / 10)
-=======
-        count = int(count/10)
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/views/admin.py
     else:
         count = int(count / 10) + 1
     return count
@@ -155,13 +134,8 @@ def admin_post():
     return render_template('admin/admin_post.html',
                            form=form,
                            articles=articles)
-<<<<<<< HEAD:maple/admin/views.py
 
 
-=======
-
-
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/views/admin.py
 @site.route('/account', defaults={'number': 1})
 @site.route('/account/<int:number>')
 @super_permission.require(404)
@@ -175,13 +149,8 @@ def admin_account(number):
                            users=users,
                            count=count,
                            number=number)
-<<<<<<< HEAD:maple/admin/views.py
 
 
-=======
-
-
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/views/admin.py
 @site.route('/article', defaults={'number': 1})
 @site.route('/article/<int:number>')
 @super_permission.require(404)
@@ -195,13 +164,8 @@ def admin_article(number):
                            articles=articles,
                            count=count,
                            number=number)
-<<<<<<< HEAD:maple/admin/views.py
 
 
-=======
-
-
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/views/admin.py
 @site.route('/question', defaults={'number': 1})
 @site.route('/question/<int:number>')
 @super_permission.require(404)
@@ -215,13 +179,8 @@ def admin_question(number):
                            questions=questions,
                            count=count,
                            number=number)
-<<<<<<< HEAD:maple/admin/views.py
 
 
-=======
-
-
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/views/admin.py
 @site.route('/comment', defaults={'number': 1})
 @site.route('/comment/<int:number>')
 @super_permission.require(404)

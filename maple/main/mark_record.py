@@ -13,7 +13,6 @@ from maple import redis_data
 from flask import current_app, abort
 
 
-
 def get_article_count(article_id):
     '''获取文章阅读次数'''
     article_count = redis_data.zscore("visited:article",
@@ -143,7 +142,6 @@ def get_online_users():
     config = current_app.config
     current = int(time()) // 60
     minutes = range(config['ONLINE_LAST_MINUTES'])
-<<<<<<< HEAD:maple/main/mark_record.py
     return redis_data.sunion(['online_users:%d' % (current - x) for x in
                               minutes])
 
@@ -164,7 +162,3 @@ def allow_ip(user_ip):
         abort(501)
     else:
         pass
-=======
-    return redis_data.sunion(['online_users:%d' % (current - x)
-                              for x in minutes])
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/utils/mark_record.py

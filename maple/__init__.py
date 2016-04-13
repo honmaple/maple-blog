@@ -6,17 +6,9 @@
 #   Author:JiangLin
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-18 08:03:11
-<<<<<<< HEAD:maple/__init__.py
 # *************************************************************************
 from flask import (Flask, render_template, send_from_directory, request,
                    Markup, g)
-=======
-#*************************************************************************
-#!/usr/bin/env python
-# -*- coding=UTF-8 -*-
-from flask import Flask, render_template, send_from_directory, request,\
-    Markup, g
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/__init__.py
 from flask_assets import Environment, Bundle
 from flask_mail import Mail
 from flask_login import LoginManager, current_user
@@ -42,9 +34,7 @@ def register(app):
     register_db(app)
 
 
-
 def register_routes(app):
-<<<<<<< HEAD:maple/__init__.py
     from maple.index.views import site
     app.register_blueprint(site, url_prefix='')
     from maple.auth.views import site
@@ -52,15 +42,6 @@ def register_routes(app):
     from maple.user.views import site
     app.register_blueprint(site, url_prefix='/u')
     from maple.blog.views import site
-=======
-    from .views import index, admin, book
-    app.register_blueprint(index.site, url_prefix='')
-    app.register_blueprint(admin.site, url_prefix='/admin')
-    app.register_blueprint(book.site, url_prefix='/book')
-    from .views import question
-    app.register_blueprint(question.site, url_prefix='/question')
-    from .views.blog import site
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/__init__.py
     app.register_blueprint(site, url_prefix='/blog')
     from maple.question.views import site
     app.register_blueprint(site, url_prefix='/question')
@@ -69,12 +50,6 @@ def register_routes(app):
     from maple.admin.views import site
     app.register_blueprint(site, url_prefix='/admin')
 
-<<<<<<< HEAD:maple/__init__.py
-=======
-
-def register_db(app):
-    from .models import db
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/__init__.py
 
 def register_form(app):
     from flask_wtf.csrf import CsrfProtect
@@ -86,7 +61,6 @@ def register_form(app):
 # cache = Cache(config={'CACHE_TYPE': 'simple'})
 # cache.init_app(app)
 # return cache
-
 
 
 def register_jinja2(app):
@@ -101,38 +75,22 @@ def register_jinja2(app):
         return get_article_count(article_id)
 
     def last_online_time(ip):
-<<<<<<< HEAD:maple/__init__.py
         from maple.main.mark_record import get_user_last_activity
-=======
-        from .utils import get_user_last_activity
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/__init__.py
         ip = str(ip, 'utf-8')
         return get_user_last_activity(ip)
 
     def visited_time(ip):
-<<<<<<< HEAD:maple/__init__.py
         from maple.main.mark_record import get_visited_time
-=======
-        from .utils import get_visited_time
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/__init__.py
         ip = str(ip, 'utf-8')
         return get_visited_time(ip)
 
     def visited_last_time(ip):
-<<<<<<< HEAD:maple/__init__.py
         from maple.main.mark_record import get_visited_last_time
-=======
-        from .utils import get_visited_last_time
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/__init__.py
         ip = str(ip, 'utf-8')
         return get_visited_last_time(ip)
 
     def visited_pages(ip):
-<<<<<<< HEAD:maple/__init__.py
         from maple.main.mark_record import get_visited_pages
-=======
-        from .utils import get_visited_pages
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/__init__.py
         ip = str(ip, 'utf-8')
         return get_visited_pages(ip)
 
@@ -152,7 +110,6 @@ def register_jinja2(app):
 
 def register_assets(app):
     bundles = {
-<<<<<<< HEAD:maple/__init__.py
         'home_js': Bundle('style/js/jquery.min.js',
                           'style/js/bootstrap.min.js',
                           output='style/assets/home.js',
@@ -161,20 +118,6 @@ def register_assets(app):
                            output='style/assets/home.css',
                            filters='cssmin')
     }
-=======
-
-        'home_js': Bundle(
-            'style/js/jquery.min.js',  # 这里直接写static目录的子目录 ,如static/bootstrap是错误的
-            'style/js/bootstrap.min.js',
-            output='style/assets/home.js',
-            filters='jsmin'),
-
-        'home_css': Bundle(
-            'style/css/bootstrap.min.css',
-            output='style/assets/home.css',
-            filters='cssmin')
-        }
->>>>>>> a0f3ff0c67a5cdeda9f6c3f9c8bc5858c4953927:app/__init__.py
 
     assets = Environment(app)
     assets.register(bundles)
