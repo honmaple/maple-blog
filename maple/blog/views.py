@@ -8,11 +8,12 @@
 #   Created Time: 2015-11-18 08:11:38
 # *************************************************************************
 from flask import (render_template, Blueprint, request, redirect, url_for,
-                   abort, Markup)
+                   abort, Markup, flash)
 from flask_login import current_user, login_required
 from maple import db, redis_data
 from maple.blog.forms import CommentForm, ReplyForm
 from maple.blog.models import Articles, Tags, Comments, Replies
+from maple.main.permissions import writer_permission
 from datetime import datetime
 
 site = Blueprint('blog', __name__)
@@ -136,6 +137,9 @@ def preview():
 @login_required
 def comment(id):
     '''评论表单'''
+    if not writer_permission.can():
+        flash('你尚未验证账户')
+        return redirect(url_for('blog.index_num'))
     form = CommentForm()
     if form.validate_on_submit() and request.method == "POST":
         post_comment = Comments(author=current_user.name,
@@ -152,6 +156,9 @@ def comment(id):
 @login_required
 def reply(id, comment_id):
     '''回复表单'''
+    if not writer_permission.can():
+        flash('你尚未验证账户')
+        return redirect(url_for('blog.index_num'))
     form = ReplyForm()
     if form.validate_on_submit() and request.method == "POST":
         post_reply = Replies(author=current_user.name, content=form.reply.data)

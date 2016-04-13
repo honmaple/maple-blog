@@ -15,10 +15,10 @@
             {% for article in articles %}
             <tr>
                 <td>{{ article.id }}</td>
-                <td> <a href="{{ url_for('blog.page',id=article.id) }}">{{ article.title }}</a></td> 
+                <td> <a href="{{ url_for('blog.view',id=article.id) }}">{{ article.title }}</a></td> 
                 <td>{{ article.category }}</td>
                 <td>{{ article.content | truncate(50) }}</td>
-                <td>{{ article.user }}</td>
+                <td>{{ article.author }}</td>
                 <td>{{ article.publish.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 <td> 
                     <table>

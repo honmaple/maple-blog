@@ -16,6 +16,8 @@ class Notices(db.Model):
     notice = db.Column(db.Text, nullable=False)
     publish = db.Column(db.DateTime, nullable=False)
 
+    __mapper_args__ = {"order_by": publish.desc()}
+
     def __init__(self, notice):
         self.notice = notice
 

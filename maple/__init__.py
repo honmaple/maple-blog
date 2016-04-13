@@ -29,9 +29,9 @@ def create_app():
 def register(app):
     register_routes(app)
     register_assets(app)
-    register_db(app)
     register_form(app)
     register_jinja2(app)
+    register_db(app)
 
 
 def register_routes(app):
@@ -49,12 +49,6 @@ def register_routes(app):
     app.register_blueprint(site, url_prefix='/books')
     from maple.admin.views import site
     app.register_blueprint(site, url_prefix='/admin')
-
-
-def register_db(app):
-    from .models import db
-
-    db.init_app(app)
 
 
 def register_form(app):
@@ -77,26 +71,26 @@ def register_jinja2(app):
 
     def visit_total(article_id):
         '''文章浏览次数'''
-        from .utils import get_article_count
+        from maple.main.mark_record import get_article_count
         return get_article_count(article_id)
 
     def last_online_time(ip):
-        from .utils import get_user_last_activity
+        from maple.main.mark_record import get_user_last_activity
         ip = str(ip, 'utf-8')
         return get_user_last_activity(ip)
 
     def visited_time(ip):
-        from .utils import get_visited_time
+        from maple.main.mark_record import get_visited_time
         ip = str(ip, 'utf-8')
         return get_visited_time(ip)
 
     def visited_last_time(ip):
-        from .utils import get_visited_last_time
+        from maple.main.mark_record import get_visited_last_time
         ip = str(ip, 'utf-8')
         return get_visited_last_time(ip)
 
     def visited_pages(ip):
-        from .utils import get_visited_pages
+        from maple.main.mark_record import get_visited_pages
         ip = str(ip, 'utf-8')
         return get_visited_pages(ip)
 
@@ -116,18 +110,14 @@ def register_jinja2(app):
 
 def register_assets(app):
     bundles = {
-
-        'home_js': Bundle(
-            'style/js/jquery.min.js',      #这里直接写static目录的子目录 ,如static/bootstrap是错误的
-            'style/js/bootstrap.min.js',
-            output='style/assets/home.js',
-            filters='jsmin'),
-
-        'home_css': Bundle(
-            'style/css/bootstrap.min.css',
-            output='style/assets/home.css',
-            filters='cssmin')
-        }
+        'home_js': Bundle('style/js/jquery.min.js',
+                          'style/js/bootstrap.min.js',
+                          output='style/assets/home.js',
+                          filters='jsmin'),
+        'home_css': Bundle('style/css/bootstrap.min.css',
+                           output='style/assets/home.css',
+                           filters='cssmin')
+    }
 
     assets = Environment(app)
     assets.register(bundles)
@@ -140,6 +130,10 @@ def register_login(app):
     login_manager.session_protection = "strong"
     login_manager.login_message = u"这个页面要求登陆，请登陆"
     return login_manager
+
+
+def register_db(app):
+    db.init_app(app)
 
 
 def register_redis(app):
@@ -159,12 +153,10 @@ register(app)
 
 @app.before_request
 def before_request():
-    from .utils import allow_ip
+    from maple.main.mark_record import allow_ip, mark_online, mark_visited
     allow_ip(request.remote_addr)
     g.user = current_user
-    from .utils import mark_online
     mark_online(request.remote_addr)
-    from .utils import mark_visited
     if '/static/' in request.path:
         pass
     elif '/favicon.ico' in request.path:

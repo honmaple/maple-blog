@@ -85,6 +85,24 @@ $(document).ready(function(){
             }
         });
     });
+    $('a#email').click(function(){
+        $.ajax ({
+            type : "POST",
+            url : "{{ url_for('auth.confirm_email') }}",
+            data:{},
+            contentType: 'application/json;charset=UTF-8',
+            success: function(result) {
+                if (result.judge == true)
+                {
+                    alert(result.error)
+                }
+                else 
+                {
+                    alert(result.error)
+                }
+            }
+        });
+    });
 });
 </script>
 <style type="text/css" media="all">
@@ -101,13 +119,13 @@ $(document).ready(function(){
         <li id="error"></li>
     </ul>
 </div>
-{% if not user.is_confirmed %}
+{% if not current_user.is_confirmed %}
 <div class="alert alert-info" style="padding:6px">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
     你的账户未验证,请尽快验证,否则无法评论或回复或发表问题
-    <a href="{{ url_for('auth.confirm_email') }}" class="btn btn-info btn-sm">验证账户</a>
+    <a id="email" class="btn btn-info btn-sm">验证账户</a>
 </div>
 {% endif %}
 <div class="category">

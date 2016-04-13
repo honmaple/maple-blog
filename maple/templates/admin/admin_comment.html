@@ -19,9 +19,9 @@
                 {% for comment in comments %}
                 <tr>
                     <td>{{ comment.id }}</td>
-                    <td> <a href="{{ url_for('blog.page',id=comment.article.id) }}" target=_blank>{{ comment.article.title }}</a></td> 
+                    <td> <a href="{{ url_for('blog.view',id=comment.article.id) }}" target=_blank>{{ comment.article.title }}</a></td> 
                     <td>{{ comment.content }}</td> 
-                    <td> <a href="{{ url_for('index.logined_user',name=comment['user']) }}">{{ comment.user }}</a></td>
+                    <td> <a href="{{ url_for('user.logined_user',name=comment['author']) }}">{{ comment.author }}</a></td>
                     <td>{{ comment.publish.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td> 
                         <table>
@@ -73,10 +73,10 @@
                 {% for reply in comment.replies %}
                 <tr>
                     <td>{{ reply.id }}</td> 
-                    <td> <a href="{{ url_for('blog.page',id=comment.article.id) }}" target=_blank>{{ comment.article.title }}</a></td> 
+                    <td> <a href="{{ url_for('blog.view',id=comment.article.id) }}" target=_blank>{{ comment.article.title }}</a></td> 
                     <td>{{ comment.content }}</td>
                     <td>{{ reply.content }}</td> 
-                    <td> <a href="{{ url_for('index.logined_user',name=reply['user']) }}">{{ reply.user }}</a></td>
+                    <td> <a href="{{ url_for('user.logined_user',name=reply['author']) }}">{{ reply.author }}</a></td>
                     <td>{{ reply.publish.strftime('%Y-%m-%d %H:%M:%S') }}</td> 
                     <td> 
                         <table>

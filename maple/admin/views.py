@@ -18,11 +18,12 @@ from maple.blog.models import Articles, Comments, Tags
 from maple.blog.forms import ArticleForm
 from maple.admin.models import Notices
 from maple.admin.forms import (EditRegisterForm, NoticesForm)
-from ..utils import DeleteManager, EditManager, super_permission
-from ..utils import get_online_users, get_visited_users
+from maple.main.manager import DeleteManager, EditManager
+from maple.main.mark_record import get_online_users, get_visited_users
+from maple.main.permissions import super_permission
 from datetime import datetime
 
-site = Blueprint('admin', __name__, url_prefix='/admin')
+site = Blueprint('admin', __name__)
 
 
 def count_sum(count):
@@ -35,6 +36,7 @@ def count_sum(count):
 
 
 @site.route('/')
+@super_permission.require(404)
 def index():
     user_online = get_online_users()
     user_visited = get_visited_users()
@@ -49,7 +51,7 @@ def index():
 @super_permission.require(404)
 def delete_ip(ip):
     '''删除记录'''
-    from ..utils import delete_visited_users
+    from maple.main.mark_record import delete_visited_users
     delete_visited_users(ip)
     return redirect(url_for('admin.index'))
 
@@ -58,7 +60,7 @@ def delete_ip(ip):
 @super_permission.require(404)
 def delete_page(ip):
     '''删除记录'''
-    from ..utils import delete_visited_pages
+    from maple.main.mark_record import delete_visited_pages
     delete_visited_pages(ip)
     return redirect(url_for('admin.index'))
 
@@ -67,7 +69,7 @@ def delete_page(ip):
 @super_permission.require(404)
 def add_blacklist(ip):
     '''加入黑名单'''
-    from ..utils import set_blacklist
+    from maple.main.mark_record import set_blacklist
     set_blacklist(ip)
     return redirect(url_for('admin.index'))
 
@@ -76,7 +78,7 @@ def add_blacklist(ip):
 @super_permission.require(404)
 def add_writelist(ip):
     '''加入白名单'''
-    from ..utils import set_writelist
+    from maple.main.mark_record import set_writelist
     set_writelist(ip)
     return redirect(url_for('admin.index'))
 
@@ -230,7 +232,7 @@ def admin_edit(category, post_id):
         tags = ''
         leng = 1
         for tag in article.tags:
-            if leng == article.tags.count():
+            if leng == len(article.tags):
                 tags += tag.name
             else:
                 tags += tag.name + ','

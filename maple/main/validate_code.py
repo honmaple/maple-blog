@@ -1,12 +1,12 @@
-#*************************************************************************
+#!/usr/bin/env python
+# -*- coding=UTF-8 -*-
+# *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
-#   File Name: cd.py
+#   File Name: validate.py
 #   Author:JiangLin
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-22 04:11:03
-#*************************************************************************
-#!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# *************************************************************************
 import random
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from flask import session

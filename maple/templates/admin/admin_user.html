@@ -16,7 +16,7 @@
             {% for user in users %}
             <tr>
                 <td>{{ user.id }}</td>
-                <td> <a href="{{ url_for('index.logined_user',name=user.name) }}">{{ user.name }}</a></td> 
+                <td> <a href="{{ url_for('user.logined_user',name=user.name) }}">{{ user.name }}</a></td> 
                 <td>{{ user.email }}</td> 
                 <td>{{ user.is_confirmed }}</td>
                 <td>{{ user.is_superuser }}</td>

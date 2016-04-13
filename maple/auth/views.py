@@ -12,7 +12,7 @@ from flask import (render_template, Blueprint, redirect, url_for, flash,
 from flask_login import (login_user, logout_user, current_user, login_required)
 from flask_principal import (Identity, AnonymousIdentity, identity_changed)
 from werkzeug.security import generate_password_hash
-from maple import redis_data, app, db
+from maple import app, db
 from maple.main.permissions import guest_permission, time_permission
 from maple.email.email import email_token, email_send, confirm_token
 from maple.user.models import User
@@ -122,7 +122,7 @@ def register():
             return return_errors(form)
         else:
             pass
-        return render_template('auth/register.html', form=form, error=error)
+        return render_template('auth/register.html', form=form)
 
 
 @site.route('/confirm/<token>')
@@ -138,31 +138,31 @@ def confirm(token):
     else:
         user.is_confirmed = True
         user.confirmed_time = datetime.now()
+        user.roles = 'writer'
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('index.index'))
+    return redirect(url_for('user.logined_user', name=user.name))
 
 
 @site.route('/confirm_email', methods=['GET', 'POST'])
 @login_required
+@time_permission
 def confirm_email():
     if request.method == "POST":
-        if not time_permission.allow():
-            return time_permission.action()
+        if current_user.is_confirmed:
+            return jsonify(judge=False, error='你的账户已验证,不能重复验证')
         else:
             token = email_token(current_user.email)
             '''email模板'''
             confirm_url = url_for('auth.confirm', token=token, _external=True)
             html = render_template('templet/email.html',
                                    confirm_url=confirm_url)
-            subject = "Please confirm your email"
+            subject = "请验证你的邮箱"
             email_send(current_user.email, html, subject)
-            from time import time
-            time = int(time()) + 28800
-            user = 'user:%s' % str(current_user.id)
-            redis_data.hset(user, 'send_email_time', time)
-            error = '一封验证邮件已发往你的邮箱，請查收.'
-            return error
+            flash('一封验证邮件已发往你的邮箱，請查收.')
+            current_user.send_email_time = datetime.now()
+            db.session.commit()
+            return jsonify(judge=True, error='一封验证邮件已发往你的邮箱，請查收.')
     else:
         abort(404)
 

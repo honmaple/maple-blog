@@ -1,17 +1,21 @@
-#*************************************************************************
+#!/usr/bin/env python
+# -*- coding=UTF-8 -*-
+# *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: manager.py
 #   Author:JiangLin
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-12-13 19:57:29
-#*************************************************************************
-#!/usr/bin/env python
-# -*- coding=UTF-8 -*-
-from ..models import Comments,Articles,Replies,User,Questions,Tags,db
+# *************************************************************************
+from maple import db
+from maple.blog.models import Articles, Comments, Replies, Tags
+from maple.question.models import Questions
+from maple.user.models import User
 from werkzeug.security import generate_password_hash
 
+
 class DeleteManager(object):
-    def __init__(self,post_id):
+    def __init__(self, post_id):
         self.post_id = post_id
 
     def delete_user(self):
@@ -54,7 +58,7 @@ class DeleteManager(object):
 
 
 class EditManager(object):
-    def __init__(self,post_id,form):
+    def __init__(self, post_id, form):
         self.post_id = post_id
         self.form = form
 
@@ -92,7 +96,7 @@ class EditManager(object):
         '''先查找article的关联节点'''
         exsited_tag = []
         for s in article.tags:
-            t = Tags.query.filter_by(id = s.id).first()
+            t = Tags.query.filter_by(id=s.id).first()
             exsited_tag.append(t)
         '''更新节点'''
         i = 0
@@ -115,4 +119,3 @@ class EditManager(object):
         question.describ = self.form.describ.data
         question.answer = self.form.answer.data
         db.session.commit()
-
