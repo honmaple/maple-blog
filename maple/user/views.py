@@ -12,6 +12,7 @@ from flask import (render_template, Blueprint, redirect, url_for, flash,
 from flask_login import (current_user, login_required, logout_user)
 from flask_principal import (AnonymousIdentity, identity_changed)
 from werkzeug.security import check_password_hash
+from maple import cache
 from maple.user.models import User
 from maple.question.models import Questions
 from maple.blog.models import Comments
@@ -26,6 +27,7 @@ site = Blueprint('user', __name__)
 
 @site.route('/<name>')
 @login_required
+@cache.cached(timeout=180)
 def logined_user(name):
     '''不能进别人主页'''
     if current_user.name != name:

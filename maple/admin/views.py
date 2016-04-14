@@ -8,9 +8,9 @@
 #   Created Time: 2015-11-18 08:11:38
 # *************************************************************************
 from flask import (render_template, Blueprint, request, flash, redirect,
-                   url_for)
+                   url_for, abort, Markup)
 from flask_login import current_user
-from maple import db
+from maple import db, cache
 from maple.user.models import User
 from maple.question.models import Questions
 from maple.question.forms import QuestionForm
@@ -37,6 +37,7 @@ def count_sum(count):
 
 @site.route('/')
 @super_permission.require(404)
+@cache.cached(timeout=180)
 def index():
     user_online = get_online_users()
     user_visited = get_visited_users()
@@ -101,6 +102,19 @@ def post_notice():
                            notices=notices)
 
 
+@site.route('/pages/preview', methods=['GET', 'POST'])
+@super_permission.require(404)
+def preview():
+    from misaka import Markdown, HtmlRenderer
+    if request.method == "POST":
+        content = request.args.get('content')
+        html = HtmlRenderer()
+        markdown = Markdown(html)
+        return Markup(markdown(content))
+    else:
+        abort(404)
+
+
 @site.route('/pages_post', methods=['GET', 'POST'])
 @super_permission.require(404)
 def admin_post():
@@ -139,6 +153,7 @@ def admin_post():
 @site.route('/account', defaults={'number': 1})
 @site.route('/account/<int:number>')
 @super_permission.require(404)
+@cache.cached(timeout=180)
 def admin_account(number):
     users = User.query.order_by(User.registered_time.desc()).\
         offset((number-1)*10).limit(10)
@@ -154,6 +169,7 @@ def admin_account(number):
 @site.route('/article', defaults={'number': 1})
 @site.route('/article/<int:number>')
 @super_permission.require(404)
+@cache.cached(timeout=180)
 def admin_article(number):
     articles = Articles.query.order_by(Articles.publish.desc()).\
         offset((number-1)*10).limit(10)
@@ -169,6 +185,7 @@ def admin_article(number):
 @site.route('/question', defaults={'number': 1})
 @site.route('/question/<int:number>')
 @super_permission.require(404)
+@cache.cached(timeout=180)
 def admin_question(number):
     questions = Questions.query.order_by(Questions.publish.desc()).\
         offset((number-1)*10).limit(10)
@@ -184,6 +201,7 @@ def admin_question(number):
 @site.route('/comment', defaults={'number': 1})
 @site.route('/comment/<int:number>')
 @super_permission.require(404)
+@cache.cached(timeout=180)
 def admin_comment(number):
     comments = Comments.query.order_by(Comments.publish.desc()).\
         offset((number-1)*10).limit(10)

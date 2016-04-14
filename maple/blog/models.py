@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-08 06:42:40
 # *************************************************************************
-from maple import db
+from maple import db, cache
 
 tag_article = db.Table('tag_article', db.Column('tags_id', db.Integer,
                                                 db.ForeignKey('tags.id')),
@@ -58,14 +58,19 @@ class Articles(db.Model):
         return "<Articles %r>" % self.title
 
     @staticmethod
+    @cache.cached(timeout=90, key_prefix='articles:id')
     def load_by_id(qid):
         return Articles.query.filter_by(id=qid).first_or_404()
 
+    @staticmethod
+    @cache.cached(timeout=90, key_prefix='articles:tag')
     def load_by_tag(tag):
         article = Articles.query.join(Articles.tags).\
                   filter(Tags.name == tag).all()
         return article
 
+    @staticmethod
+    @cache.cached(timeout=90, key_prefix='articles:category')
     def load_by_category(category):
         return Articles.query.filter_by(category=category).all()
 

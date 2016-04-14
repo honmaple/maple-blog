@@ -10,13 +10,16 @@
 from flask import (render_template, Blueprint, request, redirect, url_for,
                    abort, Markup, flash)
 from flask_login import current_user, login_required
-from maple import db, redis_data
+from maple import db, redis_data, cache
 from maple.blog.forms import CommentForm, ReplyForm
 from maple.blog.models import Articles, Tags, Comments, Replies
 from maple.main.permissions import writer_permission
 from datetime import datetime
 
 site = Blueprint('blog', __name__)
+
+# @site.before_request
+# def before_request():
 
 
 def count_sum(count):
@@ -30,6 +33,7 @@ def count_sum(count):
 
 @site.route('', defaults={'number': 1})
 @site.route('/page?=<int:number>')
+@cache.cached(timeout=180)
 def index_num(number):
     '''每页显示6篇,且按照时间排序 '''
     articles = Articles.query.offset((number - 1) * 6).limit(6)
@@ -46,6 +50,7 @@ def index_num(number):
 
 @site.route('/<category>', defaults={'number': 1})
 @site.route('/<category>/page?=<int:number>')
+@cache.cached(timeout=180)
 def category_num(category, number):
     all_article = Articles.load_by_category(category)
     if all_article is None:
@@ -67,6 +72,7 @@ def category_num(category, number):
 
 @site.route('/tag=<tag>', defaults={'number': 1})
 @site.route('/tag=<tag>/page?=<int:number>')
+@cache.cached(timeout=180)
 def tag_num(tag, number):
     a = Articles.query.join(Articles.tags).filter(Tags.name == tag)
     articles = a.offset((number - 1) * 6).limit(6)
@@ -84,6 +90,7 @@ def tag_num(tag, number):
 
 
 @site.route('/view/<id>')
+@cache.cached(timeout=180)
 def view(id):
     '''记录用户浏览次数'''
     redis_data.zincrby('visited:article', 'article:%s' % str(id), 1)
@@ -102,6 +109,7 @@ def view(id):
 
 @site.route('/archives', defaults={'number': 1})
 @site.route('/archives/page?=<int:number>')
+@cache.cached(timeout=180)
 def archives(number):
     articles = Articles.query.offset((number - 1) * 30).limit(30)
     all_tags = Tags.query.distinct(Tags.name).all()
@@ -116,15 +124,6 @@ def archives(number):
                            all_tags=all_tags,
                            count=count,
                            number=number)
-
-
-@site.route('/pages/preview')
-def preview():
-    from misaka import Markdown, HtmlRenderer
-    content = request.args.get('content')
-    html = HtmlRenderer()
-    markdown = Markdown(html)
-    return Markup(markdown(content))
 
 
 @site.route('/pages/<id>/comment', methods=['GET', 'POST'])
