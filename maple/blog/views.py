@@ -31,6 +31,9 @@ def count_sum(count):
 @site.route('', defaults={'number': 1})
 @site.route('/page?=<int:number>')
 def index_num(number):
+    aa = dict(tag='a', number='1')
+    a = url_for('blog.index_num',**aa)
+    print(a)
     '''每页显示6篇,且按照时间排序 '''
     articles = Articles.query.offset((number - 1) * 6).limit(6)
     all_tags = Tags.query.distinct(Tags.name).all()

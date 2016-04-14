@@ -64,6 +64,10 @@ def register_form(app):
 
 
 def register_jinja2(app):
+    def page_url_for(endpoint, **value):
+        from flask import url_for
+        return endpoint, value
+
     def safe_markdown(text):
         html = HtmlRenderer()
         markdown = Markdown(html)
@@ -98,6 +102,7 @@ def register_jinja2(app):
         from IP import find
         return find(ip)
 
+    app.jinja_env.filters['page_url_for'] = page_url_for
     app.jinja_env.filters['safe_markdown'] = safe_markdown
     app.jinja_env.filters['visit_total'] = visit_total
     app.jinja_env.filters['last_online_time'] = last_online_time

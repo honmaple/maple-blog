@@ -13,22 +13,19 @@ from maple.books.models import Books
 site = Blueprint('book', __name__)
 
 
-@site.route('', defaults={'num': 1})
-@site.route('/view?=<int:num>')
-def index_num(num):
-    book_all_type = Books.query.distinct(Books.tag)
-    books = Books.query.distinct(Books.name).all()
-    total = int(len(books) / 18) + 1
-    number = num
-    add = number - 1
-    if num == add + 6:
-        add += 5
+@site.route('', defaults={'number': 1})
+@site.route('/view?=<int:number>')
+def index_num(number):
+    book_all_tags = Books.query.distinct(Books.tag)
+    books = Books.query.distinct(Books.name).offset((number - 1) *
+                                                    18).limit(18)
+    pages = Books.query.distinct(Books.name).all()
+    pages = int(len(pages) / 18) + 1
     return render_template('book/book.html',
                            books=books,
-                           book_all_type=book_all_type,
-                           add=add,
+                           book_all_tags=book_all_tags,
                            number=number,
-                           total=total)
+                           pages=pages)
 
 
 @site.route('/tag?=<tag>')
@@ -37,7 +34,7 @@ def tag(tag):
     books = Books.query.distinct(Books.name).filter_by(tag=tag)
     return render_template('book/book_type.html',
                            books=books,
-                           tag = tag,
+                           tag=tag,
                            book_all_type=book_all_type)
 
 
