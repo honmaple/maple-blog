@@ -17,6 +17,7 @@ from config import load_config
 from misaka import Markdown, HtmlRenderer
 from flask_sqlalchemy import SQLAlchemy
 from redis import StrictRedis
+from flask_cache import Cache
 
 
 def create_app():
@@ -55,12 +56,6 @@ def register_form(app):
     from flask_wtf.csrf import CsrfProtect
     csrf = CsrfProtect()
     csrf.init_app(app)
-
-# def register_cache(app):
-
-# cache = Cache(config={'CACHE_TYPE': 'simple'})
-# cache.init_app(app)
-# return cache
 
 
 def register_jinja2(app):
@@ -138,8 +133,15 @@ def register_db(app):
 
 def register_redis(app):
     config = app.config
-    redis_data = StrictRedis(password=config['REDIS_PASSWORD'])
+    redis_data = StrictRedis(db=config['CACHE_REDIS_DB'],
+                             password=config['CACHE_REDIS_PASSWORD'])
     return redis_data
+
+
+def register_cache(app):
+    cache = Cache(config={'CACHE_TYPE': 'redis'})
+    cache.init_app(app)
+    return cache
 
 
 db = SQLAlchemy()
@@ -148,6 +150,7 @@ mail = Mail(app)
 login_manager = register_login(app)
 principals = Principal(app)
 redis_data = register_redis(app)
+cache = register_cache(app)
 register(app)
 
 
