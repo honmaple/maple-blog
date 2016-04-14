@@ -31,9 +31,6 @@ def count_sum(count):
 @site.route('', defaults={'number': 1})
 @site.route('/page?=<int:number>')
 def index_num(number):
-    aa = dict(tag='a', number='1')
-    a = url_for('blog.index_num',**aa)
-    print(a)
     '''每页显示6篇,且按照时间排序 '''
     articles = Articles.query.offset((number - 1) * 6).limit(6)
     all_tags = Tags.query.distinct(Tags.name).all()
@@ -41,7 +38,6 @@ def index_num(number):
     count = count_sum(count)
     number = number
     return render_template('blog/blog.html',
-                           title=u'HonMaple的个人博客',
                            articles=articles,
                            all_tags=all_tags,
                            count=count,
@@ -62,7 +58,6 @@ def category_num(category, number):
     number = number
     category = category
     return render_template('blog/blog_category.html',
-                           title='%s - HonMaple博客' % (category),
                            articles=articles,
                            all_tags=all_tags,
                            count=count,
@@ -81,7 +76,6 @@ def tag_num(tag, number):
     number = number
     tag = tag
     return render_template('blog/blog_tag.html',
-                           title='%s - HonMaple博客' % (tag),
                            articles=articles,
                            number=number,
                            count=count,
@@ -98,9 +92,7 @@ def view(id):
     article = Articles.load_by_id(id)
     all_tags = Tags.query.distinct(Tags.name).all()
     tags = article.tags
-    title = article.title
     return render_template('blog/blog_page.html',
-                           title='%s - HonMaple博客' % (title),
                            article=article,
                            all_tags=all_tags,
                            tags=tags,
@@ -120,7 +112,6 @@ def archives(number):
         count = int(count / 30) + 1
     number = number
     return render_template('blog/blog_archives.html',
-                           title='Archives - HonMaple博客',
                            articles=articles,
                            all_tags=all_tags,
                            count=count,
