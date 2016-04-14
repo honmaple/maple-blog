@@ -10,6 +10,7 @@
 from flask import (render_template, Blueprint, flash, redirect, url_for,
                    request)
 from flask_login import current_user, login_required
+from maple import cache
 from maple.question.forms import QuestionForm
 from maple.question.models import Questions, db
 from maple.forms.forms import flash_errors
@@ -19,6 +20,7 @@ site = Blueprint('question', __name__)
 
 
 @site.route('')
+@cache.cached(timeout=180)
 def index():
     form = QuestionForm()
     questions = Questions.query.filter_by(private=False).all()
@@ -28,8 +30,9 @@ def index():
                            form=form)
 
 
-@site.route('/view/post', methods=['GET', 'POST'])
+@site.route('/view', methods=['GET', 'POST'])
 @login_required
+@cache.cached(timeout=180)
 def post():
     form = QuestionForm()
     if form.validate_on_submit() and request.method == "POST":
@@ -54,6 +57,7 @@ def post():
 
 @site.route('/private')
 @login_required
+@cache.cached(timeout=180)
 def private():
     form = QuestionForm()
     questions = Questions.load_by_private()
@@ -65,6 +69,7 @@ def private():
 
 @site.route('/view?=<id>')
 @login_required
+@cache.cached(timeout=180)
 def question_view(id):
     question = Questions.load_by_id(id)
     if question.private and current_user.name != question.author:

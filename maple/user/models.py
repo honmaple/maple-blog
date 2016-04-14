@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-08 06:42:40
 # *************************************************************************
-from maple import db
+from maple import db, cache
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, \
      check_password_hash
@@ -58,6 +58,7 @@ class User(db.Model, UserMixin):
         return "<User %r>" % self.name
 
     @staticmethod
+    @cache.cached(timeout=50, key_prefix='users:name')
     def load_by_name(name):
         user = User.query.filter_by(name=name).first()
         return user

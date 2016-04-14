@@ -126,15 +126,6 @@ def archives(number):
                            number=number)
 
 
-@site.route('/pages/preview')
-def preview():
-    from misaka import Markdown, HtmlRenderer
-    content = request.args.get('content')
-    html = HtmlRenderer()
-    markdown = Markdown(html)
-    return Markup(markdown(content))
-
-
 @site.route('/pages/<id>/comment', methods=['GET', 'POST'])
 @login_required
 def comment(id):

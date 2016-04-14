@@ -8,7 +8,7 @@
 #   Created Time: 2015-11-25 02:21:04
 # *************************************************************************
 from flask import Blueprint, render_template
-from maple import login_manager
+from maple import login_manager, cache
 from maple.user.models import User
 from maple.blog.models import Articles
 from maple.question.models import Questions
@@ -25,6 +25,7 @@ def user_loader(id):
 
 @site.route('/')
 @site.route('/index')
+@cache.cached(timeout=180)
 def index():
     articles = Articles.query.limit(7)
     questions = Questions.query.filter_by(private=False).limit(7)
@@ -36,5 +37,6 @@ def index():
 
 
 @site.route('/about')
+@cache.cached(timeout=180)
 def about():
     return render_template('index/about_me.html')
