@@ -1,0 +1,109 @@
+{% macro page(url,number=1,pages=1,kw=None) -%}
+<div style="text-align:center;margin-top:-15px">
+    <ul class="pagination">
+        {%- if number == 1 %}
+        <li class="disabled">
+            <a aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {%- else -%}
+        <li>
+            {% if not kw %}
+            <a href="{{ url_for(url,number=number-1) }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for(url,number=number-1,**kw) }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            {% endif -%}
+        </li>
+        {% endif -%}
+
+        {% if pages < 7 %}
+        {% for page in range(1,pages + 1) %}
+        {{ page_url(url,page,number,kw) }}
+        {% endfor %}
+        {% else %}
+        {% if number <= 4 %}
+        {% for page in range(1,6) %}
+        {{ page_url(url,page,number,kw) }}
+        {% endfor %}
+
+        {%- if number <= pages - 2 %}
+        <li class="disabled"><a>···</a></li>
+        {%- endif -%}
+
+        {{ page_url(url,pages,number,kw) }}
+        {% else %}
+        {{ page_url(url,1,number,kw) }}
+        {{ page_url(url,2,number,kw) }}
+        {{ page_dot_start(number)}}
+
+        {% if number >= pages - 3 %}
+        {% for page in range(number-2,pages + 1) %}
+        {{ page_url(url,page,number,kw) }}
+        {% endfor %}
+        {% else %}
+        {% for page in range(number-2,number + 3) %}
+        {{ page_url(url,page,number,kw) }}
+        {% endfor %}
+        {{ page_dot_end(pages,number) }}
+        {{ page_url(url,pages,number,kw) }}
+        {% endif  %}
+
+        {% endif  %}
+        {% endif  %}
+
+
+        {%- if number == pages %}
+        <li class="disabled">
+            <a aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {%- else -%}
+        <li>
+            {% if not kw %}
+            <a href="{{ url_for(url,number=number+1) }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for(url,number=number+1,**kw) }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            {% endif -%}
+        </li>
+        {% endif -%}
+    </ul>
+</div>
+{% endmacro %}
+
+{% macro page_url(url,page,number,kw) -%}
+{%- if page == number %}
+<li class="active">{{ page_kw(url,page,kw)}}</li>
+{%- else -%}
+<li>{{ page_kw(url,page,kw)}}</li>
+{%- endif -%}
+{% endmacro %}
+
+{% macro page_dot_end(pages,number) -%}
+{%- if number <= pages - 4 %}
+<li class="disabled"><a>···</a></li>
+{%- endif -%}
+{% endmacro %}
+
+{% macro page_dot_start(number) -%}
+{%- if number > 5 %}
+<li class="disabled"><a>···</a></li>
+{%- endif -%}
+{% endmacro %}
+
+{% macro page_kw(url,page,kw) -%}
+{% if not kw %}
+<a href="{{ url_for(url,number=page) }}">{{ page }}</a>
+{% else %}
+<a href="{{ url_for(url,number=page,**kw) }}">{{ page }}</a>
+{%- endif -%}
+{% endmacro %}

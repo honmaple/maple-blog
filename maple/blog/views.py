@@ -99,7 +99,6 @@ def view(id):
     article = Articles.load_by_id(id)
     all_tags = Tags.query.distinct(Tags.name).all()
     tags = article.tags
-    title = article.title
     return render_template('blog/blog_page.html',
                            article=article,
                            all_tags=all_tags,

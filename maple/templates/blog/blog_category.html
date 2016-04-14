@@ -14,46 +14,8 @@
 {% block content %}
 <div class="col-sm-9" style="padding:0 4px;">
     {% include "blog/link.html" %}
-    <div style="text-align:center;margin-top:-15px">
-        <ul class="pagination">
-            {% if number == 1 %}
-            <li class="disabled">
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            {% else %}
-            <li>
-                <a href="{{ url_for('blog.category_num',category=category,number=number-1) }}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            {% endif %}
-
-            {% for num in range(count) %}
-            {% set num = num + 1 %}
-            {% if num == number %}
-            <li class="active"><a href="{{ url_for('blog.category_num',number=num,category=category) }}">{{ num }}</a></li>
-            {% else %}
-            <li><a href="{{ url_for('blog.category_num',number=num,category=category) }}">{{ num }}</a></li>
-            {% endif %}
-            {% endfor %}
-
-            {% if number == count %}
-            <li class="disabled">
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            {% else %}
-            <li>
-                <a href="{{ url_for('blog.category_num',category=category,number=number+1) }}" aria-label="Previous">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
+    {% import 'base/page.html' as page %}
+    {{ page.page('blog.category_num',number=number,pages=count,kw=dict(category=category))}}
 </div>
 {% include 'blog/panel.html' %}
 {% endblock %}

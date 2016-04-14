@@ -30,8 +30,8 @@ def logined_user(name):
     '''不能进别人主页'''
     if current_user.name != name:
         abort(404)
-    user_questions = Questions.query.filter_by(author=name).all()
-    user_comments = Comments.query.filter_by(author=name).all()
+    user_questions = Questions.query.filter_by(author=name)
+    user_comments = Comments.query.filter_by(author=name).limit(16)
     user = User.query.filter_by(name=name).first()
     form = EditUserInforForm()
     new_passwd_form = EditPasswdForm()
