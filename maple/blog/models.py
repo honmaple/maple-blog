@@ -58,19 +58,16 @@ class Articles(db.Model):
         return "<Articles %r>" % self.title
 
     @staticmethod
-    @cache.cached(timeout=90, key_prefix='articles:id')
     def load_by_id(qid):
         return Articles.query.filter_by(id=qid).first_or_404()
 
     @staticmethod
-    @cache.cached(timeout=90, key_prefix='articles:tag')
     def load_by_tag(tag):
         article = Articles.query.join(Articles.tags).\
                   filter(Tags.name == tag).all()
         return article
 
     @staticmethod
-    @cache.cached(timeout=90, key_prefix='articles:category')
     def load_by_category(category):
         return Articles.query.filter_by(category=category).all()
 

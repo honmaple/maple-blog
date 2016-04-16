@@ -15,6 +15,7 @@ from maple.blog.forms import CommentForm, ReplyForm
 from maple.blog.models import Articles, Tags, Comments, Replies
 from maple.main.permissions import writer_permission
 from datetime import datetime
+from flask_babel import gettext as _
 
 site = Blueprint('blog', __name__)
 
@@ -131,7 +132,7 @@ def archives(number):
 def comment(id):
     '''评论表单'''
     if not writer_permission.can():
-        flash('你尚未验证账户')
+        flash(_('You have not confirm your account'))
         return redirect(url_for('blog.index_num'))
     form = CommentForm()
     if form.validate_on_submit() and request.method == "POST":
@@ -150,7 +151,7 @@ def comment(id):
 def reply(id, comment_id):
     '''回复表单'''
     if not writer_permission.can():
-        flash('你尚未验证账户')
+        flash(_('You have not confirm your account'))
         return redirect(url_for('blog.index_num'))
     form = ReplyForm()
     if form.validate_on_submit() and request.method == "POST":

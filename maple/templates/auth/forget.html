@@ -8,39 +8,20 @@
 {% endblock %}
 
 {% block title -%}
-忘记密码 - HonMaple
+{{_('forget password')}} - HonMaple
+{%- endblock %}
+
+{% block script -%}
+<script type=text/javascript>
+ var url = {
+     index: "{{ request.args.get('next') or '/' }}",
+     forget: "{{ url_for('auth.forget')}}"
+ };
+</script>
+<script type="text/javascript" src="{{ url_for('static',filename='style/login.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-<script type=text/javascript>
- $(document).ready(function(){
-    $('a#clickCode').click(function() {
-        $("#changeCode").attr("src","/validcode?code=" + Math.random());
-    });
-     $('button#ajax').click(function() {
-         $.ajax ({
-             type : "POST",
-             url : "{{ url_for('auth.forget') }}",
-             data:JSON.stringify({
-                 confirm_email: $('#confirm_email').val(),
-                code:$("#code").val()
-             }),
-             contentType: 'application/json;charset=UTF-8',
-             success: function(result) {
-                 if (result.judge == true)
-                 {
-                     window.location = '{{ request.args.get('next') or '/' }}';
-                 }
-                 else 
-                 {
-                     $("#showerror").show();
-                     $("#error").text(result.error);
-                 }
-             }
-         });
-     });
- });
-</script>
 <table align="center" style="font-size:14px;">
     <tr>
         <td colspan="2">
@@ -68,7 +49,7 @@
     <tr>
         <td></td>
         <td style="padding-bottom:10px;">
-            <button type="button" class="btn btn-primary" id="ajax">确认</button> 
+            <button type="button" class="btn btn-primary" id="forget">{{_('confirm')}}</button> 
         </td>    
     </tr>
 </table>

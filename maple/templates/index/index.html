@@ -9,11 +9,11 @@
 
 {% block title -%}
 HonMaple
-{% endblock %}
+{%- endblock %}
 
 {% block content %}
 <div class="col-sm-8 category" style="padding:0">
-    <div id="index" class="carousel slide col-sm-6 hidden-xs" data-ride="carousel" style="padding:0;margin:0;">
+    <div id="index" class="carousel slide col-sm-6 hidden-xs padgin" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#index" data-slide-to="0" class="active"></li>
             <li data-target="#index" data-slide-to="1"></li>
@@ -36,15 +36,15 @@ HonMaple
             <div class="item">
                 <img src="{{ url_for('static',filename='images/Moo.png') }}" alt="moon" style="width:100%;">
                 <div class="carousel-caption">
-                    这是我的个人网站,欢迎访问并为我提供意见
+                    {{ _('This my website.Welcome and you can give me some suggestion')}}
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6"  style="font-size:16px;">
+    <div class="col-sm-6 font-big">
         <h4>
-            <a href="{{ url_for('blog.index_num') }}" style="color:#eb5424;">
-                最近文章
+            <a class="header-color" href="{{ url_for('blog.index_num') }}">
+                {{_('Recent Articles')}}
             </a>
         </h4>
         <p>
@@ -57,10 +57,10 @@ HonMaple
     </div>
 </div>
 <div class="col-sm-4 category">
-    <div class="" style="font-size:16px;">
+    <div class="font-big">
         <h4>
-            <a href="{{ url_for('question.index') }}" style="color:#eb5424;">
-                最近问答
+            <a class="header-color" href="{{ url_for('question.index') }}">
+                {{_('Recent Answers')}}
             </a>
         </h4>
         <p>
@@ -80,17 +80,17 @@ HonMaple
     </h3>
     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
     <span class="tags">
-        {{- article.publish.strftime('%Y-%m-%d') -}} | 标签:
+        {{- article.publish.strftime('%Y-%m-%d') -}} | {{_('tags')}}:
         {%- for tag in article.tags %}
-        <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#eb5424;">{{ tag.name }}</a>
-        {% endfor -%} | 浏览次数:{{- article.id | visit_total -}}
+        <a class="header-color" href="{{ url_for('blog.tag_num',tag=tag.name) }}">{{ tag.name }}</a>
+        {% endfor -%} | {{_('read')}}:{{- article.id | visit_total -}}
     </span>
     <span>
         {{ article.content | truncate(255, True)| safe_markdown }}
     </span>
     {%- if loop.index == 2 -%}
     <a class="btn btn-primary btn-sm" href="{{ url_for('blog.index_num') }}" role="button">
-        查看更多
+        {{_('more')}}
     </a>
     {% endif %}
 </div>

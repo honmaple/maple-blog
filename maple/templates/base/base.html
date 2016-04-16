@@ -3,55 +3,25 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title> {% block title %}{% endblock %}</title>
+        <title> {% block title %}{%- endblock -%}</title>
         {% assets "home_js" -%}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {%- endassets %}
         {% assets "home_css" -%}
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {%- endassets %}
+        {% block style %}{%- endblock -%}
         <script type="text/javascript" charset="utf-8">
-         $(document).ready(function(){
-             $("#showerror").hide();
-             $('button#hide').click(function(){
-                 $("#showerror").hide();
-             });
-             var csrftoken = "{{ csrf_token() }}"
-             $.ajaxSetup({
-                 beforeSend: function(xhr, settings) {
-                     if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                         xhr.setRequestHeader("X-CSRFToken", csrftoken)
-                     }
-                 }
-             });
-         });
+         var g = {
+             csrftoken: "{{ csrf_token() }}"
+         };
         </script>
-        <style type="text/css">
-         html,body{height:100%}
-         img {width:100%}
-         .container {width:100%;}
-         .footer {margin-top:-30px;height:30px;}
-         .wrap{min-height:100%}
-         .main{padding-bottom:30px;overflow:hidden;}
-         li {
-             list-style-type:none;
-         }
-         .category {
-             margin-bottom:15px;
-             background:#fff;
-             border:1px solid #ddd;
-             box-shadow:0px 0px 1px #ddd;
-             border-radius: 3px;
-         }
-         .tags {
-             color:#999;
-         }
-        </style>
+        {% block script %}{%- endblock -%}
     </head>
-    <body style="background:#f8f8f8;">
+    <body>
         <div class="wrap">
             <div class="main">
-                <nav class="navbar navbar-default  col-md-offset-1 col-md-10" style="background:#fff;padding:0;margin-bottom:10px;">
+                <nav class="navbar navbar-default  col-md-offset-1 col-md-10 header-back">
                     <div class="container-fluid">
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-header" aria-expanded="false">
@@ -71,29 +41,29 @@
                                         {{ current_user.name }} <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{{ url_for('user.logined_user',name=current_user.name) }}">我的主页</a></li>
-                                        <li><a href="{{ url_for('auth.logout') }}">注销</a></li>
+                                        <li><a href="{{ url_for('user.logined_user',name=current_user.name) }}">{{_('My Page')}}</a></li>
+                                        <li><a href="{{ url_for('auth.logout') }}">{{ _('logout')}}</a></li>
                                     </ul>
                                 </li>
                                 {% else %}
-                                <li><a href="{{ url_for('auth.login') }}">登陆</a></li>
-                                <li><a href="{{ url_for('auth.register') }}">注册</a></li>
+                                <li><a href="{{ url_for('auth.login') }}">{{_('login')}}</a></li>
+                                <li><a href="{{ url_for('auth.register') }}">{{ _('register')}}</a></li>
                                 {% endif %}
                             </ul>
                         </div>
                     </div>
                 </nav>
-                <div class="col-md-offset-1 col-md-10" style="padding:0">
+                <div class="col-md-offset-1 col-md-10 padding">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <div class="alert alert-info" style="padding:8px">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                         <ul>
-                        {% for message in messages %}
-                        <li>{{ message }} </li>
-                        {% endfor %}
+                            {% for message in messages %}
+                            <li>{{ message }} </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     {% endif %}

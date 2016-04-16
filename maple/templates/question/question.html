@@ -8,43 +8,24 @@
 {% endblock %}
 
 {% block title -%}
-自问自答 - HonMaple
-{% endblock %}
+{{_('Answer')}} - HonMaple
+{%- endblock %}
 
-{% block content %}
-<style type="text/css" media="all">
- .question {
-     display: inline-block;
-     background-color: #a40000;
-     padding: 2px;
-     border: 1px solid #a40000;
-     font-size: 12px;
-     line-height: 12px;
-     font-weight: 400;
-     border-radius: 2px;
-     margin-right: 5px;
-     vertical-align: 1px;
-     text-decoration: none;
-     color: #FBFBFB;
- }
- .answer {
-     color: #ad1616;
- }
-</style>
-{% if current_user.is_authenticated %}
+{% block content -%}
+{% if g.user.is_authenticated %}
 <div class="col-sm-9">
     {% for question in questions %} 
     <div class="col-sm-6">
         <span class="question">问</span>
         <span>
-            <a href="{{ url_for('question.question_view',id=question['id']) }}" style="font-size:18px;">{{ question['title'] | truncate(25, True) }}</a>
+            <a class="font-big" href="{{ url_for('question.question_view',id=question['id']) }}">{{ question['title'] | truncate(25, True) }}</a>
         </span>
         <br />
         <span class="question">描</span>
         <i>{{ question['describ'] | truncate(25, True) }}</i>
         <br />
         <span class="question">答</span>
-        <span style="font-size:16px">
+        <span>
             {{ question['answer'] | truncate(100, True) }}
         </span>
         <br />
@@ -57,7 +38,7 @@
 <div class="col-sm-4">
     <span class="question">问</span>
     <span>
-        <a href="{{ url_for('question.question_view',id=question['id']) }}" style="font-size:18px;">{{ question['title'] | truncate(25, True)  }}</a>
+        <a class="font-big" href="{{ url_for('question.question_view',id=question['id']) }}">{{ question['title'] | truncate(25, True)  }}</a>
     </span>
     <br />
     <span class="question">描</span>
@@ -66,14 +47,14 @@
     </i>
     <br />
     <span class="question">答</span>
-    <span style="font-size:16px">
+    <span>
         {{ question['answer'] | truncate(100, True) }}
     </span>
     <br />
     <br />
 </div>
-{% endfor %}
-{% endif %}
+{%- endfor %}
+{%- endif %}
 {% if current_user.is_authenticated %}
 <div class="col-sm-3">
     <form action="{{ url_for('question.post') }}" method="POST">
@@ -90,5 +71,5 @@
         {{ form.post(class="btn btn-primary") }}   
     </form>
 </div>
-{% endif %}
-{% endblock %}
+{%- endif %}
+{%- endblock %}
