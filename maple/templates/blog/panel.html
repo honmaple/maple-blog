@@ -1,7 +1,7 @@
-<div class="col-sm-3" style="padding:0 4px;">
+<div class="col-sm-3 cate">
     <ul class="list-group">
         <li class="list-group-item" style="text-align:center;">
-            <img src="{{ url_for('static',filename='images/header.png') }}" alt="头像" width="60%" /> <br />
+            <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" /> <br />
             <span style="display: inline-block;width:80%;" class="label label-default">
                 <a href="{{url_for('index.about')}}" style="color:#fff;"> 
                     Author
@@ -19,16 +19,16 @@
             <br />
             <a href="http://github.com/honmaple">GitHub</a>
         </li>
-        <li class="list-group-item">标签: <br />
+        <li class="list-group-item">{{ _('tags')}}: <br />
             {% for tag in all_tags %}
             <span class="label label-primary" style="display: inline-block;">
                 <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
             </span>
             {% endfor %}
         </li>
-        <li class="list-group-item">链接:
+        <li class="list-group-item">{{_('link')}}:
             <br />
-            <a href="http://honmaple.com">我的博客</a>
+            <a href="http://honmaple.com">{{_('blog')}}</a>
             <br />
             <a href="http://honmaple.org" target="_blank">我的静态博客站点</a>
             <br />
@@ -41,6 +41,6 @@
 </div>
 <div style="position:fixed; bottom:0;left:30%;width:100%;">
     <ul class="pager">
-        <li> <a href="#">返回顶部</a></li>
+        <li> <a href="#">{{_('TOP')}}</a></li>
     </ul>
 </div>

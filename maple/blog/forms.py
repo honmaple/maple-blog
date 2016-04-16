@@ -10,31 +10,26 @@
 from flask_wtf import Form
 from wtforms import (SubmitField, TextAreaField, StringField, BooleanField,
                      SelectField)
-from maple.forms.forms import DataRequired
+from wtforms.validators import DataRequired
+from flask_babel import lazy_gettext as _
 
 
 class ArticleForm(Form):
-    title = StringField('标题', validators=[DataRequired()])
-    content = TextAreaField('内容', validators=[DataRequired()])
+    title = StringField(_('title'), validators=[DataRequired()])
+    content = TextAreaField(_('content'), validators=[DataRequired()])
     category = SelectField(
-        '分类',
+        _('category'),
         choices=[('linux', 'Linux'), ('python', 'Python'), ('生活随笔', '生活随笔')],
         validators=[DataRequired()])
-    tags = StringField('标签', validators=[DataRequired()])
-    copy = BooleanField('是否为转载', default=False)
-    post = SubmitField('提交')
-
-
-class SearchForm(Form):
-    content = StringField('搜索', validators=[DataRequired()])
-    search = SubmitField('Search')
+    tags = StringField(_('tags'), validators=[DataRequired()])
+    copy = BooleanField(_('is reprinted'), default=False)
 
 
 class CommentForm(Form):
-    comment = TextAreaField('评论', validators=[DataRequired()])
-    post_comment = SubmitField('发表评论')
+    comment = TextAreaField(_('Comment'), validators=[DataRequired()])
+    post_comment = SubmitField(_('Post comment'))
 
 
 class ReplyForm(Form):
-    reply = TextAreaField('回复', validators=[DataRequired()])
-    post_reply = SubmitField('发表回复')
+    reply = TextAreaField(_('replies'), validators=[DataRequired()])
+    post_reply = SubmitField(_('Post replies'))

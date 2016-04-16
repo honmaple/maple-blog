@@ -1,0 +1,14 @@
+{% import 'base/header.html' as header %}
+{% extends 'base/base.html' %}
+{% block header -%}
+{{ header.header('index') }}
+{% endblock %}
+{% block list -%}
+{{ header.list('index') }}
+{% endblock %}
+{% block content %}
+<div style="text-align:center;">
+<h1>500</h1>
+    <h3>网站发生了一些错误,管理员正在修复中</h3>
+</div>
+{% endblock %}

@@ -8,40 +8,20 @@
 {% endblock %}
 
 {% block title -%}
-登陆 - HonMaple
+{{_('login')}} - HonMaple
+{%- endblock %}
+
+{% block script -%}
+<script type=text/javascript>
+ var url = {
+     login: "{{ url_for('auth.login') }}",
+     index: "{{ request.args.get('next') or '/' }}"
+ };
+</script>
+<script type="text/javascript" src="{{ url_for('static',filename='style/login.js') }}"></script>
 {% endblock %}
 
 {%- block content -%}
-<script type=text/javascript>
- $(document).ready(function(){
-    $('a#clickCode').click(function() {
-        $("#changeCode").attr("src","/validcode?code=" + Math.random());
-    });
-     $('button#ajax').click(function() {
-         $.ajax ({
-             type : "POST",
-             url : "{{ url_for('auth.login') }}",
-             data:JSON.stringify({
-                 name: $('input[name="name"]').val(),
-                 passwd: $('input[name="passwd"]').val(),
-                code:$("#code").val()
-             }),
-             contentType: 'application/json;charset=UTF-8',
-             success: function(result) {
-                 if (result.judge == true)
-                 {
-                     window.location = '{{ request.args.get('next') or '/' }}';
-                 }
-                 else 
-                 {
-                     $("#showerror").show();
-                     $("#error").text(result.error);
-                 }
-             }
-         });
-     });
- });
-</script>
 <table align="center" style="font-size:14px;">
     <tr>
         <td colspan="2">
@@ -72,17 +52,17 @@
     <tr>
         <td></td>
         <td style="padding-bottom:10px;">
-            <button type="button" class="btn btn-primary" id="ajax">登陆</button> 
-            <a href="{{ url_for('auth.forget') }}">忘记密码?</a>
+            <button type="button" class="btn btn-primary" id="login">{{_('login')}}</button> 
+            <a href="{{ url_for('auth.forget') }}">{{_('forget password?')}}</a>
         </td>    
     </tr>
     <tr>
         <td></td>
-        <td>{{ form.remember() }} 记住我</td>
+        <td>{{ form.remember() }} {{ form.remember.label}}</td>
     </tr>
     <tr>
         <td></td>
-        <td><a href="{{ url_for('auth.register') }}">还未注册</a></td>
+        <td><a href="{{ url_for('auth.register') }}">{{ _('not register')}}</a></td>
     </tr>
 </table>
 {% endblock %}

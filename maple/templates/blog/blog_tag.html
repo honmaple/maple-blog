@@ -8,11 +8,11 @@
 {% endblock %}
 
 {% block title -%}
-{{ tag }} - HonMaple的个人博客
+{{ tag }} - {{ _("HonMaple's Blog") -}}
 {% endblock %}
 
 {% block content %}
-<div class="col-sm-9" style="padding:0 4px;">
+<div class="col-sm-9 cate">
     {% include "blog/link.html" %}
     {% import 'base/page.html' as page %}
     {{ page.page('blog.tag_num',number=number,pages=count,kw=dict(tag=tag))}}

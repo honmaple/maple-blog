@@ -10,6 +10,7 @@
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from maple import app, db
+import os
 
 migrate = Migrate(app, db)
 manager = Manager(app)
@@ -18,6 +19,30 @@ manager = Manager(app)
 @manager.command
 def run():
     return app.run()
+
+
+@manager.command
+def babel_init():
+    pybabel = 'pybabel'
+    os.system(pybabel +
+              ' extract -F babel.cfg -k lazy_gettext -o messages.pot maple')
+    os.system(pybabel + ' init -i messages.pot -d maple/translations -l zh')
+    os.unlink('messages.pot')
+
+
+@manager.command
+def babel_update():
+    pybabel = 'pybabel'
+    os.system(pybabel +
+              ' extract -F babel.cfg -k lazy_gettext -o messages.pot maple')
+    os.system(pybabel + ' update -i messages.pot -d maple/translations')
+    os.unlink('messages.pot')
+
+
+@manager.command
+def babel_compile():
+    pybabel = 'pybabel'
+    os.system(pybabel + ' compile -d maple/translations')
 
 
 @manager.option('-h', '--host', dest='host', default='127.0.0.1')

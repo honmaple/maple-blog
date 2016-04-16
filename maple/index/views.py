@@ -7,14 +7,30 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-25 02:21:04
 # *************************************************************************
-from flask import Blueprint, render_template
-from maple import login_manager, cache
+from flask import (Blueprint, render_template, request)
+from maple import login_manager, cache, babel
 from maple.user.models import User
 from maple.blog.models import Articles
 from maple.question.models import Questions
 from maple.admin.models import Notices
 
 site = Blueprint('index', __name__)
+
+
+@babel.localeselector
+def get_locale():
+    # user = getattr(g, 'user', None)
+    # if user is not None:
+    #     return user.locale
+    return request.accept_languages.best_match(['zh', 'en'])
+
+
+@babel.timezoneselector
+def get_timezone():
+    return 'UTC'
+    # user = getattr(g, 'user', None)
+    # if user is not None:
+    #     return user.timezone
 
 
 @login_manager.user_loader

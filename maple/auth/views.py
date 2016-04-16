@@ -19,6 +19,7 @@ from maple.user.models import User
 from maple.auth.forms import LoginForm, RegisterForm, ForgetPasswdForm
 from maple.forms.forms import return_errors
 from datetime import datetime
+from flask_babel import gettext as _
 
 site = Blueprint('auth', __name__)
 
@@ -32,7 +33,7 @@ def login():
         validate_code = session['validate_code']
         validate = form.code.data
         if validate.lower() != validate_code.lower():
-            return jsonify(judge=False, error=u'验证码错误')
+            return jsonify(judge=False, error=_('The validate code is error'))
         else:
             name = form.name.data
             passwd = form.passwd.data
@@ -47,10 +48,10 @@ def login():
 
                 identity_changed.send(current_app._get_current_object(),
                                       identity=Identity(user.id))
-                flash(u'你已成功登陆')
+                flash(_('You have logined in'))
                 return jsonify(judge=True, error=error)
             else:
-                error = u'用户名或密码错误'
+                error = _('Name or Password is error')
                 return jsonify(judge=False, error=error)
     else:
         if form.errors:
@@ -82,15 +83,15 @@ def register():
         validate_code = session['validate_code']
         validate = form.code.data
         if validate.lower() != validate_code.lower():
-            return jsonify(judge=False, error=u'验证码错误')
+            return jsonify(judge=False, error=_('The validate code is error'))
         else:
             useremail = User.load_by_email(form.email.data)
             username = User.load_by_name(form.name.data)
             if username is not None:
-                error = u'用户名已存在'
+                error = _('The name has been registered')
                 return jsonify(judge=False, error=error)
             elif useremail is not None:
-                error = u'邮箱已被注册'
+                error = _('The email has been registered')
                 return jsonify(judge=False, error=error)
             else:
                 account = User(name=form.name.data,
@@ -105,7 +106,7 @@ def register():
                                       _external=True)
                 html = render_template('templet/email.html',
                                        confirm_url=confirm_url)
-                subject = "请验证你的邮箱"
+                subject = _("Please confirm  your email")
                 email_send(account.email, html, subject)
 
                 account.send_email_time = datetime.now()
@@ -115,7 +116,7 @@ def register():
                 login_user(account)
                 identity_changed.send(current_app._get_current_object(),
                                       identity=Identity(account.id))
-                flash(u'一封验证邮件已发往你的邮箱，請查收.')
+                flash(_('An email has been sent to your.Please receive'))
                 return jsonify(judge=True, error=error)
     else:
         if form.errors:
@@ -130,11 +131,12 @@ def register():
 def confirm(token):
     email = confirm_token(token)
     if not email:
-        flash('验证链接已过期,请重新获取', 'danger')
+        flash(_(
+            'The confirm link has been out of time.Please confirm your email again'))
         return redirect(url_for('user.logined_user', name=current_user.name))
     user = User.query.filter_by(email=email).first()
     if user.is_confirmed:
-        flash('账户已经验证. Please login.', 'success')
+        flash(_('The email has been confirmed. Please login.', 'success'))
     else:
         user.is_confirmed = True
         user.confirmed_time = datetime.now()
@@ -150,19 +152,23 @@ def confirm(token):
 def confirm_email():
     if request.method == "POST":
         if current_user.is_confirmed:
-            return jsonify(judge=False, error='你的账户已验证,不能重复验证')
+            return jsonify(
+                judge=False,
+                error=_('Your account has been confirmed,don\'t need again'))
         else:
             token = email_token(current_user.email)
             '''email模板'''
             confirm_url = url_for('auth.confirm', token=token, _external=True)
             html = render_template('templet/email.html',
                                    confirm_url=confirm_url)
-            subject = "请验证你的邮箱"
+            subject = _("Please confirm your email")
             email_send(current_user.email, html, subject)
-            flash('一封验证邮件已发往你的邮箱，請查收.')
+            flash(_('An email has been sent to your.Please receive'))
             current_user.send_email_time = datetime.now()
             db.session.commit()
-            return jsonify(judge=True, error='一封验证邮件已发往你的邮箱，請查收.')
+            return jsonify(
+                judge=True,
+                error=_('An email has been sent to your.Please receive'))
     else:
         abort(404)
 
@@ -176,7 +182,7 @@ def forget():
         validate_code = session['validate_code']
         validate = form.code.data
         if validate.lower() != validate_code.lower():
-            return jsonify(judge=False, error=u'验证码错误')
+            return jsonify(judge=False, error=_('The validate code is error'))
         else:
             exsited_email = User.query.filter_by(
                 email=form.confirm_email.data).first()
@@ -189,12 +195,13 @@ def forget():
                 db.session.commit()
                 html = render_template('templet/forget.html',
                                        confirm_url=npasswd)
-                subject = "请及时修改你的密码"
+                subject = "Please update your password in time"
                 email_send(form.confirm_email.data, html, subject)
-                flash(u'邮件已发送到你的邮箱,请及时查收并修改密码')
+                flash(_(
+                    'An email has been sent to you.Please receive and update your password in time'))
                 return jsonify(judge=True, error=error)
             else:
-                error = u'邮箱未注册'
+                error = _('The email is error')
                 return jsonify(judge=False, error=error)
     else:
         if form.errors:

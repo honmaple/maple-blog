@@ -9,7 +9,7 @@
 # *************************************************************************
 from flask.ext.wtf import Form
 from wtforms import PasswordField, StringField, TextAreaField
-from maple.forms.forms import DataRequired, Length, EqualTo
+from wtforms.validators import DataRequired, Length, EqualTo
 
 
 class EditUserInforForm(Form):
