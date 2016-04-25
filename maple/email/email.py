@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-27 21:59:02
 # *************************************************************************
-from flask.ext.mail import Message
+from flask_mail import Message
 from threading import Thread
 from maple import app, mail
 from itsdangerous import URLSafeTimedSerializer

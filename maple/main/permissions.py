@@ -106,3 +106,34 @@ def on_identity_loaded(sender, identity):
     if hasattr(current_user, 'is_superuser'):
         if current_user.is_superuser:
             identity.provides.add(RoleNeed('super'))
+
+    if hasattr(current_user, 'is_confirmed'):
+        if current_user.is_confirmed:
+            identity.provides.add(RoleNeed('writer'))
+
+    if hasattr(current_user, 'is_authenticated'):
+        if not current_user.is_authenticated:
+            identity.provides.add(RoleNeed('guest'))
+
+
+class Maple(Permission):
+    def required(self, view=None, methods=None, message=None, js=False):
+        def action(func):
+            @wraps(func)
+            def decorator(*args, **kwargs):
+                if not self.can():
+                    if not js:
+                        if message:
+                            flash(message)
+                        return redirect(url_for(view))
+                    else:
+                        return jsonify(judge=False, error=message)
+                return func(*args, **kwargs)
+
+            return decorator
+
+        return action
+
+
+# a_permission = Maple(RoleNeed('super')).required('index.index', message="你已经登陆,不能重复登陆")
+# guest_permission = Maple(RoleNeed('guest')).required('index.index', message="你已经登陆,不能重复登陆")

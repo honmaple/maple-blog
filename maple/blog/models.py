@@ -7,7 +7,17 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-08 06:42:40
 # *************************************************************************
-from maple import db, cache
+from maple import db
+# from flask.ext.sqlalchemy import BaseQuery
+# from sqlalchemy_searchable import SearchQueryMixin
+# from sqlalchemy_utils.types import TSVectorType
+# from sqlalchemy_searchable import make_searchable
+# make_searchable()
+
+
+# class ArticleQuery(BaseQuery, SearchQueryMixin):
+#     pass
+
 
 tag_article = db.Table('tag_article', db.Column('tags_id', db.Integer,
                                                 db.ForeignKey('tags.id')),
@@ -32,6 +42,7 @@ class Tags(db.Model):
 
 
 class Articles(db.Model):
+    # query_class = ArticleQuery
     __tablename__ = 'articles'
     id = db.Column(db.Integer, primary_key=True)
     author = db.Column(db.String, nullable=False)
@@ -40,6 +51,8 @@ class Articles(db.Model):
     content = db.Column(db.Text, nullable=False)
     category = db.Column(db.String, nullable=False)
     copy = db.Column(db.Boolean, nullable=True, default=False)
+    # search_vector = db.Column(TSVectorType('title', 'content',
+    #                                         weights={'title': 'A', 'content': 'B'}))
     '''多个标签对多篇文章'''
     tags = db.relationship('Tags',
                            secondary=tag_article,
@@ -48,11 +61,11 @@ class Articles(db.Model):
 
     __mapper_args__ = {"order_by": publish.desc()}
 
-    def __init__(self, title, author, content, category):
-        self.author = author
-        self.title = title
-        self.content = content
-        self.category = category
+    # def __init__(self, title, author, content, category):
+    #     self.author = author
+    #     self.title = title
+    #     self.content = content
+    #     self.category = category
 
     def __repr__(self):
         return "<Articles %r>" % self.title
@@ -70,6 +83,8 @@ class Articles(db.Model):
     @staticmethod
     def load_by_category(category):
         return Articles.query.filter_by(category=category).all()
+
+
 
 
 class Comments(db.Model):

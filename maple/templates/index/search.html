@@ -1,0 +1,19 @@
+{% import 'base/header.html' as header %}
+{% extends 'base/base.html' %}
+{% block header -%}
+{{ header.header('index') }}
+{% endblock %}
+{% block list -%}
+{{ header.list('index') }}
+{% endblock %}
+
+{% block title -%}
+about - HonMaple
+{%- endblock %}
+
+{% block content %}
+{% for result in results %}
+{{ result.search_vector}}
+<br/>
+{% endfor %}
+{%- endblock %}

@@ -20,6 +20,16 @@ manager = Manager(app)
 def run():
     return app.run()
 
+@manager.command
+def init_db():
+    """
+    Drops and re-creates the SQL schema
+    """
+    db.drop_all()
+    db.configure_mappers()
+    db.create_all()
+    db.session.commit()
+
 
 @manager.command
 def babel_init():

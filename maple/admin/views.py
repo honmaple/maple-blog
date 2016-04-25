@@ -119,7 +119,6 @@ def preview():
 @super_permission.require(404)
 def admin_post():
     '''增加文章'''
-    articles = Articles.query.all()
     form = ArticleForm()
     if form.validate_on_submit() and request.method == "POST":
         '''分类节点'''
@@ -133,21 +132,20 @@ def admin_post():
             # else:
             t = Tags(name=tag)
             post_tags.append(t)
-        post_article = Articles(user=current_user.name,
+        post_article = Articles(author=current_user.name,
                                 title=form.title.data,
                                 category=form.category.data,
                                 content=form.content.data)
         post_article.publish = datetime.now()
         post_article.copy = form.copy.data
         '''关系数据表'''
-        post_article.tag_article = post_tags
+        post_article.tags = post_tags
         db.session.add(post_article)
         db.session.commit()
         flash('已提交')
         return redirect(url_for('admin.admin_post'))
     return render_template('admin/admin_post.html',
-                           form=form,
-                           articles=articles)
+                           form=form)
 
 
 @site.route('/account', defaults={'number': 1})

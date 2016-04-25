@@ -94,10 +94,11 @@ def register():
                 error = _('The email has been registered')
                 return jsonify(judge=False, error=error)
             else:
-                account = User(name=form.name.data,
-                               email=form.email.data,
-                               passwd=form.passwd.data,
-                               roles='visitor')
+                account = User()
+                account.name=form.name.data,
+                account.email=form.email.data,
+                account.passwd=form.passwd.data,
+                account.roles='visitor'
                 account.registered_time = datetime.now()
                 '''邮箱验证'''
                 token = email_token(account.email)
@@ -107,7 +108,7 @@ def register():
                 html = render_template('templet/email.html',
                                        confirm_url=confirm_url)
                 subject = _("Please confirm  your email")
-                email_send(account.email, html, subject)
+                # email_send(account.email, html, subject)
 
                 account.send_email_time = datetime.now()
                 db.session.add(account)

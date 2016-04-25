@@ -58,9 +58,13 @@ class User(db.Model, UserMixin):
         return "<User %r>" % self.name
 
     @staticmethod
-    @cache.cached(timeout=50, key_prefix='users:name')
     def load_by_name(name):
         user = User.query.filter_by(name=name).first()
+        return user
+
+    @staticmethod
+    def load_by_email(email):
+        user = User.query.filter_by(email=email).first()
         return user
 
     @staticmethod

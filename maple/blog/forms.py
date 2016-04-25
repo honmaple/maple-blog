@@ -23,6 +23,7 @@ class ArticleForm(Form):
         validators=[DataRequired()])
     tags = StringField(_('tags'), validators=[DataRequired()])
     copy = BooleanField(_('is reprinted'), default=False)
+    post = SubmitField(_('Post comment'))
 
 
 class CommentForm(Form):
@@ -33,3 +34,7 @@ class CommentForm(Form):
 class ReplyForm(Form):
     reply = TextAreaField(_('replies'), validators=[DataRequired()])
     post_reply = SubmitField(_('Post replies'))
+
+
+class SearchForm(Form):
+    search = StringField(_('search'), validators=[DataRequired()])

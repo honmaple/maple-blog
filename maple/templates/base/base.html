@@ -1,82 +1,53 @@
-<html lang="zh-CN">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title> {% block title %}{%- endblock -%}</title>
-        {% assets "home_js" -%}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-        {%- endassets %}
-        {% assets "home_css" -%}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-        {%- endassets %}
-        {% block style %}{%- endblock -%}
-        <script type="text/javascript" charset="utf-8">
-         var g = {
-             csrftoken: "{{ csrf_token() }}"
-         };
-        </script>
-        {% block script %}{%- endblock -%}
-    </head>
-    <body>
-        <div class="wrap">
-            <div class="main">
-                <nav class="navbar navbar-default  col-md-offset-1 col-md-10 header-back">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-header" aria-expanded="false">
-                                <span class="sr-only"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            {% block header %}{% endblock %}
-                        </div>
-                        <div class="collapse navbar-collapse" id="bs-header">
-                            {% block list %}{% endblock %}
-                            <ul class="nav navbar-nav navbar-right">
-                                {% if g.user.is_authenticated %}
-                                <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {{ current_user.name }} <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{{ url_for('user.logined_user',name=current_user.name) }}">{{_('My Page')}}</a></li>
-                                        <li><a href="{{ url_for('auth.logout') }}">{{ _('logout')}}</a></li>
-                                    </ul>
-                                </li>
-                                {% else %}
-                                <li><a href="{{ url_for('auth.login') }}">{{_('login')}}</a></li>
-                                <li><a href="{{ url_for('auth.register') }}">{{ _('register')}}</a></li>
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-                <div class="col-md-offset-1 col-md-10 padding">
-                    {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                    <div class="alert alert-info" style="padding:8px">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <ul>
-                            {% for message in messages %}
-                            <li>{{ message }} </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                    {% block content %}{% endblock %}
-                </div>
-            </div>
+{% extends 'bootstrap/base.html' %}
+{% block main %}
+<nav class="navbar navbar-default  col-md-offset-1 col-md-10 header-back">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-header" aria-expanded="false">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            {% block header %}{% endblock %}
         </div>
-        <div class="footer">
-            <div style="text-align:center">
-                Copyright © 2015-2016 honmaple. All rights reserved.
-            </div>
+        <div class="collapse navbar-collapse" id="bs-header">
+            {% block list %}{% endblock %}
+            <ul class="nav navbar-nav navbar-right">
+                {% if g.user.is_authenticated %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ current_user.name }} <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('user.logined_user',name=current_user.name) }}">{{_('My Page')}}</a></li>
+                        <li><a href="{{ url_for('auth.logout') }}">{{ _('logout')}}</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li><a href="{{ url_for('auth.login') }}">{{_('login')}}</a></li>
+                <li><a href="{{ url_for('auth.register') }}">{{ _('register')}}</a></li>
+                {% endif %}
+            </ul>
         </div>
-    </body>
-</html>
+    </div>
+</nav>
+<div class="col-md-offset-1 col-md-10 padding">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-info" style="padding:8px">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</div>
+{%- endblock -%}
 

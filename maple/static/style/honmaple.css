@@ -1,10 +1,4 @@
-html,body{height:100%}
-body{background:#f8f8f8}
 img {width:100%}
-.container {width:100%;}
-.footer {margin-top:-30px;height:30px;}
-.wrap{min-height:100%}
-.main{padding-bottom:30px;overflow:hidden;}
 li {
     list-style-type:none;
 }

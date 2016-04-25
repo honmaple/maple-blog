@@ -24,11 +24,11 @@ class Questions(db.Model):
 
     __mapper_args__ = {"order_by": publish.desc()}
 
-    def __init__(self, author, title, describ, answer):
-        self.author = author
-        self.title = title
-        self.describ = describ
-        self.answer = answer
+    # def __init__(self, author, title, describ, answer):
+    #     self.author = author
+    #     self.title = title
+    #     self.describ = describ
+    #     self.answer = answer
 
     def __repr__(self):
         return "<Questions %r>" % self.title

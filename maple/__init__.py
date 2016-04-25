@@ -21,6 +21,7 @@ from redis import StrictRedis
 from flask_cache import Cache
 from flask_babel import Babel
 from flask_babel import lazy_gettext as _
+from flask_maple import MapleBootstrap
 
 
 def create_app():
@@ -32,10 +33,16 @@ def create_app():
 
 def register(app):
     register_routes(app)
-    register_assets(app)
-    register_form(app)
+    # register_assets(app)
+    # register_form(app)
     register_jinja2(app)
     register_db(app)
+    register_maple(app)
+
+
+def register_maple(app):
+    maple = MapleBootstrap(css=('style/honmaple.css',))
+    maple.init_app(app)
 
 
 def register_routes(app):
@@ -51,9 +58,9 @@ def register_routes(app):
     app.register_blueprint(site, url_prefix='/question')
     from maple.books.views import site
     app.register_blueprint(site, url_prefix='/books')
-    # import maple.admin.views
-    from maple.admin.views import site
-    app.register_blueprint(site, url_prefix='/admin')
+    import maple.admin.admin
+    # from maple.admin.views import site
+    # app.register_blueprint(site, url_prefix='/admin')
 
 
 def register_form(app):
@@ -147,7 +154,7 @@ def register_redis(app):
 
 
 def register_cache(app):
-    cache = Cache(config={'CACHE_TYPE': 'redis'})
+    cache = Cache(config={'CACHE_TYPE': 'null'})
     cache.init_app(app)
     return cache
 
@@ -183,7 +190,9 @@ app.json_encoder = CustomJSONEncoder
 @app.before_request
 def before_request():
     from maple.main.mark_record import allow_ip, mark_online, mark_visited
+    from maple.blog.forms import SearchForm
     allow_ip(request.remote_addr)
+    g.search_form = SearchForm()
     g.user = current_user
     mark_online(request.remote_addr)
     if '/static/' in request.path:
