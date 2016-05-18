@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update: 星期一 2016-4-25 18:57:48 (CST)
+# Last Update:星期三 2016-5-18 10:59:18 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
@@ -71,10 +71,10 @@ class QueModelView(BaseModelView):
 
 class UserModelView(BaseModelView):
     column_exclude_list = ['passwd']
-    column_editable_list = ['name', 'is_confirmed', 'is_superuser',
+    column_editable_list = ['username', 'is_confirmed', 'is_superuser',
                             'confirmed_time', 'roles']
     form_excluded_columns = ['passwd']
-    form_args = {'name': {'validators': [DataRequired()]}}
+    form_args = {'username': {'validators': [DataRequired()]}}
     form_choices = {
         'roles': [
             ('Super', 'super'), ('Admin', 'admin'), ('Writer', 'writer'),

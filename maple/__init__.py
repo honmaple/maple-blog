@@ -21,7 +21,8 @@ from redis import StrictRedis
 from flask_cache import Cache
 from flask_babel import Babel
 from flask_babel import lazy_gettext as _
-from flask_maple import MapleBootstrap
+from flask_maple import MapleBootstrap, MapleCaptcha, Auth, Error
+from datetime import datetime
 
 
 def create_app():
@@ -33,22 +34,37 @@ def create_app():
 
 def register(app):
     register_routes(app)
-    # register_assets(app)
-    # register_form(app)
+    register_form(app)
     register_jinja2(app)
     register_db(app)
     register_maple(app)
 
 
 def register_maple(app):
-    maple = MapleBootstrap(css=('style/honmaple.css',))
+    from maple.user.models import User
+    maple = MapleBootstrap(css=('style/honmaple.css', ))
     maple.init_app(app)
+    MapleCaptcha(app)
+    Error(app)
+
+    class Login(Auth):
+        def register_models(self, form):
+            user = self.User()
+            user.username = form.username.data
+            user.password = user.set_password(form.password.data)
+            user.email = form.email.data
+            user.roles = 'visitor'
+            user.registered_time = datetime.now()
+            user.send_email_time = datetime.now()
+            self.db.session.add(user)
+            self.db.session.commit()
+            return user
+
+    Login(app, db=db, mail=mail, user_model=User, use_principal=True)
 
 
 def register_routes(app):
     from maple.index.views import site
-    app.register_blueprint(site, url_prefix='')
-    from maple.auth.views import site
     app.register_blueprint(site, url_prefix='')
     from maple.user.views import site
     app.register_blueprint(site, url_prefix='/u')
@@ -59,8 +75,6 @@ def register_routes(app):
     from maple.books.views import site
     app.register_blueprint(site, url_prefix='/books')
     import maple.admin.admin
-    # from maple.admin.views import site
-    # app.register_blueprint(site, url_prefix='/admin')
 
 
 def register_form(app):
@@ -114,29 +128,11 @@ def register_jinja2(app):
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 
-def register_assets(app):
-    bundles = {
-        'home_js': Bundle('style/js/jquery.min.js',
-                          'style/js/bootstrap.min.js',
-                          'style/honmaple.js',
-                          output='style/assets/home.js',
-                          filters='jsmin'),
-        'home_css': Bundle('style/css/bootstrap.min.css',
-                           'style/honmaple.css',
-                           output='style/assets/home.css',
-                           filters='cssmin')
-    }
-
-    assets = Environment(app)
-    assets.register(bundles)
-
-
 def register_login(app):
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"
     login_manager.session_protection = "strong"
-    # login_manager.login_message = gettext(u"这个页面要求登陆，请登陆")
     login_manager.login_message = _("Please login to access this page.")
 
     return login_manager
@@ -160,7 +156,7 @@ def register_cache(app):
 
 
 app = create_app()
-db = SQLAlchemy()
+db = SQLAlchemy(app)
 mail = Mail(app)
 principals = Principal(app)
 login_manager = register_login(app)
@@ -204,16 +200,6 @@ def before_request():
     else:
         path = request.path
         mark_visited(request.remote_addr, path)
-
-
-@app.errorhandler(404)
-def not_found(error):
-    return render_template('templet/error_404.html'), 404
-
-
-@app.errorhandler(500)
-def error(error):
-    return render_template('templet/error_500.html'), 500
 
 
 @app.route('/robots.txt')

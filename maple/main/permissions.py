@@ -12,17 +12,7 @@ from flask_login import current_user
 from flask_principal import Permission, RoleNeed, UserNeed, identity_loaded
 from functools import wraps
 from flask import g, redirect, flash, url_for, abort, jsonify
-from collections import namedtuple
-from functools import partial
 from datetime import datetime, timedelta
-
-Need = namedtuple('need', ['method', 'value'])
-EditQuestionNeed = partial(Need, 'id')
-PostNeed = partial(Need, 'post')
-GroupNeed = partial(Need, 'id')
-BoardNeed = partial(Need, 'id')
-UserNameNeed = partial(Need, 'name')
-ShowNeed = partial(Need, 'permission')
 
 
 class MyPermission(object):
@@ -47,7 +37,7 @@ class MyPermission(object):
 
 class OwnPermission(MyPermission):
     def allow(self):
-        if current_user.name == g.user_url:
+        if current_user.username == g.user_url:
             return True
         else:
             return False
@@ -114,26 +104,3 @@ def on_identity_loaded(sender, identity):
     if hasattr(current_user, 'is_authenticated'):
         if not current_user.is_authenticated:
             identity.provides.add(RoleNeed('guest'))
-
-
-class Maple(Permission):
-    def required(self, view=None, methods=None, message=None, js=False):
-        def action(func):
-            @wraps(func)
-            def decorator(*args, **kwargs):
-                if not self.can():
-                    if not js:
-                        if message:
-                            flash(message)
-                        return redirect(url_for(view))
-                    else:
-                        return jsonify(judge=False, error=message)
-                return func(*args, **kwargs)
-
-            return decorator
-
-        return action
-
-
-# a_permission = Maple(RoleNeed('super')).required('index.index', message="你已经登陆,不能重复登陆")
-# guest_permission = Maple(RoleNeed('guest')).required('index.index', message="你已经登陆,不能重复登陆")

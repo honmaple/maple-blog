@@ -36,7 +36,7 @@ def index():
 def post():
     form = QuestionForm()
     if form.validate_on_submit() and request.method == "POST":
-        post_question = Questions(author=current_user.name,
+        post_question = Questions(author=current_user.username,
                                   title=form.title.data,
                                   describ=form.describ.data,
                                   answer=form.answer.data)
@@ -72,7 +72,7 @@ def private():
 @cache.cached(timeout=180)
 def question_view(id):
     question = Questions.load_by_id(id)
-    if question.private and current_user.name != question.author:
+    if question.private and current_user.username != question.author:
         flash('你没有权限查看')
         return redirect(url_for('question.index'))
     return render_template('question/question_view.html',

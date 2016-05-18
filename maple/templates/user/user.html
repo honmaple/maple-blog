@@ -8,108 +8,109 @@
 {% endblock %}
 {% block content %}
 <script type=text/javascript>
-function Information()
-{
-    var valSchool = $("#school").val();
-    var valIntroduce = $("#introduce").val();
-    if (typeof(valSchool) == "undefined") {
-        valSchool = '{{ user.school }}';
-    }
-    if (typeof(valIntroduce) == "undefined") {
-        valIntroduce = '{{ user.introduce }}';
-    }
-    if ($("#school").val() == '{{ user.school }}')
-    {
-        $("#showSchool").html(valSchool);
-    }
-    else if ($("#introduce").val() == '{{ user.introduce }}')
-    {
-        $("#showIntroduce").html(valIntroduce);
-    }
-    else
-    {
-        $.ajax ({
-            type : "POST",
-            url : "{{ url_for('user.user_infor_edit',post_id=current_user.id) }}",
-            data:JSON.stringify({
-                school: $("#school").val(),
-                introduce: $("#introduce").val()
-            }),
-            contentType: 'application/json;charset=UTF-8',
-            success: function(result) {
-                if (result.judge == true)
-                {
-                    $("#showerror").show();
-                    $("#error").text(result.error);
-                    $("#showSchool").html(valSchool);
-                    $("#showIntroduce").html(valIntroduce);
-                }
-                else 
-                {
-                    $("#showerror").show();
-                    $("#error").text(result.error);
-                }
-            }
-        });
-    }
-};
-$(document).ready(function(){
-    $("#reviseSchool").click(function(){
-        $("#showSchool").html("<input class=\"form-control\" id=\"school\"\
+ function Information()
+ {
+     var valSchool = $("#school").val();
+     var valIntroduce = $("#introduce").val();
+     if (typeof(valSchool) == "undefined") {
+         valSchool = '{{ user.school }}';
+     }
+     if (typeof(valIntroduce) == "undefined") {
+         valIntroduce = '{{ user.introduce }}';
+     }
+     if ($("#school").val() == '{{ user.school }}')
+     {
+         $("#showSchool").html(valSchool);
+     }
+     else if ($("#introduce").val() == '{{ user.introduce }}')
+     {
+         $("#showIntroduce").html(valIntroduce);
+     }
+     else
+     {
+         $.ajax ({
+             type : "POST",
+             url : "{{ url_for('user.user_infor_edit',post_id=current_user.id) }}",
+             data:JSON.stringify({
+                 school: $("#school").val(),
+                 introduce: $("#introduce").val()
+             }),
+             contentType: 'application/json;charset=UTF-8',
+             success: function(result) {
+                 if (result.judge == true)
+                 {
+                     $("#showerror").show();
+                     $("#error").text(result.error);
+                     $("#showSchool").html(valSchool);
+                     $("#showIntroduce").html(valIntroduce);
+                 }
+                 else 
+                 {
+                     $("#showerror").show();
+                     $("#error").text(result.error);
+                 }
+             }
+         });
+     }
+ };
+ $(document).ready(function(){
+     $("#reviseSchool").click(function(){
+         $("#showSchool").html("<input class=\"form-control\" id=\"school\"\
                 name=\"school\" type=\"text\" value=\"{{ user.school }}\" style=\"width:240px;\"  onBlur=\"Information()\">");
-    });
-    $("#reviseIntroduce").click(function(){
-        $("#showIntroduce").html("<textarea class=\"form-control\" id=\"introduce\" name=\"introduce\" \
+     });
+     $("#reviseIntroduce").click(function(){
+         $("#showIntroduce").html("<textarea class=\"form-control\" id=\"introduce\" name=\"introduce\" \
                 rows=\"6\" onBlur=\"Information()\">{{ user.introduce }}</textarea>");
-    });
-    $('button#ajax').click(function(){
-        $.ajax ({
-            type : "POST",
-            url : "{{ url_for('user.user_passwd_edit',post_id=current_user.id) }}",
-            data:JSON.stringify({
-                passwd: $("#passwd").val(),
-                new_passwd: $("#new_passwd").val(),
-                retry_new_passwd: $("#retry_new_passwd").val()
-            }),
-            contentType: 'application/json;charset=UTF-8',
-            success: function(result) {
-                if (result.judge == true)
-                {
-                    window.location = '{{ url_for('auth.login') }}';
-                }
-                else 
-                {
-                    $("#showerror").show();
-                    $("#error").text(result.error);
-                }
-            }
-        });
-    });
-    $('a#email').click(function(){
-        $.ajax ({
-            type : "POST",
-            url : "{{ url_for('auth.confirm_email') }}",
-            data:{},
-            contentType: 'application/json;charset=UTF-8',
-            success: function(result) {
-                if (result.judge == true)
-                {
-                    alert(result.error)
-                }
-                else 
-                {
-                    alert(result.error)
-                }
-            }
-        });
-    });
-});
+     });
+     $('button#ajax').click(function(){
+         $.ajax ({
+             type : "POST",
+             url : "{{ url_for('user.user_passwd_edit',post_id=current_user.id) }}",
+             data:JSON.stringify({
+                 passwd: $("#passwd").val(),
+                 new_passwd: $("#new_passwd").val(),
+                 retry_new_passwd: $("#retry_new_passwd").val()
+             }),
+             contentType: 'application/json;charset=UTF-8',
+             success: function(result) {
+                 if (result.judge == true)
+                 {
+                     window.location = '{{ url_for('auth.login') }}';
+                 }
+                 else 
+                 {
+                     $("#showerror").show();
+                     $("#error").text(result.error);
+                 }
+             }
+         });
+     });
+     $('a#email').click(function(){
+         $.ajax ({
+             type : "POST",
+             url : "{{ url_for('auth.confirm_email') }}",
+             data:JSON.stringify({
+             }),
+             contentType: 'application/json;charset=UTF-8',
+             success: function(result) {
+                 if (result.judge == true)
+                 {
+                     alert(result.error);
+                 }
+                 else 
+                 {
+                     alert(result.error);
+                 }
+             }
+         });
+     });
+ });
 </script>
 <style type="text/css" media="all">
-    td {
-        padding-bottom:20px;
-        padding-right:12px;
-    }
+ td {
+     padding-bottom:20px;
+     padding-right:12px;
+ }
 </style>
 <div class="alert alert-info" id="showerror" style="padding:8px;">
     <button type="button" class="close" id="hide">
@@ -141,7 +142,7 @@ $(document).ready(function(){
                 <div class="form-group">
                     <label class="col-sm-2 control-label">账户名称</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{ user.name }}</p>
+                        <p class="form-control-static">{{ user.username }}</p>
                     </div>
                 </div>
                 <div class="form-group">

@@ -11,6 +11,14 @@
 HonMaple
 {%- endblock %}
 
+{% macro image(text) -%}
+<img src="{{ url_for('static',filename='images/Moo.png') }}" alt="moon" style="width:100%;">
+<div class="carousel-caption">
+    <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
+    {{ text }}
+</div>
+{%- endmacro %}
+
 {% block content %}
 <div class="col-sm-8 category" style="padding:0">
     <div id="index" class="carousel slide col-sm-6 hidden-xs padgin" data-ride="carousel">
@@ -21,23 +29,13 @@ HonMaple
         </ol>
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="{{ url_for('static',filename='images/Moo.png') }}" alt="moon" style="width:100%;">
-                <div class="carousel-caption">
-                    <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
-                    {{ notice.notice }}
-                </div>
+                {{ image(notice.notice)}}
             </div>
             <div class="item">
-                <img src="{{ url_for('static',filename='images/Moo.png') }}" alt="moon" style="width:100%;">
-                <div class="carousel-caption">
-                    Hello HonMaple
-                </div>
+                {{ image('Hello HonMaple')}}
             </div>
             <div class="item">
-                <img src="{{ url_for('static',filename='images/Moo.png') }}" alt="moon" style="width:100%;">
-                <div class="carousel-caption">
-                    {{ _('This my website.Welcome and you can give me some suggestion')}}
-                </div>
+                {{ image(_('This my website.Welcome and you can give me some suggestion'))}}
             </div>
         </div>
     </div>

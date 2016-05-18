@@ -16,11 +16,14 @@ from maple.blog.models import Articles, Tags, Comments, Replies
 from maple.main.permissions import writer_permission
 from datetime import datetime
 from flask_babel import gettext as _
+from urllib.parse import urljoin
+from werkzeug.contrib.atom import AtomFeed
 
 site = Blueprint('blog', __name__)
 
-# @site.before_request
-# def before_request():
+
+def make_external(url):
+    return urljoin(request.url_root, url)
 
 
 def count_sum(count):
@@ -90,7 +93,7 @@ def tag_num(tag, number):
                            all_tags=all_tags)
 
 
-@site.route('/view/<id>')
+@site.route('/view/<int:id>')
 @cache.cached(timeout=180)
 def view(id):
     '''记录用户浏览次数'''
@@ -127,6 +130,25 @@ def archives(number):
                            number=number)
 
 
+@site.route('/atom.xml')
+def feed():
+    feed = AtomFeed('Recent Articles',
+                    feed_url=request.url,
+                    url=request.url_root,
+                    subtitle='I like solitude, yearning for freedom')
+    articles = Articles.query.limit(15).all()
+    for article in articles:
+        feed.add(
+            article.title,
+            article.content,
+            content_type='html',
+            author=article.author,
+            url=make_external(url_for('blog.view', id=article.id)),
+            updated=article.publish,
+            published=article.publish)
+    return feed.get_response()
+
+
 @site.route('/pages/<id>/comment', methods=['GET', 'POST'])
 @login_required
 def comment(id):
@@ -136,7 +158,7 @@ def comment(id):
         return redirect(url_for('blog.index_num'))
     form = CommentForm()
     if form.validate_on_submit() and request.method == "POST":
-        post_comment = Comments(author=current_user.name,
+        post_comment = Comments(author=current_user.username,
                                 content=form.comment.data)
         post_comment.articles_id = id
         post_comment.publish = datetime.now()
@@ -155,7 +177,7 @@ def reply(id, comment_id):
         return redirect(url_for('blog.index_num'))
     form = ReplyForm()
     if form.validate_on_submit() and request.method == "POST":
-        post_reply = Replies(author=current_user.name, content=form.reply.data)
+        post_reply = Replies(author=current_user.username, content=form.reply.data)
         post_reply.comments_id = comment_id
         post_reply.publish = datetime.now()
         db.session.add(post_reply)

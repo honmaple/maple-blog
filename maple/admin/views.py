@@ -132,7 +132,7 @@ def admin_post():
             # else:
             t = Tags(name=tag)
             post_tags.append(t)
-        post_article = Articles(author=current_user.name,
+        post_article = Articles(author=current_user.username,
                                 title=form.title.data,
                                 category=form.category.data,
                                 content=form.content.data)

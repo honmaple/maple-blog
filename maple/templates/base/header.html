@@ -18,6 +18,7 @@
     <li> <a href="{{ url_for('blog.category_num',category='python') }}">Python</a></li>
     <li> <a href="{{ url_for('blog.category_num',category='生活随笔') }}">{{ _('Life')}}</a></li>
     <li> <a href="{{ url_for('blog.archives') }}">Archives</a></li>
+    <li> <a href="{{ url_for('blog.feed') }}">feed</a></li>
 </ul>
 {% elif class == "book" %}
 <ul class="nav navbar-nav">

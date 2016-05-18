@@ -46,6 +46,6 @@ class Questions(db.Model):
     @staticmethod
     @cache.cached(timeout=60, key_prefix='questions:id')
     def load_by_private():
-        questions = Questions.query.filter_by(author=current_user.name,
+        questions = Questions.query.filter_by(author=current_user.username,
                                               private=True).all()
         return questions

@@ -65,7 +65,7 @@ class EditManager(object):
     def edit_user(self):
         '''编辑用户'''
         user = User.query.filter_by(id=self.post_id).first()
-        user.name = self.form.name.data
+        user.username = self.form.name.data
         user.is_superuser = self.form.is_superuser.data
         user.roles = self.form.roles.data
         user.is_confirmed = self.form.is_confirmed.data
@@ -82,7 +82,7 @@ class EditManager(object):
         '''修改密码'''
         user = User.query.filter_by(id=self.post_id).first()
         new_passwd = self.form.retry_new_passwd.data
-        user.passwd = generate_password_hash(new_passwd)
+        user.password = generate_password_hash(new_passwd)
         db.session.commit()
 
     def edit_article(self):

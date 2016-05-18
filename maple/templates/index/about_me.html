@@ -12,17 +12,18 @@ about - HonMaple
 {%- endblock %}
 
 {% block style -%}
+{{ super()}}
 <link href="{{ url_for('static',filename='style/about.css')}}" rel="stylesheet"/>
 {%- endblock %}
 
 {% block content %}
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <span>个人简历</span>
+        个人简历
     </div>
     <div class="panel-body font-big">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-xs-4">
                 <section style="color:#616161;">  
                     <h3 class="fortitle">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -47,6 +48,8 @@ about - HonMaple
                         <dd>
                             <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
                             <span> <b>邮箱:</b>xiyang0807@gmail.com</span>
+                            <br/>
+                            <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
                         </dd>
                     </dl>
                     <dl>
@@ -54,8 +57,8 @@ about - HonMaple
                             <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
                             <span class="basicle">技术博客</span></dt>
                         <dd>
-                            <span><b>自建:</b> <a href="https://honmaple.com" target="_blank">honmaple.com</a></span> <br>
-                            <span><b>基于pelican:</b> <a href="http://honmaple.org" target="_blank">honmaple.org</a></span>
+                            <span><b>自建:</b> <a href="https://honmaple.com" target="_blank">https://honmaple.com</a></span> <br>
+                            <span><b>基于pelican:</b> <a href="http://honmaple.org" target="_blank">http://honmaple.org</a></span>
                         </dd>
                     </dl>
                     <dl>
@@ -93,7 +96,7 @@ about - HonMaple
                     <ul class="line">
                         <li> 
                             <h4 class="protitle">Python</h4>
-                            <p class="protent">熟悉python基本语法，熟悉flask,BeautifulSoup,re等模块</p>
+                            <p class="protent">熟悉python基本语法，熟悉flask,BeautifulSoup,fabric等模块</p>
                         </li>
                         <li> 
                             <h4 class="protitle">数据库</h4>
@@ -125,13 +128,13 @@ about - HonMaple
                     <span class="circle"></span>
                     <ul class="line">
                         <li> 
-                            <p class="protent">熟练掌握markdown,使用markdown写博客</p>
-                        </li>
-                        <li> 
                             <p class="protent">熟练使用git进行开发</p>
                         </li>
                         <li> 
-                            <p class="protent">熟练使用vim,了解vim基本命令</p>
+                            <p class="protent">熟练使用emacs,vim,了解vim基本命令</p>
+                        </li>
+                        <li> 
+                            <p class="protent">熟练掌握markdown,使用markdown写博客</p>
                         </li>
                         <li> 
                             <p class="protent">对c有一定了解</p>
@@ -139,7 +142,7 @@ about - HonMaple
                     </ul>
                 </section>
             </div>
-            <div class="col-md-8">
+            <div class="col-xs-8">
                 <section>  
                     <h3 class="fortitle">
                         <span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>
@@ -148,10 +151,14 @@ about - HonMaple
                     <span class="circle"></span>
                     <ul class="line">
                         <li>
-                            <h4 class="protitle">河海大学论坛
+                            <h4 class="protitle">论坛
                                 <a class="labelink" href="https://forums.honmaple.org" target="_blank">
                                     <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
                                     Demo
+                                </a>
+                                <a class="labelink" href="https://github.com/honmaple/maple-bbs" target="_blank">
+                                    <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
+                                    源码
                                 </a>
                             </h4>
                             <div class="protent">
@@ -172,7 +179,7 @@ about - HonMaple
                                     <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
                                     Demo
                                 </a>
-                                <a class="labelink" href="https://github.com/honmaple/MapleBlog" target="_blank">
+                                <a class="labelink" href="https://github.com/honmaple/maple-blog" target="_blank">
                                     <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
                                     源码
                                 </a>
@@ -194,7 +201,11 @@ about - HonMaple
                             <h4 class="protitle">爬虫相关
                                 <a class="labelink" href="https://github.com/honmaple/Python" target="_blank">
                                     <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
-                                    源码
+                                    beautifulsoup
+                                </a>
+                                <a class="labelink" href="https://github.com/honmaple/maple-spider" target="_blank">
+                                    <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
+                                    scrapy
                                 </a>
                             </h4>
                             <div class="protent">
@@ -205,14 +216,15 @@ about - HonMaple
                     <span class="circle"></span>
                     <ul class="line">
                         <li>
-                            <h4 class="protitle">留言簿
+                            <h4 class="protitle">留言簿与投票
                                 <a class="labelink" href="https://github.com/honmaple/flask-word" target="_blank">
                                     <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
                                     源码
                                 </a>
                             </h4>
                             <div class="protent">
-                                <p>使用flask,jquery,ajax等实现的简单留言簿,数据存储使用redis,表单提交使用ajax，实现局部刷新留言</p>
+                                <p>使用flask,jquery,ajax等实现的简单留言簿,数据存储使用redis,表单提交使用ajax，实现局部刷新留言,
+                                投票使用redis存储结果,修改文件更改投票内容</p>
                             </div>
                         </li>
                     </ul>

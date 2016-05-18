@@ -30,11 +30,11 @@ site = Blueprint('user', __name__)
 @cache.cached(timeout=180)
 def logined_user(name):
     '''不能进别人主页'''
-    if current_user.name != name:
+    if current_user.username != name:
         abort(404)
     user_questions = Questions.query.filter_by(author=name)
     user_comments = Comments.query.filter_by(author=name).limit(16)
-    user = User.query.filter_by(name=name).first()
+    user = User.query.filter_by(username=name).first()
     form = EditUserInforForm()
     new_passwd_form = EditPasswdForm()
     return render_template('user/user.html',
@@ -72,14 +72,14 @@ def user_infor_edit(post_id):
 @login_required
 def user_passwd_edit(post_id):
     error = None
-    if not writer_permission.can():
-        error = u'你没有验证账户，不能修改密码，请尽快验证账户.'
-        return jsonify(judge=False, error=error)
+    # if not writer_permission.can():
+    #     error = u'你没有验证账户，不能修改密码，请尽快验证账户.'
+    #     return jsonify(judge=False, error=error)
     form = EditPasswdForm()
     action = EditManager(post_id, form)
     if form.validate_on_submit() and request.method == "POST":
         user = User.query.filter_by(id=post_id).first()
-        if check_password_hash(user.passwd, form.passwd.data):
+        if check_password_hash(user.password, form.passwd.data):
             action.edit_user_passwd()
             flash('密码修改成功,请重新登陆')
             logout_user()

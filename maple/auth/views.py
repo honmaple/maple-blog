@@ -30,29 +30,31 @@ def login():
     error = None
     form = LoginForm()
     if form.validate_on_submit() and request.method == "POST":
-        validate_code = session['validate_code']
-        validate = form.code.data
-        if validate.lower() != validate_code.lower():
-            return jsonify(judge=False, error=_('The validate code is error'))
-        else:
-            name = form.name.data
-            passwd = form.passwd.data
-            remember = form.remember.data
-            # remember = request.get_json()["remember"]
-            user = User.load_by_name(name)
-            if user and User.check_password(user.passwd, passwd):
-                if remember:
-                    session.permanent = True
+        print('hello')
+        return jsonify(judge=False, error=_('The validate code is error'))
+        # validate_code = session['validate_code']
+        # validate = form.code.data
+        # if validate.lower() != validate_code.lower():
+        #     return jsonify(judge=False, error=_('The validate code is error'))
+        # else:
+        #     name = form.name.data
+        #     passwd = form.passwd.data
+        #     remember = form.remember.data
+        #     # remember = request.get_json()["remember"]
+        #     user = User.load_by_name(name)
+        #     if user and User.check_password(user.passwd, passwd):
+        #         if remember:
+        #             session.permanent = True
 
-                login_user(user, remember=remember)
+        #         login_user(user, remember=remember)
 
-                identity_changed.send(current_app._get_current_object(),
-                                      identity=Identity(user.id))
-                flash(_('You have logined in'))
-                return jsonify(judge=True, error=error)
-            else:
-                error = _('Name or Password is error')
-                return jsonify(judge=False, error=error)
+        #         identity_changed.send(current_app._get_current_object(),
+        #                               identity=Identity(user.id))
+        #         flash(_('You have logined in'))
+        #         return jsonify(judge=True, error=error)
+        #     else:
+        #         error = _('Name or Password is error')
+        #         return jsonify(judge=False, error=error)
     else:
         if form.errors:
             return return_errors(form)
@@ -134,7 +136,7 @@ def confirm(token):
     if not email:
         flash(_(
             'The confirm link has been out of time.Please confirm your email again'))
-        return redirect(url_for('user.logined_user', name=current_user.name))
+        return redirect(url_for('user.logined_user', name=current_user.username))
     user = User.query.filter_by(email=email).first()
     if user.is_confirmed:
         flash(_('The email has been confirmed. Please login.', 'success'))
@@ -144,7 +146,7 @@ def confirm(token):
         user.roles = 'writer'
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('user.logined_user', name=user.name))
+    return redirect(url_for('user.logined_user', name=user.username))
 
 
 @site.route('/confirm_email', methods=['GET', 'POST'])
