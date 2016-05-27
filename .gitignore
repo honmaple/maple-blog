@@ -1,4 +1,5 @@
 venv/
+docs/
 config/
 migrations/
 test/
