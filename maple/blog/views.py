@@ -14,6 +14,7 @@ from maple import db, redis_data, cache
 from maple.blog.forms import CommentForm, ReplyForm
 from maple.blog.models import Articles, Tags, Comments, Replies
 from maple.main.permissions import writer_permission
+from maple.main.helpers import is_num
 from datetime import datetime
 from flask_babel import gettext as _
 from urllib.parse import urljoin
@@ -26,69 +27,45 @@ def make_external(url):
     return urljoin(request.url_root, url)
 
 
-def count_sum(count):
-    '''文章总数'''
-    if count % 6 == 0:
-        count = int(count / 6)
-    else:
-        count = int(count / 6) + 1
-    return count
-
-
-@site.route('', defaults={'number': 1})
-@site.route('/page?=<int:number>')
+@site.route('')
 @cache.cached(timeout=180)
-def index_num(number):
+def index_num():
     '''每页显示6篇,且按照时间排序 '''
-    articles = Articles.query.offset((number - 1) * 6).limit(6)
+    page = is_num(request.args.get('page'))
+    articles = Articles.query.paginate(page, 6, True)
     all_tags = Tags.query.distinct(Tags.name).all()
-    count = Articles.query.count()
-    count = count_sum(count)
-    number = number
     return render_template('blog/blog.html',
                            articles=articles,
-                           all_tags=all_tags,
-                           count=count,
-                           number=number)
+                           all_tags=all_tags)
 
 
-@site.route('/<category>', defaults={'number': 1})
-@site.route('/<category>/page?=<int:number>')
+@site.route('/<category>')
 @cache.cached(timeout=180)
-def category_num(category, number):
+def category_num(category):
     all_article = Articles.load_by_category(category)
     if all_article is None:
         abort(404)
-    articles = Articles.query.filter_by(category=category).offset(
-        (number - 1) * 6).limit(6)
+    page = is_num(request.args.get('page'))
+    articles = Articles.query.filter_by(category=category).paginate(page, 6,
+                                                                    True)
     all_tags = Tags.query.distinct(Tags.name).all()
-    count = len(all_article)
-    count = count_sum(count)
-    number = number
     category = category
     return render_template('blog/blog_category.html',
                            articles=articles,
                            all_tags=all_tags,
-                           count=count,
-                           number=number,
                            category=category)
 
 
-@site.route('/tag=<tag>', defaults={'number': 1})
-@site.route('/tag=<tag>/page?=<int:number>')
+@site.route('/tag=<tag>')
 @cache.cached(timeout=180)
-def tag_num(tag, number):
-    a = Articles.query.join(Articles.tags).filter(Tags.name == tag)
-    articles = a.offset((number - 1) * 6).limit(6)
+def tag_num(tag):
+    page = is_num(request.args.get('page'))
+    articles = Articles.query.join(Articles.tags).filter(
+        Tags.name == tag).paginate(page, 6, True)
     all_tags = Tags.query.distinct(Tags.name).all()
-    count = a.count()
-    count = count_sum(count)
-    number = number
     tag = tag
     return render_template('blog/blog_tag.html',
                            articles=articles,
-                           number=number,
-                           count=count,
                            tag=tag,
                            all_tags=all_tags)
 
@@ -111,23 +88,15 @@ def view(id):
                            reply_form=reply_form)
 
 
-@site.route('/archives', defaults={'number': 1})
-@site.route('/archives/page?=<int:number>')
+@site.route('/archives')
 @cache.cached(timeout=180)
-def archives(number):
-    articles = Articles.query.offset((number - 1) * 30).limit(30)
+def archives():
+    page = is_num(request.args.get('page'))
+    articles = Articles.query.paginate(page, 30, True)
     all_tags = Tags.query.distinct(Tags.name).all()
-    count = Articles.query.count()
-    if count % 30 == 0:
-        count = int(count / 30)
-    else:
-        count = int(count / 30) + 1
-    number = number
     return render_template('blog/blog_archives.html',
                            articles=articles,
-                           all_tags=all_tags,
-                           count=count,
-                           number=number)
+                           all_tags=all_tags)
 
 
 @site.route('/atom.xml')
@@ -177,7 +146,8 @@ def reply(id, comment_id):
         return redirect(url_for('blog.index_num'))
     form = ReplyForm()
     if form.validate_on_submit() and request.method == "POST":
-        post_reply = Replies(author=current_user.username, content=form.reply.data)
+        post_reply = Replies(author=current_user.username,
+                             content=form.reply.data)
         post_reply.comments_id = comment_id
         post_reply.publish = datetime.now()
         db.session.add(post_reply)

@@ -14,13 +14,12 @@ Archives - {{_("HonMaple's Blog")-}}
 {% block content %}
 <div class="category" style="padding:0 15px;">
     <h2>Archives of honmaple</h2>
-    {% for article in articles %}
+    {% for article in articles.items %}
     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
     {{ article.publish.strftime('%Y年%m月%d日  %H:%M:%S') }}
     <a href="{{ url_for('blog.view',id=article.id) }}">{{ article.title }}</a>
     <br />
     {% endfor %}
 </div>
-{% import "base/page.html" as page %}
-{{ page.page('blog.archives',number=number,pages=count)}}
+{{ paginate(articles,'blog.archives') }}
 {% endblock content %}

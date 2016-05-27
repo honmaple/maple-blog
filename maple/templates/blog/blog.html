@@ -14,8 +14,7 @@
 {% block content -%}
 <div class="col-sm-9 cate">
     {% include 'blog/link.html' %}
-    {% import "base/page.html" as page %}
-    {{ page.page('blog.index_num',number=number,pages=count) }}
+    {{ paginate(articles,'blog.index_num') }}
 </div>
 {% include 'blog/panel.html' %}
 {% endblock %}
