@@ -8,7 +8,7 @@
 #   Created Time: 2015-12-13 19:57:29
 # *************************************************************************
 from maple import db
-from maple.blog.models import Articles, Comments, Replies, Tags
+from maple.blog.models import Articles, Comments, Tags
 from maple.question.models import Questions
 from maple.user.models import User
 from werkzeug.security import generate_password_hash
@@ -49,13 +49,6 @@ class DeleteManager(object):
         comment = Comments.query.filter_by(id=self.post_id).first()
         db.session.delete(comment)
         db.session.commit()
-
-    def delete_reply(self):
-        '''删除回复'''
-        reply = Replies.query.filter_by(id=self.post_id).first()
-        db.session.delete(reply)
-        db.session.commit()
-
 
 class EditManager(object):
     def __init__(self, post_id, form):

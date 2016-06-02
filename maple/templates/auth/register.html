@@ -12,6 +12,5 @@
 {% endblock %}
 
 {% block content %}
-{% import 'maple/auth.html' as auth %}
-{{ auth.register(form)}}
+{{ auth_base.register(form)}}
 {% endblock %}

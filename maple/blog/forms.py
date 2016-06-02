@@ -31,9 +31,9 @@ class CommentForm(Form):
     post_comment = SubmitField(_('Post comment'))
 
 
-class ReplyForm(Form):
-    reply = TextAreaField(_('replies'), validators=[DataRequired()])
-    post_reply = SubmitField(_('Post replies'))
+# class ReplyForm(Form):
+#     reply = TextAreaField(_('replies'), validators=[DataRequired()])
+#     post_reply = SubmitField(_('Post replies'))
 
 
 class SearchForm(Form):

@@ -1,10 +1,9 @@
 {% extends 'base/base.html' %}
-{% import 'base/header.html' as header %}
 {% block header -%}
-{{ header.header('blog') }}
+{{ header_base.header('blog') }}
 {% endblock %}
 {% block list -%}
-{{ header.list('blog') }}
+{{ header_base.list('blog') }}
 {% endblock %}
 
 {% block title -%}
@@ -14,7 +13,7 @@
 {% block content -%}
 <div class="col-sm-9 cate">
     {% include 'blog/link.html' %}
-    {{ paginate(articles,'blog.index_num') }}
+    {{ paginate(articles,'blog.index') }}
 </div>
 {% include 'blog/panel.html' %}
 {% endblock %}

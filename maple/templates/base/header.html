@@ -1,6 +1,6 @@
 {% macro header(class) -%}
 {% if class == "blog" %}
-<a class="navbar-brand" href="{{ url_for('blog.index_num') }}" style="color:#EB5424;">{{_('Blog')}}</a>
+<a class="navbar-brand" href="{{ url_for('blog.index') }}" style="color:#EB5424;">{{_('Blog')}}</a>
 {% elif class == "book" %}
 <a class="navbar-brand" href="{{ url_for('book.index_num') }}" style="color:#EB5424;">{{_('Book')}}</a>
 {% elif class == "question" %}
@@ -14,11 +14,13 @@
 {% if class == "blog" %}
 <ul class="nav navbar-nav">
     <li> <a href="{{ url_for('index.index') }}">{{_( 'HOME' )}}</a></li>
-    <li> <a href="{{ url_for('blog.category_num',category='linux') }}">Linux</a></li>
-    <li> <a href="{{ url_for('blog.category_num',category='python') }}">Python</a></li>
-    <li> <a href="{{ url_for('blog.category_num',category='生活随笔') }}">{{ _('Life')}}</a></li>
+    <li> <a href="{{ url_for('blog.category',category='linux') }}">Linux</a></li>
+    <li> <a href="{{ url_for('blog.category',category='python') }}">Python</a></li>
+    <li> <a href="{{ url_for('blog.category',category='html') }}">{{_('Web前端')}}</a></li>
+    <li> <a href="{{ url_for('blog.category',category='security') }}">{{_('Web安全')}}</a></li>
+    <li> <a href="{{ url_for('blog.category',category='生活随笔') }}">{{ _('Life')}}</a></li>
     <li> <a href="{{ url_for('blog.archives') }}">Archives</a></li>
-    <li> <a href="{{ url_for('blog.feed') }}">feed</a></li>
+    <li> <a href="{{ url_for('blog.feed') }}">RSS</a></li>
 </ul>
 {% elif class == "book" %}
 <ul class="nav navbar-nav">
@@ -35,7 +37,7 @@
 </ul>
 {% else %}
 <ul class="nav navbar-nav">
-    <li><a href="{{ url_for('blog.index_num') }}">{{_('Blog')}}</a></li>
+    <li><a href="{{ url_for('blog.index') }}">{{_('Blog')}}</a></li>
     <li><a href="{{ url_for('book.index_num') }}">{{ _('Books')}}</a></li>
     <li><a href="{{ url_for('question.index') }}">{{ _('Answer')}}</a></li>
     <li><a href="{{ url_for('index.about') }}">{{_('About me')}}</a></li>

@@ -6,7 +6,7 @@
         <span class="tags">
             {{ article.publish.strftime('%Y-%m-%d %H:%M:%S') }} | {{_('tags')}}:
             {%- for tag in article.tags -%}
-            <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#eb5424;">{{ tag.name }}</a>
+            <a href="{{ url_for('blog.tag',tag=tag.name) }}" style="color:#eb5424;">{{ tag.name }}</a>
             {% endfor -%} | {{_('read')}}:{{ article.id | visit_total }}
         </span>
         <br />

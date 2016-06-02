@@ -6,14 +6,14 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update:星期三 2016-5-18 10:59:18 (CST)
+# Last Update:星期一 2016-5-30 13:41:56 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
 from maple import db, app
 from maple.main.permissions import super_permission
 from maple.user.models import User
-from maple.blog.models import Articles
+from maple.blog.models import Articles,Comments,Tags
 from maple.question.models import Questions
 from maple.books.models import Books
 from wtforms.validators import DataRequired
@@ -42,20 +42,24 @@ class BaseModelView(ModelView):
 
 class BlogModelView(BaseModelView):
     column_exclude_list = ['author']
+    column_searchable_list = ['title']
     column_filters = ['category', 'publish']
     form_widget_args = {'content': {'rows': 10}}
     column_formatters = dict(
         content=lambda v, c, m, p: m.content[:100] + '...')
     column_editable_list = ['title', 'category']
     form_excluded_columns = ['comments']
-    form_choices = {'category': [('Linux', 'linux'),
-                                 ('Python', 'python'),
+    form_choices = {'category': [('Linux', 'Linux'),
+                                 ('Python', 'Python'),
                                  ('生活随笔', '生活随笔')],
                     'author': [('honmaple', 'honmaple')]}
 
 
 class BookModelView(BaseModelView):
     column_filters = ['tag']
+
+class TagModelView(BaseModelView):
+    pass
 
 
 class NoticeModelView(BaseModelView):
@@ -67,6 +71,9 @@ class QueModelView(BaseModelView):
     column_editable_list = ['title', 'private']
     column_filters = ['private', 'publish']
     form_choices = {'author': [('honmaple', 'honmaple')]}
+
+class CommentModelView(BaseModelView):
+    column_filters = [ 'publish','author']
 
 
 class UserModelView(BaseModelView):
@@ -134,6 +141,16 @@ admin.add_view(BlogModelView(Articles,
                              name='管理文章',
                              endpoint='admin_article',
                              url='articles'))
+admin.add_view(TagModelView(Tags,
+                             db.session,
+                             name='管理节点',
+                             endpoint='admin_tag',
+                             url='tags'))
+admin.add_view(CommentModelView(Comments,
+                             db.session,
+                             name='管理回复',
+                             endpoint='admin_comment',
+                             url='comments'))
 admin.add_view(BookModelView(Books,
                              db.session,
                              name='管理书籍',

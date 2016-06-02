@@ -1,10 +1,7 @@
 {% extends 'maple/base.html' %}
-{% block script -%}
-{% import 'maple/auth.html' as auth %}
-{{ auth.base()}}
-{{ super()}}
-{% endblock %}
+{% import 'maple/auth.html'  as auth_base %}
 {% from 'base/paginate.html' import paginate %}
+{% import 'base/header.html' as header_base %}
 {% block main %}
 <nav class="navbar navbar-default  col-md-offset-1 col-md-10 header-back">
     <div class="container-fluid">
@@ -19,22 +16,7 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-header">
             {% block list %}{% endblock %}
-            <ul class="nav navbar-nav navbar-right">
-                {% if g.user.is_authenticated %}
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ current_user.username }}<span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('user.logined_user',name=current_user.username) }}">{{_('My Page')}}</a></li>
-                        <li><a href="{{ url_for('auth.logout') }}">{{ _('logout')}}</a></li>
-                    </ul>
-                </li>
-                {% else %}
-                <li><a href="{{ url_for('auth.login') }}">{{_('login')}}</a></li>
-                <li><a href="{{ url_for('auth.register') }}">{{ _('register')}}</a></li>
-                {% endif %}
-            </ul>
+            {% include 'base/auth.html' %}
         </div>
     </div>
 </nav>

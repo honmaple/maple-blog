@@ -41,7 +41,7 @@ HonMaple
     </div>
     <div class="col-sm-6 font-big">
         <h4>
-            <a class="header-color" href="{{ url_for('blog.index_num') }}">
+            <a class="header-color" href="{{ url_for('blog.index') }}">
                 {{_('Recent Articles')}}
             </a>
         </h4>
@@ -80,14 +80,14 @@ HonMaple
     <span class="tags">
         {{- article.publish.strftime('%Y-%m-%d') -}} | {{_('tags')}}:
         {%- for tag in article.tags %}
-        <a class="header-color" href="{{ url_for('blog.tag_num',tag=tag.name) }}">{{ tag.name }}</a>
+        <a class="header-color" href="{{ url_for('blog.tag',tag=tag.name) }}">{{ tag.name }}</a>
         {% endfor -%} | {{_('read')}}:{{- article.id | visit_total -}}
     </span>
     <span>
         {{ article.content | truncate(255, True)| safe_markdown }}
     </span>
     {%- if loop.index == 2 -%}
-    <a class="btn btn-primary btn-sm" href="{{ url_for('blog.index_num') }}" role="button">
+    <a class="btn btn-primary btn-sm" href="{{ url_for('blog.index') }}" role="button">
         {{_('more')}}
     </a>
     {% endif %}

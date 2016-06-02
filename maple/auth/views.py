@@ -97,10 +97,10 @@ def register():
                 return jsonify(judge=False, error=error)
             else:
                 account = User()
-                account.name=form.name.data,
-                account.email=form.email.data,
-                account.passwd=form.passwd.data,
-                account.roles='visitor'
+                account.name = form.name.data,
+                account.email = form.email.data,
+                account.passwd = form.passwd.data,
+                account.roles = 'visitor'
                 account.registered_time = datetime.now()
                 '''邮箱验证'''
                 token = email_token(account.email)
@@ -136,7 +136,8 @@ def confirm(token):
     if not email:
         flash(_(
             'The confirm link has been out of time.Please confirm your email again'))
-        return redirect(url_for('user.logined_user', name=current_user.username))
+        return redirect(url_for('user.logined_user',
+                                name=current_user.username))
     user = User.query.filter_by(email=email).first()
     if user.is_confirmed:
         flash(_('The email has been confirmed. Please login.', 'success'))

@@ -14,7 +14,7 @@
 {% block content %}
 <div class="col-sm-9 cate">
     {% include "blog/link.html" %}
-    {{ paginate(articles,'blog.category_num',kw=dict(category=category)) }}
+    {{ paginate(articles,'blog.category',kw=dict(category=category)) }}
 </div>
 {% include 'blog/panel.html' %}
 {% endblock %}

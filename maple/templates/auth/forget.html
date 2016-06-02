@@ -13,8 +13,7 @@
 
 
 {% block content %}
-{% import 'maple/auth.html' as auth %}
-{{ auth.forget(form)}}
+{{ auth_base.forget(form)}}
 {% endblock %}
 
 

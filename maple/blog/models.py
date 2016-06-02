@@ -30,8 +30,8 @@ class Tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, name):
-        self.name = name
+    # def __init__(self, name):
+    #     self.name = name
 
     def __repr__(self):
         return '<Tags %r>' % self.name
@@ -106,20 +106,20 @@ class Comments(db.Model):
         return "<Comments %r>" % self.content
 
 
-class Replies(db.Model):
-    __tablename__ = 'replies'
-    id = db.Column(db.Integer, primary_key=True)
-    author = db.Column(db.String, nullable=False)
-    publish = db.Column(db.DateTime, nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    comments_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
-    comment = db.relationship('Comments',
-                              backref=db.backref('replies',
-                                                 lazy='dynamic'))
+# class Replies(db.Model):
+#     __tablename__ = 'replies'
+#     id = db.Column(db.Integer, primary_key=True)
+#     author = db.Column(db.String, nullable=False)
+#     publish = db.Column(db.DateTime, nullable=False)
+#     content = db.Column(db.Text, nullable=False)
+#     comments_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
+#     comment = db.relationship('Comments',
+#                               backref=db.backref('replies',
+#                                                  lazy='dynamic'))
 
-    def __init__(self, author, content):
-        self.author = author
-        self.content = content
+#     def __init__(self, author, content):
+#         self.author = author
+#         self.content = content
 
-    def __repr__(self):
-        return "<Replies %r>" % self.content
+#     def __repr__(self):
+#         return "<Replies %r>" % self.content

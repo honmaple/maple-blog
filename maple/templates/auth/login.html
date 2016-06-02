@@ -13,8 +13,7 @@
 
 
 {%- block content -%}
-{% import 'maple/auth.html' as auth %}
-{{ auth.login(form)}}
+{{ auth_base.login(form)}}
 {% endblock %}
 
 

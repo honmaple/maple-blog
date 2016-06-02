@@ -20,6 +20,7 @@ manager = Manager(app)
 def run():
     return app.run()
 
+
 @manager.command
 def init_db():
     """

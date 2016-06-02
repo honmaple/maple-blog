@@ -9,7 +9,7 @@
 # *************************************************************************
 from flask import (Blueprint, render_template, request, g, url_for, redirect)
 from flask_login import login_required
-from maple import login_manager, cache, babel
+from maple import cache
 from maple.user.models import User
 from maple.blog.models import Articles
 from maple.question.models import Questions
@@ -17,28 +17,6 @@ from maple.admin.models import Notices
 # from maple.blog.forms import SearchForm
 
 site = Blueprint('index', __name__)
-
-
-@babel.localeselector
-def get_locale():
-    # user = getattr(g, 'user', None)
-    # if user is not None:
-    #     return user.locale
-    return request.accept_languages.best_match(['zh', 'en'])
-
-
-@babel.timezoneselector
-def get_timezone():
-    return 'UTC'
-# user = getattr(g, 'user', None)
-# if user is not None:
-#     return user.timezone
-
-
-@login_manager.user_loader
-def user_loader(id):
-    user = User.query.get(int(id))
-    return user
 
 
 @site.route('/')

@@ -1,10 +1,9 @@
 {% extends 'base/base.html' %}
-{% import 'base/header.html' as header %}
 {% block header -%}
-{{ header.header('question') }}
+{{ header_base.header('question') }}
 {% endblock %}
 {% block list -%}
-{{ header.list('question') }}
+{{ header_base.list('question') }}
 {% endblock %}
 
 {% block title -%}

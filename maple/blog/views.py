@@ -11,8 +11,8 @@ from flask import (render_template, Blueprint, request, redirect, url_for,
                    abort, Markup, flash)
 from flask_login import current_user, login_required
 from maple import db, redis_data, cache
-from maple.blog.forms import CommentForm, ReplyForm
-from maple.blog.models import Articles, Tags, Comments, Replies
+from maple.blog.forms import CommentForm
+from maple.blog.models import Articles, Tags, Comments
 from maple.main.permissions import writer_permission
 from maple.main.helpers import is_num
 from datetime import datetime
@@ -29,7 +29,7 @@ def make_external(url):
 
 @site.route('')
 @cache.cached(timeout=180)
-def index_num():
+def index():
     '''每页显示6篇,且按照时间排序 '''
     page = is_num(request.args.get('page'))
     articles = Articles.query.paginate(page, 6, True)
@@ -41,7 +41,7 @@ def index_num():
 
 @site.route('/<category>')
 @cache.cached(timeout=180)
-def category_num(category):
+def category(category):
     all_article = Articles.load_by_category(category)
     if all_article is None:
         abort(404)
@@ -58,7 +58,7 @@ def category_num(category):
 
 @site.route('/tag=<tag>')
 @cache.cached(timeout=180)
-def tag_num(tag):
+def tag(tag):
     page = is_num(request.args.get('page'))
     articles = Articles.query.join(Articles.tags).filter(
         Tags.name == tag).paginate(page, 6, True)
@@ -76,7 +76,6 @@ def view(id):
     '''记录用户浏览次数'''
     redis_data.zincrby('visited:article', 'article:%s' % str(id), 1)
     comment_form = CommentForm()
-    reply_form = ReplyForm()
     article = Articles.load_by_id(id)
     all_tags = Tags.query.distinct(Tags.name).all()
     tags = article.tags
@@ -84,8 +83,7 @@ def view(id):
                            article=article,
                            all_tags=all_tags,
                            tags=tags,
-                           comment_form=comment_form,
-                           reply_form=reply_form)
+                           comment_form=comment_form)
 
 
 @site.route('/archives')
@@ -137,20 +135,20 @@ def comment(id):
     return redirect(url_for('blog.view', id=id, _anchor='comment'))
 
 
-@site.route('/pages/<id>/<comment_id>', methods=['GET', 'POST'])
-@login_required
-def reply(id, comment_id):
-    '''回复表单'''
-    if not writer_permission.can():
-        flash(_('You have not confirm your account'))
-        return redirect(url_for('blog.index_num'))
-    form = ReplyForm()
-    if form.validate_on_submit() and request.method == "POST":
-        post_reply = Replies(author=current_user.username,
-                             content=form.reply.data)
-        post_reply.comments_id = comment_id
-        post_reply.publish = datetime.now()
-        db.session.add(post_reply)
-        db.session.commit()
-        return redirect(url_for('blog.view', id=id, _anchor='comment'))
-    return redirect(url_for('blog.view', id=id, _anchor='comment'))
+# @site.route('/pages/<id>/<comment_id>', methods=['GET', 'POST'])
+# @login_required
+# def reply(id, comment_id):
+#     '''回复表单'''
+#     if not writer_permission.can():
+#         flash(_('You have not confirm your account'))
+#         return redirect(url_for('blog.index_num'))
+#     form = ReplyForm()
+#     if form.validate_on_submit() and request.method == "POST":
+#         post_reply = Replies(author=current_user.username,
+#                              content=form.reply.data)
+#         post_reply.comments_id = comment_id
+#         post_reply.publish = datetime.now()
+#         db.session.add(post_reply)
+#         db.session.commit()
+#         return redirect(url_for('blog.view', id=id, _anchor='comment'))
+#     return redirect(url_for('blog.view', id=id, _anchor='comment'))

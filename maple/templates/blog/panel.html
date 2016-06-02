@@ -22,7 +22,7 @@
         <li class="list-group-item">{{ _('tags')}}: <br />
             {% for tag in all_tags %}
             <span class="label label-primary" style="display: inline-block;">
-                <a href="{{ url_for('blog.tag_num',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
+                <a href="{{ url_for('blog.tag',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
             </span>
             {% endfor %}
         </li>
