@@ -8,16 +8,7 @@
 #   Created Time: 2015-11-08 06:42:40
 # *************************************************************************
 from maple import db
-# from flask.ext.sqlalchemy import BaseQuery
-# from sqlalchemy_searchable import SearchQueryMixin
-# from sqlalchemy_utils.types import TSVectorType
-# from sqlalchemy_searchable import make_searchable
-# make_searchable()
-
-
-# class ArticleQuery(BaseQuery, SearchQueryMixin):
-#     pass
-
+from datetime import datetime
 
 tag_article = db.Table('tag_article', db.Column('tags_id', db.Integer,
                                                 db.ForeignKey('tags.id')),
@@ -48,16 +39,17 @@ class Articles(db.Model):
     author = db.Column(db.String, nullable=False)
     title = db.Column(db.String(50), nullable=False)
     publish = db.Column(db.DateTime, nullable=False)
+    updated = db.Column(db.DateTime, default=datetime.now())
     content = db.Column(db.Text, nullable=False)
     category = db.Column(db.String, nullable=False)
     copy = db.Column(db.Boolean, nullable=True, default=False)
     # search_vector = db.Column(TSVectorType('title', 'content',
     #                                         weights={'title': 'A', 'content': 'B'}))
     '''多个标签对多篇文章'''
-    tags = db.relationship('Tags',
-                           secondary=tag_article,
-                           backref=db.backref('articles',
-                                              lazy='dynamic'))
+    tags = db.relationship(
+        'Tags',
+        secondary=tag_article,
+        backref=db.backref('articles', lazy='dynamic'))
 
     __mapper_args__ = {"order_by": publish.desc()}
 
@@ -85,8 +77,6 @@ class Articles(db.Model):
         return Articles.query.filter_by(category=category).all()
 
 
-
-
 class Comments(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
@@ -94,9 +84,8 @@ class Comments(db.Model):
     publish = db.Column(db.DateTime, nullable=False)
     content = db.Column(db.Text, nullable=False)
     articles_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
-    article = db.relationship('Articles',
-                              backref=db.backref('comments',
-                                                 lazy='dynamic'))
+    article = db.relationship(
+        'Articles', backref=db.backref('comments', lazy='dynamic'))
 
     def __init__(self, author, content):
         self.author = author
@@ -104,7 +93,6 @@ class Comments(db.Model):
 
     def __repr__(self):
         return "<Comments %r>" % self.content
-
 
 # class Replies(db.Model):
 #     __tablename__ = 'replies'

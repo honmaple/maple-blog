@@ -23,8 +23,6 @@
                 </tr>
                 <tr>
                     <td align="right">
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        {{ article.publish.strftime('%Y-%m-%d %H:%M:%S') }}
                         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
                         {% for tag in article.tags %}
                         <span class="label label-primary" style="display:inline-block;">
@@ -35,6 +33,11 @@
                 </tr>
                 <tr>
                     <td align="right">
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        {{ article.publish.strftime('%Y-%m-%d %H:%M:%S') }}
+                        <br>
+                        Updated:{{ article.updated }}
+                        <br>
                         作者:{{ article.author }}
                         <br>
                         浏览次数:{{ article.id | visit_total }}
@@ -55,22 +58,22 @@
         {% if g.user.is_authenticated %}
         <div class="panel panel-info" id="#comment">
             <div class="panel-heading">
-            评论 
-    </div>
+                评论 
+            </div>
             <div class="panel-body" style="padding:0px;">
-            <form action="{{ url_for('blog.comment',id=article.id) }}" method="POST">
-            {{ comment_form.hidden_tag()}}
-            {{ comment_form.comment(class="form-control",placeholder="写下你的评论" ,style="height:80px;") }}
-            {{ comment_form.post_comment(class="btn btn-info btn-sm",style="margin-top:5px;") }}
-        </form>
-    </div>
+                <form action="{{ url_for('blog.comment',id=article.id) }}" method="POST">
+                    {{ comment_form.hidden_tag()}}
+                    {{ comment_form.comment(class="form-control",placeholder="写下你的评论" ,style="height:80px;") }}
+                    {{ comment_form.post_comment(class="btn btn-info btn-sm",style="margin-top:5px;") }}
+                </form>
+            </div>
             {% for comment in article.comments %}
             <div class="panel-heading">
-            {{ comment.author }}于{{ comment.publish.strftime('%Y-%m-%d %H:%M')}}发表
-    </div>
+                {{ comment.author }}于{{ comment.publish.strftime('%Y-%m-%d %H:%M')}}发表
+            </div>
             <div class="panel-body">
-            {{ comment.content }}
-    </div>
+                {{ comment.content }}
+            </div>
             {% endfor %}
         </div>
         {% endif %}
