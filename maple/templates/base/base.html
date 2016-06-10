@@ -2,6 +2,10 @@
 {% import 'maple/auth.html'  as auth_base %}
 {% from 'base/paginate.html' import paginate %}
 {% import 'base/header.html' as header_base %}
+{% block script -%}
+{{ super() }}
+<script  type="text/javascript" src="{{ url_for('static',filename='style/honmaple.js')}}"></script>
+{%- endblock -%}
 {% block main %}
 <nav class="navbar navbar-default  col-md-offset-1 col-md-10 header-back">
     <div class="container-fluid">
@@ -17,6 +21,12 @@
         <div class="collapse navbar-collapse" id="bs-header">
             {% block list %}{% endblock %}
             {% include 'base/auth.html' %}
+            <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;" >
+                <div class="form-group has-feedback">
+                    {{ g.search_form.search(class="form-control input-sm",placeholder="搜索内容")}}
+                    <i class="icon-search form-control-feedback"></i>
+                </div>
+            </form>
         </div>
     </div>
 </nav>

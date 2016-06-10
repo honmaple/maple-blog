@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期五 2016-6-10 16:13:38 (CST)
+# Last Update:星期日 2016-6-19 22:41:19 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -19,28 +19,28 @@ from bleach import clean
 
 
 def safe_clean(text):
-    tags = ['b', 'i', 'font', 'br', 'blockquote', 'a', 'div', 'ul', 'li', 'h2']
-    attrs = {'*': ['style', 'id', 'class'], 'font': ['color'], 'a': ['href']}
+    tags = ['b', 'i', 'font', 'br', 'blockquote','div', 'h2']
+    attrs = {'*': ['style', 'id', 'class'], 'font': ['color']}
     styles = ['color']
     return Markup(clean(text, tags=tags, attributes=attrs, styles=styles))
 
+def safe_markdown(text):
+    class HighlighterRenderer(HtmlRenderer):
+        def blockcode(self, text, lang):
+            lang = 'python'
+            if not lang:
+                return '\n<pre><code>{}</code></pre>\n'.format(text.strip(
+                ))
+            lexer = get_lexer_by_name(lang, stripall=True)
+            formatter = HtmlFormatter()
+            return highlight(text, lexer, formatter)
+
+    renderer = HighlighterRenderer()
+    md = Markdown(renderer, extensions=('fenced-code', ))
+    return Markup(md(safe_clean(text)))
+    # return Markup(md(text))
 
 def register_jinja2(app):
-    def safe_markdown(text):
-        class HighlighterRenderer(HtmlRenderer):
-            def blockcode(self, text, lang):
-                lang = 'python'
-                if not lang:
-                    return '\n<pre><code>{}</code></pre>\n'.format(text.strip(
-                    ))
-                lexer = get_lexer_by_name(lang, stripall=True)
-                formatter = HtmlFormatter()
-                return highlight(text, lexer, formatter)
-
-        renderer = HighlighterRenderer()
-        md = Markdown(renderer, extensions=('fenced-code', ))
-        return Markup(md(safe_clean(text)))
-        # return Markup(md(text))
 
     def visit_total(article_id):
         '''文章浏览次数'''
@@ -71,6 +71,12 @@ def register_jinja2(app):
         from IP import find
         return find(ip)
 
+    def get_all_tags():
+        from maple.blog.models import Tags
+        all_tags = Tags.query.distinct(Tags.name).all()
+        return all_tags
+
+    app.jinja_env.globals['get_all_tags'] = get_all_tags
     app.jinja_env.filters['safe_markdown'] = safe_markdown
     app.jinja_env.filters['visit_total'] = visit_total
     app.jinja_env.filters['last_online_time'] = last_online_time

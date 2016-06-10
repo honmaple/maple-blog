@@ -61,3 +61,27 @@ span.content ol {
 span.content li {
     list-style-type:circle;
 }
+ .blog-content h1 {
+     font-size:30px;
+ }
+ .blog-content h2 {
+     font-size:27px;
+ }
+ .blog-content blockquote {
+     font-size:16px;
+     color:#999;
+ }
+ .blog-content ul {
+     padding-left:16px;
+ }
+ .blog-content ol {
+     padding-left:16px;
+ }
+ .blog-content li {
+     list-style-type:circle;
+ }
+ .blog-content img {
+     max-width: 100%;
+     height: auto;
+     display: block;
+ }

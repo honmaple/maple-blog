@@ -8,7 +8,7 @@
 #   Created Time: 2015-11-18 08:11:38
 # *************************************************************************
 from flask import (render_template, Blueprint, request, redirect, url_for,
-                   abort, Markup, flash)
+                   flash)
 from flask_login import current_user, login_required
 from maple import db, redis_data, cache
 from maple.blog.forms import CommentForm
@@ -20,6 +20,7 @@ from flask_babel import gettext as _
 from urllib.parse import urljoin
 from werkzeug.contrib.atom import AtomFeed
 from sqlalchemy import func
+from maple.filters import safe_markdown
 
 site = Blueprint('blog', __name__)
 
@@ -34,26 +35,17 @@ def index():
     '''每页显示6篇,且按照时间排序 '''
     page = is_num(request.args.get('page'))
     articles = Articles.query.paginate(page, 6, True)
-    all_tags = Tags.query.distinct(Tags.name).all()
-    return render_template('blog/blog.html',
-                           articles=articles,
-                           all_tags=all_tags)
+    return render_template('blog/blog.html', articles=articles)
 
 
 @site.route('/<category>')
 @cache.cached(timeout=180)
 def category(category):
-    all_article = Articles.load_by_category(category)
-    if all_article is None:
-        abort(404)
     page = is_num(request.args.get('page'))
     articles = Articles.query.filter(func.lower(
         Articles.category) == func.lower(category)).paginate(page, 6, True)
-    all_tags = Tags.query.distinct(Tags.name).all()
-    category = category
     return render_template('blog/blog_category.html',
                            articles=articles,
-                           all_tags=all_tags,
                            category=category)
 
 
@@ -63,12 +55,7 @@ def tag(tag):
     page = is_num(request.args.get('page'))
     articles = Articles.query.join(Articles.tags).filter(func.lower(
         Tags.name) == func.lower(tag)).paginate(page, 6, True)
-    all_tags = Tags.query.distinct(Tags.name).all()
-    tag = tag
-    return render_template('blog/blog_tag.html',
-                           articles=articles,
-                           tag=tag,
-                           all_tags=all_tags)
+    return render_template('blog/blog_tag.html', articles=articles, tag=tag)
 
 
 @site.route('/view/<int:id>')
@@ -78,11 +65,9 @@ def view(id):
     redis_data.zincrby('visited:article', 'article:%s' % str(id), 1)
     comment_form = CommentForm()
     article = Articles.load_by_id(id)
-    all_tags = Tags.query.distinct(Tags.name).all()
     tags = article.tags
     return render_template('blog/blog_page.html',
                            article=article,
-                           all_tags=all_tags,
                            tags=tags,
                            comment_form=comment_form)
 
@@ -92,27 +77,25 @@ def view(id):
 def archives():
     page = is_num(request.args.get('page'))
     articles = Articles.query.paginate(page, 30, True)
-    all_tags = Tags.query.distinct(Tags.name).all()
-    return render_template('blog/blog_archives.html',
-                           articles=articles,
-                           all_tags=all_tags)
+    return render_template('blog/blog_archives.html', articles=articles)
 
 
 @site.route('/atom.xml')
 def feed():
-    feed = AtomFeed('Recent Articles',
+    feed = AtomFeed('HoMaple的个人博客',
                     feed_url=request.url,
                     url=request.url_root,
                     subtitle='I like solitude, yearning for freedom')
     articles = Articles.query.limit(15).all()
     for article in articles:
         feed.add(article.title,
-                 article.content,
+                 safe_markdown(article.content),
                  content_type='html',
                  author=article.author,
                  url=make_external(url_for('blog.view',
                                            id=article.id)),
-                 updated=article.publish,
+                 updated=article.updated
+                 if article.updated is not None else article.publish,
                  published=article.publish)
     return feed.get_response()
 
@@ -134,21 +117,3 @@ def comment(id):
         db.session.commit()
         return redirect(url_for('blog.view', id=id, _anchor='comment'))
     return redirect(url_for('blog.view', id=id, _anchor='comment'))
-
-# @site.route('/pages/<id>/<comment_id>', methods=['GET', 'POST'])
-# @login_required
-# def reply(id, comment_id):
-#     '''回复表单'''
-#     if not writer_permission.can():
-#         flash(_('You have not confirm your account'))
-#         return redirect(url_for('blog.index_num'))
-#     form = ReplyForm()
-#     if form.validate_on_submit() and request.method == "POST":
-#         post_reply = Replies(author=current_user.username,
-#                              content=form.reply.data)
-#         post_reply.comments_id = comment_id
-#         post_reply.publish = datetime.now()
-#         db.session.add(post_reply)
-#         db.session.commit()
-#         return redirect(url_for('blog.view', id=id, _anchor='comment'))
-#     return redirect(url_for('blog.view', id=id, _anchor='comment'))

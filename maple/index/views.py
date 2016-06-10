@@ -36,19 +36,3 @@ def index():
 @cache.cached(timeout=180)
 def about():
     return render_template('index/about_me.html')
-
-
-@site.route('/search', methods=['GET', 'POST'])
-@login_required
-def search():
-    if g.search_form.validate_on_submit() and request.method == "POST":
-        search = g.search_form.search.data
-        return redirect(url_for('index.search_result', query=search))
-    else:
-        return redirect(url_for('index.index'))
-
-# @site.route('/search/<query>', methods=['GET'])
-# @login_required
-# def search_result(query):
-#     results = Articles.query.search(query, sort=True).all()
-#     return render_template('index/search.html', results=results)

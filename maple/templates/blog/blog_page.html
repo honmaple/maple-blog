@@ -10,30 +10,6 @@
 {% block title -%}
 {{ article.title }} - {{ _("HonMaple's Blog") -}}
 {% endblock %}
-{% block style -%}
-{{ super()}}
-<style>
- h1 {
-     font-size:30px;
- }
- h2 {
-     font-size:27px;
- }
- blockquote {
-     font-size:16px;
-     color:#999;
- }
- ul {
-     padding-left:16px;
- }
- ol {
-     padding-left:16px;
- }
- li {
-     list-style-type:circle;
- }
-</style>
-{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-sm-9">
@@ -70,7 +46,7 @@
                     </td>
                 </tr>
             </table>
-            <div class="content" style="font-size:16px;">
+            <div class="blog-content" style="font-size:16px;">
                 {{ article.content | safe_markdown }}
                 {%- if article.copy == False -%}
                 <div style="border-bottom:1px dashed #000000;width:60%;"></div>
