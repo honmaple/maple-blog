@@ -39,3 +39,25 @@ li {
 .cate {
     padding:0 4px;
 }
+span.content h1 {
+    font-size:25px;
+}
+span.content h2 {
+    font-size:22px;
+}
+span.content h3 {
+    font-size:19px;
+}
+span.content blockquote {
+    font-size:16px;
+    color:#999;
+}
+span.content ul {
+    padding-left:16px;
+}
+span.content ol {
+    padding-left:16px;
+}
+span.content li {
+    list-style-type:circle;
+}

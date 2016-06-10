@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期四 2016-6-2 12:58:38 (CST)
+# Last Update:星期五 2016-6-10 14:6:6 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -27,7 +27,8 @@ def register_form(app):
 
 
 def register_maple(app):
-    maple = Bootstrap(css=('style/honmaple.css', ), use_auth=True)
+    maple = Bootstrap(css=('style/honmaple.css', 'style/monokai.css'),
+                      use_auth=True)
     maple.init_app(app)
     Captcha(app)
     Error(app)

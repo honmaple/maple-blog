@@ -6,14 +6,14 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update:星期一 2016-5-30 13:41:56 (CST)
+# Last Update:星期五 2016-6-10 16:21:40 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
 from maple import db, app
 from maple.main.permissions import super_permission
 from maple.user.models import User
-from maple.blog.models import Articles,Comments,Tags
+from maple.blog.models import Articles, Comments, Tags
 from maple.question.models import Questions
 from maple.books.models import Books
 from wtforms.validators import DataRequired
@@ -22,7 +22,6 @@ from flask import abort
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_wtf import Form
-
 
 admin = Admin(app, name='HonMaple', template_mode='bootstrap3')
 
@@ -49,14 +48,15 @@ class BlogModelView(BaseModelView):
         content=lambda v, c, m, p: m.content[:100] + '...')
     column_editable_list = ['title', 'category']
     form_excluded_columns = ['comments']
-    form_choices = {'category': [('Linux', 'Linux'),
-                                 ('Python', 'Python'),
-                                 ('生活随笔', '生活随笔')],
+    form_choices = {'category': [('Linux', 'Linux'), ('Python', 'Python'),
+                                 ('生活随笔', '生活随笔'), ('Security', 'Web安全'),
+                                 ('HTML', 'Web前端')],
                     'author': [('honmaple', 'honmaple')]}
 
 
 class BookModelView(BaseModelView):
     column_filters = ['tag']
+
 
 class TagModelView(BaseModelView):
     pass
@@ -72,8 +72,9 @@ class QueModelView(BaseModelView):
     column_filters = ['private', 'publish']
     form_choices = {'author': [('honmaple', 'honmaple')]}
 
+
 class CommentModelView(BaseModelView):
-    column_filters = [ 'publish','author']
+    column_filters = ['publish', 'author']
 
 
 class UserModelView(BaseModelView):
@@ -89,7 +90,6 @@ class UserModelView(BaseModelView):
         ]
     }
 
-
 # class FileView(BaseModelView):
 #     # Override form field to use Flask-Admin FileUploadField
 #     form_overrides = {'path': form.FileUploadField}
@@ -102,7 +102,6 @@ class UserModelView(BaseModelView):
 #             'allow_overwrite': False
 #         }
 #     }
-
 
 # class ImageView(BaseModelView):
 
@@ -119,7 +118,6 @@ class UserModelView(BaseModelView):
 #                                       base_path=app.static_folder,
 #                                       thumbnail_size=(100, 100, True))
 #     }
-
 
 admin.add_view(UserModelView(User,
                              db.session,
@@ -142,15 +140,15 @@ admin.add_view(BlogModelView(Articles,
                              endpoint='admin_article',
                              url='articles'))
 admin.add_view(TagModelView(Tags,
-                             db.session,
-                             name='管理节点',
-                             endpoint='admin_tag',
-                             url='tags'))
+                            db.session,
+                            name='管理节点',
+                            endpoint='admin_tag',
+                            url='tags'))
 admin.add_view(CommentModelView(Comments,
-                             db.session,
-                             name='管理回复',
-                             endpoint='admin_comment',
-                             url='comments'))
+                                db.session,
+                                name='管理回复',
+                                endpoint='admin_comment',
+                                url='comments'))
 admin.add_view(BookModelView(Books,
                              db.session,
                              name='管理书籍',

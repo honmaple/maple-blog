@@ -6,19 +6,41 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期四 2016-6-2 13:0:23 (CST)
+# Last Update:星期五 2016-6-10 16:13:38 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask import Markup
 from misaka import Markdown, HtmlRenderer
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
+from bleach import clean
+
+
+def safe_clean(text):
+    tags = ['b', 'i', 'font', 'br', 'blockquote', 'a', 'div', 'ul', 'li', 'h2']
+    attrs = {'*': ['style', 'id', 'class'], 'font': ['color'], 'a': ['href']}
+    styles = ['color']
+    return Markup(clean(text, tags=tags, attributes=attrs, styles=styles))
 
 
 def register_jinja2(app):
     def safe_markdown(text):
-        html = HtmlRenderer()
-        markdown = Markdown(html)
-        return Markup(markdown(text))
+        class HighlighterRenderer(HtmlRenderer):
+            def blockcode(self, text, lang):
+                lang = 'python'
+                if not lang:
+                    return '\n<pre><code>{}</code></pre>\n'.format(text.strip(
+                    ))
+                lexer = get_lexer_by_name(lang, stripall=True)
+                formatter = HtmlFormatter()
+                return highlight(text, lexer, formatter)
+
+        renderer = HighlighterRenderer()
+        md = Markdown(renderer, extensions=('fenced-code', ))
+        return Markup(md(safe_clean(text)))
+        # return Markup(md(text))
 
     def visit_total(article_id):
         '''文章浏览次数'''

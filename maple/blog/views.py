@@ -19,6 +19,7 @@ from datetime import datetime
 from flask_babel import gettext as _
 from urllib.parse import urljoin
 from werkzeug.contrib.atom import AtomFeed
+from sqlalchemy import func
 
 site = Blueprint('blog', __name__)
 
@@ -46,8 +47,8 @@ def category(category):
     if all_article is None:
         abort(404)
     page = is_num(request.args.get('page'))
-    articles = Articles.query.filter_by(category=category).paginate(page, 6,
-                                                                    True)
+    articles = Articles.query.filter(func.lower(
+        Articles.category) == func.lower(category)).paginate(page, 6, True)
     all_tags = Tags.query.distinct(Tags.name).all()
     category = category
     return render_template('blog/blog_category.html',
@@ -60,8 +61,8 @@ def category(category):
 @cache.cached(timeout=180)
 def tag(tag):
     page = is_num(request.args.get('page'))
-    articles = Articles.query.join(Articles.tags).filter(
-        Tags.name == tag).paginate(page, 6, True)
+    articles = Articles.query.join(Articles.tags).filter(func.lower(
+        Tags.name) == func.lower(tag)).paginate(page, 6, True)
     all_tags = Tags.query.distinct(Tags.name).all()
     tag = tag
     return render_template('blog/blog_tag.html',
@@ -105,14 +106,14 @@ def feed():
                     subtitle='I like solitude, yearning for freedom')
     articles = Articles.query.limit(15).all()
     for article in articles:
-        feed.add(
-            article.title,
-            article.content,
-            content_type='html',
-            author=article.author,
-            url=make_external(url_for('blog.view', id=article.id)),
-            updated=article.publish,
-            published=article.publish)
+        feed.add(article.title,
+                 article.content,
+                 content_type='html',
+                 author=article.author,
+                 url=make_external(url_for('blog.view',
+                                           id=article.id)),
+                 updated=article.publish,
+                 published=article.publish)
     return feed.get_response()
 
 
@@ -133,7 +134,6 @@ def comment(id):
         db.session.commit()
         return redirect(url_for('blog.view', id=id, _anchor='comment'))
     return redirect(url_for('blog.view', id=id, _anchor='comment'))
-
 
 # @site.route('/pages/<id>/<comment_id>', methods=['GET', 'POST'])
 # @login_required

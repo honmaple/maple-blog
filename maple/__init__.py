@@ -10,7 +10,6 @@
 from flask import (Flask, send_from_directory, request, g)
 from flask_mail import Mail
 from flask_principal import Principal
-from config import load_config
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import current_user
 from .extensions import (register_maple, register_form, register_babel,
@@ -21,8 +20,7 @@ from .filters import register_jinja2
 
 def create_app():
     app = Flask(__name__, static_folder='static')
-    config = load_config()
-    app.config.from_object(config)
+    app.config.from_object('config.development')
     return app
 
 

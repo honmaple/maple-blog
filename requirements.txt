@@ -73,6 +73,7 @@ SQLAlchemy-Searchable==0.10.1
 SQLAlchemy-Utils==0.31.6
 Unidecode==0.4.19
 urllib3==1.15.1
+uuid==1.30
 validators==0.10
 visitor==0.1.2
 webassets==0.11.1

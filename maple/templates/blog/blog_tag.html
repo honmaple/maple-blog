@@ -12,10 +12,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="col-sm-9 cate">
-    {% include "blog/link.html" %}
-    {{ paginate(articles,'blog.tag',kw=dict(tag=tag)) }}
+<div class="row">
+    <div class="col-sm-9">
+        {% include "blog/link.html" %}
+        {{ paginate(articles,'blog.tag',kw=dict(tag=tag)) }}
+    </div>
+    <div class="col-sm-3" style="padding-left:0">
+        {% include 'blog/panel.html' %}
+    </div>
 </div>
-{% include 'blog/panel.html' %}
 {% endblock %}
 

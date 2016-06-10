@@ -1,44 +1,42 @@
-<div class="col-sm-3 cate">
-    <ul class="list-group">
-        <li class="list-group-item" style="text-align:center;">
-            <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" /> <br />
-            <span style="display: inline-block;width:80%;" class="label label-default">
-                <a href="{{url_for('index.about')}}" style="color:#fff;"> 
-                    Author
-                </a>
-            </span>
-            <span style="display: inline-block;width:80%;" class="label label-primary">
-                About me
-            </span>
-            <br />
-            <span>
-                <i>I like solitude, yearning for freedom </i>
-            </span>
-        </li>
-        <li class="list-group-item">Social
-            <br />
-            <a href="http://github.com/honmaple">GitHub</a>
-        </li>
-        <li class="list-group-item">{{ _('tags')}}: <br />
-            {% for tag in all_tags %}
-            <span class="label label-primary" style="display: inline-block;">
-                <a href="{{ url_for('blog.tag',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
-            </span>
-            {% endfor %}
-        </li>
-        <li class="list-group-item">{{_('link')}}:
-            <br />
-            <a href="http://honmaple.com">{{_('blog')}}</a>
-            <br />
-            <a href="http://honmaple.org" target="_blank">我的静态博客站点</a>
-            <br />
-            <a href="http://forums.honmaple.org" target="_blank">河海大学论坛</a>
-            <br/>
-            <a href="http://honmaple.cn" target="_blank">flask练习</a>
-            <a href="http://flask.pocoo.org/" target="_blank">flask官网</a> 
-        </li>
-    </ul>
-</div>
+<ul class="list-group">
+    <li class="list-group-item" style="text-align:center;">
+        <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" /> <br />
+        <span style="display: inline-block;width:80%;" class="label label-default">
+            <a href="{{url_for('index.about')}}" style="color:#fff;"> 
+                Author
+            </a>
+        </span>
+        <span style="display: inline-block;width:80%;" class="label label-primary">
+            About me
+        </span>
+        <br />
+        <span>
+            <i>I like solitude, yearning for freedom </i>
+        </span>
+    </li>
+    <li class="list-group-item">Social
+        <br />
+        <a href="http://github.com/honmaple">GitHub</a>
+    </li>
+    <li class="list-group-item">{{ _('tags')}}: <br />
+        {% for tag in all_tags %}
+        <span class="label label-primary" style="display: inline-block;">
+            <a href="{{ url_for('blog.tag',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
+        </span>
+        {% endfor %}
+    </li>
+    <li class="list-group-item">{{_('link')}}:
+        <br />
+        <a href="http://honmaple.com">{{_('blog')}}</a>
+        <br />
+        <a href="http://honmaple.org" target="_blank">我的静态博客站点</a>
+        <br />
+        <a href="http://forums.honmaple.org" target="_blank">河海大学论坛</a>
+        <br/>
+        <a href="http://honmaple.cn" target="_blank">flask练习</a>
+        <a href="http://flask.pocoo.org/" target="_blank">flask官网</a> 
+    </li>
+</ul>
 <div style="position:fixed; bottom:0;left:30%;width:100%;">
     <ul class="pager">
         <li> <a href="#">{{_('TOP')}}</a></li>
