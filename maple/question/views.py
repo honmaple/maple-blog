@@ -13,7 +13,7 @@ from flask_login import current_user, login_required
 from maple import cache
 from maple.question.forms import QuestionForm
 from maple.question.models import Questions, db
-from maple.forms.forms import flash_errors
+from flask_maple.forms import flash_errors
 from datetime import datetime
 
 site = Blueprint('question', __name__)

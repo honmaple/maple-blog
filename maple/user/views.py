@@ -17,7 +17,7 @@ from maple.user.models import User
 from maple.question.models import Questions
 from maple.blog.models import Comments
 from maple.user.forms import EditPasswdForm, EditUserInforForm
-from maple.forms.forms import return_errors
+from flask_maple.forms import return_errors
 from maple.main.manager import EditManager
 from maple.main.permissions import writer_permission
 from flask import jsonify

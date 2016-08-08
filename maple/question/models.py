@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-29 02:07:53
 # *************************************************************************
-from maple import db,cache
+from maple import db, cache
 from flask_login import current_user
 
 
@@ -23,12 +23,6 @@ class Questions(db.Model):
     publish = db.Column(db.DateTime, nullable=False)
 
     __mapper_args__ = {"order_by": publish.desc()}
-
-    # def __init__(self, author, title, describ, answer):
-    #     self.author = author
-    #     self.title = title
-    #     self.describ = describ
-    #     self.answer = answer
 
     def __repr__(self):
         return "<Questions %r>" % self.title

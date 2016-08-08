@@ -11,7 +11,7 @@ from flask_wtf import Form
 from wtforms import (SubmitField, TextAreaField, StringField, BooleanField,
                      SelectField)
 from wtforms.validators import DataRequired
-from flask_babel import lazy_gettext as _
+from flask_babelex import lazy_gettext as _
 
 
 class ArticleForm(Form):
@@ -29,11 +29,6 @@ class ArticleForm(Form):
 class CommentForm(Form):
     comment = TextAreaField(_('Comment'), validators=[DataRequired()])
     post_comment = SubmitField(_('Post comment'))
-
-
-# class ReplyForm(Form):
-#     reply = TextAreaField(_('replies'), validators=[DataRequired()])
-#     post_reply = SubmitField(_('Post replies'))
 
 
 class SearchForm(Form):

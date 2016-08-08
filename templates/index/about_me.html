@@ -96,7 +96,14 @@ about - HonMaple
                     <ul class="line">
                         <li> 
                             <h4 class="protitle">Python</h4>
-                            <p class="protent">熟悉python基本语法，熟悉flask,BeautifulSoup,fabric等模块</p>
+                            <p class="protent">
+                                <p>
+                                    熟悉python基本语法，熟悉flask,BeautifulSoup等模块
+                                </p>
+                                <p>
+                                    对scrapy,pyside,python-cocos2d,pyserial及也有所了解
+                                </p>
+                            </p>
                         </li>
                         <li> 
                             <h4 class="protitle">数据库</h4>
@@ -107,8 +114,12 @@ about - HonMaple
                         <li> 
                             <h4 class="protitle">linux</h4>
                             <p class="protent">
-                                使用linux单系统,了解linux基本命令，简单shell脚本,以及基础服务搭建,半年多建站经验,对自动化部署有一定了解;
-                                了解supervisor等工具的用法
+                                <p>
+                                    日常使用linux单系统,了解linux基本命令，简单shell脚本,以及基础服务搭建
+                                </p>
+                                <p>
+                                    近一年建站经验,对自动化部署,supervisor,nginx等有一定了解.
+                                </p>
                             </p>
                         </li>
                     </ul>
@@ -121,7 +132,7 @@ about - HonMaple
                         </li>
                         <li>
                             <h4 class="protitle">javascript</h4>
-                            <p class="protent">了解javascript原生语法，能够掌握jquery库的操作,使用ajax与服务端交换数据</p>
+                            <p class="protent">了解javascript原生语法，能够掌握jquery与ajax的基本用法</p>
                         </li>
                     </ul>
                     <h4 class="protitle">其他</h4>
@@ -134,7 +145,7 @@ about - HonMaple
                             <p class="protent">熟练使用emacs,vim,了解vim基本命令</p>
                         </li>
                         <li> 
-                            <p class="protent">熟练掌握markdown,使用markdown写博客</p>
+                            <p class="protent">熟练掌握markdown,org-mode</p>
                         </li>
                         <li> 
                             <p class="protent">对c有一定了解</p>
@@ -151,7 +162,7 @@ about - HonMaple
                     <span class="circle"></span>
                     <ul class="line">
                         <li>
-                            <h4 class="protitle">论坛
+                            <h4 class="protitle">Honmaple论坛
                                 <a class="labelink" href="https://forums.honmaple.org" target="_blank">
                                     <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
                                     Demo
@@ -164,9 +175,10 @@ about - HonMaple
                             <div class="protent">
                                 <p>
                                     论坛后端基于flask,主数据库使用postgresql,部分统计信息 使用redis,使用sqlalchemy对数据进行操作;
-                                    前端大部分采用bootstrap和jquery,少部分自己写的布局,表单提交均采用ajax
                                 </p>
-                                <p>目前完成的功能:用户注册,忘记密码,发帖,回复,签到,收藏,用户组以及用户权限管理等</p>
+                                <p>
+                                    主要功能:用户注册,忘记密码,发帖,回复,签到,收藏,点赞,用户组以及用户权限管理等.
+                                </p>
                             </div>
                             <img src="{{ url_for('static',filename='images/hohai.png') }}" alt="论坛">
                         </li>
@@ -186,11 +198,11 @@ about - HonMaple
                             </h4>
                             <div class="protent">
                                 <p>
-                                    这是学习python及flask以来第一个较完整的项目,分为个人博客，自问自答，书籍查询模块
+                                    这是学习python及flask以来第一个较完整的项目,分为个人博客，自问自答，书籍查询模块;
                                 </p>
-                                <p>个人博客采用markdown后台发表,有标签功能</p>
-                                <p>自问自答用来记录笔记(包括私人笔记功能)</p>
-                                <p>书籍查询中的书籍利用爬虫抓取自豆瓣读书</p>
+                                <p>个人博客采用markdown后台发表,有标签，评论等功能;</p>
+                                <p>自问自答用来记录笔记(包括私人笔记功能);</p>
+                                <p>书籍查询中的书籍利用爬虫抓取自豆瓣读书.</p>
                             </div>
                             <img src="{{ url_for('static',filename='images/blog.png') }}" alt="个人博客">
                         </li>
@@ -209,22 +221,27 @@ about - HonMaple
                                 </a>
                             </h4>
                             <div class="protent">
-                                <p>包括爬取学校新闻,学院公告,图书馆书籍查询,豆瓣读书爬取,ip代理爬取等</p>
+                                <p>包括爬取学校新闻,学院公告,图书馆书籍查询,豆瓣读书爬取,ip代理爬取等.</p>
                             </div>
                         </li>
                     </ul>
                     <span class="circle"></span>
                     <ul class="line">
                         <li>
-                            <h4 class="protitle">留言簿与投票
+                            <h4 class="protitle">留言簿,投票与在线聊天
+                                <a class="labelink" href="http://honmaple.cn" target="_blank">
+                                    <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
+                                    Demo
+                                </a>
                                 <a class="labelink" href="https://github.com/honmaple/flask-word" target="_blank">
                                     <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
                                     源码
                                 </a>
                             </h4>
                             <div class="protent">
-                                <p>使用flask,jquery,ajax等实现的简单留言簿,数据存储使用redis,表单提交使用ajax，实现局部刷新留言,
-                                投票使用redis存储结果,修改文件更改投票内容</p>
+                                <p> 使用socketio实现的简单在线实时聊天; </p>
+                                <p>使用flask,jquery,ajax等实现的简单留言簿,数据存储使用redis,表单提交使用ajax，实现局部刷新留言;</p>
+                                <p>投票使用redis存储结果,修改文件更改投票内容.</p>
                             </div>
                         </li>
                     </ul>
@@ -238,8 +255,8 @@ about - HonMaple
                                 </a>
                             </h4>
                             <div class="protent">
-                                <p>上位机使用pyside编写的图形界面
-                                    使用pyserial进行串口读写
+                                <p>上位机使用pyside编写的图形界面,
+                                    使用pyserial进行串口读写,
                                     使用c编写下位机
                                 </p>
                             </div>
@@ -276,7 +293,7 @@ about - HonMaple
                     <span class="circle"></span>
                     <ul class="line">
                         <li> 
-                            <p class="protent">系统的自学了一遍linux的shell编程,并且接触了git，vim，markdown等开发利器</p>
+                            <p class="protent">系统的自学了一遍linux的shell编程,并且接触了git，vim，emacs,markdown等开发利器</p>
                         </li>
                     </ul>
                     <h4 class="protitle">2015.6~至今</h4>
@@ -284,7 +301,7 @@ about - HonMaple
                     <ul class="line">
                         <li> 
                             <p class="protent">
-                                学习python,利用python写了爬虫,跟着flask文档边学边写了个人博客网站,利用2016寒假写了河海大学论坛
+                                学习python,利用python写了爬虫,跟着flask文档边学边写了个人博客网站,利用2016寒假写了Honmaple论坛
                             </p>
                         </li>
                     </ul>

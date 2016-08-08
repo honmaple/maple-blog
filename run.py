@@ -9,8 +9,11 @@
 # -*- coding=UTF-8 -*-
 from maple import app
 from werkzeug.contrib.fixers import ProxyFix
+# from gevent.wsgi import WSGIServer
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
+# http_server = WSGIServer(('127.0.0.1', 5000), app)
+# http_server.serve_forever()
 
 if __name__ == '__main__':
     app.run()

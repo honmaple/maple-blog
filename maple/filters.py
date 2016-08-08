@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期日 2016-6-19 22:41:19 (CST)
+# Last Update:星期一 2016-8-8 15:36:29 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -19,18 +19,19 @@ from bleach import clean
 
 
 def safe_clean(text):
-    tags = ['b', 'i', 'font', 'br', 'blockquote','div', 'h2']
+    tags = ['b', 'i', 'font', 'br', 'blockquote', 'div', 'h2', 'ul', 'li', 'a',
+            'href']
     attrs = {'*': ['style', 'id', 'class'], 'font': ['color']}
     styles = ['color']
     return Markup(clean(text, tags=tags, attributes=attrs, styles=styles))
+
 
 def safe_markdown(text):
     class HighlighterRenderer(HtmlRenderer):
         def blockcode(self, text, lang):
             lang = 'python'
             if not lang:
-                return '\n<pre><code>{}</code></pre>\n'.format(text.strip(
-                ))
+                return '\n<pre><code>{}</code></pre>\n'.format(text.strip())
             lexer = get_lexer_by_name(lang, stripall=True)
             formatter = HtmlFormatter()
             return highlight(text, lexer, formatter)
@@ -40,8 +41,8 @@ def safe_markdown(text):
     return Markup(md(safe_clean(text)))
     # return Markup(md(text))
 
-def register_jinja2(app):
 
+def register_jinja2(app):
     def visit_total(article_id):
         '''文章浏览次数'''
         from maple.main.mark_record import get_article_count

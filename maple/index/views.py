@@ -7,10 +7,8 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-25 02:21:04
 # *************************************************************************
-from flask import (Blueprint, render_template, request, g, url_for, redirect)
-from flask_login import login_required
+from flask import (Blueprint, render_template)
 from maple import cache
-from maple.user.models import User
 from maple.blog.models import Articles
 from maple.question.models import Questions
 from maple.admin.models import Notices

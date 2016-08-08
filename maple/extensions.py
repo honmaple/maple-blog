@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期二 2016-6-21 11:17:57 (CST)
+# Last Update:星期一 2016-8-8 17:24:24 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -17,8 +17,9 @@ from flask_wtf.csrf import CsrfProtect
 from flask_login import LoginManager
 from redis import StrictRedis
 from flask_cache import Cache
-from flask_babel import Babel
-from flask_babel import lazy_gettext as _
+from flask_babelex import Babel, Domain
+from flask_babelex import lazy_gettext as _
+import os
 
 
 def register_form(app):
@@ -42,7 +43,7 @@ def register_redis(app):
 
 
 def register_cache(app):
-    cache = Cache(config={'CACHE_TYPE': 'null'})
+    cache = Cache()
     cache.init_app(app)
     return cache
 
@@ -63,7 +64,11 @@ def register_login(app):
 
 
 def register_babel(app):
-    babel = Babel(app)
+    translations = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), os.pardir, 'translations'))
+    domain = Domain(translations)
+    babel = Babel(default_domain=domain)
+    babel.init_app(app)
 
     class CustomJSONEncoder(JSONEncoder):
         """This class adds support for lazy translation texts to Flask's

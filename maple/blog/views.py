@@ -16,11 +16,12 @@ from maple.blog.models import Articles, Tags, Comments
 from maple.main.permissions import writer_permission
 from maple.main.helpers import is_num
 from datetime import datetime
-from flask_babel import gettext as _
+from flask_babelex import gettext as _
 from urllib.parse import urljoin
-from werkzeug.contrib.atom import AtomFeed
-from sqlalchemy import func
 from maple.filters import safe_markdown
+from sqlalchemy import func
+from werkzeug.contrib.atom import AtomFeed
+from werkzeug.utils import escape
 
 site = Blueprint('blog', __name__)
 
@@ -89,7 +90,7 @@ def feed():
     articles = Articles.query.limit(15).all()
     for article in articles:
         feed.add(article.title,
-                 safe_markdown(article.content),
+                 escape(safe_markdown(article.content)),
                  content_type='html',
                  author=article.author,
                  url=make_external(url_for('blog.view',

@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-08 06:42:40
 # *************************************************************************
-from maple import db, cache
+from maple import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, \
      check_password_hash

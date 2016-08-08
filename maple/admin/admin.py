@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update:星期五 2016-6-10 16:21:40 (CST)
+# Last Update:星期一 2016-8-8 15:34:11 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
@@ -23,14 +23,26 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_wtf import Form
 
-admin = Admin(app, name='HonMaple', template_mode='bootstrap3')
+admin = Admin(app,
+              name='HonMaple',
+              url=app.config.get('ADMIN_URL', '/admin'),
+              template_mode='bootstrap3')
+
+
+class BaseForm(Form):
+    def __init__(self, formdata=None, obj=None, prefix=u'', **kwargs):
+        self._obj = obj
+        super(BaseForm, self).__init__(formdata=formdata,
+                                       obj=obj,
+                                       prefix=prefix,
+                                       **kwargs)
 
 
 class BaseModelView(ModelView):
 
     page_size = 10
     can_view_details = True
-    form_base_class = Form
+    form_base_class = BaseForm
 
     def is_accessible(self):
         return super_permission.can()

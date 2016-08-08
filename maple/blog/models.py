@@ -21,9 +21,6 @@ class Tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
 
-    # def __init__(self, name):
-    #     self.name = name
-
     def __repr__(self):
         return '<Tags %r>' % self.name
 
@@ -33,7 +30,6 @@ class Tags(db.Model):
 
 
 class Articles(db.Model):
-    # query_class = ArticleQuery
     __tablename__ = 'articles'
     id = db.Column(db.Integer, primary_key=True)
     author = db.Column(db.String, nullable=False)
@@ -43,8 +39,6 @@ class Articles(db.Model):
     content = db.Column(db.Text, nullable=False)
     category = db.Column(db.String, nullable=False)
     copy = db.Column(db.Boolean, nullable=True, default=False)
-    # search_vector = db.Column(TSVectorType('title', 'content',
-    #                                         weights={'title': 'A', 'content': 'B'}))
     '''多个标签对多篇文章'''
     tags = db.relationship(
         'Tags',
@@ -52,12 +46,6 @@ class Articles(db.Model):
         backref=db.backref('articles', lazy='dynamic'))
 
     __mapper_args__ = {"order_by": publish.desc()}
-
-    # def __init__(self, title, author, content, category):
-    #     self.author = author
-    #     self.title = title
-    #     self.content = content
-    #     self.category = category
 
     def __repr__(self):
         return "<Articles %r>" % self.title
@@ -93,21 +81,3 @@ class Comments(db.Model):
 
     def __repr__(self):
         return "<Comments %r>" % self.content
-
-# class Replies(db.Model):
-#     __tablename__ = 'replies'
-#     id = db.Column(db.Integer, primary_key=True)
-#     author = db.Column(db.String, nullable=False)
-#     publish = db.Column(db.DateTime, nullable=False)
-#     content = db.Column(db.Text, nullable=False)
-#     comments_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
-#     comment = db.relationship('Comments',
-#                               backref=db.backref('replies',
-#                                                  lazy='dynamic'))
-
-#     def __init__(self, author, content):
-#         self.author = author
-#         self.content = content
-
-#     def __repr__(self):
-#         return "<Replies %r>" % self.content

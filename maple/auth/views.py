@@ -19,7 +19,7 @@ from maple.user.models import User
 from maple.auth.forms import LoginForm, RegisterForm, ForgetPasswdForm
 from maple.forms.forms import return_errors
 from datetime import datetime
-from flask_babel import gettext as _
+from flask_babelex import gettext as _
 
 site = Blueprint('auth', __name__)
 

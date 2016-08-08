@@ -8,12 +8,10 @@
 {% endblock %}
 
 {% block title -%}
-{{_('login')}} - HonMaple
-{%- endblock %}
-
-
-{%- block content -%}
-{{ auth_base.login(form)}}
+{{ _('register')}} - HonMaple
 {% endblock %}
 
-
+{% block content %}
+{% import 'maple/auth.html' as auth_base %}
+{{ auth_base.register(form)}}
+{% endblock %}

@@ -10,7 +10,7 @@
 from flask.ext.wtf import Form
 from wtforms import (StringField, PasswordField, BooleanField)
 from wtforms.validators import Length, DataRequired, Email
-from flask_babel import lazy_gettext as _
+from flask_babelex import lazy_gettext as _
 from maple.user.models import User
 
 
