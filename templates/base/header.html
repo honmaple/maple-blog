@@ -1,8 +1,8 @@
 {% macro header(class) -%}
 {% if class == "blog" %}
-<a class="navbar-brand" href="{{ url_for('blog.index') }}" style="color:#EB5424;">{{_('Blog')}}</a>
+<a class="navbar-brand" href="{{ url_for('blog.bloglist') }}" style="color:#EB5424;">{{_('Blog')}}</a>
 {% elif class == "book" %}
-<a class="navbar-brand" href="{{ url_for('book.index_num') }}" style="color:#EB5424;">{{_('Book')}}</a>
+<a class="navbar-brand" href="{{ url_for('book.booklist') }}" style="color:#EB5424;">{{_('Book')}}</a>
 {% elif class == "question" %}
 <a class="navbar-brand" href="{{ url_for('question.index') }}" style="color:#EB5424;">{{_('Answer')}}</a>
 {% else %}
@@ -37,9 +37,9 @@
 </ul>
 {% else %}
 <ul class="nav navbar-nav">
-    <li><a href="{{ url_for('blog.index') }}">{{_('Blog')}}</a></li>
-    <li><a href="{{ url_for('book.index_num') }}">{{ _('Books')}}</a></li>
-    <li><a href="{{ url_for('question.index') }}">{{ _('Answer')}}</a></li>
+    <li><a href="{{ url_for('blog.bloglist') }}">{{_('Blog')}}</a></li>
+    <li><a href="{{ url_for('book.booklist') }}">{{ _('Books')}}</a></li>
+    <li><a href="{{ url_for('question.quelist') }}">{{ _('Answer')}}</a></li>
     <li><a href="{{ url_for('index.about') }}">{{_('About me')}}</a></li>
 </ul>
 {% endif %}

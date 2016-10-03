@@ -1,11 +1,4 @@
-{% import 'base/header.html' as header %}
-{% extends 'base/base.html' %}
-{% block header -%}
-{{ header.header('index') }}
-{% endblock %}
-{% block list -%}
-{{ header.list('index') }}
-{% endblock %}
+{% extends 'maple/base.html' %}
 
 {% block title -%}
 about - HonMaple
@@ -16,11 +9,8 @@ about - HonMaple
 <link href="{{ url_for('static',filename='style/about.css')}}" rel="stylesheet"/>
 {%- endblock %}
 
-{% block content %}
+{% block main %}
 <div class="panel panel-primary">
-    <div class="panel-heading">
-        个人简历
-    </div>
     <div class="panel-body font-big">
         <div class="row">
             <div class="col-md-4">
@@ -50,6 +40,7 @@ about - HonMaple
                             <span> <b>邮箱:</b>xiyang0807@gmail.com</span>
                             <br/>
                             <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
+                            <span><b>手机:</b>15061119391</span>
                         </dd>
                     </dl>
                     <dl>
@@ -57,8 +48,8 @@ about - HonMaple
                             <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
                             <span class="basicle">技术博客</span></dt>
                         <dd>
-                            <span><b>自建:</b> <a href="https://honmaple.com" target="_blank">https://honmaple.com</a></span> <br>
-                            <span><b>基于pelican:</b> <a href="http://honmaple.org" target="_blank">http://honmaple.org</a></span>
+                            <span><b>自建:</b> https://honmaple.com</span> <br>
+                            <span><b>基于pelican:</b> http://honmaple.org</span>
                         </dd>
                     </dl>
                     <dl>
@@ -66,7 +57,7 @@ about - HonMaple
                             <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
                             <span class="basicle">Github</span></dt>
                         <dd>
-                            <span><a href="https://github.com/honmaple" target="_blank">https://github.com/honmaple</a></span>
+                            <span>https://github.com/honmaple</span>
                         </dd>
                     </dl>
                     <dl>
@@ -74,7 +65,7 @@ about - HonMaple
                             <span class="glyphicon glyphicon-tree-deciduous" aria-hidden="true"></span>
                             <span class="basicle">期望岗位</span></dt>
                         <dd>
-                            <span><b>web后端开发</b>(实习)</span>
+                            <span><b>软件开发-后端开发方向</b></span>
                         </dd>
                     </dl>
                     <dl>
@@ -229,7 +220,7 @@ about - HonMaple
                     <ul class="line">
                         <li>
                             <h4 class="protitle">留言簿,投票与在线聊天
-                                <a class="labelink" href="http://honmaple.cn" target="_blank">
+                                <a class="labelink" href="https://honmaple.cn" target="_blank">
                                     <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
                                     Demo
                                 </a>

@@ -12,15 +12,15 @@ from wtforms import PasswordField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo
 
 
-class EditUserInforForm(Form):
+class InforForm(Form):
     introduce = TextAreaField('个人介绍', [DataRequired()])
     school = StringField('学校/公司', [DataRequired()])
 
 
-class EditPasswdForm(Form):
+class PasswordForm(Form):
     passwd = PasswordField('密码', [DataRequired()])
-    new_passwd = PasswordField('新密码',
-                               [DataRequired(), Length(min=4,
-                                                       max=20),
-                                EqualTo('retry_new_passwd')])
+    new_passwd = PasswordField(
+        '新密码', [DataRequired(), Length(
+            min=4, max=20), EqualTo(
+                'retry_new_passwd', message='密码输入要一致')])
     retry_new_passwd = PasswordField('重复新密码', [DataRequired()])

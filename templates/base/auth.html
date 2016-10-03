@@ -5,7 +5,7 @@
             {{ current_user.username }}<span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-            <li><a href="{{ url_for('user.logined_user',name=current_user.username) }}">{{_('My Page')}}</a></li>
+            <li><a href="{{ url_for('user.infor',name=current_user.username) }}">{{_('My Page')}}</a></li>
             <li><a href="{{ url_for('auth.logout') }}">{{ _('logout')}}</a></li>
         </ul>
     </li>

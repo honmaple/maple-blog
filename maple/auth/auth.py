@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 11:53:15 (CST)
-# Last Update:星期一 2016-8-8 16:45:12 (CST)
+# Last Update:星期二 2016-10-4 15:57:16 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -42,8 +42,7 @@ class Login(Auth):
         user.username = form.username.data
         user.password = user.set_password(form.password.data)
         user.email = form.email.data
-        user.roles = 'visitor'
-        user.registered_time = datetime.now()
+        user.roles = 'Visitor'
         user.send_email_time = datetime.now()
         self.db.session.add(user)
         self.db.session.commit()
@@ -52,7 +51,7 @@ class Login(Auth):
     def confirm_models(self, user):
         user.is_confirmed = True
         user.confirmed_time = datetime.now()
-        user.roles = 'writer'
+        user.roles = 'Writer'
         self.db.session.commit()
 
     @login_required

@@ -7,30 +7,25 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-25 02:21:04
 # *************************************************************************
-from flask import (Blueprint, render_template)
+from flask import render_template
+from flask.views import MethodView
 from maple import cache
-from maple.blog.models import Articles
-from maple.question.models import Questions
-from maple.admin.models import Notices
-# from maple.blog.forms import SearchForm
-
-site = Blueprint('index', __name__)
+from maple.blog.models import Blog
+from maple.question.models import Question
+from .models import Notice
 
 
-@site.route('/')
-@site.route('/index')
-@cache.cached(timeout=180)
-def index():
-    articles = Articles.query.limit(7)
-    questions = Questions.query.filter_by(private=False).limit(7)
-    notice = Notices.query.first()
-    return render_template('index/index.html',
-                           articles=articles,
-                           questions=questions,
-                           notice=notice)
+class IndexView(MethodView):
+    @cache.cached(timeout=180)
+    def get(self):
+        blogs = Blog.query.limit(7)
+        questions = Question.query.filter_by(is_private=False).limit(7)
+        notice = Notice.query.first()
+        data = {'blogs': blogs, 'questions': questions, 'notice': notice}
+        return render_template('index.html', **data)
 
 
-@site.route('/about')
-@cache.cached(timeout=180)
-def about():
-    return render_template('index/about_me.html')
+class AboutView(MethodView):
+    @cache.cached(timeout=180)
+    def get(self):
+        return render_template('about.html')

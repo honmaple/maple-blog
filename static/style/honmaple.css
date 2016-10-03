@@ -85,3 +85,6 @@ span.content li {
      height: auto;
      display: block;
  }
+ .label-tag {
+     background-color: #ab5424;
+ }
