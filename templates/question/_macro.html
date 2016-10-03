@@ -1,0 +1,48 @@
+{% macro header() -%}
+<a class="navbar-brand" href="{{ url_for('question.quelist') }}" style="color:#EB5424;">{{_('Answer')}}</a>
+{%- endmacro %}
+
+{% macro headerlist() -%}
+<ul class="nav navbar-nav">
+    <li><a href="{{ url_for('index.index') }}">{{_( 'HOME' )}}</a></li>
+    <li><a href="{{ url_for('question.quelist') }}">{{ _('All Questions')}}</a></li>
+    <li><a href="{{ url_for('question.privatelist') }}">{{ _('Private Questions')}}</a></li>
+</ul>
+{%- endmacro %}
+
+{% macro quelist(question) -%}
+<div class="col-sm-6">
+    <span class="question">问</span>
+    <span>
+        <a class="font-big" href="{{ url_for('question.que',queId=question.id) }}">{{ question.title | truncate(25, True)  }}</a>
+    </span>
+    <br />
+    <span class="question">描</span>
+    <i>
+        {{ question.describ | truncate(25, True) }}
+    </i>
+    <br />
+    <span class="question">答</span>
+    <span>
+        {{ question.answer | truncate(100, True) }}
+    </span>
+    <br />
+    <br />
+</div>
+{%- endmacro %}
+
+{% macro queform(form) -%}
+<form action="{{ url_for('question.quelist') }}" method="POST">
+    {{ form.hidden_tag()}}
+    {{ form.title.label }}
+    {{ form.title(class="form-control",placeholder="输入你的问题") }}
+    {{ form.describ.label }}
+    {{ form.describ(class="form-control",style="height:60px;",placeholder="请描述你的问题") }}
+    {{ form.answer.label }}
+    {{ form.answer(class="form-control",style="height:200px;",placeholder="写下你的答案") }}
+    {{ form.private.label }}
+    {{ form.private() }}
+    <br />
+    {{ form.post(class="btn btn-primary") }}
+</form>
+{%- endmacro %}

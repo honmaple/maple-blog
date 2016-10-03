@@ -1,37 +1,39 @@
 {% extends 'base/base.html' %}
-{% block header -%}
-{{ header_base.header('book') }}
-{% endblock %}
-{% block list -%}
-{{ header_base.list('book') }}
-{% endblock %}
+{% from 'book/_macro.html' import header %}
+{% from 'book/_macro.html' import headerlist %}
 
 {% block title -%}
-书籍查询 - HonMaple
+{{ title }}
 {% endblock %}
 
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
 {% block content %}
-<div class="row">
-    <div class="col-sm-9">
-        <div class="row" style="padding:0">
-            {% for book in books.items %}
-            <div class="col-xs-4 col-sm-2 text-center">
-                <div style="height:160px;width:auto">
-                    <img src="{{ url_for('static',filename='book_image/'+book['name']+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
-                    <br />
-                    <a href="{{ url_for('book.book_intro',name=book['name']) }}">{{ book['name'] }}</a> 
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {{ paginate(books,'book.index_num')}}
+<div>
+    <div class="pull-left">
+        <img src="{{ url_for('static',filename='book_image/'+book.name+'.jpg') }}" alt="book" style="width:80px;height:120px;" />
     </div>
-    <div class="col-sm-3">
-        {% for book_type in book_all_tags %}
-        <span class="label label-info" style="display: inline-block;">
-            <a href="{{ url_for('book.tag',tag=book_type['tag']) }}" style="color:#fff;">{{ book_type['tag'] }}</a>
-        </span>
-        {% endfor %}
+    <div>
+        <p>
+            <ul>
+                <li> <b>书籍名称:</b>  {{ books.name }}</li>
+                <br />
+                <li> <b>类型:</b>  {{ books.tag }}</li>
+                <br />
+                <li> <b>title:</b>  {{ books.title }}</li>
+                <br />
+                <br />
+                <li> <b>作者简介:</b>  {{ books.author }}</li>
+                <br />
+                <li> <b>内容概要:</b>  {{ books.content }}</li>
+            </ul>
+        </p>
     </div>
 </div>
 {% endblock %}

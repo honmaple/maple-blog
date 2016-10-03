@@ -20,13 +20,16 @@ from .logs import register_logging
 import os
 
 
-def create_app():
-    templates = os.path.abspath(os.path.join(
-        os.path.dirname(__file__), os.pardir, 'templates'))
-    static = os.path.abspath(os.path.join(
-        os.path.dirname(__file__), os.pardir, 'static'))
+def create_app(config=None):
+    templates = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), os.pardir, 'templates'))
+    static = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), os.pardir, 'static'))
     app = Flask(__name__, template_folder=templates, static_folder=static)
-    app.config.from_object('config.config')
+    if config is None:
+        app.config.from_object('config.config')
+    else:
+        app.config.from_object(config)
     return app
 
 
@@ -59,21 +62,6 @@ def before_request():
     from maple.blog.forms import SearchForm
     g.search_form = SearchForm()
     g.user = current_user
-    # from maple.main.mark_record import allow_ip, mark_online, mark_visited
-    # from maple.blog.forms import SearchForm
-    # allow_ip(request.remote_addr)
-    # g.search_form = SearchForm()
-    # g.user = current_user
-    # mark_online(request.remote_addr)
-    # if '/static/' in request.path:
-    #     pass
-    # elif '/favicon.ico' in request.path:
-    #     pass
-    # elif '/robots.txt' in request.path:
-    #     pass
-    # else:
-    #     path = request.path
-    #     mark_visited(request.remote_addr, path)
 
 
 @app.route('/robots.txt')

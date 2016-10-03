@@ -9,33 +9,25 @@
         <span style="display: inline-block;width:80%;" class="label label-primary">
             About me
         </span>
-        <br />
+        <br/>
         <span>
             <i>I like solitude, yearning for freedom </i>
         </span>
     </li>
-    <li class="list-group-item">Social
-        <br />
-        <a href="http://github.com/honmaple">GitHub</a>
+    <li class="list-group-item">
+        {{ _('Social') }}
+        {% from 'blog/_macro.html' import social %}
+        {{ social() }}
     </li>
-    <li class="list-group-item">{{ _('tags')}}: <br />
-        {% set all_tags = get_all_tags() %}
-        {% for tag in all_tags %}
-        <span class="label label-primary" style="display: inline-block;">
-            <a href="{{ url_for('blog.tag',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
-        </span>
-        {% endfor %}
+    <li class="list-group-item">
+        {{ _('Tags') }}
+        {% from 'blog/_macro.html' import tags %}
+        {{ tags() }}
     </li>
-    <li class="list-group-item">{{_('link')}}:
-        <br />
-        <a href="http://honmaple.com">{{_('blog')}}</a>
-        <br />
-        <a href="http://honmaple.org" target="_blank">我的静态博客站点</a>
-        <br />
-        <a href="http://forums.honmaple.org" target="_blank">Honmaple论坛</a>
-        <br/>
-        <a href="http://honmaple.cn" target="_blank">flask练习</a>
-        <a href="http://flask.pocoo.org/" target="_blank">flask官网</a> 
+    <li class="list-group-item">
+        {{ _('Link') }}
+        {% from 'blog/_macro.html' import urls %}
+        {{ urls() }}
     </li>
 </ul>
 <div style="position:fixed; bottom:0;left:30%;width:100%;">

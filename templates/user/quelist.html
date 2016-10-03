@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% from 'common/_macro.html' import header %}
+{% from 'common/_macro.html' import headerlist %}
+
+{% block title -%}
+{{_("HonMaple's Blog")-}}
+{% endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
+{% block content %}
+<ul class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation"><a href="{{ url_for('user.infor',name=current_user.username) }}">个人资料</a></li>
+    <li role="presentation"><a href="{{ url_for('user.password',name=current_user.username) }}">账户安全</a></li>
+    <li role="presentation"><a href="{{ url_for('user.blog',name=current_user.username) }}">全部文章</a></li>
+    <li role="presentation"><a href="{{ url_for('user.comment',name=current_user.username) }}">全部回复</a></li>
+    <li role="presentation" class="active"><a href="{{ url_for('user.question',name=current_user.username) }}">全部问答</a></li>
+</ul>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>NO.</th>
+            <th>问题</th>
+            <th>描述</th>
+            <th>发表时间</th>
+            <th>操作</th>
+        </tr>
+        {% set i = 1 %}
+        {% for question in questions.items %}
+        <tr>
+            <td>{{ i }}</td>
+            <td> <a href="{{ url_for('question.que',queId=question.id) }}">{{ question.title }}</a></td>
+            <td>{{ question.describ }}</td>
+            <td>{{ question.created_at }}</td>
+            <td>X</td>
+        </tr>
+        {% set i = i + 1 %}
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

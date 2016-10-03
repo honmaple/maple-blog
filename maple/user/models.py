@@ -11,6 +11,7 @@ from maple import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, \
      check_password_hash
+from datetime import datetime
 
 ROLES = [('admin', 'admin'), ('editor', 'editor'), ('writer', 'writer'),
          ('visitor', 'visitor')]
@@ -25,7 +26,8 @@ class User(db.Model, UserMixin):
     roles = db.Column(db.String, nullable=False)
     is_superuser = db.Column(db.Boolean, default=False)
     is_confirmed = db.Column(db.Boolean, nullable=False, default=False)
-    registered_time = db.Column(db.DateTime, nullable=False)
+    registered_time = db.Column(
+        db.DateTime, default=datetime.utcnow(), nullable=False)
     confirmed_time = db.Column(db.DateTime, nullable=True)
     send_email_time = db.Column(db.DateTime, nullable=True)
     introduce = db.Column(db.Text, nullable=True)

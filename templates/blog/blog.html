@@ -1,22 +1,36 @@
 {% extends 'base/base.html' %}
-{% block header -%}
-{{ header_base.header('blog') }}
-{% endblock %}
-{% block list -%}
-{{ header_base.list('blog') }}
-{% endblock %}
+{% from 'blog/_macro.html' import header %}
+{% from 'blog/_macro.html' import headerlist %}
 
 {% block title -%}
 {{_("HonMaple's Blog")-}}
 {% endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
 {% block content -%}
 <div class="row">
     <div class="col-sm-9">
-        {% include 'blog/link.html' %}
-        {{ paginate(articles,'blog.index') }}
+        <div class="category"  style="padding:0 15px;">
+            {% from 'blog/_macro.html' import blogdetail %}
+            {{ blogdetail(blog) }}
+        </div>
     </div>
-    <div class="col-md-3" style="padding-left:0">
+    <div class="col-sm-3" style="padding-left:0">
         {% include 'blog/panel.html' %}
+    </div>
+    <script type="text/javascript">
+     $.get("{{ url_for('blog.commentlist',blogId=blog.id) }}",function(data){
+         $('#blog-comment').html(data);
+     });
+    </script>
+    <div class="col-sm-9" id="blog-comment">
     </div>
 </div>
 {% endblock %}
