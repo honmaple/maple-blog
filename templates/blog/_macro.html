@@ -3,12 +3,29 @@
 {%- endmacro %}
 
 {% macro headerlist() -%}
+<style>
+ .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+     color: #555;
+     background-color: #fff;
+ }
+</style>
 <ul class="nav navbar-nav">
     <li> <a href="{{ url_for('index.index') }}">{{_( 'HOME' )}}</a></li>
     {% set categories = get_all_category() %}
-    {% for category in categories -%}
+    {% set cate_len = categories | length %}
+    {% for category in categories[:4] -%}
     <li><a href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
     {%- endfor %}
+    {% if cate_len > 5 %}
+    <li>
+        <a href="#" class="dropdown-toggle" id="dropdown-more" data-toggle="dropdown">······</a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-more">
+            {% for category in categories[4:] -%}
+            <li role="presentation"><a role="menuitem" href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
+            {%- endfor %}
+        </ul>
+    </li>
+    {% endif %}
     <li> <a href="{{ url_for('blog.archive') }}">Archives</a></li>
     <li> <a href="{{ url_for('blog.rss') }}">RSS</a></li>
 </ul>
@@ -78,16 +95,31 @@
 
 {% macro blogdetail(blog) -%}
 <h2 class="text-center">{{ blog.title }}</h2>
-<!-- <div style="border-bottom:1px dotted #000000;"></div> -->
-<footer style="float:right;">
-    <abbr class="published" title="{{ blog.created_at }}">
-        {{ blog.created_at | timesince }}
+{% set author = blog.author.username %}
+{% set tags = blog.tags %}
+{% set category = blog.category.name %}
+<footer class="pull-right">
+    <span class="glyphicon glyphicon-time"></span>
+    <abbr title="{{ blog.created_at }}">
+        <span class="label label-success">{{ blog.created_at | timesince }}</span>
     </abbr>
-    <address>
-        By <a href="">{{ blog.author.username }}</a>
+    <address style="margin-top:8px">
+        <span class="glyphicon glyphicon-user"></span>
+        <a href="{{ url_for('blog.bloglist',author=author) }}" class="label label-primary">{{ author }}</a>
     </address>
-    <address>
-        tags: <a href="./tag/python/">python</a>
+    <address style="margin-top:-12px">
+        <span class="glyphicon glyphicon-leaf"></span>
+        <a href="{{ url_for('blog.bloglist',category=category) }}" class="label label-default" style="display: inline-block;">{{ category }}</a>
+    </address>
+    <address style="margin-top:-12px">
+        <span class="glyphicon glyphicon-tags"></span>
+        {% for tag in tags %}
+        <a href="{{ url_for('blog.bloglist',tag=tag.name) }}" class="label label-tag" style="display: inline-block;">{{ tag.name }}</a>
+        {% endfor %}
+    </address>
+    <address style="margin-top:-12px">
+        <span class="glyphicon glyphicon-eye-open"></span>
+        <span class="label label-info">{{ blog.id | visit_total }}</span>
     </address>
 </footer>
 <div class="blog-content" style="font-size:16px;">

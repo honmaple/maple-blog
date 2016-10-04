@@ -49,19 +49,23 @@ class User(db.Model, UserMixin):
     #     self.school = school
     #     self.introduce = introduce
 
-    # @property
-    # def passwd(self):
-    #     return "密码不是可读形式!"
+    def update_password(self, password):
+        self.password = generate_password_hash(password)
+        db.session.commit()
 
-    # @passwd.setter
-    # def passwd(self, password):
-    #     self.passwd = generate_password_hash(password)
+    def update_infor(self, form):
+        self.school = form.school.data
+        self.introduce = form.introduce.data
+        db.session.commit()
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
     def __repr__(self):
         return "<User %r>" % self.username
+
+    def __str__(self):
+        return self.username
 
     @staticmethod
     def set_password(password):

@@ -12,6 +12,7 @@ from flask.views import MethodView
 from flask_login import current_user, login_required
 from maple import db, redis_data, cache
 from maple.blog.forms import CommentForm
+from maple.user.models import User
 from maple.main.permissions import writer_permission
 from .models import Blog, Comment, Category
 from flask_babelex import gettext as _
@@ -30,12 +31,16 @@ class BlogListView(MethodView):
         page = request.args.get('page', 1, type=int)
         category = request.args.get('category')
         tag = request.args.get('tag')
+        author = request.args.get('author')
         filter_dict = {}
         if category is not None:
             category = Category.query.filter_by(name=category).first_or_404()
             filter_dict.update(category=category)
         if tag is not None:
             filter_dict.update(tag=tag)
+        if author is not None:
+            author = User.query.filter_by(username=author).first_or_404()
+            filter_dict.update(author=author)
         return page, filter_dict
 
     @cache.cached(timeout=180)
@@ -76,7 +81,7 @@ class CommentListView(MethodView):
     def post(self, blogId):
         if not writer_permission.can():
             flash(_('You have not confirm your account'))
-            return redirect(url_for('blog.index_num'))
+            return redirect(url_for('blog.blog', blogId=blogId))
         if self.form.validate_on_submit():
             comment = Comment()
             comment.author = current_user

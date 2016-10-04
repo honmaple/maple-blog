@@ -19,8 +19,8 @@ class InforForm(Form):
 
 class PasswordForm(Form):
     passwd = PasswordField('密码', [DataRequired()])
-    new_passwd = PasswordField('新密码',
-                               [DataRequired(), Length(min=4,
-                                                       max=20),
-                                EqualTo('retry_new_passwd')])
+    new_passwd = PasswordField(
+        '新密码', [DataRequired(), Length(
+            min=4, max=20), EqualTo(
+                'retry_new_passwd', message='密码输入要一致')])
     retry_new_passwd = PasswordField('重复新密码', [DataRequired()])

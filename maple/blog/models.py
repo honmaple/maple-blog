@@ -26,6 +26,9 @@ class Tags(db.Model):
     def __repr__(self):
         return '<Tags %r>' % self.name
 
+    def __str__(self):
+        return self.name
+
 
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -49,19 +52,28 @@ class Blog(db.Model):
         db.DateTime, default=datetime.utcnow(), onupdate=datetime.utcnow())
     content = db.Column(db.Text, nullable=False)
     is_copy = db.Column(db.Boolean, nullable=True, default=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    category_id = db.Column(
+        db.Integer, db.ForeignKey(
+            'categories.id', ondelete="CASCADE"))
     category = db.relationship(
-        'Category', backref=db.backref(
-            'blogs', lazy='dynamic'))
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+        'Category',
+        backref=db.backref(
+            'blogs', cascade='all,delete-orphan', lazy='dynamic'))
+    author_id = db.Column(
+        db.Integer, db.ForeignKey(
+            'users.id', ondelete="CASCADE"))
     author = db.relationship(
-        'User', backref=db.backref(
-            'blogs', lazy='dynamic'))
+        'User',
+        backref=db.backref(
+            'blogs', cascade='all,delete-orphan', lazy='dynamic'))
 
     __mapper_args__ = {"order_by": created_at.desc()}
 
     def __repr__(self):
         return "<Blog %r>" % self.title
+
+    def __str__(self):
+        return self.title
 
     @classmethod
     def get(cls, blogId):
@@ -87,14 +99,20 @@ class Comment(db.Model):
     created_at = db.Column(
         db.DateTime, default=datetime.utcnow(), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
+    blog_id = db.Column(
+        db.Integer, db.ForeignKey(
+            'blogs.id', ondelete="CASCADE"))
     blog = db.relationship(
-        'Blog', backref=db.backref(
-            'comments', lazy='dynamic'))
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+        'Blog',
+        backref=db.backref(
+            'comments', cascade='all,delete-orphan', lazy='dynamic'))
+    author_id = db.Column(
+        db.Integer, db.ForeignKey(
+            'users.id', ondelete="CASCADE"))
     author = db.relationship(
-        'User', backref=db.backref(
-            'comments', lazy='dynamic'))
+        'User',
+        backref=db.backref(
+            'comments', cascade='all,delete-orphan', lazy='dynamic'))
 
     # def __init__(self, author, content):
     #     self.author = author

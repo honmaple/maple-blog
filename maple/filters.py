@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期一 2016-10-3 21:35:15 (CST)
+# Last Update:星期二 2016-10-4 14:23:46 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -41,6 +41,29 @@ def safe_markdown(text):
     md = Markdown(renderer, extensions=('fenced-code', ))
     return Markup(md(safe_clean(text)))
     # return Markup(md(text))
+
+
+def timesince(dt, default="just now"):
+    from flask_babelex import format_datetime
+    now = datetime.utcnow()
+    diff = now - dt
+    if diff.days > 10:
+        return format_datetime(dt, 'Y-M-d H:m')
+    elif diff.days <= 10 and diff.days > 0:
+        periods = ((diff.days, "day", "days"), )
+    elif diff.days <= 0 and diff.seconds > 3600:
+        periods = ((diff.seconds / 3600, "hour", "hours"), )
+    elif diff.seconds <= 3600 and diff.seconds > 90:
+        periods = ((diff.seconds / 60, "minute", "minutes"), )
+    else:
+        return default
+
+    for period, singular, plural in periods:
+
+        if period:
+            return "%d %s ago" % (period, singular if period == 1 else plural)
+
+    return default
 
 
 def register_jinja2(app):
@@ -82,29 +105,6 @@ def register_jinja2(app):
         from maple.blog.models import Category
         categories = Category.query.distinct(Category.name).all()
         return categories
-
-    def timesince(dt, default="just now"):
-        from flask_babelex import format_datetime
-        now = datetime.utcnow()
-        diff = now - dt
-        if diff.days > 10:
-            return format_datetime(dt, 'Y-M-d H:m')
-        elif diff.days <= 10 and diff.days > 0:
-            periods = ((diff.days, "day", "days"), )
-        elif diff.days <= 0 and diff.seconds > 3600:
-            periods = ((diff.seconds / 3600, "hour", "hours"), )
-        elif diff.seconds <= 3600 and diff.seconds > 90:
-            periods = ((diff.seconds / 60, "minute", "minutes"), )
-        else:
-            return default
-
-        for period, singular, plural in periods:
-
-            if period:
-                return "%d %s ago" % (period, singular
-                                      if period == 1 else plural)
-
-        return default
 
     app.jinja_env.globals['get_all_tags'] = get_all_tags
     app.jinja_env.globals['get_all_category'] = get_all_category

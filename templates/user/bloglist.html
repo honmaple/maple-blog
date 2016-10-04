@@ -15,12 +15,13 @@
 {%- endblock list %}
 
 {% block content %}
+{% set name = dict(name=current_user.username) %}
 <ul class="nav nav-tabs nav-justified" role="tablist">
-    <li role="presentation"><a href="{{ url_for('user.infor',name=current_user.username) }}">个人资料</a></li>
-    <li role="presentation"><a href="{{ url_for('user.password',name=current_user.username) }}">账户安全</a></li>
-    <li role="presentation" class="active"><a href="{{ url_for('user.blog',name=current_user.username) }}">全部文章</a></li>
-    <li role="presentation"><a href="{{ url_for('user.comment',name=current_user.username) }}">全部回复</a></li>
-    <li role="presentation"><a href="{{ url_for('user.question',name=current_user.username) }}">全部问答</a></li>
+    <li role="presentation"><a href="{{ url_for('user.infor',**name) }}">个人资料</a></li>
+    <li role="presentation"><a href="{{ url_for('user.password',**name) }}">账户安全</a></li>
+    <li role="presentation" class="active"><a href="{{ url_for('user.blog',**name) }}">全部文章</a></li>
+    <li role="presentation"><a href="{{ url_for('user.comment',**name) }}">全部回复</a></li>
+    <li role="presentation"><a href="{{ url_for('user.question',**name) }}">全部问答</a></li>
 </ul>
 <div class="table-responsive">
     <table class="table">
