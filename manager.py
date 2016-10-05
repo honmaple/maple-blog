@@ -21,7 +21,7 @@ manager = Manager(app)
 
 
 @manager.command
-def run():
+def runserver():
     return app.run()
 
 
@@ -61,12 +61,12 @@ def babel_compile():
     os.system(pybabel + ' compile -d translations')
 
 
-@manager.option('-u', '--username', dest='username', default='admin')
+@manager.option('-u', '--username', dest='username')
 @manager.option('-e', '--email', dest='email')
 @manager.option('-w', '--password', dest='password')
 def create_user(username, email, password):
-    if username == 'admin':
-        username = input('Username(default admin):')
+    if username is None:
+        username = input('Username(default admin):') or 'admin'
     if email is None:
         email = input('Email:')
     if password is None:
@@ -77,8 +77,7 @@ def create_user(username, email, password):
     user.email = email
     user.is_superuser = True
     user.is_confirmed = True
-    user.roles = 'super'
-    user.registered_time = datetime.utcnow()
+    user.roles = 'Super'
     user.confirmed_time = datetime.utcnow()
     db.session.add(user)
     db.session.commit()

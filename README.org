@@ -1,5 +1,6 @@
 * maple-blog
   [[license][https://img.shields.io/badge/license-GPL3.0-blue.svg]]
+  [[https://www.python.org/download/releases/3.0/][https://img.shields.io/badge/python-3.5-green.svg]]
 
   This is my own blog website by flask  
 
@@ -15,13 +16,13 @@
   pip install -r requestments.txt 
    #+END_SRC
    
-** Config
+** Configure
    Please perfect configure at *config/config.py*
    #+BEGIN_SRC shell
     mv config.example config
    #+END_SRC
 
-** Init sql
+** Initialization sql
    #+BEGIN_SRC python
    $ python manager.py db init
    $ python manager.py db migrate
@@ -36,7 +37,7 @@ python manager.py create_user
 
 ** Run 
    #+BEGIN_SRC shell
-python run.py
+python run.py or python manager.py runserver
    #+END_SRC
 
 
