@@ -13,14 +13,14 @@
     <li> <a href="{{ url_for('index.index') }}">{{_( 'HOME' )}}</a></li>
     {% set categories = get_all_category() %}
     {% set cate_len = categories | length %}
-    {% for category in categories[:4] -%}
+    {% for category in categories[:5] -%}
     <li><a href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
     {%- endfor %}
     {% if cate_len > 5 %}
     <li>
         <a href="#" class="dropdown-toggle" id="dropdown-more" data-toggle="dropdown">······</a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-more">
-            {% for category in categories[4:] -%}
+            {% for category in categories[5:] -%}
             <li role="presentation"><a role="menuitem" href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
             {%- endfor %}
         </ul>

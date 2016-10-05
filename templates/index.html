@@ -1,15 +1,18 @@
-{% import 'base/header.html' as header %}
 {% extends 'base/base.html' %}
-{% block header -%}
-{{ header.header('index') }}
-{% endblock %}
-{% block list -%}
-{{ header.list('index') }}
-{% endblock %}
+{% from 'common/_macro.html' import header %}
+{% from 'common/_macro.html' import headerlist %}
 
 {% block title -%}
-HonMaple
-{%- endblock %}
+{{_("HonMaple's Blog")-}}
+{% endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
 
 {% macro image(text) -%}
 <img src="{{ url_for('static',filename='images/Moo.png') }}" alt="moon" style="width:100%;">

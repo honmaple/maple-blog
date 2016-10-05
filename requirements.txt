@@ -38,3 +38,4 @@ SQLAlchemy==1.0.14
 webassets==0.11.1
 Werkzeug==0.11.10
 WTForms==2.1
+yapf==0.12.1

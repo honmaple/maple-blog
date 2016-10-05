@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # **************************************************************************
 # Copyright © 2016 jianglin
 # File Name: auth.py
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 11:53:15 (CST)
-# Last Update:星期二 2016-10-4 15:57:16 (CST)
+# Last Update:星期三 2016-10-5 15:16:7 (CST)
 #          By:
 # Description:
 # **************************************************************************

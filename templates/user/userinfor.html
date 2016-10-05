@@ -14,7 +14,43 @@
 {{ headerlist() }}
 {%- endblock list %}
 
+{% block script -%}
+{{ super() }}
+<script type="text/javascript">
+ $(document).ready(function(){
+     $('a#email').click(function(){
+         $.ajax ({
+             type : "POST",
+             url : "{{ url_for('auth.confirm_email') }}",
+             data:JSON.stringify({
+             }),
+             contentType: 'application/json;charset=UTF-8',
+             success: function(result) {
+                 if (result.judge == true)
+                     {
+                         alert(result.error);
+                     }
+                 else
+                     {
+                         alert(result.error);
+                     }
+             }
+         });
+     });
+ });
+</script>
+{%- endblock script %}
+
 {% block content %}
+{% if not current_user.is_confirmed %}
+<div class="alert alert-info" style="padding:6px">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    你的账户未验证,请尽快验证,否则无法评论或回复或发表问题
+    <a id="email" class="btn btn-info btn-sm">验证账户</a>
+</div>
+{% endif %}
 {% set name = dict(name=current_user.username) %}
 <ul class="nav nav-tabs nav-justified" role="tablist">
     <li role="presentation" class="active"><a href="{{ url_for('user.infor',**name) }}">个人资料</a></li>
@@ -28,27 +64,27 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">账户名称</label>
         <div class="col-sm-10">
-        <p class="form-control-static">{{ user.username }}</p>
+            <p class="form-control-static">{{ user.username }}</p>
         </div>
-        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">注册邮箱</label>
         <div class="col-sm-10">
-        <p class="form-control-static">{{ user.email }}</p>
+            <p class="form-control-static">{{ user.email }}</p>
         </div>
-        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">验证状态</label>
         <div class="col-sm-10">
-        <p class="form-control-static">{{ user.is_confirmed }}</p>
+            <p class="form-control-static">{{ user.is_confirmed }}</p>
         </div>
-        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">注册日期</label>
         <div class="col-sm-10">
-        <p class="form-control-static">{{ user.registered_time }}</p>
+            <p class="form-control-static">{{ user.registered_time }}</p>
         </div>
-        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">所在学校</label>
         <div class="col-sm-10">

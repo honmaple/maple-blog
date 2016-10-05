@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: blog.py
@@ -20,10 +20,6 @@ from urllib.parse import urljoin
 from maple.filters import safe_markdown
 from werkzeug.contrib.atom import AtomFeed
 from werkzeug.utils import escape
-
-
-def make_external(url):
-    return urljoin(request.url_root, url)
 
 
 class BlogListView(MethodView):
@@ -55,7 +51,7 @@ class BlogView(MethodView):
     @cache.cached(timeout=30)
     def get(self, blogId):
         '''记录用户浏览次数'''
-        redis_data.zincrby('visited:article', 'article:%s' % str(id), 1)
+        redis_data.zincrby('visited:article', 'article:%s' % str(blogId), 1)
         blog = Blog.get(blogId)
         tags = Blog.tags
         data = {'blog': blog, 'tags': tags}
@@ -118,9 +114,10 @@ class BlogRssView(MethodView):
                      escape(safe_markdown(blog.content)),
                      content_type='html',
                      author=blog.author.username,
-                     url=make_external(url_for(
-                         'blog.blog', blogId=blog.id)),
+                     url=urljoin(
+                         request.url_root,
+                         url_for('blog.blog', blogId=blog.id)),
                      updated=blog.created_at
-                     if blog.updated_at is not None else blog.created_at,
+                     if blog.updated_at is not None else blog.updated_at,
                      published=blog.created_at)
         return feed.get_response()

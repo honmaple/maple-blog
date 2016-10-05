@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: blog.py
@@ -32,7 +32,7 @@ class BookView(MethodView):
     def get(self, bookId):
         book = Books.get(bookId)
         data = {
-            'title': _('%(name)s - 书籍查询 - HonMaple', title=book.name),
+            'title': _('%(name)s - 书籍查询 - HonMaple', name=book.name),
             'book': book
         }
         return render_template('book/book.html', **data)

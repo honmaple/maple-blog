@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: models.py
@@ -28,6 +28,10 @@ class Books(db.Model):
 
     def __repr__(self):
         return '<Books %r>' % self.name
+
+    @classmethod
+    def get(cls, bookId):
+        return cls.query.filter_by(id=bookId).first_or_404()
 
     @classmethod
     def get_book_list(cls, page=1, filter_dict=dict()):
