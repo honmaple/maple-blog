@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # **************************************************************************
 # Copyright © 2016 jianglin
 # File Name: extensions.py
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期一 2016-8-8 17:24:24 (CST)
+# Last Update:星期三 2016-10-5 15:16:8 (CST)
 #          By:
 # Description:
 # **************************************************************************

@@ -15,17 +15,18 @@
         </span>
     </li>
     <li class="list-group-item">
-        {{ _('Social') }}
+        <span class="glyphicon glyphicon-envelope"></span>
         {% from 'blog/_macro.html' import social %}
         {{ social() }}
     </li>
     <li class="list-group-item">
-        {{ _('Tags') }}
+        <span class="glyphicon glyphicon-tags"></span>
+        <br/>
         {% from 'blog/_macro.html' import tags %}
         {{ tags() }}
     </li>
     <li class="list-group-item">
-        {{ _('Link') }}
+        <span class="glyphicon glyphicon-link"></span>
         {% from 'blog/_macro.html' import urls %}
         {{ urls() }}
     </li>

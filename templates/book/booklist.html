@@ -21,14 +21,14 @@
             {% for book in books.items %}
             <div class="col-xs-4 col-sm-2 text-center">
                 <div style="height:160px;width:auto">
-                    <img src="{{ url_for('static',filename='book_image/'+book['name']+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
+                    <img src="{{ url_for('static',filename='book_image/'+book.name+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
                     <br />
-                    <a href="{{ url_for('book.book_intro',name=book['name']) }}">{{ book['name'] }}</a>
+                    <a href="{{ url_for('book.book',bookId=book.id) }}">{{ book.name }}</a>
                 </div>
             </div>
             {% endfor %}
         </div>
-        {{ paginate(books,'book.bloglist')}}
+        {{ paginate(books,'book.booklist')}}
     </div>
     <script type="text/javascript">
      $.get("{{ url_for('book.taglist') }}",function(data){

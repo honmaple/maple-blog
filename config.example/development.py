@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # **************************************************************************
 # Copyright © 2016 jianglin
 # File Name: development.py
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-08-08 16:13:42 (CST)
-# Last Update:星期一 2016-8-8 16:57:27 (CST)
+# Last Update:星期三 2016-10-5 15:16:5 (CST)
 #          By:
 # Description:
 # **************************************************************************

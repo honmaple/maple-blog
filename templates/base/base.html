@@ -1,7 +1,6 @@
 {% extends 'maple/base.html' %}
 {% import 'maple/auth.html'  as auth_base %}
 {% from 'base/paginate.html' import paginate %}
-{% import 'base/header.html' as header_base %}
 {% block script -%}
 {{ super() }}
 <script  type="text/javascript" src="{{ url_for('static',filename='style/honmaple.js')}}"></script>

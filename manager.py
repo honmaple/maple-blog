@@ -6,7 +6,7 @@
 #   Created Time: 2016-02-11 13:34:38
 # *************************************************************************
 # !/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from maple import app, db

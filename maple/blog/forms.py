@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: askform.py

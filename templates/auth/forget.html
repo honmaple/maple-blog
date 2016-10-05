@@ -1,11 +1,14 @@
-{% extends "base/base.html" %}
-{% import 'base/header.html' as header %}
+{% extends 'base/base.html' %}
+{% from 'common/_macro.html' import header %}
+{% from 'common/_macro.html' import headerlist %}
+
 {% block header -%}
-{{ header.header('index') }}
-{% endblock %}
+{{ header() }}
+{%- endblock header %}
+
 {% block list -%}
-{{ header.list('index') }}
-{% endblock %}
+{{ headerlist() }}
+{%- endblock list %}
 
 {% block title -%}
 {{_('forget password')}} - HonMaple

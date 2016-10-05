@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # **************************************************************************
 # Copyright © 2016 jianglin
 # File Name: urls.py
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-08-08 15:08:36 (CST)
-# Last Update:星期二 2016-10-4 0:27:39 (CST)
+# Last Update:星期三 2016-10-5 15:16:7 (CST)
 #          By:
 # Description:
 # **************************************************************************
