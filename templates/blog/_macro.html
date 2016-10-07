@@ -13,14 +13,14 @@
     <li> <a href="{{ url_for('index.index') }}">{{_( 'HOME' )}}</a></li>
     {% set categories = get_all_category() %}
     {% set cate_len = categories | length %}
-    {% for category in categories[:5] -%}
+    {% for category in categories[:4] -%}
     <li><a href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
     {%- endfor %}
-    {% if cate_len > 5 %}
+    {% if cate_len > 4 %}
     <li>
         <a href="#" class="dropdown-toggle" id="dropdown-more" data-toggle="dropdown">······</a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-more">
-            {% for category in categories[5:] -%}
+            {% for category in categories[4:] -%}
             <li role="presentation"><a role="menuitem" href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
             {%- endfor %}
         </ul>
@@ -88,13 +88,15 @@
 {%- endmacro %}
 
 {% macro blogcontent(content) -%}
+<script>hljs.initHighlightingOnLoad();</script>
 <span class="content">
     {{ content | truncate(255, True)| safe_markdown }}
 </span>
 {%- endmacro %}
 
 {% macro blogdetail(blog) -%}
-<h2 class="text-center">{{ blog.title }}</h2>
+<script>hljs.initHighlightingOnLoad();</script>
+<h1 class="text-center" style="font-size:30px;">{{ blog.title }}</h1>
 {% set author = blog.author.username %}
 {% set tags = blog.tags %}
 {% set category = blog.category.name %}
@@ -122,11 +124,11 @@
         <span class="label label-info">{{ blog.id | visit_total }}</span>
     </address>
 </footer>
-<div class="blog-content" style="font-size:16px;">
+<div class="blog-content">
     {{ blog.content | safe_markdown }}
     {%- if blog.is_copy == False -%}
     <div style="border-bottom:1px dashed #000000;width:60%;"></div>
-    版权所有,转载请注明出处及作者
+    版权所有,转载请注明作者及出处
     {%- endif -%}
 </div>
 {%- endmacro %}

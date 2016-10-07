@@ -5,6 +5,7 @@ migrations/
 test/
 fabfile.py
 **/__pycache__/
+**/book_image/
 *.swp
 *.pyc
 **/.webassets-cache/

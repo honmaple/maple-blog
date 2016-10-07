@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期三 2016-10-5 15:16:8 (CST)
+# Last Update:星期五 2016-10-7 14:25:48 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -28,8 +28,10 @@ def register_form(app):
 
 
 def register_maple(app):
-    maple = Bootstrap(css=('style/honmaple.css', 'style/monokai.css'),
-                      use_auth=True)
+    maple = Bootstrap(
+        css=('style/honmaple.css', 'style/monokai.css'),
+        js=('style/highlight.js', ),
+        use_auth=True)
     maple.init_app(app)
     Captcha(app)
     Error(app)
@@ -37,8 +39,8 @@ def register_maple(app):
 
 def register_redis(app):
     config = app.config
-    redis_data = StrictRedis(db=config['CACHE_REDIS_DB'],
-                             password=config['CACHE_REDIS_PASSWORD'])
+    redis_data = StrictRedis(
+        db=config['CACHE_REDIS_DB'], password=config['CACHE_REDIS_PASSWORD'])
     return redis_data
 
 
@@ -64,8 +66,8 @@ def register_login(app):
 
 
 def register_babel(app):
-    translations = os.path.abspath(os.path.join(
-        os.path.dirname(__file__), os.pardir, 'translations'))
+    translations = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), os.pardir, 'translations'))
     domain = Domain(translations)
     babel = Babel(default_domain=domain)
     babel.init_app(app)
