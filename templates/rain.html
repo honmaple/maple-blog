@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>HonMaple' Blog</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='style/css/rain.css') }}" type="text/css" media="screen" />
+        {%- assets "home_js" -%}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {%- endassets %}
+    </head>
+    <body translate="no" class="thunder">
+        <!-- 刷新一下 -->
+        <canvas id="canvas1" width="1349" height="410"></canvas>
+        <canvas id="canvas2" width="1349" height="410"></canvas>
+        <canvas id="canvas3" width="1349" height="410"></canvas>
+        <script type="text/javascript">Rain();</script>
+    </body>
+</html>
