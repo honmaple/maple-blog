@@ -4,6 +4,7 @@ config/
 migrations/
 test/
 fabfile.py
+**/assets/
 **/__pycache__/
 **/book_image/
 *.swp

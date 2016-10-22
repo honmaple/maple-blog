@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-18 08:03:11
 # *************************************************************************
-from flask import (Flask, send_from_directory, request, g)
+from flask import (Flask, send_from_directory, request, g, session)
 from flask_mail import Mail
 from flask_principal import Principal
 from flask_sqlalchemy import SQLAlchemy
@@ -55,6 +55,11 @@ principals = Principal(app)
 redis_data = register_redis(app)
 cache = register_cache(app)
 register(app)
+
+
+@app.before_first_request
+def before_first_request():
+    session['rain'] = '0'
 
 
 @app.before_request
