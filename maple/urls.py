@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-08-08 15:08:36 (CST)
-# Last Update:星期三 2016-10-5 15:16:7 (CST)
+# Last Update:星期二 2016-11-1 21:9:0 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -17,11 +17,10 @@ from maple.question.urls import site as question_site
 from maple.books.urls import site as book_site
 
 
-def register_urls(app):
+def register_routes(app):
     app.register_blueprint(index_site, url_prefix='')
     app.register_blueprint(user_site, url_prefix='/u')
     app.register_blueprint(blog_site, url_prefix='/blog')
     app.register_blueprint(question_site, url_prefix='/question')
     app.register_blueprint(book_site, url_prefix='/books')
     import maple.auth.auth
-    import maple.admin.admin

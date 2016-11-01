@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-25 21:58:14
 # *************************************************************************
-from flask.ext.wtf import Form
+from flask_wtf import Form
 from wtforms import PasswordField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo
 

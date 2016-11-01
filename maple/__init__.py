@@ -7,16 +7,16 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-18 08:03:11
 # *************************************************************************
-from flask import (Flask, send_from_directory, request, g, session)
-from flask_mail import Mail
-from flask_principal import Principal
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import current_user
-from .extensions import (register_maple, register_form, register_babel,
-                         register_login)
-from .extensions import register_redis, register_cache
+from flask import Flask
+from .extensions import register_maple
+from .extensions import (redis_data, csrf, cache, babel, mail, db, principals,
+                         login_manager, avatar)
 from .filters import register_jinja2
 from .logs import register_logging
+from .urls import register_routes
+from .app import register_app
+from maple.admin.urls import admin
+from maple.chatroom.views import socketio
 import os
 
 
@@ -30,41 +30,28 @@ def create_app(config=None):
         app.config.from_object('config.config')
     else:
         app.config.from_object(config)
+    register(app)
     return app
 
 
 def register(app):
-    register_babel(app)
-    register_form(app)
-    register_jinja2(app)
-    register_login(app)
-    register_maple(app)
+    register_extensions(app)
     register_routes(app)
+    register_app(app)
+    register_jinja2(app)
+    register_maple(app)
     register_logging(app)
 
 
-def register_routes(app):
-    from .urls import register_urls
-    register_urls(app)
-
-
-app = create_app()
-db = SQLAlchemy(app)
-mail = Mail(app)
-principals = Principal(app)
-redis_data = register_redis(app)
-cache = register_cache(app)
-register(app)
-
-
-@app.before_request
-def before_request():
-    from maple.blog.forms import SearchForm
-    g.search_form = SearchForm()
-    g.user = current_user
-
-
-@app.route('/robots.txt')
-@app.route('/favicon.ico')
-def static_from_root():
-    return send_from_directory(app.static_folder, request.path[1:])
+def register_extensions(app):
+    db.init_app(app)
+    socketio.init_app(app)
+    login_manager.init_app(app)
+    csrf.init_app(app)
+    cache.init_app(app)
+    babel.init_app(app)
+    mail.init_app(app)
+    principals.init_app(app)
+    admin.init_app(app)
+    redis_data.init_app(app)
+    avatar.init_app(app)

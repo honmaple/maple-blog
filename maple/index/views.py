@@ -24,7 +24,6 @@ class IndexView(MethodView):
         questions = Question.query.filter_by(is_private=False).limit(7)
         notice = Notice.query.first()
         data = {'blogs': blogs, 'questions': questions, 'notice': notice}
-        rain = session.get('rain')
         rain = request.cookies.get('rain')
         if rain is None:
             response = make_response(render_template('rain.html'))

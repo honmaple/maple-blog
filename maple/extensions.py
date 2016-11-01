@@ -6,12 +6,13 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期六 2016-10-22 16:49:38 (CST)
+# Last Update:星期六 2016-10-29 20:31:1 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask import request
-from flask.json import JSONEncoder
+from flask_socketio import SocketIO
+from flask_admin import Admin
 from flask_maple import Bootstrap, Captcha, Error
 from flask_wtf.csrf import CsrfProtect
 from flask_login import LoginManager
@@ -19,12 +20,11 @@ from redis import StrictRedis
 from flask_cache import Cache
 from flask_babelex import Babel, Domain
 from flask_babelex import lazy_gettext as _
+from flask_mail import Mail
+from flask_principal import Principal
+from flask_sqlalchemy import SQLAlchemy
+from flask_avatar import Avatar
 import os
-
-
-def register_form(app):
-    csrf = CsrfProtect()
-    csrf.init_app(app)
 
 
 def register_maple(app):
@@ -37,22 +37,33 @@ def register_maple(app):
     Error(app)
 
 
-def register_redis(app):
-    config = app.config
-    redis_data = StrictRedis(
-        db=config['CACHE_REDIS_DB'], password=config['CACHE_REDIS_PASSWORD'])
-    return redis_data
+class Redis(object):
+    def __init__(self, app=None):
+        self.app = app
+        if app is not None:
+            self.init_app(app)
+
+    def init_app(self, app):
+        config = app.config
+        self._redis_client = StrictRedis(
+            db=config['CACHE_REDIS_DB'],
+            password=config['CACHE_REDIS_PASSWORD'])
+
+    def __getattr__(self, name):
+        return getattr(self._redis_client, name)
+
+    def __getitem__(self, name):
+        return self._redis_client[name]
+
+    def __setitem__(self, name, value):
+        self._redis_client[name] = value
+
+    def __delitem__(self, name):
+        del self._redis_client[name]
 
 
-def register_cache(app):
-    cache = Cache()
-    cache.init_app(app)
-    return cache
-
-
-def register_login(app):
+def register_login():
     login_manager = LoginManager()
-    login_manager.init_app(app)
     login_manager.login_view = "auth.login"
     login_manager.session_protection = "strong"
     login_manager.login_message = _("Please login to access this page.")
@@ -64,28 +75,14 @@ def register_login(app):
         user = User.query.get(int(id))
         return user
 
+    return login_manager
 
-def register_babel(app):
+
+def register_babel():
     translations = os.path.abspath(
         os.path.join(os.path.dirname(__file__), os.pardir, 'translations'))
     domain = Domain(translations)
     babel = Babel(default_domain=domain)
-    babel.init_app(app)
-
-    class CustomJSONEncoder(JSONEncoder):
-        """This class adds support for lazy translation texts to Flask's
-        JSON encoder. This is necessary when flashing translated texts."""
-
-        def default(self, obj):
-            from speaklater import is_lazy_string
-            if is_lazy_string(obj):
-                try:
-                    return unicode(obj)  # python 2
-                except NameError:
-                    return str(obj)  # python 3
-            return super(CustomJSONEncoder, self).default(obj)
-
-    app.json_encoder = CustomJSONEncoder
 
     @babel.localeselector
     def get_locale():
@@ -94,3 +91,18 @@ def register_babel(app):
     @babel.timezoneselector
     def get_timezone():
         return 'UTC'
+
+    return babel
+
+
+csrf = CsrfProtect()
+cache = Cache()
+babel = register_babel()
+mail = Mail()
+db = SQLAlchemy()
+principals = Principal()
+admin = Admin(name='HonMaple', template_mode='bootstrap3')
+login_manager = register_login()
+redis_data = Redis()
+socketio = SocketIO()
+avatar = Avatar()

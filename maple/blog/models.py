@@ -8,7 +8,7 @@
 #   Created Time: 2015-11-08 06:42:40
 # *************************************************************************
 from flask import current_app
-from maple import db
+from maple.extensions import db
 from datetime import datetime
 
 tag_blog = db.Table(
@@ -114,15 +114,11 @@ class Comment(db.Model):
         backref=db.backref(
             'comments', cascade='all,delete-orphan', lazy='dynamic'))
 
-    # def __init__(self, author, content):
-    #     self.author = author
-    #     self.content = content
-
     def __repr__(self):
         return "<Comment %r>" % self.content
 
     @classmethod
-    def get_comment_list(cls, page=20, filter_dict=None):
+    def get_comment_list(cls, page=1, filter_dict=dict()):
         per_page = current_app.config['PER_PAGE']
         if filter_dict is None:
             return cls.query.paginate(page, per_page, True)

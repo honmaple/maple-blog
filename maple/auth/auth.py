@@ -5,8 +5,8 @@
 # File Name: auth.py
 # Author: jianglin
 # Email: xiyang0807@gmail.com
-# Created: 2016-06-02 11:53:15 (CST)
-# Last Update:星期三 2016-10-5 15:16:7 (CST)
+# Created: 2016-11-01 21:11:24 (CST)
+# Last Update:星期二 2016-11-1 21:11:26 (CST)
 #          By:
 # Description:
 # **************************************************************************

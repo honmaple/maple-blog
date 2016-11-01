@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2016-01-09 20:00:36
 # *************************************************************************
-from maple import db
+from maple.extensions import db
 from datetime import datetime
 
 
