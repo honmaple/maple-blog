@@ -1,0 +1,5 @@
+{% for tag in tags %}
+<span class="label label-info" style="display: inline-block;">
+    <a href="{{ url_for('book.booklist',tag=tag.tag) }}" style="color:#fff;">{{ tag.tag }}</a>
+</span>
+{% endfor %}

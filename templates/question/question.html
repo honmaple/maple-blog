@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% from 'question/_macro.html' import header %}
+{% from 'question/_macro.html' import headerlist %}
+{% from 'question/_macro.html' import quelist %}
+
+{% block title -%}
+{{ title }}
+{%- endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-9">
+        {{ quelist(question) }}
+    </div>
+</div>
+{%- endblock %}

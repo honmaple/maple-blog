@@ -1,0 +1,38 @@
+<ul class="list-group">
+    <li class="list-group-item" style="text-align:center;">
+        <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" /> <br />
+        <span style="display: inline-block;width:80%;" class="label label-default">
+            <a href="{{url_for('index.about')}}" style="color:#fff;"> 
+                Author
+            </a>
+        </span>
+        <span style="display: inline-block;width:80%;" class="label label-primary">
+            About me
+        </span>
+        <br/>
+        <span>
+            <i>I like solitude, yearning for freedom </i>
+        </span>
+    </li>
+    <li class="list-group-item">
+        <span class="glyphicon glyphicon-envelope"></span>
+        {% from 'blog/_macro.html' import social %}
+        {{ social() }}
+    </li>
+    <li class="list-group-item">
+        <span class="glyphicon glyphicon-tags"></span>
+        <br/>
+        {% from 'blog/_macro.html' import tags %}
+        {{ tags() }}
+    </li>
+    <li class="list-group-item">
+        <span class="glyphicon glyphicon-link"></span>
+        {% from 'blog/_macro.html' import urls %}
+        {{ urls() }}
+    </li>
+</ul>
+<div style="position:fixed; bottom:0;left:30%;width:100%;">
+    <ul class="pager">
+        <li> <a href="#">{{_('TOP')}}</a></li>
+    </ul>
+</div>

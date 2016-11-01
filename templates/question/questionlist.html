@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{% from 'question/_macro.html' import header %}
+{% from 'question/_macro.html' import headerlist %}
+{% from 'question/_macro.html' import quelist %}
+{% from 'question/_macro.html' import queform %}
+
+{% block title -%}
+{{ title }}
+{%- endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
+
+{% block content -%}
+{% if g.user.is_authenticated %}
+<div class="col-sm-9">
+    {% for question in questions.items %}
+    <div class="col-sm-6">
+        {{ quelist(question) }}
+    </div>
+    {% endfor %}
+</div>
+<div class="col-sm-3">
+    {{ queform(form) }}
+</div>
+{% else %}
+{% for question in questions.items %}
+<div class="col-sm-4">
+    {{ quelist(question) }}
+</div>
+{%- endfor %}
+{%- endif %}
+{%- endblock %}

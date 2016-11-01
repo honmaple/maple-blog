@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: index.py
@@ -7,52 +7,42 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-25 02:21:04
 # *************************************************************************
-from flask import (Blueprint, render_template, request)
-from maple import login_manager, cache, babel
-from maple.user.models import User
-from maple.blog.models import Articles
-from maple.question.models import Questions
-from maple.admin.models import Notices
-
-site = Blueprint('index', __name__)
-
-
-@babel.localeselector
-def get_locale():
-    # user = getattr(g, 'user', None)
-    # if user is not None:
-    #     return user.locale
-    return request.accept_languages.best_match(['zh', 'en'])
+from flask import (render_template, session, redirect, url_for, request,
+                   make_response)
+from flask.views import MethodView
+from maple import cache
+from maple.blog.models import Blog
+from maple.question.models import Question
+from .models import Notice
+from time import time
 
 
-@babel.timezoneselector
-def get_timezone():
-    return 'UTC'
-    # user = getattr(g, 'user', None)
-    # if user is not None:
-    #     return user.timezone
+class IndexView(MethodView):
+    @cache.cached(timeout=180)
+    def get(self):
+        blogs = Blog.query.limit(7)
+        questions = Question.query.filter_by(is_private=False).limit(7)
+        notice = Notice.query.first()
+        data = {'blogs': blogs, 'questions': questions, 'notice': notice}
+        rain = request.cookies.get('rain')
+        if rain is None:
+            response = make_response(render_template('rain.html'))
+            response.set_cookie(
+                key='rain',
+                value='Welcome to my Blog',
+                expires=time() + 60 * 15)
+            return response
+        return render_template('index.html', **data)
 
 
-@login_manager.user_loader
-def user_loader(id):
-    user = User.query.get(int(id))
-    return user
+class RainView(MethodView):
+    def get(self):
+        response = make_response(redirect(url_for('index.index')))
+        response.delete_cookie('rain')
+        return response
 
 
-@site.route('/')
-@site.route('/index')
-@cache.cached(timeout=180)
-def index():
-    articles = Articles.query.limit(7)
-    questions = Questions.query.filter_by(private=False).limit(7)
-    notice = Notices.query.first()
-    return render_template('index/index.html',
-                           articles=articles,
-                           questions=questions,
-                           notice=notice)
-
-
-@site.route('/about')
-@cache.cached(timeout=180)
-def about():
-    return render_template('index/about_me.html')
+class AboutView(MethodView):
+    @cache.cached(timeout=180)
+    def get(self):
+        return render_template('about.html')

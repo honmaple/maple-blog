@@ -1,9 +1,12 @@
 venv/
+docs/
 config/
 migrations/
 test/
 fabfile.py
+**/assets/
 **/__pycache__/
+**/book_image/
 *.swp
 *.pyc
 **/.webassets-cache/

@@ -1,0 +1,88 @@
+{% extends 'base/base.html' %}
+{% from 'common/_macro.html' import header %}
+{% from 'common/_macro.html' import headerlist %}
+
+{% block title -%}
+{{_("HonMaple's Blog")-}}
+{% endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
+{% macro image(text) -%}
+<img src="{{ url_for('static',filename='images/Moo.png') }}" alt="moon" style="width:100%;">
+<div class="carousel-caption">
+    <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
+    {{ text }}
+</div>
+{%- endmacro %}
+
+{% macro urllist(title,url) -%}
+<h4>
+    <a class="header-color" href="{{ url }}">
+        {{ title }}
+    </a>
+</h4>
+{%- endmacro %}
+
+{% block content %}
+<div class="col-sm-8 category" style="padding:0;">
+    <div id="index" class="carousel slide col-sm-6 hidden-xs padgin" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#index" data-slide-to="0" class="active"></li>
+            <li data-target="#index" data-slide-to="1"></li>
+            <li data-target="#index" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                {{ image(notice.notice)}}
+            </div>
+            <div class="item">
+                {{ image('Hello HonMaple')}}
+            </div>
+            <div class="item">
+                {{ image(_('This my website.Welcome and you can give me some suggestion'))}}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 font-big">
+        {{ urllist(_('Recent Blogs'),url_for('blog.bloglist')) }}
+        <p>
+            {% for blog in blogs %}
+            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+            <a href="{{ url_for('blog.blog',blogId=blog.id) }}">{{ blog.title }}</a>
+            <br />
+            {% endfor %}
+        </p>
+    </div>
+</div>
+<div class="col-sm-4 category">
+    <div class="font-big">
+        {{ urllist(_('Recent Answers'),url_for('question.quelist')) }}
+        <p>
+            {% for question in questions %}
+            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+            <a href="{{ url_for('question.que',queId=question.id) }}">{{ question.title }}</a>
+            <br />
+            {% endfor %}
+        </p>
+    </div>
+</div>
+{% for blog in blogs %}
+{%- if loop.index >= 3 %}{% break %}{% endif %}
+<div class="col-sm-12 category">
+    {% from 'blog/_macro.html' import blogpanel %}
+    {{ blogpanel(blog) }}
+    {%- if loop.index == 2 -%}
+    <a class="btn btn-primary btn-sm" href="{{ url_for('blog.bloglist') }}" role="button">
+        {{_('more')}}
+    </a>
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

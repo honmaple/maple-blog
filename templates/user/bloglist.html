@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% from 'common/_macro.html' import header %}
+{% from 'common/_macro.html' import headerlist %}
+
+{% block title -%}
+{{_("HonMaple's Blog")-}}
+{% endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
+{% block content %}
+{% set name = dict(name=current_user.username) %}
+<ul class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation"><a href="{{ url_for('user.infor',**name) }}">个人资料</a></li>
+    <li role="presentation"><a href="{{ url_for('user.password',**name) }}">账户安全</a></li>
+    <li role="presentation" class="active"><a href="{{ url_for('user.blog',**name) }}">全部文章</a></li>
+    <li role="presentation"><a href="{{ url_for('user.comment',**name) }}">全部回复</a></li>
+    <li role="presentation"><a href="{{ url_for('user.question',**name) }}">全部问答</a></li>
+</ul>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>NO.</th>
+            <th>标题</th>
+            <th>分类</th>
+            <th>发表时间</th>
+            <th>操作</th>
+        </tr>
+        {% set i = 1 %}
+        {% for blog in blogs.items %}
+        <tr>
+            <td>{{ i }}</td>
+            <td> <a href="{{ url_for('blog.blog',blogId=blog.id) }}">{{ blog.title }}</a></td>
+            <td>{{ blog.category.name }}</td>
+            <td>{{ blog.created_at }}</td>
+            <td>X</td>
+        </tr>
+        {% set i = i + 1 %}
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% from 'common/_macro.html' import header %}
+{% from 'common/_macro.html' import headerlist %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
+{% block title -%}
+{{_('forget password')}} - HonMaple
+{%- endblock %}
+
+
+{% block content %}
+{% import 'maple/auth.html' as auth_base %}
+{{ auth_base.forget(form)}}
+{% endblock %}
+
+

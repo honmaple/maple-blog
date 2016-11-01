@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding=UTF-8 -*-
+# -*- coding: utf-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: views.py
@@ -7,74 +7,86 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-27 17:46:41
 # *************************************************************************
-from flask import (render_template, Blueprint, flash, redirect, url_for,
-                   request)
+from flask import (render_template, flash, redirect, url_for, request)
+from flask.views import MethodView
 from flask_login import current_user, login_required
 from maple import cache
+from maple.main.permissions import writer_permission
 from maple.question.forms import QuestionForm
-from maple.question.models import Questions, db
-from maple.forms.forms import flash_errors
-from datetime import datetime
-
-site = Blueprint('question', __name__)
+from maple.question.models import Question, db
+from flask_maple.forms import flash_errors
+from flask_babelex import gettext as _
 
 
-@site.route('')
-@cache.cached(timeout=180)
-def index():
-    form = QuestionForm()
-    questions = Questions.query.filter_by(private=False).all()
-    return render_template('question/question.html',
-                           title='自问自答-HonMaple',
-                           questions=questions,
-                           form=form)
+class QueListView(MethodView):
+    def __init__(self):
+        super(MethodView, self).__init__()
+        self.form = QuestionForm()
 
+    @cache.cached(timeout=180)
+    def get(self):
+        page = request.args.get('page', 1, type=int)
+        filter_dict = {}
+        filter_dict.update(dict(is_private=False))
+        questions = Question.get_question_list(page, filter_dict)
+        data = {
+            'title': _('自问自答-HonMaple'),
+            'questions': questions,
+            'form': self.form
+        }
+        return render_template('question/questionlist.html', **data)
 
-@site.route('/view', methods=['GET', 'POST'])
-@login_required
-@cache.cached(timeout=180)
-def post():
-    form = QuestionForm()
-    if form.validate_on_submit() and request.method == "POST":
-        post_question = Questions(author=current_user.name,
-                                  title=form.title.data,
-                                  describ=form.describ.data,
-                                  answer=form.answer.data)
-        '''简单私人日记实现'''
-        post_question.publish = datetime.now()
-        post_question.private = form.private.data
-        db.session.add(post_question)
-        db.session.commit()
-        flash('感谢你的提交')
-        return redirect(url_for('question.index'))
-    else:
-        if form.errors:
-            flash_errors(form)
+    @login_required
+    def post(self):
+        if not writer_permission.can():
+            flash(_('You have not confirm your account'))
+            return redirect(url_for('question.quelist'))
+        if self.form.validate_on_submit():
+            question = Question()
+            question.author = current_user
+            question.title = self.form.title.data
+            question.describ = self.form.describ.data
+            question.answer = self.form.answer.data
+            '''简单私人日记实现'''
+            question.is_private = self.form.private.data
+            db.session.add(question)
+            db.session.commit()
+            flash('感谢你的提交')
+            return redirect(url_for('question.quelist'))
         else:
-            pass
-        return redirect(url_for('question.index'))
+            if self.form.errors:
+                flash_errors(self.form)
+            return redirect(url_for('question.quelist'))
 
 
-@site.route('/private')
-@login_required
-@cache.cached(timeout=180)
-def private():
-    form = QuestionForm()
-    questions = Questions.load_by_private()
-    return render_template('question/question.html',
-                           questions=questions,
-                           title='自问自答-HonMaple',
-                           form=form)
+class QuePrivateView(MethodView):
+    def __init__(self):
+        super(MethodView, self).__init__()
+        self.form = QuestionForm()
+
+    @login_required
+    def get(self):
+        page = request.args.get('page', 1, type=int)
+        filter_dict = {}
+        filter_dict.update(dict(is_private=True, author=current_user))
+        questions = Question.get_question_list(page, filter_dict)
+        data = {
+            'title': _('自问自答 - HonMaple'),
+            'form': self.form,
+            'questions': questions
+        }
+        return render_template('question/questionlist.html', **data)
 
 
-@site.route('/view?=<id>')
-@login_required
-@cache.cached(timeout=180)
-def question_view(id):
-    question = Questions.load_by_id(id)
-    if question.private and current_user.name != question.author:
-        flash('你没有权限查看')
-        return redirect(url_for('question.index'))
-    return render_template('question/question_view.html',
-                           title='%s - HonMaple自问自答' % (question.title),
-                           question=question)
+class QueView(MethodView):
+    @login_required
+    def get(self, queId):
+        question = Question.get(queId)
+        if question.is_private and current_user != question.author:
+            flash('你没有权限查看')
+            return redirect(url_for('question.quelist'))
+        data = {
+            'title': _('%(title)s - 自问自答 - HonMaple', title=question.title),
+            'question': question
+        }
+        return render_template('question/question.html', **data)
