@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+{% from 'common/_macro.html' import header %}
+{% from 'common/_macro.html' import headerlist %}
+
+{% block title -%}
+{{_("HonMaple's Blog")-}}
+{% endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
+{% block content -%}
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        关于我
+    </div>
+    <div class="panel-body">
+        about
+    </div>
+</div>
+{%- endblock content %}

@@ -9,13 +9,15 @@
 # -*- coding: utf-8 -*-
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-from maple import app, db
+from maple import create_app
+from maple.extensions import db
 from maple.user.models import User
 from getpass import getpass
 from werkzeug.security import generate_password_hash
 from datetime import datetime
 import os
 
+app = create_app()
 migrate = Migrate(app, db)
 manager = Manager(app)
 
@@ -30,8 +32,8 @@ def init_db():
     """
     Drops and re-creates the SQL schema
     """
-    db.drop_all()
-    db.configure_mappers()
+    # db.drop_all()
+    # db.configure_mappers()
     db.create_all()
     db.session.commit()
 

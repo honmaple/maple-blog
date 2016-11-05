@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-10-29 19:27:46 (CST)
-# Last Update:星期六 2016-10-29 19:33:38 (CST)
+# Last Update:星期六 2016-11-5 22:28:38 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -14,10 +14,10 @@ from maple.user.models import User
 from maple.blog.models import Blog, Comment, Tags, Category
 from maple.question.models import Question
 from maple.books.models import Books
-from maple.index.models import Notice
+from maple.index.models import Notice, Images
 from maple.extensions import admin, db
 from .views import (NoticeView, UserView, QueView, BookView, CategoryView,
-                    BlogView, TagView, CommentView)
+                    BlogView, TagView, CommentView, ImageView)
 
 admin.add_view(
     NoticeView(
@@ -64,4 +64,4 @@ admin.add_view(
     BookView(
         Books, db.session, name='管理书籍', endpoint='admin_books', url='books'))
 # admin.add_view(FileView(File, db.session))
-# admin.add_view(ImageView(Image, db.session))
+admin.add_view(ImageView(Images, db.session))

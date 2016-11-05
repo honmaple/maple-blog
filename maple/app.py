@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-01 20:59:29 (CST)
-# Last Update:星期二 2016-11-1 21:5:15 (CST)
+# Last Update:星期六 2016-11-5 21:23:20 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -14,6 +14,7 @@ from flask import (send_from_directory, request, g)
 from flask.json import JSONEncoder
 from flask_login import current_user
 from flask_principal import RoleNeed, UserNeed, identity_loaded
+from os import path
 
 __all__ = ['register_app']
 
@@ -29,6 +30,11 @@ def register_app(app):
     @app.route('/favicon.ico')
     def static_from_root():
         return send_from_directory(app.static_folder, request.path[1:])
+
+    @app.route('/images/<path:filename>')
+    def images(filename):
+        images_path = path.join(path.pardir, 'images')
+        return send_from_directory(images_path, filename)
 
     class CustomJSONEncoder(JSONEncoder):
         def default(self, obj):

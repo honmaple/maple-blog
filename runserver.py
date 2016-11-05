@@ -8,12 +8,11 @@
 #   Created Time: 2015-11-14 21:19:56
 # *************************************************************************
 from maple import create_app
-from maple.extensions import socketio
 from werkzeug.contrib.fixers import ProxyFix
 
 app = create_app()
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 if __name__ == '__main__':
-    # app.run()
-    socketio.run(app)
+    app.run()
+    print(app.url_map)
