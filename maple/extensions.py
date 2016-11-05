@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期六 2016-10-29 20:31:1 (CST)
+# Last Update:星期六 2016-11-5 15:22:15 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -24,6 +24,7 @@ from flask_mail import Mail
 from flask_principal import Principal
 from flask_sqlalchemy import SQLAlchemy
 from flask_avatar import Avatar
+from flask_maple.mail import MapleMail
 import os
 
 
@@ -98,7 +99,7 @@ def register_babel():
 csrf = CsrfProtect()
 cache = Cache()
 babel = register_babel()
-mail = Mail()
+mail = MapleMail()
 db = SQLAlchemy()
 principals = Principal()
 admin = Admin(name='HonMaple', template_mode='bootstrap3')

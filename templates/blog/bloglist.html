@@ -15,9 +15,10 @@
 {%- endblock list %}
 
 {% block content -%}
+{% set blogs = data %}
 <div class="row">
     <div class="col-sm-9">
-        {%- for blog in blogs.items -%}
+        {%- for blog in blogs -%}
         <ul class="category" style="padding:0 15px">
             <li>
                 {% from 'blog/_macro.html' import blogpanel %}
@@ -33,7 +34,7 @@
         {% set category = request.args.get('category') %}
         {% set tag = request.args.get('tag') %}
         {% set author = request.args.get('author') %}
-        {{ paginate(blogs,'blog.bloglist',dict(category=category,tag=tag,author=author)) }}
+        {{ paginate(pageinfo,'blog.bloglist',dict(category=category,tag=tag,author=author)) }}
     </div>
     <div class="col-md-3" style="padding-left:0">
         {% include 'blog/panel.html' %}

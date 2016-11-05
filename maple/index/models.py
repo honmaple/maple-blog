@@ -20,8 +20,8 @@ class Notice(db.Model):
 
     __mapper_args__ = {"order_by": created_at.desc()}
 
-    # def __init__(self, notice):
-    #     self.notice = notice
-
     def __repr__(self):
         return "<Notice %r>" % self.id
+
+    def __str__(self):
+        return self.notice

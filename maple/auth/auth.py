@@ -6,47 +6,51 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-01 21:11:24 (CST)
-# Last Update:星期二 2016-11-1 21:11:26 (CST)
+# Last Update:星期六 2016-11-5 16:7:10 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from flask import jsonify
-from flask_maple import Auth
 from flask_login import current_user, login_required
-from flask_babelex import gettext as _
-from maple import app, db, mail
+from maple.extensions import mail
 from maple.user.models import User
 from datetime import datetime, timedelta
 from functools import wraps
+from flask_maple.auth import (Auth, RegisterBaseView, ConfirmBaseView,
+                              ConfirmTokenBaseView)
+from maple.common.response import HTTPResponse
 
 
 def check_time(func):
     @wraps(func)
     def decorator(*args, **kwargs):
-        if current_user.send_email_time is None:
-            pass
-        else:
-            if datetime.now() < current_user.send_email_time + timedelta(
-                    seconds=360):
-                return jsonify(judge=False,
-                               error="Your confirm link have not out of time,"
-                               + "Please confirm your email in time")
+        judge = datetime.now() < current_user.send_email_time + timedelta(
+            seconds=360)
+        if current_user.send_email_time is not None and judge:
+            return HTTPResponse(HTTPResponse.USER_EMAIL_WAIT).to_response()
         return func(*args, **kwargs)
 
     return decorator
 
 
-class Login(Auth):
+class RegisterView(RegisterBaseView):
+    mail = mail
+    user_model = User
+    use_principal = True
+
     def register_models(self, form):
-        user = self.User()
+        user = self.user_model()
         user.username = form.username.data
-        user.password = user.set_password(form.password.data)
+        user.password = form.password.data
         user.email = form.email.data
         user.roles = 'Visitor'
         user.send_email_time = datetime.now()
-        self.db.session.add(user)
-        self.db.session.commit()
+        user.add()
         return user
+
+
+class ConfirmTokenView(ConfirmTokenBaseView):
+    user_model = User
+    mail = mail
 
     def confirm_models(self, user):
         user.is_confirmed = True
@@ -54,19 +58,19 @@ class Login(Auth):
         user.roles = 'Writer'
         self.db.session.commit()
 
-    @login_required
-    @check_time
-    def confirm_email(self):
-        if current_user.is_confirmed:
-            return jsonify(
-                judge=False,
-                error=_('Your account has been confirmed,don\'t need again'))
-        else:
-            self.register_email(current_user.email)
-            self.email_models()
-            return jsonify(
-                judge=True,
-                error=_('An email has been sent to your.Please receive'))
+
+class ConfirmView(ConfirmBaseView):
+    decorators = [login_required, check_time]
+    mail = mail
+
+    def email_models(self):
+        current_user.send_email_time = datetime.now()
+        current_user.save()
 
 
-Login(app, db=db, mail=mail, user_model=User, use_principal=True)
+def register_auth(app):
+    auth = Auth(mail=mail, user_model=User, use_principal=True)
+    auth.register_view = lambda: RegisterView
+    auth.confirm_view = lambda: ConfirmView
+    auth.confirm_token_view = lambda: ConfirmTokenView
+    auth.init_app(app)

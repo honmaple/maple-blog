@@ -6,13 +6,15 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 22:37:36 (CST)
-# Last Update:
+# Last Update:星期六 2016-11-5 13:28:35 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask_cache import Cache
 
-from maple import app
+from maple import create_app
+
+app = create_app()
 
 
 def register_cache(app):
@@ -20,12 +22,15 @@ def register_cache(app):
     cache.init_app(app)
     return cache
 
+
 cache = register_cache(app)
+
 
 def main():
     cache.init_app(app)
     with app.app_context():
         cache.clear()
+
 
 if __name__ == '__main__':
     main()

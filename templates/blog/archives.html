@@ -15,14 +15,15 @@
 {%- endblock list %}
 
 {% block content %}
+{% set blogs = data %}
 <div class="category" style="padding:0 15px;">
     <h2>Archives of honmaple</h2>
-    {% for blog in blogs.items %}
+    {% for blog in blogs %}
     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
     {{ blog.created_at | timesince }}
     <a href="{{ url_for('blog.blog',blogId=blog.id) }}">{{ blog.title }}</a>
     <br />
     {% endfor %}
 </div>
-{{ paginate(blogs,'blog.archive') }}
+{{ paginate(pageinfo,'blog.archive') }}
 {% endblock content %}

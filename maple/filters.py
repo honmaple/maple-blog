@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期五 2016-10-7 14:30:12 (CST)
+# Last Update:星期六 2016-11-5 12:30:59 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -67,21 +67,25 @@ def timesince(dt, default="just now"):
     return default
 
 
+def visit_total(article_id):
+    '''文章浏览次数'''
+    from maple.main.mark_record import get_article_count
+    return get_article_count(article_id)
+
+
+def get_all_tags():
+    from maple.blog.models import Tags
+    tags = Tags.query.distinct(Tags.name).all()
+    return tags
+
+
+def get_all_category():
+    from maple.blog.models import Category
+    categories = Category.query.distinct(Category.name).all()
+    return categories
+
+
 def register_jinja2(app):
-    def visit_total(article_id):
-        '''文章浏览次数'''
-        from maple.main.mark_record import get_article_count
-        return get_article_count(article_id)
-
-    def get_all_tags():
-        from maple.blog.models import Tags
-        tags = Tags.query.distinct(Tags.name).all()
-        return tags
-
-    def get_all_category():
-        from maple.blog.models import Category
-        categories = Category.query.distinct(Category.name).all()
-        return categories
 
     app.jinja_env.globals['get_all_tags'] = get_all_tags
     app.jinja_env.globals['get_all_category'] = get_all_category

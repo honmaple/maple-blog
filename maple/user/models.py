@@ -8,6 +8,7 @@
 #   Created Time: 2015-11-08 06:42:40
 # *************************************************************************
 from maple.extensions import db
+from maple.common.models import BaseModel
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, \
      check_password_hash
@@ -17,7 +18,7 @@ ROLES = [('admin', 'admin'), ('editor', 'editor'), ('writer', 'writer'),
          ('visitor', 'visitor')]
 
 
-class User(db.Model, UserMixin):
+class User(db.Model, UserMixin, BaseModel):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True)

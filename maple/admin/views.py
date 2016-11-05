@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update:星期六 2016-10-29 19:31:59 (CST)
+# Last Update:星期六 2016-11-5 13:17:5 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
@@ -25,7 +25,7 @@ class BaseForm(Form):
             formdata=formdata, obj=obj, prefix=prefix, **kwargs)
 
 
-class BaseModelView(ModelView):
+class BaseView(ModelView):
 
     page_size = 10
     can_view_details = True
@@ -39,7 +39,7 @@ class BaseModelView(ModelView):
         abort(404)
 
 
-class BlogView(BaseModelView):
+class BlogView(BaseView):
     # column_exclude_list = ['author']
     column_searchable_list = ['title']
     column_filters = ['category', 'created_at']
@@ -51,35 +51,35 @@ class BlogView(BaseModelView):
     form_excluded_columns = ['comments']
 
 
-class BookView(BaseModelView):
+class BookView(BaseView):
     column_filters = ['tag']
 
 
-class TagView(BaseModelView):
+class TagView(BaseView):
     column_editable_list = ['name']
 
 
-class CategoryView(BaseModelView):
+class CategoryView(BaseView):
     column_editable_list = ['name']
 
 
-class NoticeView(BaseModelView):
+class NoticeView(BaseView):
     form_widget_args = {'notice': {'rows': 10}}
     column_filters = ['created_at']
 
 
-class QueView(BaseModelView):
+class QueView(BaseView):
     column_editable_list = ['title', 'is_private', 'author']
     column_filters = ['is_private', 'created_at']
     column_searchable_list = ['title']
 
 
-class CommentView(BaseModelView):
+class CommentView(BaseView):
     column_editable_list = ['author', 'blog']
     column_filters = ['created_at', 'author']
 
 
-class UserView(BaseModelView):
+class UserView(BaseView):
     column_searchable_list = ['username']
     column_filters = ['is_confirmed', 'is_superuser']
     column_exclude_list = ['password']
@@ -105,7 +105,7 @@ class UserView(BaseModelView):
         form.password.data = User.set_password(form.password.data)
         super(UserView, self).create_model(form)
 
-# class FileView(BaseModelView):
+# class FileView(BaseView):
 #     # Override form field to use Flask-Admin FileUploadField
 #     form_overrides = {'path': form.FileUploadField}
 
@@ -118,7 +118,7 @@ class UserView(BaseModelView):
 #         }
 #     }
 
-# class ImageView(BaseModelView):
+# class ImageView(BaseView):
 
 #     def _list_thumbnail(view, context, model, name):
 #         if not model.path:

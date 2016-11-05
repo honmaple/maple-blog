@@ -7,10 +7,11 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-18 08:11:38
 # *************************************************************************
-from flask import (render_template, request, redirect, url_for, flash)
+from flask import (request, redirect, url_for, flash)
 from flask.views import MethodView
 from flask_login import current_user, login_required
-from maple import db, redis_data, cache
+from flask_maple.views import ViewList, View
+from maple.extensions import redis_data
 from maple.blog.forms import CommentForm
 from maple.user.models import User
 from maple.main.permissions import writer_permission
@@ -20,11 +21,16 @@ from urllib.parse import urljoin
 from maple.filters import safe_markdown
 from werkzeug.contrib.atom import AtomFeed
 from werkzeug.utils import escape
+from maple.common.response import HTTPResponse
+from .serializer import BlogSerializer, CommentSerializer
 
 
-class BlogListView(MethodView):
-    def get_request_info(self):
-        page = request.args.get('page', 1, type=int)
+class BlogListView(ViewList):
+    model = Blog
+    serializer = BlogSerializer
+    template = 'blog/bloglist.html'
+
+    def get_filter_dict(self):
         category = request.args.get('category')
         tag = request.args.get('tag')
         author = request.args.get('author')
@@ -37,68 +43,68 @@ class BlogListView(MethodView):
         if author is not None:
             author = User.query.filter_by(username=author).first_or_404()
             filter_dict.update(author=author)
-        return page, filter_dict
-
-    @cache.cached(timeout=180)
-    def get(self):
-        page, filter_dict = self.get_request_info()
-        blogs = Blog.get_blog_list(page, filter_dict)
-        data = {'blogs': blogs}
-        return render_template('blog/bloglist.html', **data)
+        return filter_dict
 
 
-class BlogView(MethodView):
-    @cache.cached(timeout=30)
+class BlogView(View):
+    model = Blog
+    serializer = BlogSerializer
+    template = 'blog/blog.html'
+
     def get(self, blogId):
         '''记录用户浏览次数'''
         redis_data.zincrby('visited:article', 'article:%s' % str(blogId), 1)
-        blog = Blog.get(blogId)
-        tags = Blog.tags
-        data = {'blog': blog, 'tags': tags}
-        return render_template('blog/blog.html', **data)
+        return super(BlogView, self).get(blogId)
 
 
-class CommentListView(MethodView):
-    # form = CommentForm()
+class CommentListView(ViewList):
+    form = CommentForm
+    model = Comment
+    serializer = CommentSerializer
+    template = 'blog/commentlist.html'
+    per_page = 100
 
-    def __init__(self):
-        super(MethodView, self).__init__()
-        self.form = CommentForm()
-
-    def get(self, blogId):
-        page = request.args.get('page', 1, type=int)
+    def get_filter_dict(self):
         filter_dict = {}
-        filter_dict.update(blog_id=blogId)
-        comments = Comment.get_comment_list(page, filter_dict)
-        data = {'comments': comments, 'form': self.form}
-        return render_template('blog/commentlist.html', **data)
+        blog_id = request.args.get('blogId', type=int)
+        if blog_id is None:
+            return HTTPResponse(HTTPResponse.BLOG_ID_NOT_EXIST).to_response()
+        filter_dict.update(blog_id=blog_id)
+        return filter_dict
+
+    def get_render_info(self, data):
+        data.update(form=self.form())
+        return data
 
     @login_required
-    def post(self, blogId):
+    def post(self):
+        blog_id = request.args.get('blogId', type=int)
+        form = self.form()
         if not writer_permission.can():
             flash(_('You have not confirm your account'))
-            return redirect(url_for('blog.blog', blogId=blogId))
-        if self.form.validate_on_submit():
+            return redirect(url_for('blog.blog', blogId=blog_id))
+        if form.validate_on_submit():
+            if Blog.query.filter_by(id=blog_id).first() is None:
+                return HTTPResponse(
+                    HTTPResponse.BLOG_ID_NOT_EXIST).to_response()
             comment = Comment()
             comment.author = current_user
-            comment.content = self.form.content.data
-            comment.blog_id = blogId
-            db.session.add(comment)
-            db.session.commit()
+            comment.content = form.content.data
+            comment.blog_id = blog_id
+            comment.add()
             return redirect(
                 url_for(
-                    'blog.blog', blogId=blogId, _anchor='blog-comment'))
+                    'blog.blog', blogId=blog_id, _anchor='blog-comment'))
         return redirect(
             url_for(
-                'blog.blog', blogId=blogId, _anchor='blog-comment'))
+                'blog.blog', blogId=blog_id, _anchor='blog-comment'))
 
 
-class BlogArchiveView(MethodView):
-    def get(self):
-        page = request.args.get('page', 1, type=int)
-        blogs = Blog.query.paginate(page, 30, True)
-        data = {'blogs': blogs}
-        return render_template('blog/archives.html', **data)
+class BlogArchiveView(ViewList):
+    per_page = 30
+    model = Blog
+    serializer = BlogSerializer
+    template = 'blog/archives.html'
 
 
 class BlogRssView(MethodView):
@@ -116,7 +122,8 @@ class BlogRssView(MethodView):
                      author=blog.author.username,
                      url=urljoin(
                          request.url_root,
-                         url_for('blog.blog', blogId=blog.id)),
+                         url_for(
+                             'blog.blog', blogId=blog.id)),
                      updated=blog.created_at
                      if blog.updated_at is not None else blog.updated_at,
                      published=blog.created_at)

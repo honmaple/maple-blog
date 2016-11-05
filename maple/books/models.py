@@ -19,13 +19,6 @@ class Books(db.Model):
     author = db.Column(db.Text)
     content = db.Column(db.Text)
 
-    def __init__(self, tag, name, title, author, content):
-        self.name = name
-        self.tag = tag
-        self.title = title
-        self.author = author
-        self.content = content
-
     def __repr__(self):
         return '<Books %r>' % self.name
 
@@ -34,7 +27,5 @@ class Books(db.Model):
         return cls.query.filter_by(id=bookId).first_or_404()
 
     @classmethod
-    def get_book_list(cls, page=1, filter_dict=dict()):
-        if not filter_dict:
-            return cls.query.paginate(page, 18, True)
-        return cls.query.filter_by(**filter_dict).paginate(page, 18, True)
+    def get_list(cls, page, number, filter_dict=dict(), sort_tuple=tuple()):
+        return cls.query.filter_by(**filter_dict).paginate(page, number, True)

@@ -37,10 +37,10 @@ def create_app(config=None):
 def register(app):
     register_extensions(app)
     register_routes(app)
-    register_app(app)
     register_jinja2(app)
     register_maple(app)
     register_logging(app)
+    register_app(app)
 
 
 def register_extensions(app):

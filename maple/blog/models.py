@@ -9,6 +9,7 @@
 # *************************************************************************
 from flask import current_app
 from maple.extensions import db
+from maple.common.models import BaseModel
 from datetime import datetime
 
 tag_blog = db.Table(
@@ -16,7 +17,7 @@ tag_blog = db.Table(
     db.Column('blogs_id', db.Integer, db.ForeignKey('blogs.id')))
 
 
-class Tags(db.Model):
+class Tags(db.Model, BaseModel):
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -30,7 +31,7 @@ class Tags(db.Model):
         return self.name
 
 
-class Category(db.Model):
+class Category(db.Model, BaseModel):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
@@ -42,7 +43,7 @@ class Category(db.Model):
         return self.name
 
 
-class Blog(db.Model):
+class Blog(db.Model, BaseModel):
     __tablename__ = 'blogs'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
@@ -80,8 +81,7 @@ class Blog(db.Model):
         return cls.query.filter_by(id=blogId).first_or_404()
 
     @classmethod
-    def get_blog_list(cls, page=1, filter_dict=dict()):
-        per_page = current_app.config['PER_PAGE']
+    def get_list(cls, page, number, filter_dict=dict(), sort_tuple=tuple()):
         bloglist = cls.query
         if 'tag' in filter_dict.keys():
             tag = filter_dict.pop('tag')
@@ -89,11 +89,11 @@ class Blog(db.Model):
         if 'category' in filter_dict.keys():
             category = filter_dict.pop('category')
             bloglist = bloglist.filter(cls.category == category)
-        bloglist = bloglist.paginate(page, per_page, True)
+        bloglist = bloglist.paginate(page, number, True)
         return bloglist
 
 
-class Comment(db.Model):
+class Comment(db.Model, BaseModel):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(
@@ -118,10 +118,7 @@ class Comment(db.Model):
         return "<Comment %r>" % self.content
 
     @classmethod
-    def get_comment_list(cls, page=1, filter_dict=dict()):
-        per_page = current_app.config['PER_PAGE']
-        if filter_dict is None:
-            return cls.query.paginate(page, per_page, True)
-        commentlist = cls.query.filter_by(**filter_dict).paginate(
-            page, per_page, True)
+    def get_list(cls, page, number, filter_dict=dict(), sort_tuple=tuple()):
+        commentlist = cls.query.filter_by(**filter_dict).paginate(page, number,
+                                                                  True)
         return commentlist

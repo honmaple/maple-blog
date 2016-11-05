@@ -6,11 +6,10 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-10-03 16:28:06 (CST)
-# Last Update:星期二 2016-10-4 0:11:20 (CST)
+# Last Update:星期六 2016-11-5 13:42:38 (CST)
 #          By:
 # Description:
 # **************************************************************************
-
 from flask import Blueprint
 from .views import BookListView, BookView, BookTagListView
 

@@ -21,19 +21,16 @@
      $('a#email').click(function(){
          $.ajax ({
              type : "POST",
-             url : "{{ url_for('auth.confirm_email') }}",
+             url : "{{ url_for('auth.confirm') }}",
              data:JSON.stringify({
              }),
              contentType: 'application/json;charset=UTF-8',
-             success: function(result) {
-                 if (result.judge == true)
-                     {
-                         alert(result.error);
-                     }
-                 else
-                     {
-                         alert(result.error);
-                     }
+             success: function(response) {
+                 if (response.description !== ""){
+                     alert(response.description);
+                 }else {
+                     alert(response.message);
+                 }
              }
          });
      });

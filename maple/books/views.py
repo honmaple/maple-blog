@@ -9,33 +9,35 @@
 # *************************************************************************
 from flask import render_template, request
 from flask.views import MethodView
+from flask_maple.views import ViewList, View
 from flask_babelex import gettext as _
 from maple import cache
 from .models import Books
+from .serializer import BookSerializer
 
 
-class BookListView(MethodView):
-    @cache.cached(timeout=300)
-    def get(self):
-        page = request.args.get('page', 1, type=int)
+class BookListView(ViewList):
+    model = Books
+    serializer = BookSerializer
+    template = 'book/booklist.html'
+    per_page = 18
+
+    def get_filter_dict(self):
         tag = request.args.get('tag')
         filter_dict = {}
         if tag is not None:
             filter_dict.update(tag=tag)
-        books = Books.get_book_list(page, filter_dict)
-        data = {'title': _('书籍查询 - HonMaple'), 'books': books}
-        return render_template('book/booklist.html', **data)
+        return filter_dict
 
 
-class BookView(MethodView):
+class BookView(View):
+    model = Books
+    serializer = BookSerializer
+    template = 'book/book.html'
+
     @cache.cached(timeout=180)
     def get(self, bookId):
-        book = Books.get(bookId)
-        data = {
-            'title': _('%(name)s - 书籍查询 - HonMaple', name=book.name),
-            'book': book
-        }
-        return render_template('book/book.html', **data)
+        return super(BookView, self).get(bookId)
 
 
 class BookTagListView(MethodView):

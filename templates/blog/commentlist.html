@@ -1,15 +1,18 @@
+{% from 'base/paginate.html' import paginate %}
+{% set comments = data %}
 <div class="panel panel-info">
     <div class="panel-heading">
         评论
     </div>
+    {% set blogId = request.args.get('blogId') %}
     <div class="panel-body" style="padding:0px;">
-        <form action="{{ request.path }}" method="POST">
+        <form action="{{ url_for('blog.commentlist',blogId=blogId) }}" method="POST">
             {{ form.hidden_tag() }}
             {{ form.content(class="form-control",placeholder="写下你的评论" ,style="height:80px;border-radius:0") }}
             {{ form.submit(class="btn btn-info btn-sm",style="margin-top:5px;") }}
         </form>
     </div>
-    {% for comment in comments.items %}
+    {% for comment in comments %}
     <div class="panel-heading">
         {{ comment.author.username }}于{{ comment.created_at | timesince }}发表
     </div>

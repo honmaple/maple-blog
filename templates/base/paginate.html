@@ -10,7 +10,7 @@
     {%- else %}
     <li class="disabled"> <span><span aria-hidden="true">&laquo;</span></span></li>
     {% endif -%}
-    {%- for page in pagination.iter_pages(left_edge=1, left_current=2, right_current=3, right_edge=1) %}
+    {%- for page in pagination.iter_pages %}
     {%- if page -%}
     {%- if page == pagination.page -%}
     <li class="active"><a >{{ page}}</a></li>

@@ -3,7 +3,7 @@
 {% from 'book/_macro.html' import headerlist %}
 
 {% block title -%}
-{{ title }}
+{{ _('书籍查询 - HonMaple') }}
 {% endblock %}
 
 {% block header -%}
@@ -15,10 +15,11 @@
 {%- endblock list %}
 
 {% block content %}
+{% set books = data %}
 <div class="row">
     <div class="col-sm-9">
         <div class="row" style="padding:0">
-            {% for book in books.items %}
+            {% for book in books %}
             <div class="col-xs-4 col-sm-2 text-center">
                 <div style="height:160px;width:auto">
                     <img src="{{ url_for('static',filename='book_image/'+book.name+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
@@ -28,7 +29,7 @@
             </div>
             {% endfor %}
         </div>
-        {{ paginate(books,'book.booklist')}}
+        {{ paginate(pageinfo,'book.booklist')}}
     </div>
     <script type="text/javascript">
      $.get("{{ url_for('book.taglist') }}",function(data){

@@ -3,7 +3,7 @@
 {% from 'book/_macro.html' import headerlist %}
 
 {% block title -%}
-{{ title }}
+{{ _('%(name)s - 书籍查询 - HonMaple', name=data.name) }}
 {% endblock %}
 
 {% block header -%}
@@ -15,6 +15,7 @@
 {%- endblock list %}
 
 {% block content %}
+{% set book = data %}
 <div>
     <div class="pull-left">
         <img src="{{ url_for('static',filename='book_image/'+book.name+'.jpg') }}" alt="book" style="width:80px;height:120px;" />

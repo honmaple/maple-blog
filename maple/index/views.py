@@ -25,7 +25,7 @@ class IndexView(MethodView):
         notice = Notice.query.first()
         data = {'blogs': blogs, 'questions': questions, 'notice': notice}
         rain = request.cookies.get('rain')
-        if rain is None:
+        if not rain:
             response = make_response(render_template('rain.html'))
             response.set_cookie(
                 key='rain',
@@ -46,3 +46,9 @@ class AboutView(MethodView):
     @cache.cached(timeout=180)
     def get(self):
         return render_template('about.html')
+
+
+class ResumeView(MethodView):
+    @cache.cached(timeout=180)
+    def get(self):
+        return render_template('resume.html')
