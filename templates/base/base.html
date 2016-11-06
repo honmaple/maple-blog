@@ -22,7 +22,7 @@
             {% include 'base/auth.html' %}
             <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;" >
                 <div class="form-group has-feedback">
-                    {{ g.search_form.search(class="form-control input-sm",placeholder="搜索内容")}}
+                    {{ g.search_form.search(class="form-control input-sm",placeholder=_("Search"))}}
                     <i class="icon-search form-control-feedback"></i>
                 </div>
             </form>

@@ -10,13 +10,12 @@
 from flask import Flask
 from .extensions import register_maple
 from .extensions import (redis_data, csrf, cache, babel, mail, db, principals,
-                         login_manager, avatar)
+                         login_manager)
 from .filters import register_jinja2
 from .logs import register_logging
 from .urls import register_routes
 from .app import register_app
 from maple.admin.urls import admin
-from maple.chatroom.views import socketio
 import os
 
 
@@ -37,15 +36,14 @@ def create_app(config=None):
 def register(app):
     register_extensions(app)
     register_routes(app)
-    register_app(app)
     register_jinja2(app)
     register_maple(app)
     register_logging(app)
+    register_app(app)
 
 
 def register_extensions(app):
     db.init_app(app)
-    socketio.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
     cache.init_app(app)
@@ -54,4 +52,3 @@ def register_extensions(app):
     principals.init_app(app)
     admin.init_app(app)
     redis_data.init_app(app)
-    avatar.init_app(app)

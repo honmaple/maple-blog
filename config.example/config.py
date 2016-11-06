@@ -24,6 +24,10 @@ PER_PAGE = 12
 # This will show at html footer
 AUTHOR_NAME = 'Copyright © 2015-2016 honmaple. All rights reserved.'
 
+# redis
+REDIS_DB = 0
+REDIS_PASSWORD = 'redis password'
+
 # Use cache
 CACHE_TYPE = 'redis'
 CACHE_DEFAULT_TIMEOUT = 60

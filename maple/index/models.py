@@ -20,8 +20,19 @@ class Notice(db.Model):
 
     __mapper_args__ = {"order_by": created_at.desc()}
 
-    # def __init__(self, notice):
-    #     self.notice = notice
-
     def __repr__(self):
         return "<Notice %r>" % self.id
+
+
+class Images(db.Model):
+    __tablename__ = 'images'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    path = db.Column(db.String(128), nullable=False, unique=True)
+    url = db.Column(db.String(360), unique=True)
+
+    def __repr__(self):
+        return "<Images %r>" % self.name
+
+    def __str__(self):
+        return self.name

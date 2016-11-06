@@ -6,24 +6,22 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期六 2016-10-29 20:31:1 (CST)
+# Last Update:星期日 2016-11-6 1:2:56 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask import request
-from flask_socketio import SocketIO
 from flask_admin import Admin
 from flask_maple import Bootstrap, Captcha, Error
+from flask_maple.redis import Redis
+from flask_maple.mail import MapleMail
 from flask_wtf.csrf import CsrfProtect
 from flask_login import LoginManager
-from redis import StrictRedis
 from flask_cache import Cache
 from flask_babelex import Babel, Domain
 from flask_babelex import lazy_gettext as _
-from flask_mail import Mail
 from flask_principal import Principal
 from flask_sqlalchemy import SQLAlchemy
-from flask_avatar import Avatar
 import os
 
 
@@ -35,31 +33,6 @@ def register_maple(app):
     maple.init_app(app)
     Captcha(app)
     Error(app)
-
-
-class Redis(object):
-    def __init__(self, app=None):
-        self.app = app
-        if app is not None:
-            self.init_app(app)
-
-    def init_app(self, app):
-        config = app.config
-        self._redis_client = StrictRedis(
-            db=config['CACHE_REDIS_DB'],
-            password=config['CACHE_REDIS_PASSWORD'])
-
-    def __getattr__(self, name):
-        return getattr(self._redis_client, name)
-
-    def __getitem__(self, name):
-        return self._redis_client[name]
-
-    def __setitem__(self, name, value):
-        self._redis_client[name] = value
-
-    def __delitem__(self, name):
-        del self._redis_client[name]
 
 
 def register_login():
@@ -98,11 +71,9 @@ def register_babel():
 csrf = CsrfProtect()
 cache = Cache()
 babel = register_babel()
-mail = Mail()
+mail = MapleMail()
 db = SQLAlchemy()
 principals = Principal()
 admin = Admin(name='HonMaple', template_mode='bootstrap3')
 login_manager = register_login()
 redis_data = Redis()
-socketio = SocketIO()
-avatar = Avatar()

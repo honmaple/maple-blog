@@ -29,7 +29,6 @@
    $ python manager.py db upgrade
    #+END_SRC
    
- 
 ** Create superuser
    #+BEGIN_SRC shell
 python manager.py create_user
@@ -37,7 +36,7 @@ python manager.py create_user
 
 ** Run 
    #+BEGIN_SRC shell
-python run.py or python manager.py runserver
+python runserver.py or python manager.py runserver
    #+END_SRC
 
 
