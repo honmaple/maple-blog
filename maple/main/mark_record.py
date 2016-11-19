@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2016-01-07 21:04:12
 # *************************************************************************
-from maple import redis_data
+from maple.extensions import redis_data
 
 
 def get_article_count(article_id):

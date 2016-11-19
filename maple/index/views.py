@@ -10,7 +10,7 @@
 from flask import (render_template, session, redirect, url_for, request,
                    make_response)
 from flask.views import MethodView
-from maple import cache
+from maple.extensions import cache
 from maple.blog.models import Blog
 from maple.question.models import Question
 from .models import Notice

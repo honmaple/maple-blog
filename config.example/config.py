@@ -37,6 +37,9 @@ CACHE_REDIS_PORT = '6379'
 CACHE_REDIS_PASSWORD = 'redis password'
 CACHE_REDIS_DB = 1
 
+MIDDLEWARE = [
+    'maple.common.middleware.CommonMiddleware'
+]
 
 # Mail such as qq
 MAIL_SERVER = 'smtp.qq.com'

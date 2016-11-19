@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期日 2016-11-6 9:49:31 (CST)
+# Last Update:星期六 2016-11-19 22:45:47 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -15,13 +15,16 @@ from flask_admin import Admin
 from flask_maple import Bootstrap, Captcha, Error
 from flask_maple.redis import Redis
 from flask_maple.mail import MapleMail
+from flask_maple.middleware import Middleware
+from flask_maple.app import App
+from flask_maple.json import CustomJSONEncoder
 from flask_wtf.csrf import CsrfProtect
 from flask_login import LoginManager
 from flask_cache import Cache
 from flask_babelex import Babel, Domain
 from flask_babelex import lazy_gettext as _
 from flask_principal import Principal
-from flask_sqlalchemy import SQLAlchemy
+from flask_maple.models import db
 import os
 
 
@@ -68,12 +71,14 @@ def register_babel():
     return babel
 
 
+db = db
 csrf = CsrfProtect()
 cache = Cache()
 babel = register_babel()
 mail = MapleMail()
-db = SQLAlchemy()
 principals = Principal()
 admin = Admin(name='HonMaple', template_mode='bootstrap3')
 login_manager = register_login()
 redis_data = Redis()
+middleware = Middleware()
+maple_app = App(json=CustomJSONEncoder)

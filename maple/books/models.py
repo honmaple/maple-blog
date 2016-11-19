@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-18 23:56:33
 # *************************************************************************
-from maple import db
+from maple.extensions import db
 
 
 class Books(db.Model):

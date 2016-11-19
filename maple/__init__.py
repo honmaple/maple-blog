@@ -8,9 +8,8 @@
 #   Created Time: 2015-11-18 08:03:11
 # *************************************************************************
 from flask import Flask
+from flask_maple.lazy import LazyExtension
 from .extensions import register_maple
-from .extensions import (redis_data, csrf, cache, babel, mail, db, principals,
-                         login_manager)
 from .filters import register_jinja2
 from .logs import register_logging
 from .urls import register_routes
@@ -43,12 +42,9 @@ def register(app):
 
 
 def register_extensions(app):
-    db.init_app(app)
-    login_manager.init_app(app)
-    csrf.init_app(app)
-    cache.init_app(app)
-    babel.init_app(app)
-    mail.init_app(app)
-    principals.init_app(app)
+    extension = LazyExtension(
+        module='maple.extensions.',
+        extension=['db', 'login_manager', 'csrf', 'cache', 'babel',
+                   'principals', 'redis_data', 'maple_app', 'middleware'])
+    extension.init_app(app)
     admin.init_app(app)
-    redis_data.init_app(app)

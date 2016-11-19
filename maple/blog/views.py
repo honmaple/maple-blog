@@ -10,11 +10,11 @@
 from flask import (render_template, request, redirect, url_for, flash)
 from flask.views import MethodView
 from flask_login import current_user, login_required
-from maple import db, redis_data, cache
+from flask_maple.views import BaseView
+from maple.extensions import db, redis_data, cache
 from maple.blog.forms import CommentForm
-from maple.user.models import User
 from maple.main.permissions import writer_permission
-from .models import Blog, Comment, Category
+from .models import Blog, Comment
 from flask_babelex import gettext as _
 from urllib.parse import urljoin
 from maple.filters import safe_markdown
@@ -22,27 +22,34 @@ from werkzeug.contrib.atom import AtomFeed
 from werkzeug.utils import escape
 
 
-class BlogListView(MethodView):
-    def get_request_info(self):
-        page = request.args.get('page', 1, type=int)
+class BlogListView(BaseView):
+    def get_filter_dict(self):
         category = request.args.get('category')
         tag = request.args.get('tag')
         author = request.args.get('author')
         filter_dict = {}
         if category is not None:
-            category = Category.query.filter_by(name=category).first_or_404()
-            filter_dict.update(category=category)
+            filter_dict.update(category__name=category)
         if tag is not None:
-            filter_dict.update(tag=tag)
+            filter_dict.update(tags__name=tag)
         if author is not None:
-            author = User.query.filter_by(username=author).first_or_404()
-            filter_dict.update(author=author)
-        return page, filter_dict
+            filter_dict.update(author__username=author)
+        return filter_dict
+
+    def get_sort_tuple(self):
+        orderby = request.args.get('orderby')
+        sort_tuple = []
+        if orderby in ['id', 'created_at', 'updated_at']:
+            sort_tuple.append(orderby)
+        sort_tuple = tuple(sort_tuple)
+        return sort_tuple
 
     @cache.cached(timeout=180)
     def get(self):
-        page, filter_dict = self.get_request_info()
-        blogs = Blog.get_blog_list(page, filter_dict)
+        page, number = self.get_page_info()
+        filter_dict = self.get_filter_dict()
+        sort_tuple = self.get_sort_tuple()
+        blogs = Blog.get_list(page, number, filter_dict, sort_tuple)
         data = {'blogs': blogs}
         return render_template('blog/bloglist.html', **data)
 
@@ -53,12 +60,11 @@ class BlogView(MethodView):
         '''记录用户浏览次数'''
         redis_data.zincrby('visited:article', 'article:%s' % str(blogId), 1)
         blog = Blog.get(blogId)
-        tags = Blog.tags
-        data = {'blog': blog, 'tags': tags}
+        data = {'blog': blog}
         return render_template('blog/blog.html', **data)
 
 
-class CommentListView(MethodView):
+class CommentListView(BaseView):
     # form = CommentForm()
 
     def __init__(self):
@@ -66,10 +72,10 @@ class CommentListView(MethodView):
         self.form = CommentForm()
 
     def get(self, blogId):
-        page = request.args.get('page', 1, type=int)
+        page, number = self.get_page_info()
         filter_dict = {}
         filter_dict.update(blog_id=blogId)
-        comments = Comment.get_comment_list(page, filter_dict)
+        comments = Comment.get_list(page, number, filter_dict)
         data = {'comments': comments, 'form': self.form}
         return render_template('blog/commentlist.html', **data)
 
@@ -93,10 +99,12 @@ class CommentListView(MethodView):
                 'blog.blog', blogId=blogId, _anchor='blog-comment'))
 
 
-class BlogArchiveView(MethodView):
+class BlogArchiveView(BaseView):
+    per_page = 30
+
     def get(self):
-        page = request.args.get('page', 1, type=int)
-        blogs = Blog.query.paginate(page, 30, True)
+        page, number = self.get_page_info()
+        blogs = Blog.get_list(page, number)
         data = {'blogs': blogs}
         return render_template('blog/archives.html', **data)
 
@@ -104,7 +112,7 @@ class BlogArchiveView(MethodView):
 class BlogRssView(MethodView):
     def get(self):
         feed = AtomFeed(
-            'HoMaple的个人博客',
+            _("HonMaple's Blog"),
             feed_url=request.url,
             url=request.url_root,
             subtitle='I like solitude, yearning for freedom')
@@ -116,7 +124,8 @@ class BlogRssView(MethodView):
                      author=blog.author.username,
                      url=urljoin(
                          request.url_root,
-                         url_for('blog.blog', blogId=blog.id)),
+                         url_for(
+                             'blog.blog', blogId=blog.id)),
                      updated=blog.created_at
                      if blog.updated_at is not None else blog.updated_at,
                      published=blog.created_at)

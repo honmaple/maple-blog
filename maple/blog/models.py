@@ -7,9 +7,9 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-08 06:42:40
 # *************************************************************************
-from flask import current_app
 from maple.extensions import db
 from datetime import datetime
+from flask_maple.models import ModelMixin
 
 tag_blog = db.Table(
     'tag_blog', db.Column('tags_id', db.Integer, db.ForeignKey('tags.id')),
@@ -42,7 +42,7 @@ class Category(db.Model):
         return self.name
 
 
-class Blog(db.Model):
+class Blog(db.Model, ModelMixin):
     __tablename__ = 'blogs'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
@@ -67,7 +67,7 @@ class Blog(db.Model):
         backref=db.backref(
             'blogs', cascade='all,delete-orphan', lazy='dynamic'))
 
-    __mapper_args__ = {"order_by": created_at.desc()}
+    __mapper_args__ = {"order_by": 'updated_at'}
 
     def __repr__(self):
         return "<Blog %r>" % self.title
@@ -75,25 +75,8 @@ class Blog(db.Model):
     def __str__(self):
         return self.title
 
-    @classmethod
-    def get(cls, blogId):
-        return cls.query.filter_by(id=blogId).first_or_404()
 
-    @classmethod
-    def get_blog_list(cls, page=1, filter_dict=dict()):
-        per_page = current_app.config['PER_PAGE']
-        bloglist = cls.query
-        if 'tag' in filter_dict.keys():
-            tag = filter_dict.pop('tag')
-            bloglist = bloglist.join(cls.tags).filter(Tags.name == tag)
-        if 'category' in filter_dict.keys():
-            category = filter_dict.pop('category')
-            bloglist = bloglist.filter(cls.category == category)
-        bloglist = bloglist.paginate(page, per_page, True)
-        return bloglist
-
-
-class Comment(db.Model):
+class Comment(db.Model, ModelMixin):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(
@@ -116,12 +99,3 @@ class Comment(db.Model):
 
     def __repr__(self):
         return "<Comment %r>" % self.content
-
-    @classmethod
-    def get_comment_list(cls, page=1, filter_dict=dict()):
-        per_page = current_app.config['PER_PAGE']
-        if filter_dict is None:
-            return cls.query.paginate(page, per_page, True)
-        commentlist = cls.query.filter_by(**filter_dict).paginate(
-            page, per_page, True)
-        return commentlist

@@ -10,7 +10,7 @@
 from flask import render_template, request
 from flask.views import MethodView
 from flask_babelex import gettext as _
-from maple import cache
+from maple.extensions import cache
 from .models import Books
 
 

@@ -10,7 +10,7 @@
 from flask import (render_template, flash, redirect, url_for, request)
 from flask.views import MethodView
 from flask_login import current_user, login_required
-from maple import cache
+from maple.extensions import cache
 from maple.main.permissions import writer_permission
 from maple.question.forms import QuestionForm
 from maple.question.models import Question, db

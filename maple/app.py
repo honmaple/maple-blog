@@ -6,12 +6,11 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-01 20:59:29 (CST)
-# Last Update:星期六 2016-11-5 21:23:20 (CST)
+# Last Update:星期六 2016-11-19 22:44:21 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from flask import (send_from_directory, request, g)
-from flask.json import JSONEncoder
+from flask import send_from_directory
 from flask_login import current_user
 from flask_principal import RoleNeed, UserNeed, identity_loaded
 from os import path
@@ -20,33 +19,10 @@ __all__ = ['register_app']
 
 
 def register_app(app):
-    @app.before_request
-    def before_request():
-        from maple.blog.forms import SearchForm
-        g.search_form = SearchForm()
-        g.user = current_user
-
-    @app.route('/robots.txt')
-    @app.route('/favicon.ico')
-    def static_from_root():
-        return send_from_directory(app.static_folder, request.path[1:])
-
     @app.route('/images/<path:filename>')
     def images(filename):
         images_path = path.join(path.pardir, 'images')
         return send_from_directory(images_path, filename)
-
-    class CustomJSONEncoder(JSONEncoder):
-        def default(self, obj):
-            from speaklater import is_lazy_string
-            if is_lazy_string(obj):
-                try:
-                    return unicode(obj)  # python 2
-                except NameError:
-                    return str(obj)  # python 3
-            return super(CustomJSONEncoder, self).default(obj)
-
-    app.json_encoder = CustomJSONEncoder
 
     @identity_loaded.connect_via(app)
     def on_identity_loaded(sender, identity):
