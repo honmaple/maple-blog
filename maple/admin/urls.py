@@ -6,18 +6,19 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-10-29 19:27:46 (CST)
-# Last Update:星期六 2016-11-5 22:28:38 (CST)
+# Last Update:星期六 2016-11-26 16:18:9 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from maple.user.models import User
-from maple.blog.models import Blog, Comment, Tags, Category
 from maple.question.models import Question
 from maple.books.models import Books
-from maple.index.models import Notice, Images
+from maple.index.models import Notice
 from maple.extensions import admin, db
-from .views import (NoticeView, UserView, QueView, BookView, CategoryView,
-                    BlogView, TagView, CommentView, ImageView)
+from .views import (NoticeView, UserView, QueView, BookView)
+from .permission import register_permission
+from .blog import register_blog
+from .file import register_file
 
 admin.add_view(
     NoticeView(
@@ -37,31 +38,8 @@ admin.add_view(
         endpoint='admin_question',
         url='questions'))
 admin.add_view(
-    BlogView(
-        Blog,
-        db.session,
-        name='管理文章',
-        endpoint='admin_article',
-        url='articles'))
-admin.add_view(
-    CategoryView(
-        Category,
-        db.session,
-        name='管理分类',
-        endpoint='admin_category',
-        url='categories'))
-admin.add_view(
-    TagView(
-        Tags, db.session, name='管理节点', endpoint='admin_tag', url='tags'))
-admin.add_view(
-    CommentView(
-        Comment,
-        db.session,
-        name='管理回复',
-        endpoint='admin_comment',
-        url='comments'))
-admin.add_view(
     BookView(
         Books, db.session, name='管理书籍', endpoint='admin_books', url='books'))
-# admin.add_view(FileView(File, db.session))
-admin.add_view(ImageView(Images, db.session))
+register_blog(admin)
+register_permission(admin)
+register_file(admin)

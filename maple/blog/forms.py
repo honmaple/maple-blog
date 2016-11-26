@@ -7,7 +7,7 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-27 17:54:07
 # *************************************************************************
-from flask_wtf import Form
+from flask_wtf import FlaskForm as Form
 from wtforms import (SubmitField, TextAreaField, StringField)
 from wtforms.validators import DataRequired
 from flask_babelex import lazy_gettext as _

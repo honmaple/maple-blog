@@ -13,9 +13,15 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, \
      check_password_hash
 from datetime import datetime
+from flask_maple.permission.models import Group
 
 ROLES = [('admin', 'admin'), ('editor', 'editor'), ('writer', 'writer'),
          ('visitor', 'visitor')]
+
+group_user = db.Table(
+    'group_user',
+    db.Column('group_id', db.Integer, db.ForeignKey('groups.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')))
 
 
 class User(db.Model, UserMixin, BaseModel):
@@ -33,22 +39,8 @@ class User(db.Model, UserMixin, BaseModel):
     send_email_time = db.Column(db.DateTime, nullable=True)
     introduce = db.Column(db.Text, nullable=True)
     school = db.Column(db.String, nullable=True)
-
-    # def __init__(self,
-    #              username,
-    #              email,
-    #              password,
-    #              roles,
-    #              confirmed_time=None,
-    #              introduce=None,
-    #              school=None):
-    #     self.username = username
-    #     self.email = email
-    #     self.password = self.set_password(password)
-    #     self.confirmed_time = confirmed_time
-    #     self.roles = roles
-    #     self.school = school
-    #     self.introduce = introduce
+    groups = db.relationship(
+        Group, secondary=group_user, backref=db.backref('users'))
 
     def update_password(self, password):
         self.password = generate_password_hash(password)
