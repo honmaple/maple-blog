@@ -11,11 +11,12 @@ from flask import render_template, request
 from flask.views import MethodView
 from flask_babelex import gettext as _
 from maple.extensions import cache
+from maple.helper import cache_key
 from .models import Books
 
 
 class BookListView(MethodView):
-    @cache.cached(timeout=300)
+    @cache.cached(timeout=300, key_prefix=cache_key)
     def get(self):
         page = request.args.get('page', 1, type=int)
         tag = request.args.get('tag')
@@ -28,7 +29,7 @@ class BookListView(MethodView):
 
 
 class BookView(MethodView):
-    @cache.cached(timeout=180)
+    @cache.cached(timeout=300, key_prefix=cache_key)
     def get(self, bookId):
         book = Books.get(bookId)
         data = {

@@ -38,7 +38,8 @@ CACHE_REDIS_PASSWORD = 'redis password'
 CACHE_REDIS_DB = 1
 
 MIDDLEWARE = [
-    'maple.common.middleware.CommonMiddleware'
+    'maple.common.middleware.CommonMiddleware',
+    'flask_maple.permission.middleware.PermissionMiddleware'
 ]
 
 # Mail such as qq

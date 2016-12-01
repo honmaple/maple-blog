@@ -67,7 +67,7 @@ class Blog(db.Model, ModelMixin):
         backref=db.backref(
             'blogs', cascade='all,delete-orphan', lazy='dynamic'))
 
-    __mapper_args__ = {"order_by": 'updated_at'}
+    __mapper_args__ = {"order_by": created_at.desc()}
 
     def __repr__(self):
         return "<Blog %r>" % self.title

@@ -9,9 +9,10 @@
 # *************************************************************************
 from maple.extensions import db
 from datetime import datetime
+from flask_maple.models import ModelMixin
 
 
-class Question(db.Model):
+class Question(db.Model, ModelMixin):
     __tablename__ = 'questions'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(48), nullable=False)
@@ -35,13 +36,3 @@ class Question(db.Model):
 
     def __str__(self):
         return self.title
-
-    @classmethod
-    def get(cls, queId):
-        return cls.query.filter_by(id=queId).first_or_404()
-
-    @classmethod
-    def get_question_list(cls, page=1, filter_dict=dict()):
-        if not filter_dict:
-            return cls.query.paginate(page, 18, True)
-        return cls.query.filter_by(**filter_dict).paginate(page, 18, True)

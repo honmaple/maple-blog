@@ -18,7 +18,6 @@ from time import time
 
 
 class IndexView(MethodView):
-    @cache.cached(timeout=180)
     def get(self):
         blogs = Blog.query.limit(7)
         questions = Question.query.filter_by(is_private=False).limit(7)

@@ -14,12 +14,13 @@ from flask_maple.views import BaseView
 from maple.extensions import db, redis_data, cache
 from maple.blog.forms import CommentForm
 from maple.main.permissions import writer_permission
-from .models import Blog, Comment
+from maple.helper import cache_key
 from flask_babelex import gettext as _
 from urllib.parse import urljoin
 from maple.filters import safe_markdown
 from werkzeug.contrib.atom import AtomFeed
 from werkzeug.utils import escape
+from .models import Blog, Comment
 
 
 class BlogListView(BaseView):
@@ -44,7 +45,7 @@ class BlogListView(BaseView):
         sort_tuple = tuple(sort_tuple)
         return sort_tuple
 
-    @cache.cached(timeout=180)
+    @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self):
         page, number = self.get_page_info()
         filter_dict = self.get_filter_dict()
@@ -55,7 +56,7 @@ class BlogListView(BaseView):
 
 
 class BlogView(MethodView):
-    @cache.cached(timeout=30)
+    @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self, blogId):
         '''记录用户浏览次数'''
         redis_data.zincrby('visited:article', 'article:%s' % str(blogId), 1)
@@ -71,6 +72,7 @@ class CommentListView(BaseView):
         super(MethodView, self).__init__()
         self.form = CommentForm()
 
+    @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self, blogId):
         page, number = self.get_page_info()
         filter_dict = {}
@@ -102,6 +104,7 @@ class CommentListView(BaseView):
 class BlogArchiveView(BaseView):
     per_page = 30
 
+    @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self):
         page, number = self.get_page_info()
         blogs = Blog.get_list(page, number)
@@ -110,6 +113,7 @@ class BlogArchiveView(BaseView):
 
 
 class BlogRssView(MethodView):
+    @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self):
         feed = AtomFeed(
             _("HonMaple's Blog"),

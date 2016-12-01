@@ -28,7 +28,7 @@ class QueListView(MethodView):
         page = request.args.get('page', 1, type=int)
         filter_dict = {}
         filter_dict.update(dict(is_private=False))
-        questions = Question.get_question_list(page, filter_dict)
+        questions = Question.get_list(page, 18, filter_dict)
         data = {
             'title': _('自问自答-HonMaple'),
             'questions': questions,
@@ -68,8 +68,8 @@ class QuePrivateView(MethodView):
     def get(self):
         page = request.args.get('page', 1, type=int)
         filter_dict = {}
-        filter_dict.update(dict(is_private=True, author=current_user))
-        questions = Question.get_question_list(page, filter_dict)
+        filter_dict.update(dict(is_private=True, author__id=current_user.id))
+        questions = Question.get_list(page, 18, filter_dict)
         data = {
             'title': _('自问自答 - HonMaple'),
             'form': self.form,
@@ -82,7 +82,7 @@ class QueView(MethodView):
     @login_required
     def get(self, queId):
         question = Question.get(queId)
-        if question.is_private and current_user != question.author:
+        if question.is_private and current_user.id != question.author.id:
             flash('你没有权限查看')
             return redirect(url_for('question.quelist'))
         data = {
