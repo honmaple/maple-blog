@@ -7,30 +7,32 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-25 02:21:04
 # *************************************************************************
-from flask import (render_template, session, redirect, url_for, request,
-                   make_response)
+from flask import (render_template, redirect, url_for, request, make_response)
 from flask.views import MethodView
 from maple.extensions import cache
 from maple.blog.models import Blog
 from maple.question.models import Question
 from .models import Notice
 from time import time
+from random import choice
 
 
 class IndexView(MethodView):
     def get(self):
-        blogs = Blog.query.limit(7)
-        questions = Question.query.filter_by(is_private=False).limit(7)
-        notice = Notice.query.first()
-        data = {'blogs': blogs, 'questions': questions, 'notice': notice}
         rain = request.cookies.get('rain')
+        index_templates = ['index/console.html', 'index/rain.html']
+        template = choice(index_templates)
         if not rain:
-            response = make_response(render_template('index/rain.html'))
+            response = make_response(render_template(template))
             response.set_cookie(
                 key='rain',
                 value='Welcome to my Blog',
                 expires=time() + 60 * 15)
             return response
+        blogs = Blog.query.limit(7)
+        questions = Question.query.filter_by(is_private=False).limit(7)
+        notice = Notice.query.first()
+        data = {'blogs': blogs, 'questions': questions, 'notice': notice}
         return render_template('index/index.html', **data)
 
 

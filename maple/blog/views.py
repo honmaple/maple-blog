@@ -18,6 +18,7 @@ from maple.helper import cache_key
 from flask_babelex import gettext as _
 from urllib.parse import urljoin
 from maple.filters import safe_markdown
+from maple.main.record import record
 from werkzeug.contrib.atom import AtomFeed
 from werkzeug.utils import escape
 from .models import Blog, Comment
@@ -59,7 +60,7 @@ class BlogView(MethodView):
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self, blogId):
         '''记录用户浏览次数'''
-        redis_data.zincrby('visited:article', 'article:%s' % str(blogId), 1)
+        record.add('article:%s' % str(blogId))
         blog = Blog.get(blogId)
         data = {'blog': blog}
         return render_template('blog/blog.html', **data)

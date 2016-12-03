@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期六 2016-11-5 21:2:20 (CST)
+# Last Update:星期六 2016-12-3 23:22:35 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -17,6 +17,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 from bleach import clean
 from datetime import datetime
+from maple.main.record import record
 
 
 def safe_clean(text):
@@ -67,12 +68,6 @@ def timesince(dt, default="just now"):
     return default
 
 
-def visit_total(article_id):
-    '''文章浏览次数'''
-    from maple.main.mark_record import get_article_count
-    return get_article_count(article_id)
-
-
 def get_all_tags():
     from maple.blog.models import Tags
     tags = Tags.query.distinct(Tags.name).all()
@@ -90,6 +85,6 @@ def register_jinja2(app):
     app.jinja_env.globals['get_all_tags'] = get_all_tags
     app.jinja_env.globals['get_all_category'] = get_all_category
     app.jinja_env.filters['safe_markdown'] = safe_markdown
-    app.jinja_env.filters['visit_total'] = visit_total
+    app.jinja_env.filters['visit_total'] = record.get
     app.jinja_env.filters['timesince'] = timesince
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
