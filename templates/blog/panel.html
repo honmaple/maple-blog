@@ -1,6 +1,6 @@
 <ul class="list-group">
     <li class="list-group-item" style="text-align:center;">
-        <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" /> <br />
+        <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" style="max-width:300px;" /> <br />
         <span style="display: inline-block;width:80%;" class="label label-default">
             <a href="{{url_for('index.about')}}" style="color:#fff;"> 
                 Author
@@ -14,14 +14,11 @@
             <i>I like solitude, yearning for freedom </i>
         </span>
     </li>
-    <li class="list-group-item">
-        <span class="glyphicon glyphicon-envelope"></span>
+    <li class="list-group-item text-center" style="font-size:24px;">
         {% from 'blog/_macro.html' import social %}
         {{ social() }}
     </li>
     <li class="list-group-item">
-        <span class="glyphicon glyphicon-tags"></span>
-        <br/>
         {% from 'blog/_macro.html' import tags %}
         {{ tags() }}
     </li>

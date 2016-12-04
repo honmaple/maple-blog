@@ -16,8 +16,11 @@ li {
     box-shadow:0px 0px 1px #ddd;
     border-radius: 3px;
 }
+.category:hover {
+    background-color:rgba(255, 255, 255, 0.6);
+}
 .tags {
-    color:#999;
+    color:#777;
 }
 .question {
     display: inline-block;
@@ -49,8 +52,8 @@ span.content h3 {
     font-size:19px;
 }
 span.content blockquote {
-    font-size:16px;
-    color:#999;
+    font-size:14px;
+    color:#666;
 }
 span.content ul {
     padding-left:16px;
@@ -62,7 +65,7 @@ span.content li {
     list-style-type:circle;
 }
 .blog-content {
-    color: #555;
+    color: #333;
 }
 .blog-content h1 {
     font-size:25px;
@@ -78,7 +81,7 @@ span.content li {
 }
 .blog-content blockquote {
     font-size:16px;
-    color:#999;
+    color:#666;
 }
 .blog-content ul {
     padding-left:16px;
@@ -90,7 +93,8 @@ span.content li {
     list-style-type:circle;
 }
 .blog-content img {
-    max-width: 100%;
+    max-width: 480px;
+    width:100%;
     height: auto;
     display: block;
 }
@@ -108,4 +112,18 @@ code.hljs {
 }
 .label-tag {
     background-color: #ab5424;
+}
+a {
+    color: #333;
+}
+a:focus, a:hover {
+    color:#EB5455;
+    text-decoration: none;
+}
+div.category,ul.category,ul.list-group,li.list-group-item,nav.navbar,ul.dropdown-menu {
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3f000000',endColorstr='#3f000000');
+    background-color:rgba(255, 255, 255, 0.5);
+}
+.navbar-default .navbar-nav > li > a {
+    color: #555;
 }

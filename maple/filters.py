@@ -6,43 +6,41 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期六 2016-12-3 23:22:35 (CST)
+# Last Update:星期日 2016-12-4 12:19:5 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask import Markup
 from misaka import Markdown, HtmlRenderer
-from pygments import highlight
-from pygments.formatters import HtmlFormatter
-from pygments.lexers import get_lexer_by_name
 from bleach import clean
 from datetime import datetime
 from maple.main.record import record
 
 
 def safe_clean(text):
-    tags = ['b', 'i', 'font', 'br', 'blockquote', 'div', 'h2', 'ul', 'li', 'a']
-    attrs = {'*': ['style', 'id', 'class'], 'font': ['color'], 'a': ['href']}
+    tags = ['b', 'i', 'font', 'br', 'div', 'h2', 'blockquote', 'ul', 'li', 'a',
+            'p', 'strong', 'span', 'h1', 'pre', 'code', 'img', 'h3', 'h4',
+            'em', 'hr', 'ol', 'h5']
+    attrs = {
+        '*': ['style', 'id', 'class'],
+        'font': ['color'],
+        'a': ['href'],
+        'img': ['src', 'alt']
+    }
     styles = ['color']
-    return Markup(clean(text, tags=tags, attributes=attrs, styles=styles))
+    return clean(text, tags=tags, attributes=attrs, styles=styles)
 
 
 def safe_markdown(text):
-    class HighlighterRenderer(HtmlRenderer):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-
-        def blockcode(self, text, lang):
-            if not lang:
-                return '\n<pre><code>{}</code></pre>\n'.format(text.strip())
-            lexer = get_lexer_by_name(lang, stripall=True)
-            formatter = HtmlFormatter(linenos=True)
-
-            return highlight(text, lexer, formatter)
-
-    renderer = HighlighterRenderer()
+    renderer = HtmlRenderer()
     md = Markdown(renderer, extensions=('fenced-code', ))
-    return Markup(md(safe_clean(text)))
+    return Markup(safe_clean(md(text)))
+
+
+def markdown(text):
+    renderer = HtmlRenderer()
+    md = Markdown(renderer, extensions=('fenced-code', ))
+    return Markup(md(text))
 
 
 def timesince(dt, default="just now"):
@@ -85,6 +83,7 @@ def register_jinja2(app):
     app.jinja_env.globals['get_all_tags'] = get_all_tags
     app.jinja_env.globals['get_all_category'] = get_all_category
     app.jinja_env.filters['safe_markdown'] = safe_markdown
+    app.jinja_env.filters['markdown'] = markdown
     app.jinja_env.filters['visit_total'] = record.get
     app.jinja_env.filters['timesince'] = timesince
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')

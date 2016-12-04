@@ -5,6 +5,22 @@
 {{ super() }}
 <script  type="text/javascript" src="{{ url_for('static',filename='style/honmaple.js')}}"></script>
 {%- endblock -%}
+
+{% block style -%}
+{{ super() }}
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<style>
+ body {
+     background-color: #ffffff;
+     background-image: url('{{ url_for('static',filename='images/snow.jpg') }}');
+     background-repeat: no-repeat;
+     background-attachment: fixed;
+     background-size:100% 100%;
+     color:#444;
+ }
+</style>
+{%- endblock -%}
+
 {% block main %}
 <nav class="navbar navbar-default  col-md-offset-1 col-md-10 header-back">
     <div class="container-fluid">

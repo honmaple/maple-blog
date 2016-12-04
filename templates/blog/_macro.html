@@ -54,8 +54,11 @@
 {%- endmacro %}
 
 {% macro social() -%}
-<br />
-<a href="http://github.com/honmaple">GitHub</a>
+<a href="https://github.com/honmaple" target="_blank" title="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a>
+<a href="https://honmaple.com/blog/" target="_blank" title="Blog"><i class="fa fa-leaf" aria-hidden="true"></i></a>
+<a href="https://honmaple.com/books/" target="_blank" title="Book"><i class="fa fa-book" aria-hidden="true"></i></a>
+<a href="xiyang0807@gmail.com" target="_blank" title="Gmail"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+<a href="https://www.facebook.com/honmaple" target="_blank" title="FaceBook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
 {%- endmacro %}
 
 {% macro blogpanel(blog) -%}
@@ -90,7 +93,7 @@
 {% macro blogcontent(content) -%}
 <script>hljs.initHighlightingOnLoad();</script>
 <span class="content">
-    {{ content | truncate(255, True)| safe_markdown }}
+    {{ content | truncate(255) | safe_markdown }}
 </span>
 {%- endmacro %}
 

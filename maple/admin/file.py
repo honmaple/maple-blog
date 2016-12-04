@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-26 16:14:42 (CST)
-# Last Update:星期六 2016-11-26 16:20:33 (CST)
+# Last Update:星期日 2016-12-4 22:30:19 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -54,7 +54,7 @@ class ImageView(BaseModelView):
     }
 
     def after_model_change(self, form, model, is_created):
-        model.url = request.url_root + 'images/blog/' + model.path
+        model.url = request.host_url + 'images/blog/' + model.path
         db.session.commit()
 
     def after_model_delete(self, model):
