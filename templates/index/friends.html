@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+{% from 'common/_macro.html' import header %}
+{% from 'common/_macro.html' import headerlist %}
+
+{% block title -%}
+{{_("HonMaple's Blog")-}}
+{% endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
+{% block content %}
+<style>
+ .bottom-line {
+     border-bottom:1px solid #eee;
+ }
+</style>
+<div class="panel panel-default category">
+    <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.5);">
+        <b>友情链接</b>
+    </div>
+    <div class="panel-body bottom-line">
+        <div class="row">
+            {{ media('honmaple论坛','爱生活，更爱自由','/static/images/header.png','https://forums.honmaple.org') }}
+            {{ media('honmaple\'blog','自由','/static/images/header.png','http://honmaple.org') }}
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            {{ media('创造狮','创意工作者导航',url_for('images',filename='avatar/chuangzaoshi.jpg'),'http://chuangzaoshi.com/') }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% macro media(title,description,img,href) -%}
+<div class="col-md-3">
+    <div class="media">
+        <a class="media-left" href="{{ href }}" target="_blank">
+            <img src="{{ img }}" style="width:64px;" class="img-circle" />
+        </a>
+        <div class="media-body"  style="padding-top:9px;">
+            <h5 class="media-heading"><b>{{ title }}</b></h5>
+            <small>
+                {{ description }}
+            </small>
+        </div>
+    </div>
+</div>
+{%- endmacro %}

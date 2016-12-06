@@ -42,3 +42,9 @@ class ResumeView(MethodView):
     @cache.cached(timeout=180)
     def get(self):
         return render_template('index/resume.html')
+
+
+class FriendView(MethodView):
+    @cache.cached(timeout=180)
+    def get(self):
+        return render_template('index/friends.html')

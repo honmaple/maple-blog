@@ -22,10 +22,13 @@
         {% from 'blog/_macro.html' import tags %}
         {{ tags() }}
     </li>
-    <li class="list-group-item">
-        <span class="glyphicon glyphicon-link"></span>
-        {% from 'blog/_macro.html' import urls %}
-        {{ urls() }}
+</ul>
+<ul class="list-group">
+    <li class="list-group-item text-center">
+        <a href="{{ url_for('index.friend') }}">
+            <span class="glyphicon glyphicon-link"></span>
+            友情链接
+        </a>
     </li>
 </ul>
 <div style="position:fixed; bottom:0;left:30%;width:100%;">
