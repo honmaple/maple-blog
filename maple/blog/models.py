@@ -16,7 +16,7 @@ tag_blog = db.Table(
     db.Column('blogs_id', db.Integer, db.ForeignKey('blogs.id')))
 
 
-class Tags(db.Model):
+class Tags(db.Model, ModelMixin):
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -30,7 +30,7 @@ class Tags(db.Model):
         return self.name
 
 
-class Category(db.Model):
+class Category(db.Model, ModelMixin):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)

@@ -14,6 +14,9 @@ from werkzeug.security import generate_password_hash, \
      check_password_hash
 from datetime import datetime
 from flask_maple.permission.models import Group
+from itsdangerous import (URLSafeTimedSerializer, BadSignature,
+                          SignatureExpired)
+from flask import current_app
 
 ROLES = [('admin', 'admin'), ('editor', 'editor'), ('writer', 'writer'),
          ('visitor', 'visitor')]
@@ -75,6 +78,28 @@ class User(db.Model, UserMixin, BaseModel):
         user = User.query.filter_by(email=email).first()
         return user
 
-    # @staticmethod
-    # def check_password(user_password, password):
-    #     return check_password_hash(user_password, password)
+    @property
+    def token(self):
+        config = current_app.config
+        secret_key = config.setdefault('SECRET_KEY')
+        salt = config.setdefault('SECURITY_PASSWORD_SALT')
+        serializer = URLSafeTimedSerializer(secret_key)
+        token = serializer.dumps(self.username, salt=salt)
+        return token
+
+    @staticmethod
+    def check_token(token, max_age=86400):
+        config = current_app.config
+        secret_key = config.setdefault('SECRET_KEY')
+        salt = config.setdefault('SECURITY_PASSWORD_SALT')
+        serializer = URLSafeTimedSerializer(secret_key)
+        try:
+            username = serializer.loads(token, salt=salt, max_age=max_age)
+        except BadSignature:
+            return False
+        except SignatureExpired:
+            return False
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            return False
+        return user

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期六 2016-11-19 22:45:47 (CST)
+# Last Update:星期日 2016-12-11 20:32:22 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -41,7 +41,7 @@ def register_maple(app):
 def register_login():
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
-    login_manager.session_protection = "strong"
+    login_manager.session_protection = "basic"
     login_manager.login_message = _("Please login to access this page.")
 
     from maple.user.models import User
@@ -50,6 +50,14 @@ def register_login():
     def user_loader(id):
         user = User.query.get(int(id))
         return user
+
+    @login_manager.request_loader
+    def user_loader_from_request(request):
+        token = request.args.get('token')
+        if token is not None:
+            user = User.check_token(token)
+            if user:
+                return user
 
     return login_manager
 

@@ -11,7 +11,7 @@ from flask import (render_template, request, redirect, url_for, flash)
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from flask_maple.views import BaseView
-from maple.extensions import db, redis_data, cache
+from maple.extensions import db, redis_data, cache, csrf
 from maple.blog.forms import CommentForm
 from maple.main.permissions import writer_permission
 from maple.helper import cache_key
@@ -21,10 +21,12 @@ from maple.filters import safe_markdown
 from maple.main.record import record
 from werkzeug.contrib.atom import AtomFeed
 from werkzeug.utils import escape
-from .models import Blog, Comment
+from .models import Blog, Comment, Category, Tags
 
 
 class BlogListView(BaseView):
+    decorators = [csrf.exempt]
+
     def get_filter_dict(self):
         category = request.args.get('category')
         tag = request.args.get('tag')
@@ -55,8 +57,56 @@ class BlogListView(BaseView):
         data = {'blogs': blogs}
         return render_template('blog/bloglist.html', **data)
 
+    @login_required
+    def post(self):
+        if not current_user.is_superuser:
+            return 'forbidden'
+        post_data = request.get_json()
+        title = post_data.pop('title', None)
+        content = post_data.pop('content', None)
+        is_copy = post_data.pop('is_copy', None)
+        tags = post_data.pop('tags', None)
+        category = post_data.pop('category', None)
+        if title is None:
+            return 'title is None'
+        if content is None:
+            return 'content is None'
+        if tags is None:
+            return 'tags is None'
+        if category is None:
+            return 'category is None'
+        blog_title = Blog.query.filter_by(title=title).first()
+        if blog_title is not None:
+            return 'title is existed'
+        is_copy = True if is_copy == 'True' else False
+        blog_tags = []
+        tags = tags.split(',')
+        for t in tags:
+            tag = Tags.query.filter_by(name=t).first()
+            if tag is None:
+                tag = Tags()
+                tag.name = t
+                tag.save()
+            blog_tags.append(tag)
+        blog_category = Category.query.filter_by(name=category).first()
+        if blog_category is None:
+            blog_category = Category()
+            blog_category.name = category
+            blog_category.save()
+        blog = Blog()
+        blog.title = title
+        blog.content = content
+        blog.author = current_user
+        blog.is_copy = is_copy
+        blog.category = blog_category
+        blog.tags = blog_tags
+        blog.save()
+        return 'success'
+
 
 class BlogView(MethodView):
+    decorators = [csrf.exempt]
+
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self, blogId):
         '''记录用户浏览次数'''
@@ -64,6 +114,53 @@ class BlogView(MethodView):
         blog = Blog.get(blogId)
         data = {'blog': blog}
         return render_template('blog/blog.html', **data)
+
+    @login_required
+    def put(self, blogId):
+        if not current_user.is_superuser:
+            return 'forbidden'
+        blog = Blog.query.filter_by(id=blogId).first()
+        if blog is None:
+            return 'blog is not exist'
+        post_data = request.get_json()
+        title = post_data.pop('title', None)
+        content = post_data.pop('content', None)
+        tags = post_data.pop('tags', None)
+        category = post_data.pop('category', None)
+        if title is not None:
+            blog.title = title
+        if content is not None:
+            blog.content = content
+        if tags is not None:
+            blog_tags = []
+            tags = tags.split(',')
+            for t in tags:
+                tag = Tags.query.filter_by(name=t).first()
+                if tag is None:
+                    tag = Tags()
+                    tag.name = t
+                    tag.save()
+                blog_tags.append(tag)
+            blog.tags = blog_tags
+        if category is not None:
+            blog_category = Category.query.filter_by(name=category).first()
+            if blog_category is None:
+                blog_category = Category()
+                blog_category.name = category
+                blog_category.save()
+            blog.category = blog_category
+        blog.save()
+        return 'success'
+
+    @login_required
+    def delete(self, blogId):
+        if not current_user.is_superuser:
+            return 'forbidden'
+        blog = Blog.query.filter_by(id=blogId).first()
+        if blog is None:
+            return 'blog is not exist'
+        blog.delete()
+        return 'success'
 
 
 class CommentListView(BaseView):
