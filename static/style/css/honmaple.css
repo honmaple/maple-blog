@@ -127,3 +127,24 @@ div.category,ul.category,ul.list-group,li.list-group-item,nav.navbar,ul.dropdown
 .navbar-default .navbar-nav > li > a {
     color: #555;
 }
+.transparency1 {
+    background-color:rgba(255, 255, 255, 0.1);
+}
+.transparency2 {
+    background-color:rgba(255, 255, 255, 0.2);
+}
+.transparency3 {
+    background-color:rgba(255, 255, 255, 0.3);
+}
+.transparency4 {
+    background-color:rgba(255, 255, 255, 0.4);
+}
+.transparency5 {
+    background-color:rgba(255, 255, 255, 0.5);
+}
+.transparency6 {
+    background-color:rgba(255, 255, 255, 0.6);
+}
+.transparency7 {
+    background-color:rgba(255, 255, 255, 0.7);
+}

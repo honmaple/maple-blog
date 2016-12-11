@@ -1,6 +1,19 @@
+<script type="text/javascript" src="https://cdn.bootcss.com/aplayer/1.5.8/APlayer.min.js"></script>
+<div id="player" class="aplayer"></div>
+<script type="text/javascript" src="{{ url_for('static',filename='style/js/aplayer.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='style/css/aplayer.css') }}" type="text/css" media="screen" />
+<br/>
+<div class="panel panel-default transparency7">
+    <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.3);">
+        {{ _('Tips') }}
+    </div>
+    <div class="panel-body">
+        <b>{{ random_fortune() }}</b>
+    </div>
+</div>
 <ul class="list-group">
     <li class="list-group-item" style="text-align:center;">
-        <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" style="max-width:300px;" /> <br />
+        <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" style="max-width:270px;" /> <br />
         <span style="display: inline-block;width:80%;" class="label label-default">
             <a href="{{url_for('index.about')}}" style="color:#fff;"> 
                 Author
@@ -27,12 +40,12 @@
     <li class="list-group-item text-center">
         <a href="{{ url_for('index.friend') }}">
             <span class="glyphicon glyphicon-link"></span>
-            友情链接
+            {{ _('Friends') }}
         </a>
     </li>
 </ul>
 <div style="position:fixed; bottom:0;left:30%;width:100%;">
     <ul class="pager">
-        <li> <a href="#">{{_('TOP')}}</a></li>
+        <li><a href="#"><i class="fa fa-hand-o-up" aria-hidden="true"></i></a></li>
     </ul>
 </div>

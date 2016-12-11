@@ -21,7 +21,11 @@ class IndexView(MethodView):
         blogs = Blog.query.limit(7)
         questions = Question.query.filter_by(is_private=False).limit(7)
         notice = Notice.query.first()
-        data = {'blogs': blogs, 'questions': questions, 'notice': notice}
+        data = {
+            'blogs': blogs,
+            'questions': questions,
+            'notice': notice,
+        }
         return render_template('index/index.html', **data)
 
 

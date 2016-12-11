@@ -3,6 +3,9 @@ $(function(){
   $(".console-title").typed({
     strings: [title],
     typeSpeed: -100,
+    callback: function(){
+      $('.console-input').focus();
+    }
   });
 });
 var output = $('.console-output');

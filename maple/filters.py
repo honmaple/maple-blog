@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期日 2016-12-4 12:19:5 (CST)
+# Last Update:星期日 2016-12-11 17:1:53 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -66,6 +66,11 @@ def timesince(dt, default="just now"):
     return default
 
 
+def random_fortune():
+    from fortune import fortune
+    return fortune.show()
+
+
 def get_all_tags():
     from maple.blog.models import Tags
     tags = Tags.query.distinct(Tags.name).all()
@@ -82,6 +87,7 @@ def register_jinja2(app):
 
     app.jinja_env.globals['get_all_tags'] = get_all_tags
     app.jinja_env.globals['get_all_category'] = get_all_category
+    app.jinja_env.globals['random_fortune'] = random_fortune
     app.jinja_env.filters['safe_markdown'] = safe_markdown
     app.jinja_env.filters['markdown'] = markdown
     app.jinja_env.filters['visit_total'] = record.get
