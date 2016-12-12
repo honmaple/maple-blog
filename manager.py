@@ -27,6 +27,12 @@ def runserver():
     return app.run()
 
 
+@manager.option('-u', '--user_id', dest='user_id')
+def token(user_id):
+    user_id = int(user_id)
+    return User.query.get(user_id).token
+
+
 @manager.command
 def init_db():
     """

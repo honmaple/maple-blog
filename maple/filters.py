@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期日 2016-12-11 17:1:53 (CST)
+# Last Update:星期一 2016-12-12 22:44:38 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -29,6 +29,14 @@ def safe_clean(text):
     }
     styles = ['color']
     return clean(text, tags=tags, attributes=attrs, styles=styles)
+
+
+def encrypt(text):
+    from itsdangerous import URLSafeSerializer
+    from flask import current_app
+    secret_key = current_app.config.get('SECRET_KEY', 'never')
+    s = URLSafeSerializer(secret_key)
+    return s.dumps(text)
 
 
 def safe_markdown(text):
@@ -92,4 +100,5 @@ def register_jinja2(app):
     app.jinja_env.filters['markdown'] = markdown
     app.jinja_env.filters['visit_total'] = record.get
     app.jinja_env.filters['timesince'] = timesince
+    app.jinja_env.filters['encrypt'] = encrypt
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')

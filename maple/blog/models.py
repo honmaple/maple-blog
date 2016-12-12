@@ -44,6 +44,12 @@ class Category(db.Model, ModelMixin):
 
 class Blog(db.Model, ModelMixin):
     __tablename__ = 'blogs'
+
+    CONTENT_TYPE_MARKDOWN = '0'
+    CONTENT_TYPE_ORGMODE = '1'
+
+    CONTENT_TYPE = (('0', 'markdown'), ('1', 'org-mode'))
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     created_at = db.Column(
@@ -51,6 +57,8 @@ class Blog(db.Model, ModelMixin):
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow(), onupdate=datetime.utcnow())
     content = db.Column(db.Text, nullable=False)
+    content_type = db.Column(
+        db.String(10), nullable=False, default=CONTENT_TYPE_MARKDOWN)
     is_copy = db.Column(db.Boolean, nullable=True, default=False)
     category_id = db.Column(
         db.Integer, db.ForeignKey(

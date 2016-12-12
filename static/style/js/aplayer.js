@@ -31,4 +31,4 @@ var ap = new APlayer({
   ]
 
 });
-ap.init();
+ap.init;

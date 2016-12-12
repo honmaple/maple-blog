@@ -67,6 +67,7 @@ class BlogListView(BaseView):
         is_copy = post_data.pop('is_copy', None)
         tags = post_data.pop('tags', None)
         category = post_data.pop('category', None)
+        content_type = post_data.pop('content_type', None)
         if title is None:
             return 'title is None'
         if content is None:
@@ -75,6 +76,8 @@ class BlogListView(BaseView):
             return 'tags is None'
         if category is None:
             return 'category is None'
+        if content_type is None:
+            return 'content_type is None'
         blog_title = Blog.query.filter_by(title=title).first()
         if blog_title is not None:
             return 'title is existed'
@@ -100,6 +103,10 @@ class BlogListView(BaseView):
         blog.is_copy = is_copy
         blog.category = blog_category
         blog.tags = blog_tags
+        if content_type == Blog.CONTENT_TYPE_MARKDOWN:
+            blog.content_type = content_type
+        else:
+            blog.content_type = Blog.CONTENT_TYPE_ORGMODE
         blog.save()
         return 'success'
 
@@ -127,10 +134,16 @@ class BlogView(MethodView):
         content = post_data.pop('content', None)
         tags = post_data.pop('tags', None)
         category = post_data.pop('category', None)
+        content_type = post_data.pop('content_type', None)
         if title is not None:
             blog.title = title
         if content is not None:
             blog.content = content
+        if content_type is not None:
+            if content_type == Blog.CONTENT_TYPE_MARKDOWN:
+                blog.content_type = content_type
+            else:
+                blog.content_type = Blog.CONTENT_TYPE_ORGMODE
         if tags is not None:
             blog_tags = []
             tags = tags.split(',')

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期日 2016-12-11 20:32:22 (CST)
+# Last Update:星期一 2016-12-12 22:6:53 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -31,7 +31,7 @@ import os
 def register_maple(app):
     maple = Bootstrap(
         css=('style/css/honmaple.css', 'style/css/monokai.css'),
-        js=('style/js/highlight.js', 'style/js/rain.js'),
+        js=('style/js/highlight.js', 'style/js/rain.js','style/js/org.js'),
         use_auth=True)
     maple.init_app(app)
     Captcha(app)
