@@ -1,0 +1,12 @@
+<div class="panel panel-default transparency7">
+    <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.3);">
+        <i class="fa fa-calendar" aria-hidden="true" style="color:#a40000"></i>
+        {{ _('TimeLine') }}
+    </div>
+    {% for timeline in timelines.items %}
+    <div class="panel-body panel-body-border">
+        {{ timeline.content }}
+        <footer><small style="color:#999;">{{ timeline.created_at | timesince }}</small></footer>
+    </div>
+    {% endfor %}
+</div>

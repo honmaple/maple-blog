@@ -30,7 +30,7 @@ class QueListView(MethodView):
         filter_dict.update(dict(is_private=False))
         questions = Question.get_list(page, 18, filter_dict)
         data = {
-            'title': _('自问自答-HonMaple'),
+            'title': _('Answer-HonMaple'),
             'questions': questions,
             'form': self.form
         }
@@ -71,7 +71,7 @@ class QuePrivateView(MethodView):
         filter_dict.update(dict(is_private=True, author__id=current_user.id))
         questions = Question.get_list(page, 18, filter_dict)
         data = {
-            'title': _('自问自答 - HonMaple'),
+            'title': _('Answer - HonMaple'),
             'form': self.form,
             'questions': questions
         }
@@ -86,7 +86,7 @@ class QueView(MethodView):
             flash('你没有权限查看')
             return redirect(url_for('question.quelist'))
         data = {
-            'title': _('%(title)s - 自问自答 - HonMaple', title=question.title),
+            'title': _('%(title)s - Answer - HonMaple', title=question.title),
             'question': question
         }
         return render_template('question/question.html', **data)

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-10-29 19:27:46 (CST)
-# Last Update:星期六 2016-11-26 16:18:9 (CST)
+# Last Update:星期二 2016-12-13 15:43:48 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -19,6 +19,7 @@ from .views import (NoticeView, UserView, QueView, BookView)
 from .permission import register_permission
 from .blog import register_blog
 from .file import register_file
+from .timeline import register_timeline
 
 admin.add_view(
     NoticeView(
@@ -43,3 +44,4 @@ admin.add_view(
 register_blog(admin)
 register_permission(admin)
 register_file(admin)
+register_timeline(admin)

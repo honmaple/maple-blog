@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-10-03 15:53:46 (CST)
-# Last Update:星期一 2016-10-3 21:50:28 (CST)
+# Last Update:星期二 2016-12-13 15:16:38 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -15,8 +15,9 @@ from .views import (BlogListView, BlogView, BlogRssView, BlogArchiveView,
                     CommentListView)
 
 site = Blueprint('blog', __name__)
-
-site.add_url_rule('/', view_func=BlogListView.as_view('bloglist'))
+bloglist_view = BlogListView.as_view('bloglist')
+site.add_url_rule('', view_func=bloglist_view)
+site.add_url_rule('/', view_func=bloglist_view)
 site.add_url_rule('/<int:blogId>', view_func=BlogView.as_view('blog'))
 site.add_url_rule(
     '/<int:blogId>/comment', view_func=CommentListView.as_view('commentlist'))

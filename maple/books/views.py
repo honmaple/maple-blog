@@ -24,7 +24,7 @@ class BookListView(MethodView):
         if tag is not None:
             filter_dict.update(tag=tag)
         books = Books.get_book_list(page, filter_dict)
-        data = {'title': _('书籍查询 - HonMaple'), 'books': books}
+        data = {'title': _('Books - HonMaple'), 'books': books}
         return render_template('book/booklist.html', **data)
 
 
@@ -33,7 +33,7 @@ class BookView(MethodView):
     def get(self, bookId):
         book = Books.get(bookId)
         data = {
-            'title': _('%(name)s - 书籍查询 - HonMaple', name=book.name),
+            'title': _('%(name)s - Books - HonMaple', name=book.name),
             'book': book
         }
         return render_template('book/book.html', **data)

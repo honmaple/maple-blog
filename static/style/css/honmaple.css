@@ -148,3 +148,6 @@ div.category,ul.category,ul.list-group,li.list-group-item,nav.navbar,ul.dropdown
 .transparency7 {
     background-color:rgba(255, 255, 255, 0.7);
 }
+.panel-body-border {
+    border-bottom:1px solid #eea;
+}
