@@ -21,7 +21,11 @@ class Tags(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     blogs = db.relationship(
-        'Blog', secondary=tag_blog, lazy='dynamic', backref="tags")
+        'Blog',
+        secondary=tag_blog,
+        backref=db.backref(
+            'tags', lazy='dynamic'),
+        lazy='dynamic')
 
     def __repr__(self):
         return '<Tags %r>' % self.name

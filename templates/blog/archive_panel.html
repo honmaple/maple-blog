@@ -1,0 +1,71 @@
+{% macro tag_show(tag,count) -%}
+<span class="label label-primary" style="display: inline-block;">
+    <a href="{{ url_for('blog.archive',tag=tag.name) }}" style="color:#fff;">{{ tag.name }}
+        <span class="badge tag-badge">{{ count }}</span>
+    </a>
+</span>
+{%- endmacro %}
+{% macro category_show(category,count) -%}
+<span class="label label-primary" style="display: inline-block;">
+    <a href="{{ url_for('blog.archive',category=category) }}" style="color:#fff;">{{ category.name }}
+        <span class="badge" style="background-color:#fff;color:#337ab7;">{{ count }}</span>
+    </a>
+</span>
+{%- endmacro %}
+
+<div class="panel panel-default transparency7">
+    <div class="panel-heading"  style="background-color:rgba(255, 255, 255, 0.3);">
+        {{ _('Archives By Time') }}
+    </div>
+    {% set times = time_archives()  %}
+    {% for year,month,count in times[:9] %}
+    <div class="panel-body" style="padding:1px 16px;">
+        {% set year = year | int %}
+        {% set month = month | int %}
+        <a class="a-blue" href="{{ url_for('blog.time_archive',year=year,month=month) }}">{{ _('%(year)s-%(month)s',year=year,month=month) }}</a>
+        <small>({{ count }})</small>
+    </div>
+    {% endfor %}
+    <span id="hidelist" class="hidelist">
+        {% for year,month,count in times[9:] %}
+        <div class="panel-body" style="padding:1px 16px;">
+            {% set year = year | int %}
+            {% set month = month | int %}
+            <a class="a-blue" href="{{ url_for('blog.time_archive',year=year,month=month) }}">{{ _('%(year)s-%(month)s',year=year,month=month) }}</a>
+            <small>({{ count }})</small>
+        </div>
+        {% endfor %}
+    </span>
+    <div id="archive-list" class="panel-footer archives transparency3" title="{{ _('open') }}">
+        <i class="fa fa-angle-double-down text-center" aria-hidden="true" style="width:100%;"></i>
+    </div>
+</div>
+<div class="panel panel-default transparency7">
+    <div class="panel-heading"  style="background-color:rgba(255, 255, 255, 0.3);">
+        {{ _('Archives By Category') }}
+    </div>
+    <div class="panel-body">
+        {% for category,count in category_archives() %}
+        {{ category_show(category,count) }}
+        {% endfor %}
+    </div>
+</div>
+<div class="panel panel-default transparency7">
+    <div class="panel-heading"  style="background-color:rgba(255, 255, 255, 0.3);">
+        {{ _('Archives By Tags') }}
+    </div>
+    <div class="panel-body">
+        {% set tags = tag_archives() %}
+        {% for tag,count in tags[:27] %}
+        {{ tag_show(tag,count) }}
+        {% endfor %}
+        <span id="tag-hidelist" class="hidelist">
+            {% for tag,count in tags[27:] %}
+            {{ tag_show(tag,count) }}
+            {% endfor %}
+        </span>
+    </div>
+    <div id="tag-archive-list" class="panel-footer archives transparency3" title="{{ _('open') }}">
+        <i class="fa fa-angle-double-down text-center" aria-hidden="true" style="width:100%;"></i>
+    </div>
+</div>

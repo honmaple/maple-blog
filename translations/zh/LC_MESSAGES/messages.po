@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-12-13 15:39+0800\n"
+"POT-Creation-Date: 2016-12-19 22:57+0800\n"
 "PO-Revision-Date: 2016-04-16 13:45+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -38,13 +38,13 @@ msgstr "搜索"
 msgid "You have not confirm your account"
 msgstr "你的账户未验证"
 
-#: maple/blog/views.py:230 templates/blog/archives.html:6
+#: maple/blog/views.py:259 templates/blog/archives.html:6
 #: templates/blog/blog.html:6 templates/blog/bloglist.html:6
-#: templates/index/aa.html:6 templates/index/about.html:6
-#: templates/index/friends.html:6 templates/index/index.html:6
-#: templates/user/bloglist.html:6 templates/user/commentlist.html:6
-#: templates/user/quelist.html:6 templates/user/userinfor.html:6
-#: templates/user/userpassword.html:6
+#: templates/blog/time_archives.html:6 templates/index/aa.html:6
+#: templates/index/about.html:6 templates/index/friends.html:6
+#: templates/index/index.html:6 templates/user/bloglist.html:6
+#: templates/user/commentlist.html:6 templates/user/quelist.html:6
+#: templates/user/userinfor.html:6 templates/user/userpassword.html:6
 msgid "HonMaple's Blog"
 msgstr "HonMaple's 博客"
 
@@ -113,17 +113,38 @@ msgstr "博客"
 msgid "HOME"
 msgstr "主页"
 
-#: templates/blog/_macro.html:65
+#: templates/blog/_macro.html:29
+msgid "Archives"
+msgstr "归档"
+
+#: templates/blog/_macro.html:67
 msgid "publish"
 msgstr "发表时间"
 
-#: templates/blog/_macro.html:70
+#: templates/blog/_macro.html:72
 msgid "tags"
 msgstr "标签"
 
-#: templates/blog/_macro.html:77
+#: templates/blog/_macro.html:79
 msgid "read"
 msgstr "浏览次数"
+
+#: templates/blog/archive_panel.html:3
+msgid "Archives By Time"
+msgstr "按时间归档"
+
+#: templates/blog/archive_panel.html:9
+#, python-format
+msgid "%(year)s-%(month)s"
+msgstr "%(year)s年%(month)s月"
+
+#: templates/blog/archive_panel.html:16
+msgid "Archives By Category"
+msgstr "按分类归档"
+
+#: templates/blog/archive_panel.html:30
+msgid "Archives By Tags"
+msgstr "按节点归档"
 
 #: templates/blog/commentlist.html:8
 msgid "write your comments"

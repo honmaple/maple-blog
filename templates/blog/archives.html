@@ -15,14 +15,27 @@
 {%- endblock list %}
 
 {% block content %}
-<div class="category" style="padding:0 15px;">
-    <h2>Archives of honmaple</h2>
-    {% for blog in blogs.items %}
-    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-    {{ blog.created_at | timesince }}
-    <a href="{{ url_for('blog.blog',blogId=blog.id) }}">{{ blog.title }}</a>
-    <br />
-    {% endfor %}
+<div class="row">
+    <div class="col-sm-9">
+        <div class="panel panel-default transparency7">
+            <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.3);">
+                Archives of honmaple
+            </div>
+            <div class="panel-body">
+                {% for blog in blogs.items %}
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                <span>{{ blog.created_at | timesince }}</span>
+                <a href="{{ url_for('blog.blog',blogId=blog.id) }}">{{ blog.title }}</a>
+                <br />
+                {% endfor %}
+            </div>
+        </div>
+        {% set category = request.args.get('category') %}
+        {% set tag = request.args.get('tag') %}
+        {{ paginate(blogs,'blog.archive',dict(category=category,tag=tag)) }}
+    </div>
+    <div class="col-sm-3" style="padding-left:0">
+        {% include "blog/archive_panel.html" %}
+    </div>
 </div>
-{{ paginate(blogs,'blog.archive') }}
 {% endblock content %}

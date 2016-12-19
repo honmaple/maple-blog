@@ -45,6 +45,7 @@ def register_extensions(app):
     extension = LazyExtension(
         module='maple.extensions.',
         extension=['db', 'login_manager', 'csrf', 'cache', 'babel',
-                   'principals', 'redis_data', 'maple_app', 'middleware'])
+                   'principals', 'redis_data', 'maple_app', 'middleware',
+                   'mail'])
     extension.init_app(app)
     admin.init_app(app)

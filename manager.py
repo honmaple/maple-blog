@@ -1,3 +1,5 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
 #   File Name: db_create.py
@@ -5,12 +7,10 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2016-02-11 13:34:38
 # *************************************************************************
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from maple import create_app
-from maple.extensions import db
+from maple.extensions import db, cache
 from maple.user.models import User
 from getpass import getpass
 from werkzeug.security import generate_password_hash
@@ -27,10 +27,40 @@ def runserver():
     return app.run()
 
 
+@manager.command
+def clear_cache():
+    with app.app_context():
+        cache.clear()
+
+
 @manager.option('-u', '--user_id', dest='user_id')
 def token(user_id):
     user_id = int(user_id)
     return User.query.get(user_id).token
+
+
+@manager.command
+def tags():
+    '''
+    删除重复tags
+    '''
+    from maple.blog.models import Tags
+    tags = Tags.query.distinct(Tags.name).all()
+    for tag in tags:
+        other_repeat = Tags.query.filter(Tags.name == tag.name,
+                                         Tags.id != tag.id).all()
+        if other_repeat:
+            y_blogs = tag.blogs.all()
+            x_blogs = []
+            print('当前Tags', tag)
+            print('原Blogs', y_blogs)
+            for other_repeat_tag in other_repeat:
+                x_blogs += other_repeat_tag.blogs.all()
+                other_repeat_tag.delete()
+            print('重复Blogs', x_blogs)
+            blogs = y_blogs + x_blogs
+            tag.blogs = blogs
+            tag.save()
 
 
 @manager.command

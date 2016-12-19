@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期一 2016-12-12 22:44:38 (CST)
+# Last Update:星期一 2016-12-26 22:57:6 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -20,7 +20,8 @@ from maple.main.record import record
 def safe_clean(text):
     tags = ['b', 'i', 'font', 'br', 'div', 'h2', 'blockquote', 'ul', 'li', 'a',
             'p', 'strong', 'span', 'h1', 'pre', 'code', 'img', 'h3', 'h4',
-            'em', 'hr', 'ol', 'h5']
+            'em', 'hr', 'ol', 'h5', 'table', 'colgroup', 'col', 'th', 'td','tr',
+            'tbody', 'thead']
     attrs = {
         '*': ['style', 'id', 'class'],
         'font': ['color'],
@@ -79,22 +80,41 @@ def random_fortune():
     return fortune.show()
 
 
-def get_all_tags():
-    from maple.blog.models import Tags
-    tags = Tags.query.distinct(Tags.name).all()
-    return tags
+def tag_archives():
+    from maple.extensions import db
+    from sqlalchemy import func
+    from maple.blog.models import Tags, Blog
+    tags = db.session.query(
+        Tags, func.count(Blog.id)).outerjoin(Tags.blogs).group_by(Tags.id)
+    return tags.all()
 
 
-def get_all_category():
-    from maple.blog.models import Category
-    categories = Category.query.distinct(Category.name).all()
-    return categories
+def category_archives():
+    from maple.extensions import db
+    from sqlalchemy import func
+    from maple.blog.models import Category, Blog
+    categories = db.session.query(
+        Category,
+        func.count(Blog.id)).outerjoin(Category.blogs).group_by(Category.id)
+    return categories.all()
+
+
+def time_archives():
+    from maple.extensions import db
+    from sqlalchemy import func, extract
+    from maple.blog.models import Blog
+    times = db.session.query(
+        extract('year', Blog.created_at).label('y'),
+        extract('month', Blog.created_at).label('m'),
+        func.count("*")).group_by('y', 'm')
+    return times.all()
 
 
 def register_jinja2(app):
 
-    app.jinja_env.globals['get_all_tags'] = get_all_tags
-    app.jinja_env.globals['get_all_category'] = get_all_category
+    app.jinja_env.globals['tag_archives'] = tag_archives
+    app.jinja_env.globals['category_archives'] = category_archives
+    app.jinja_env.globals['time_archives'] = time_archives
     app.jinja_env.globals['random_fortune'] = random_fortune
     app.jinja_env.filters['safe_markdown'] = safe_markdown
     app.jinja_env.filters['markdown'] = markdown

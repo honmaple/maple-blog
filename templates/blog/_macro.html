@@ -11,32 +11,33 @@
 </style>
 <ul class="nav navbar-nav">
     <li> <a href="{{ url_for('index.index') }}">{{_( 'HOME' )}}</a></li>
-    {% set categories = get_all_category() %}
+    {% set categories = category_archives() %}
     {% set cate_len = categories | length %}
-    {% for category in categories[:4] -%}
+    {% for category,count in categories[:4] -%}
     <li><a href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
     {%- endfor %}
     {% if cate_len > 4 %}
     <li>
         <a href="#" class="dropdown-toggle" id="dropdown-more" data-toggle="dropdown">······</a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-more">
-            {% for category in categories[4:] -%}
+            {% for category,count in categories[4:] -%}
             <li role="presentation"><a role="menuitem" href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
             {%- endfor %}
         </ul>
     </li>
     {% endif %}
-    <li> <a href="{{ url_for('blog.archive') }}">Archives</a></li>
+    <li> <a href="{{ url_for('blog.archive') }}">{{ _('Archives') }}</a></li>
     <li> <a href="{{ url_for('blog.rss') }}">RSS</a></li>
 </ul>
 {%- endmacro %}
 
 {% macro tags() -%}
-{% set all_tags = get_all_tags() %}
-{% for tag in all_tags %}
+{% for tag,count in tag_archives() %}
 <span class="label label-primary" style="display: inline-block;">
     {%  set category = request.args.get('category') %}
-    <a href="{{ url_for('blog.bloglist',category=category,tag=tag.name) }}" style="color:#fff;">{{ tag.name }}</a>
+    <a href="{{ url_for('blog.bloglist',category=category,tag=tag.name) }}" style="color:#fff;">{{ tag.name }}
+        <span class="badge tag-badge">{{ count }}</span>
+    </a>
 </span>
 {% endfor %}
 {%- endmacro %}

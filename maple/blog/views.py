@@ -215,10 +215,39 @@ class CommentListView(BaseView):
 class BlogArchiveView(BaseView):
     per_page = 30
 
+    def get_filter_dict(self):
+        category = request.args.get('category')
+        tag = request.args.get('tag')
+        author = request.args.get('author')
+        filter_dict = {}
+        if category is not None:
+            filter_dict.update(category__name=category)
+        if tag is not None:
+            filter_dict.update(tags__name=tag)
+        if author is not None:
+            filter_dict.update(author__username=author)
+        return filter_dict
+
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self):
         page, number = self.get_page_info()
-        blogs = Blog.get_list(page, number)
+        filter_dict = self.get_filter_dict()
+        blogs = Blog.get_list(page, number, filter_dict)
+        data = {'blogs': blogs}
+        return render_template('blog/archives.html', **data)
+
+
+class BlogTimeArchiveView(BaseView):
+    per_page = 30
+
+    @cache.cached(timeout=180, key_prefix=cache_key)
+    def get(self, year, month):
+        page, number = self.get_page_info()
+        from sqlalchemy import extract
+        blogs = db.session.query(Blog).filter(
+            extract('year', Blog.created_at) == year,
+            extract('month', Blog.created_at) == month).paginate(page, number,
+                                                                 True)
         data = {'blogs': blogs}
         return render_template('blog/archives.html', **data)
 

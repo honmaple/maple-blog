@@ -12,3 +12,31 @@ function dispatch() {
     return false;
   }
 }
+$(document).ready(function(){
+  $('div#archive-list').click(function() {
+    $('#hidelist').toggle();
+    var i = $("div#archive-list").children('i');
+    if (i.hasClass('fa-angle-double-down')) {
+      $("div#archive-list").attr('title','close');
+      i.removeClass('fa-angle-double-down');
+      i.addClass('fa-angle-double-up');
+    } else {
+      $("div#archive-list").attr('title','open');
+      i.removeClass('fa-angle-double-up');
+      i.addClass('fa-angle-double-down');
+    }
+  });
+  $('div#tag-archive-list').click(function() {
+    $('#tag-hidelist').toggle();
+    var i = $("div#tag-archive-list").children('i');
+    if (i.hasClass('fa-angle-double-down')) {
+      $("div#tag-archive-list").attr('title','close');
+      i.removeClass('fa-angle-double-down');
+      i.addClass('fa-angle-double-up');
+    } else {
+      $("div#tag-archive-list").attr('title','open');
+      i.removeClass('fa-angle-double-up');
+      i.addClass('fa-angle-double-down');
+    }
+  });
+});
