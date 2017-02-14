@@ -1,0 +1,13 @@
+venv/
+docs/
+config/
+migrations/
+test/
+fabfile.py
+config.py
+static/*
+!static/src/
+**/__pycache__/
+*.swp
+*.pyc
+**/.webassets-cache/
