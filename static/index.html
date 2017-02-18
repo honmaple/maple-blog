@@ -7,19 +7,114 @@
         <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="static/css/monokai.css" type="text/css" />
         <style>
          html,body{height:100%;}
          .container {width:100%;}
          .footer {margin-top:-30px;height:30px;}
          .wrap{min-height:100%}
          .main{padding-bottom:30px;overflow:hidden;}
+         body {
+             background-color: #ffffff;
+             background-image: url('static/images/snow.jpg');
+             background-repeat: no-repeat;
+             background-attachment: fixed;
+             background-size:100% 100%;
+             color:#444;
+         }
+         hr {
+             height:1px;
+             border-top:1px solid #ccc;
+             display:block;
+             max-width:480px;
+             text-align:center;
+         }
+         .container{
+             padding-top:120px;
+             min-height:calc(100% - 140px);
+             box-sizing:border-box
+         }
+         h1 {
+             font-size:24px;
+             margin:0;
+             padding:0;
+         }
+         .logo{
+             width:80px;
+             height:80px;
+             margin:0 auto 30px;
+             background:url(/static/images/header.png) center no-repeat;
+             background-size:auto 100%;
+             text-indent:-9999em}
+         /* .index-nav ul{
+            list-style:none
+            }
+            .index-nav,h1{
+            margin-bottom:72px;
+            text-align:center
+            }
+            .index-nav li{
+            display:inline-block;
+            padding:0 7px;
+            }
+            .index-nav li a{
+            text-decoration:none
+            }
+            .index-nav li a:hover{
+            text-decoration:underline
+            } */
+         .snow{
+             background: none;
+             height: 100%;
+             left: 0;
+             position: absolute;
+             top: 0;
+             width: 100%;
+             z-index:1;
+             -webkit-animation: snow 10s linear infinite;
+             -moz-animation: snow 10s linear infinite;
+             -ms-animation: snow 10s linear infinite;
+             animation: snow 10s linear infinite;
+         }
+         @keyframes snow {
+             0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+             50% {background-position: 500px 500px, 100px 200px, -100px 150px;}
+             100% {background-position: 500px 1000px, 200px 400px, -100px 300px;}
+         }
+         @-moz-keyframes snow {
+             0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+             50% {background-position: 500px 500px, 100px 200px, -100px 150px;}
+             100% {background-position: 400px 1000px, 200px 400px, 100px 300px;}
+         }
+         @-webkit-keyframes snow {
+             0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+             50% {background-position: 500px 500px, 100px 200px, -100px 150px;}
+             100% {background-position: 500px 1000px, 200px 400px, -100px 300px;}
+         }
+         @-ms-keyframes snow {
+             0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+             50% {background-position: 500px 500px, 100px 200px, -100px 150px;}
+             100% {background-position: 500px 1000px, 200px 400px, -100px 300px;}
+         }
+         .fortune {
+             background: rgba(255, 255, 255, 0.4);
+             /* background: #fff; */
+             max-width:480px;
+             margin:auto;
+             text-align:center;
+             border-radius:3px;
+             color: #428bca;
+             margin-bottom:10px;
+             border:1px solid rgba(255, 255, 255, 0.4);
+             padding: 4px 7px;
+         }
         </style>
     </head>
     <body>
         <div class="wrap">
             <div class="main" id="app">
                 <header-template></header-template>
-                <div class="col-md-offset-2 col-md-8">
+                <div class="col-md-offset-1 col-md-10">
                     <router-view></router-view>
                 </div>
             </div>

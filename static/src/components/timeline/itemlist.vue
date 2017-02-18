@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-offset-2 col-md-8">
             <ul class="media-list" v-for="item in items">
-                sssssj
+                {{ item.content }}
                 <li><hr/></li>
             </ul>
             <PageInfo :pageinfo="pageinfo"></PageInfo>
@@ -12,6 +12,7 @@
 
 <script>
  import PageInfo from 'components/common/pageinfo'
+ import api from 'api'
 
  export default {
      components: {
@@ -19,26 +20,25 @@
      },
      data () {
          return {
-             table:{
-                 'th':['规则名称','主题','创建时间','操作']
-             },
              items:[1,2,3,4,5],
              pageinfo:{}
          }
      },
      created () {
-         this.getBlogList()
+         this.getTimeLineList()
      },
      methods: {
-         getBlogList: function() {
-             this.$http.get('http://127.0.0.1:8000/message/',{params:{cloud_token:'MQ.C3hMJA.5NFkzsF2fErXKYHXWFefi9SYVFc'}})
-                 .then((response) => {
-                     this.items = response.body.data
-                     this.pageinfo = response.body.pageinfo
-                 })
-                 .catch(function(response) {
-                     console.log(response)
-                 })
-         }}
+         getTimeLineList: function() {
+             var query = this.$root.$route.query
+             this.$http.get(api.timeline,{params:query})
+                             .then((response) => {
+                                 this.items = response.body.data
+                                 this.pageinfo = response.body.pageinfo
+                             })
+                             .catch(function(response) {
+                                 console.log(response)
+                             })
+         },
+     }
  }
 </script>

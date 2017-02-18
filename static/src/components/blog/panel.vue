@@ -1,8 +1,9 @@
 <template>
     <div class="blog-panel">
+        <Aplayer></Aplayer>
         <ul class="list-group">
             <li class="list-group-item hidden-xs" style="text-align:center;">
-                <img src="" width="60%" style="max-width:270px;" /> <br />
+                <img src="static/images/header.png" width="60%" style="max-width:270px;" /> <br />
                 <span style="display: inline-block;width:80%;" class="label label-default">
                     <router-link :to="{name:'about'}" style="color:#fff">Author</router-link>
                 </span>
@@ -23,12 +24,21 @@
             </li>
             <li class="list-group-item">
                 <span class="label label-primary" style="display: inline-block;" v-for="tag in tags">
-                    <router-link :to="{name:'bloglist',query:{tag:tag.name}}">
+                    <router-link :to="{name:'bloglist',query:{tag:tag.name}}"  style="color:#fff;">
                         {{ tag.name }}
                     </router-link>
                 </span>
             </li>
         </ul>
+        <div class="panel panel-default transparency7">
+            <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.3);">
+                <i class="fa fa-calendar" aria-hidden="true" style="color:#a40000"></i>
+                TimeLine
+            </div>
+            <div class="panel-body panel-body-border">
+                <TimeLineList></TimeLineList>
+            </div>
+        </div>
         <ul class="list-group">
             <li class="list-group-item text-center">
                 <router-link :to="{name:'friend'}">
@@ -47,8 +57,14 @@
 
 <script>
  import api from 'api'
+ import Aplayer from 'components/aplayer'
+ import TimeLineList from 'components/timeline/itemlist'
 
  export default {
+     components: {
+         Aplayer,
+         TimeLineList
+     },
      data () {
          return {
              tags:[],

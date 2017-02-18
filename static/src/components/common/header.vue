@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid col-md-offset-1 col-md-10">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-header" aria-expanded="false">
@@ -8,9 +8,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/" style="padding:0px">
-                    <img src="https://honmaple.com/static/images/snow.jpg" style="width:120px;height:51px">
-                </a>
+                <router-link :to="{name:'index'}" class="navbar-brand" style="padding:0px">
+                    <img src="static/images/storm-bg.jpg" style="width:120px;height:51px">
+                </router-link>
                 <p class="navbar-text visible-xs-block">
                     HELLO WORLD
                 </p>
