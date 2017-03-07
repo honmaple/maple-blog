@@ -16,11 +16,11 @@ function orgmode (text) {
 }
 
 function markdown (text) {
-  marked.setOptions({
-    highlight: function (code) {
-      return hljs.highlightAuto(code).value;
-    }
-  });
+  // marked.setOptions({
+  //   highlight: function (code) {
+  //     return hljs.highlightAuto(code).value;
+  //   }
+  // });
   return marked(text);
 }
 // function markdown (text) {

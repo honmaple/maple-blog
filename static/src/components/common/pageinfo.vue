@@ -10,8 +10,11 @@
                 <span aria-hidden="true">&laquo;</span>
             </li>
             <template v-for="page in pageinfo.iter_pages">
-                <li>
-                    <router-link :to="{path:path,query:{page:page}}">{{ page }}</router-link>
+                <li v-if="!page" class="disabled">
+                    <a>·····</a>
+                </li>
+                <li v-else :class="{active:pageinfo.page == page}">
+                    <router-link :to="{path:path,query:{page:page}}" >{{ page }}</router-link>
                 </li>
             </template>
             <li v-if="pageinfo.has_next == true">
@@ -28,15 +31,15 @@
 
 
 <script>
+ import api from 'api'
  export default {
      props: ['pageinfo'],
      data () {
          var path = this.$root.$route.fullPath
-         console.log(path)
          return {
              path:path,
              current_page: parseInt(this.$root.$route.query.page)
          }
-     },
+     }
  }
 </script>

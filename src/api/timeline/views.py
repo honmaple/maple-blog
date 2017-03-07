@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-12-13 14:47:19 (CST)
-# Last Update:星期六 2017-2-18 18:13:50 (CST)
+# Last Update:星期二 2017-3-7 20:21:48 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -28,6 +28,7 @@ class TimeLineListView(MethodView):
         order_by = gen_order_by(query_dict, keys)
         filter_dict = gen_filter_dict(query_dict, keys, equal_key,
                                       current_user)
+        filter_dict.update(hide=False)
         timelines = TimeLine.query.filter_by(
             **filter_dict).order_by(*order_by).paginate(page, number)
         serializer = Serializer(timelines.items, many=True)

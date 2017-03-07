@@ -1,18 +1,21 @@
 const API = {
   api_prefix: 'http://127.0.0.1:5000',
+  api:{
+    bloglist: '/blog/',
+    categorylist: '/blog/category/',
+    blogtimelist: '/blog/time/',
+    blogarchives: '/blog/archives',
+    taglist: '/blog/tag/',
+    book:'/book/',
+    book_tag:'/book/tags',
+    timeline:'/timeline/'
+  },
   create: function() {
-    return {
-      bloglist: this.api_prefix + '/blog/',
-      categorylist: this.api_prefix + '/blog/category/',
-      taglist: this.api_prefix + '/blog/tag/',
-      book:this.api_prefix + '/book/',
-      timeline:this.api_prefix + '/timeline/'
-    }
+    Object.keys(this.api).forEach(key => {
+      this.api[key] = this.api_prefix + this.api[key];
+    });
+    return this.api;
   }
 };
-export default API.create()
-// const api_prefix = 'http://127.0.0.1:5000'
-// const api = {
-//     bloglist: api_prefix + '/blog',
-//     categorylist: api_prefix + '/blog/category'
-// }
+
+export default API.create();

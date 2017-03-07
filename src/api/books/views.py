@@ -16,6 +16,8 @@ from .models import Books
 
 
 class BookListView(MethodView):
+    per_page = 18
+
     def get(self):
         query_dict = request.data
         page, number = self.page_info
@@ -38,7 +40,7 @@ class BookView(MethodView):
     def get(self, bookId):
         book = Books.query.filter_by(id=bookId).first()
         if not book:
-            msg = '用户不存在'
+            msg = '书籍不存在'
             return HTTPResponse(
                 HTTPResponse.HTTP_CLOUD_NOT_EXIST, message=msg).to_response()
         serializer = Serializer(book)
@@ -50,5 +52,6 @@ class BookTagListView(MethodView):
     # @cache.cached(timeout=300)
     def get(self):
         tags = Books.query.distinct(Books.tag)
-        data = {'tags': tags}
-        return render_template('book/taglist.html', **data)
+        serializer = Serializer(tags, many=True)
+        return HTTPResponse(
+            HTTPResponse.NORMAL_STATUS, data=serializer.data).to_response()

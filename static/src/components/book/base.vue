@@ -1,16 +1,13 @@
 <template>
-    <div class="book">
-        <router-view></router-view>
-    </div>
+    <router-view></router-view>
 </template>
 
-<script>
- export default {
-     data () {
-         return {
-             title: 'HonMaple',
-             description: 'asda'
-         }
-     }
+<style>
+ a {
+     color: #333;
  }
-</script>
+ a:focus, a:hover {
+     color:#EB5455;
+     text-decoration: none;
+ }
+</style>

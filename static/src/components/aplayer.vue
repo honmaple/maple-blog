@@ -1,5 +1,5 @@
 <template>
-    <div id="player" class="aplayer"></div>
+  <div class="aplayer"></div>
 </template>
 
 <script type="text/javascript">
@@ -8,7 +8,7 @@
  export default {
      mounted() {
          var ap = new APlayer({
-             element: document.getElementById('player'),
+             element: this.$el,
              narrow: false,
              autoplay: false,
              showlrc: 1,
@@ -49,7 +49,6 @@
 <style>
  .aplayer {
      text-align:center;
-     margin:auto;
      /* max-width:480px; */
      background-color:rgba(255, 255, 255, 0.5);
  }

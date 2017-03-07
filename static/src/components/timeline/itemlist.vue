@@ -2,8 +2,11 @@
     <div class="row">
         <div class="col-md-offset-2 col-md-8">
             <ul class="media-list" v-for="item in items">
-                {{ item.content }}
-                <li><hr/></li>
+                <li>{{ item.content }}</li>
+                <li>
+                    <footer><small style="color:#999;">{{ item.created_at | timesince }}</small></footer>
+                    <hr/>
+                </li>
             </ul>
             <PageInfo :pageinfo="pageinfo"></PageInfo>
         </div>
@@ -11,8 +14,8 @@
 </template>
 
 <script>
- import PageInfo from 'components/common/pageinfo'
  import api from 'api'
+ import PageInfo from 'components/common/pageinfo'
 
  export default {
      components: {
@@ -20,12 +23,15 @@
      },
      data () {
          return {
-             items:[1,2,3,4,5],
+             items:[],
              pageinfo:{}
          }
      },
      created () {
          this.getTimeLineList()
+     },
+     watch: {
+         '$route': 'getTimeLineList'
      },
      methods: {
          getTimeLineList: function() {

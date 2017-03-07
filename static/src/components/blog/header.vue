@@ -1,32 +1,78 @@
 <template>
-    <footer>
-        <span class="glyphicon glyphicon-time"></span>
-        <abbr :title="item.created_at">
-            <span class="label label-success">{{ item.created_at | timesince }}</span>
-        </abbr>
-        <address style="margin-top:8px">
-            <span class="glyphicon glyphicon-user"></span>
-            <router-link :to="{name:'bloglist',query:{author:author.username}}" class="label label-primary">{{ author.username }}</router-link>
-        </address>
-        <address style="margin-top:-12px">
-            <span class="glyphicon glyphicon-leaf"></span>
-            <router-link :to="{name:'bloglist',query:{category:category.name}}" class="label label-primary" style="display:inline-block;">{{ category.name }}</router-link>
-        </address>
-        <address style="margin-top:-12px">
-            <span class="glyphicon glyphicon-tags"></span>
-            <template v-for="tag in item.tags">
-                <router-link :to="{name:'bloglist',query:{tag:tag.name}}" class="label label-primary" style="display:inline-block;">{{ tag.name }}</router-link>
-            </template>
-        </address>
-        <address style="margin-top:-12px">
-            <span class="glyphicon glyphicon-eye-open"></span>
-            <span class="label label-info">{{ item.id }}</span>
-        </address>
-    </footer>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="col-md-offset-1 col-md-10">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-header" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <router-link :to="{name:'index'}" class="navbar-brand" style="padding:0px">
+          <img src="/static/images/header.png" style="width:72px;height:72px">
+        </router-link>
+        <p class="navbar-text visible-xs-block text-center">
+          HELLO WORLD
+        </p>
+      </div>
+      <div class="collapse navbar-collapse" id="nav-header">
+        <ul class="nav navbar-nav navbar-left">
+          <li v-for="category in categories.slice(0,4)">
+            <router-link :to="{name:'bloglist',query:{category:category.name}}">{{ category.name }}</router-link>
+          </li>
+          <li v-if="categories.length > 4">
+            <a href="#" class="dropdown-toggle" id="dropdown-more" data-toggle="dropdown">······</a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-more">
+              <li role="presentation" v-for="category in categories.slice(start=4)">
+                <router-link :to="{name:'bloglist',query:{category:category.name}}">{{ category.name }}</router-link>
+              </li>
+            </ul>
+          </li>
+          <li><router-link :to="{name:'blogarchives'}">归档</router-link></li>
+          <li><router-link :to="{name:'blogarchives'}">Rss</router-link></li>
+        </ul>
+        <form class="navbar-form navbar-right" style="margin-top:10px;" >
+          <div class="form-group has-feedback">
+            <input class="form-control input-sm" id="search" name="search" placeholder="搜索" type="text">
+            <i class="fa fa-search form-control-feedback"></i>
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script>
+ import api from 'api'
+
  export default {
-     props: ['item','author','category'],
+     data () {
+         return {
+             categories:[]
+         }
+     },
+     created () {
+         this.getCategoryList()
+     },
+     methods: {
+         getCategoryList: function() {
+             this.$http.get(api.categorylist)
+                 .then((response) => {
+                     this.categories = response.body.data
+                 })
+                 .catch(function(response) {
+                     console.log(response)
+                 })
+         }
+     }
  }
 </script>
+
+<style>
+ .navbar .nav > li .dropdown-menu {
+     margin: 0;
+ }
+ .navbar .nav > li:hover .dropdown-menu {
+     display: block;
+ }
+</style>

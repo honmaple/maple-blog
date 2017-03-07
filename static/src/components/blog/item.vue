@@ -1,21 +1,22 @@
 <template>
-    <div class="category" style="padding:0 15px;">
+    <div class="category" style="padding:15px;">
         <h1 class="text-center" style="font-size:30px;">{{ item.title }}</h1>
-        <BlogHeader :item="item" :category="category" :author="author" class="text-left pull-right"></BlogHeader>
+        <hr style="max-width:none" />
+        <BlogInfo :item="item" :category="category" :author="author" class="pull-right"></BlogInfo>
         <div class="blog-content text-left">
-            <span v-html="item.content"></span>
+            <span v-html="item.content" v-highlight></span>
         </div>
     </div>
 </template>
 
 <script>
  import api from 'api'
- import BlogHeader from './header'
+ import BlogInfo from './info'
  import markup from './markup'
 
  export default {
      components: {
-         BlogHeader,
+         BlogInfo,
      },
      data () {
          return {

@@ -1,43 +1,43 @@
 <template>
-<div class="panel panel-default category">
+  <div class="panel panel-default category">
     <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.5);">
-        <b>Friends</b>
+      <b>Friends</b>
     </div>
     <div class="panel-body bottom-line">
-        <div class="row">
-            <div class="col-md-3" style="margin-bottom:5px;" v-for="item in items.slice(0,2)">
-                <div class="media">
-                    <a class="media-left" :href="item.href" target="_blank">
-                        <img :src="item.img" style="width:64px;" class="img-circle" />
-                    </a>
-                    <div class="media-body"  style="padding-top:9px;">
-                        <h5 class="media-heading"><b>{{ item.title }}</b></h5>
-                        <small>
-                            {{ item.dep }}
-                        </small>
-                    </div>
-                </div>
+      <div class="row">
+        <div class="col-md-3" style="margin-bottom:5px;" v-for="item in items.slice(0,2)">
+          <div class="media">
+            <a class="media-left" :href="item.href" target="_blank">
+              <img :src="item.img" style="width:64px;" class="img-circle" />
+            </a>
+            <div class="media-body"  style="padding-top:9px;">
+              <h5 class="media-heading"><b>{{ item.title }}</b></h5>
+              <small>
+                {{ item.dep }}
+              </small>
             </div>
+          </div>
         </div>
+      </div>
     </div>
     <div class="panel-body">
-        <div class="row">
-            <div class="col-md-3" style="margin-bottom:5px;" v-for="item in items.slice(2,3)">
-                <div class="media">
-                    <a class="media-left" :href="item.href" target="_blank">
-                        <img :src="item.img" style="width:64px;" class="img-circle" />
-                    </a>
-                    <div class="media-body"  style="padding-top:9px;">
-                        <h5 class="media-heading"><b>{{ item.title }}</b></h5>
-                        <small>
-                            {{ item.dep }}
-                        </small>
-                    </div>
-                </div>
+      <div class="row">
+        <div class="col-md-3" style="margin-bottom:5px;" v-for="item in items.slice(2,3)">
+          <div class="media">
+            <a class="media-left" :href="item.href" target="_blank">
+              <img :src="item.img" style="width:64px;" class="img-circle" />
+            </a>
+            <div class="media-body"  style="padding-top:9px;">
+              <h5 class="media-heading"><b>{{ item.title }}</b></h5>
+              <small>
+                {{ item.dep }}
+              </small>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script type="text/javascript">
