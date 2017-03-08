@@ -1,26 +1,20 @@
-import Org from 'org'
-import marked from 'marked'
-// import { showdown } from 'showdown'
-
-
-function orgmode (text) {
-  var parser = new Org.Parser();
-  var orgDocument = parser.parse(text);
-  var orgHTMLDocument = orgDocument.convert(Org.ConverterHTML, {
-    headerOffset: 3,
-    exportFromLineNumber: false,
-    suppressSubScriptHandling: false,
-    suppressAutoLink: false
-  });
-  return orgHTMLDocument.toString();
+export function callback(that,response,func) {
+  var router = that.$router;
+  if (response.status == '500') {
+    router.push({ name: '500' });
+  }else if (response.status == '404') {
+    router.push({ name: '404' });
+  }else if (response.status == '403') {
+    router.push({ name: '403' });
+  }else {
+    func(that);
+  }
 }
 
-function markdown (text) {
-  return marked(text);
+export function lazyload(name) {
+  return function(resolve) {
+    require(['components/' + name], resolve);
+  };
 }
-// function markdown (text) {
-//   converter = new showdown.Converter();
-//   return converter.makeHtml(text);
-// }
 
-export default {orgmode,markdown}
+// export default {callback,lazyload};

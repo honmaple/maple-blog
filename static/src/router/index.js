@@ -92,6 +92,37 @@ export default new Router({
         component: lazyload('timeline/itemlist')
       }]
     },
+    {
+      path: '/',
+      components: {
+        default:lazyload('pages/base'),
+        header:lazyload('common/header')
+      },
+      children: [
+        {
+          path: '403',
+          name: '403',
+          component: lazyload('pages/403')
+        },
+        {
+          path: '404',
+          name: '404',
+          component: lazyload('pages/404')
+        },
+        {
+          path: '500',
+          name: '500',
+          component: lazyload('pages/500')
+        }
+      ]
+    },
+    {
+      path:'*',
+      components: {
+        default:lazyload('pages/404'),
+        header:lazyload('common/header')
+      }
+    }
   ],
   scrollBehavior: function(to, from, savedPosition) {
     if (to.hash) {

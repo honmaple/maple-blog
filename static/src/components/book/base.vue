@@ -3,6 +3,10 @@
 </template>
 
 <style>
+ .book-no-padding {
+     padding-left:0px;
+     padding-right:0px;
+ }
  a {
      color: #333;
  }

@@ -21,6 +21,7 @@ from sqlalchemy import func, extract
 class BlogListView(MethodView):
     def get(self):
         query_dict = request.data
+        query_dict['descent'] = 'created_at'
         tag = query_dict.pop('tag', None)
         category = query_dict.pop('category', None)
         author = query_dict.pop('author', None)

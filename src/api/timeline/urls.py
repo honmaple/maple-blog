@@ -6,13 +6,13 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-12-13 14:52:01 (CST)
-# Last Update:星期六 2017-2-18 18:14:55 (CST)
+# Last Update:星期二 2017-3-7 21:32:5 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask import Blueprint
 from .views import TimeLineListView
 
-site = Blueprint('timeline', __name__, url_prefix='/timeline')
+site = Blueprint('timeline', __name__, url_prefix='/api/timeline')
 timelinelist_view = TimeLineListView.as_view('timelinelist')
 site.add_url_rule('/', view_func=timelinelist_view)

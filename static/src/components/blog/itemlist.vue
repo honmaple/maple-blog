@@ -25,8 +25,11 @@
  import BlogInfo from './info'
  import PageInfo from 'components/common/pageinfo'
  import markup from './markup'
+ import blogmixin from 'services/blog'
+ import {callback} from 'globals'
 
  export default {
+     mixins: [blogmixin],
      components: {
          PageInfo,
          BlogInfo,
@@ -38,24 +41,25 @@
          }
      },
      created () {
-         this.getBlogList()
+         this._getBlogList()
      },
      watch: {
          // 如果路由有变化，会再次执行该方法
-         '$route': 'getBlogList'
+         '$route': '_getBlogList'
      },
      methods: {
          markup,
-         getBlogList: function() {
-             var query = this.$root.$route.query
-             this.$http.get(api.bloglist,{params:query})
-                             .then((response) => {
-                                 this.items = response.body.data
-                                 this.pageinfo = response.body.pageinfo
-                             })
-                             .catch(function(response) {
-                                 console.log(response)
-                             })
+         _getBlogList: function() {
+             var query = this.$route.query
+             this.getItemList(query).then(response => {
+                 return callback(
+                     this,response.body,
+                     function(_this) {
+                         _this.items = response.body.data
+                         _this.pageinfo = response.body.pageinfo
+                     }
+                 )
+             })
          },
      }
  }

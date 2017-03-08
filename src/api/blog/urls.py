@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-10-03 15:53:46 (CST)
-# Last Update:星期二 2017-3-7 20:16:51 (CST)
+# Last Update:星期二 2017-3-7 21:31:9 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -14,7 +14,7 @@ from flask import Blueprint
 from .views import (BlogListView, BlogView, CommentListView, CategoryListView,
                     TagListView, TimeListView)
 
-site = Blueprint('blog', __name__, url_prefix='/blog')
+site = Blueprint('blog', __name__, url_prefix='/api/blog')
 bloglist_view = BlogListView.as_view('bloglist')
 blog_view = BlogView.as_view('blog')
 site.add_url_rule('/', view_func=bloglist_view)

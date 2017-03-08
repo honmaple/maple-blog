@@ -1,5 +1,5 @@
 const API = {
-  api_prefix: 'http://127.0.0.1:5000',
+  api_prefix: 'http://127.0.0.1:5000/api',
   api:{
     bloglist: '/blog/',
     categorylist: '/blog/category/',

@@ -56,11 +56,11 @@
 
 <script>
  import api from 'api'
- import Aplayer from 'components/aplayer'
+ import {lazyload} from 'globals'
 
  export default {
      components: {
-         Aplayer,
+         Aplayer:lazyload('aplayer')
      },
      data () {
          return {

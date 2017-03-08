@@ -6,14 +6,14 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-10-29 19:27:46 (CST)
-# Last Update:星期三 2017-1-25 22:39:29 (CST)
+# Last Update:星期二 2017-3-7 20:55:49 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from api.user.models import User
 from api.question.models import Question
 from api.books.models import Books
-from api.index.models import Notice
+from api.models import Notice
 from maple.extensions import admin, db
 from .views import (NoticeView, UserView, QueView, BookView)
 from .permission import register_permission

@@ -11,8 +11,8 @@
           <div class="item active">
             <img src="/static/images/bg1.jpg" style="height:300px;width:100%">
             <div class="carousel-caption">
-              <h3>First slide label</h3>
-              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+              <h3>这是我的个人博客</h3>
+              <p>欢迎访问并向我提供建议</p>
             </div>
           </div>
           <div class="item" v-for="carousel in carousels">
@@ -36,14 +36,15 @@
     <br/>
     <div class="row">
       <div class="page-header text-center" style="margin-top:10px;margin-bottom:10px;">
-        <h3>Example page header</h3>
+        <h3>HELLO WORLD</h3>
       </div>
       <div class="col-sm-6 col-md-3" v-for="picture in pictures">
         <div class="thumbnail" style="padding:0;border-radius:5px;">
           <img :src="picture.url" alt="">
-          <div class="caption">
-            <h3>{{ picture.title }}</h3>
-            <p>{{ picture.description }}</p>
+          <div class="caption text-center">
+            <a href="" style="text-decoration:none">
+              <h4 style="color:#666">{{ picture.title }}</h4>
+            </a>
           </div>
         </div>
       </div>
@@ -56,16 +57,25 @@
      data () {
          return {
              pictures:[
-                 {"title":"11","description":"222","url":"./static/images/bg1.jpg"},
-                 {"title":"11",
-                  "description":"Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
-                  "url":"./static/images/bg1.jpg"},
-                 {"title":"11","description":"222","url":"./static/images/bg1.jpg"},
-                 {"title":"11","description":"222","url":"./static/images/bg1.jpg"},
+                 {
+                     title:"个人博客",
+                     url:"/static/images/bg1.jpg"
+                 },
+                 {
+                     title:"时间轴",
+                     url:"/static/images/bg1.jpg"
+                 },
+                 {
+                     title:"书籍查询",
+                     url:"/static/images/bg1.jpg"
+                 },
+                 {
+                     title:"关于",
+                     url:"/static/images/bg1.jpg"}
              ],
              carousels:[
-                 {"title":"11","description":"222","url":"./static/images/bg1.jpg"},
-                 {"title":"11","description":"222","url":"./static/images/bg1.jpg"}
+                 {title:"",description:"HELLO",url:"/static/images/bg1.jpg"},
+                 {title:"",description:"WORLD",url:"/static/images/bg1.jpg"}
              ]
          }
      }

@@ -6,13 +6,14 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-02-12 15:56:55 (CST)
-# Last Update:星期二 2017-3-7 20:19:58 (CST)
+# Last Update:星期二 2017-3-7 20:54:38 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask import Flask
 from flask_maple.lazy import LazyExtension
 from api.urls import api_routers
+from admin.urls import admin
 from flask_cors import CORS
 
 
@@ -34,3 +35,4 @@ def register_extensions(app):
         module='maple.extensions.',
         extension=['middleware', 'db', 'cache', 'login_manager'])
     extension.init_app(app)
+    admin.init_app(app)

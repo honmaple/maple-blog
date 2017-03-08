@@ -18,12 +18,13 @@
 </template>
 
 <script>
- import api from 'api'
- import PageInfo from 'components/common/pageinfo'
+ import blogmixin from 'services/blog'
+ import {callback,lazyload} from 'globals.js'
 
  export default {
+     mixins: [blogmixin],
      components: {
-         PageInfo,
+         PageInfo:lazyload('common/pageinfo.vue')
      },
      data () {
          return {
@@ -35,21 +36,21 @@
          this.getBlogList()
      },
      watch: {
-         // 如果路由有变化，会再次执行该方法
          '$route': 'getBlogList'
      },
      methods: {
          getBlogList: function() {
              var query = this.$root.$route.query
              query['number'] = 30
-             this.$http.get(api.bloglist,{params:query})
-                 .then((response) => {
-                     this.items = response.body.data
-                     this.pageinfo = response.body.pageinfo
-                 })
-                 .catch(function(response) {
-                     console.log(response)
-                 })
+             this.getItemList(query).then(response => {
+                 return callback(
+                     this,response.body,
+                     function(_this) {
+                         _this.items = response.body.data
+                         _this.pageinfo = response.body.pageinfo
+                     }
+                 )
+             })
          },
      }
  }

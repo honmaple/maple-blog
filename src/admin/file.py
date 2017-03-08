@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-26 16:14:42 (CST)
-# Last Update:星期三 2017-1-25 22:31:56 (CST)
+# Last Update:星期二 2017-3-7 20:56:0 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -18,7 +18,7 @@ from os import path as op
 from werkzeug import secure_filename
 from time import time
 from maple.extensions import db
-from api.index.models import Images
+from api.models import Images
 
 __all__ = ['register_file']
 

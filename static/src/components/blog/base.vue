@@ -17,13 +17,12 @@
 </template>
 
 <script>
- import BlogPanel from './panel'
- import ArchivePanel from './archives_panel'
+ import {lazyload} from 'globals'
 
  export default {
      components: {
-         BlogPanel,
-         ArchivePanel
+         BlogPanel:lazyload('blog/panel'),
+         ArchivePanel:lazyload('blog/archives_panel')
      }
  }
 </script>
@@ -31,6 +30,10 @@
 <style>
  .blog-no-margin {
      padding-left:0px;
+ }
+ .blog-no-padding {
+     padding-left:0px;
+     padding-right:0px;
  }
  .blog {
      margin-bottom:15px;
