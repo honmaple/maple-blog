@@ -18,16 +18,13 @@ from maple.admin.urls import admin
 import os
 
 
-def create_app(config=None):
+def create_app(config):
     templates = os.path.abspath(
         os.path.join(os.path.dirname(__file__), os.pardir, 'templates'))
     static = os.path.abspath(
         os.path.join(os.path.dirname(__file__), os.pardir, 'static'))
     app = Flask(__name__, template_folder=templates, static_folder=static)
-    if config is None:
-        app.config.from_object('config.config')
-    else:
-        app.config.from_object(config)
+    app.config.from_object(config)
     register(app)
     return app
 
@@ -48,4 +45,5 @@ def register_extensions(app):
                    'principals', 'redis_data', 'maple_app', 'middleware',
                    'mail'])
     extension.init_app(app)
+    admin.index_view.url = app.config['ADMIN_URL']
     admin.init_app(app)

@@ -10,7 +10,7 @@
 from maple import create_app
 from werkzeug.contrib.fixers import ProxyFix
 
-app = create_app()
+app = create_app('config')
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 if __name__ == '__main__':
