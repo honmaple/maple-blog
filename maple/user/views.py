@@ -14,7 +14,7 @@ from flask_login import (current_user, login_required, logout_user)
 from flask_principal import (AnonymousIdentity, identity_changed)
 from maple.user.models import User
 from .forms import InforForm, PasswordForm
-from flask_maple.forms import flash_errors
+from flask_maple.form import flash_errors
 from functools import wraps
 
 

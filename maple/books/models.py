@@ -28,13 +28,3 @@ class Books(db.Model):
 
     def __repr__(self):
         return '<Books %r>' % self.name
-
-    @classmethod
-    def get(cls, bookId):
-        return cls.query.filter_by(id=bookId).first_or_404()
-
-    @classmethod
-    def get_book_list(cls, page=1, filter_dict=dict()):
-        if not filter_dict:
-            return cls.query.paginate(page, 18, True)
-        return cls.query.filter_by(**filter_dict).paginate(page, 18, True)

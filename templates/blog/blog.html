@@ -1,37 +1,24 @@
-{% extends 'base/base.html' %}
-{% from 'blog/_macro.html' import header %}
-{% from 'blog/_macro.html' import headerlist %}
+{% extends 'blog/base.html' %}
+{% from 'blog/_macro.html' import info %}
 
-{% block title -%}
-{{_("HonMaple's Blog")-}}
-{% endblock %}
-
-{% block header -%}
-{{ header() }}
-{%- endblock header %}
-
-{% block list -%}
-{{ headerlist() }}
-{%- endblock list %}
-
-{% block content -%}
-<div class="row">
-    <div class="col-sm-9">
-        <div class="category"  style="padding:0 15px;">
-            {% from 'blog/_macro.html' import blogdetail %}
-            {{ blogdetail(blog) }}
-        </div>
-    </div>
-    <div class="col-sm-3" style="padding-left:0">
-        {% include 'blog/panel.html' %}
-    </div>
-    <script type="text/javascript">
-     $.get("{{ url_for('blog.commentlist',blogId=blog.id) }}",function(data){
-         $('#blog-comment').html(data);
-     });
-    </script>
-    <div class="col-sm-9" id="blog-comment">
-    </div>
+{% block item -%}
+<div class="category" style="padding:0 15px;">
+  <script>hljs.initHighlightingOnLoad();</script>
+  <h1 class="text-center" style="font-size:30px;">{{ blog.title }}</h1>
+  <span class="pull-right">
+    {{ info(blog) }}
+  </span>
+  <div class="blog-content" id="org-blog-content">
+    {% if blog.content_type == "0" %}
+    {{ blog.content | safe_markdown }}
+    {% else %}
+    {{ blog.content | orgmode }}
+    {%- endif -%}
+  </div>
+  {%- if blog.is_copy == False -%}
+  <div style="border-bottom:1px dashed #000000;width:60%;"></div>
+  版权所有,转载请注明作者及出处
+  {%- endif -%}
 </div>
 {% endblock %}
 

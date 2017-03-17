@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期二 2016-12-13 15:38:46 (CST)
+# Last Update:星期五 2017-3-17 23:3:42 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -14,7 +14,7 @@ from flask import request
 from flask_admin import Admin
 from flask_maple import Bootstrap, Captcha, Error
 from flask_maple.redis import Redis
-from flask_maple.mail import MapleMail
+from flask_maple.mail import Mail
 from flask_maple.middleware import Middleware
 from flask_maple.app import App
 from flask_maple.json import CustomJSONEncoder
@@ -30,8 +30,8 @@ import os
 
 def register_maple(app):
     maple = Bootstrap(
-        css=('style/css/honmaple.css', 'style/css/monokai.css'),
-        js=('style/js/highlight.js', 'style/js/rain.js','style/js/org.js'),
+        css=('dist/css/honmaple.css', 'dist/css/monokai.css'),
+        js=('dist/js/highlight.js', 'dist/js/rain.js', 'dist/js/org.js'),
         use_auth=True)
     maple.init_app(app)
     Captcha(app)
@@ -44,15 +44,15 @@ def register_login():
     login_manager.session_protection = "basic"
     login_manager.login_message = _("Please login to access this page.")
 
-    from maple.user.models import User
-
     @login_manager.user_loader
     def user_loader(id):
+        from maple.user.models import User
         user = User.query.get(int(id))
         return user
 
     @login_manager.request_loader
     def user_loader_from_request(request):
+        from maple.user.models import User
         token = request.args.get('token')
         if token is not None:
             user = User.check_token(token)
@@ -83,7 +83,7 @@ db = db
 csrf = CsrfProtect()
 cache = Cache()
 babel = register_babel()
-mail = MapleMail()
+mail = Mail()
 principals = Principal()
 admin = Admin(name='HonMaple', template_mode='bootstrap3')
 login_manager = register_login()

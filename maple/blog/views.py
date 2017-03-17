@@ -8,200 +8,77 @@
 #   Created Time: 2015-11-18 08:11:38
 # *************************************************************************
 from flask import (render_template, request, redirect, url_for, flash)
-from flask.views import MethodView
-from flask_login import current_user, login_required
-from flask_maple.views import BaseView
-from maple.extensions import db, redis_data, cache, csrf
+from flask_login import login_required
+from maple.extensions import db, cache
 from maple.blog.forms import CommentForm
-from maple.main.permissions import writer_permission
 from maple.helper import cache_key
 from flask_babelex import gettext as _
 from urllib.parse import urljoin
-from maple.filters import safe_markdown
 from maple.main.record import record
+from maple.common.views import BaseMethodView as MethodView
+from maple.common.utils import (gen_filter_dict, gen_order_by)
+from .models import Blog, Comment
+from .filters import safe_markdown
+from sqlalchemy import extract
 from werkzeug.contrib.atom import AtomFeed
 from werkzeug.utils import escape
-from .models import Blog, Comment, Category, Tags
 
 
-class BlogListView(BaseView):
-    decorators = [csrf.exempt]
-
-    def get_filter_dict(self):
-        category = request.args.get('category')
-        tag = request.args.get('tag')
-        author = request.args.get('author')
-        filter_dict = {}
-        if category is not None:
-            filter_dict.update(category__name=category)
-        if tag is not None:
-            filter_dict.update(tags__name=tag)
-        if author is not None:
-            filter_dict.update(author__username=author)
-        return filter_dict
-
-    def get_sort_tuple(self):
-        orderby = request.args.get('orderby')
-        sort_tuple = []
-        if orderby in ['id', 'created_at', 'updated_at']:
-            sort_tuple.append(orderby)
-        sort_tuple = tuple(sort_tuple)
-        return sort_tuple
+class BlogListView(MethodView):
+    def render_template(self, *args, **kwargs):
+        return render_template(*args, **kwargs)
 
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self):
-        page, number = self.get_page_info()
-        filter_dict = self.get_filter_dict()
-        sort_tuple = self.get_sort_tuple()
-        blogs = Blog.get_list(page, number, filter_dict, sort_tuple)
+        query_dict = request.data
+        user = request.user
+        query_dict['descent'] = 'created_at'
+        tag = query_dict.pop('tag', None)
+        category = query_dict.pop('category', None)
+        author = query_dict.pop('author', None)
+        year = query_dict.pop('year', None)
+        month = query_dict.pop('month', None)
+        if tag is not None:
+            query_dict.update(tags__name=tag)
+        if category is not None:
+            query_dict.update(category__name=category)
+        if author is not None:
+            query_dict.update(author__name=author)
+        page, number = self.page_info
+        keys = ['title', 'tags__name', 'category__name', 'author__username']
+        equal_key = ['tags__name', 'category__name', 'author__username']
+        order_by = gen_order_by(query_dict, keys)
+        filter_dict = gen_filter_dict(query_dict, keys, equal_key, user)
+        blogs = Blog.query.filter_by(**filter_dict)
+        if year is not None:
+            blogs = blogs.filter(extract('year', Blog.created_at) == year)
+        if month is not None:
+            blogs = blogs.filter(extract('month', Blog.created_at) == month)
+        blogs = blogs.order_by(*order_by).paginate(page, number)
         data = {'blogs': blogs}
-        return render_template('blog/bloglist.html', **data)
-
-    @login_required
-    def post(self):
-        if not current_user.is_superuser:
-            return 'forbidden'
-        post_data = request.get_json()
-        title = post_data.pop('title', None)
-        content = post_data.pop('content', None)
-        is_copy = post_data.pop('is_copy', None)
-        tags = post_data.pop('tags', None)
-        category = post_data.pop('category', None)
-        content_type = post_data.pop('content_type', None)
-        if title is None:
-            return 'title is None'
-        if content is None:
-            return 'content is None'
-        if tags is None:
-            return 'tags is None'
-        if category is None:
-            return 'category is None'
-        if content_type is None:
-            return 'content_type is None'
-        blog_title = Blog.query.filter_by(title=title).first()
-        if blog_title is not None:
-            return 'title is existed'
-        is_copy = True if is_copy == 'True' else False
-        blog_tags = []
-        tags = tags.split(',')
-        for t in tags:
-            tag = Tags.query.filter_by(name=t).first()
-            if tag is None:
-                tag = Tags()
-                tag.name = t
-                tag.save()
-            blog_tags.append(tag)
-        blog_category = Category.query.filter_by(name=category).first()
-        if blog_category is None:
-            blog_category = Category()
-            blog_category.name = category
-            blog_category.save()
-        blog = Blog()
-        blog.title = title
-        blog.content = content
-        blog.author = current_user
-        blog.is_copy = is_copy
-        blog.category = blog_category
-        blog.tags = blog_tags
-        if content_type == Blog.CONTENT_TYPE_MARKDOWN:
-            blog.content_type = content_type
-        else:
-            blog.content_type = Blog.CONTENT_TYPE_ORGMODE
-        blog.save()
-        return 'success'
+        return self.render_template('blog/bloglist.html', **data)
 
 
 class BlogView(MethodView):
-    decorators = [csrf.exempt]
-
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self, blogId):
         '''记录用户浏览次数'''
         record.add('article:%s' % str(blogId))
-        blog = Blog.get(blogId)
+        blog = Blog.query.filter_by(id=blogId).first_or_404()
         data = {'blog': blog}
         return render_template('blog/blog.html', **data)
 
-    @login_required
-    def put(self, blogId):
-        if not current_user.is_superuser:
-            return 'forbidden'
-        blog = Blog.query.filter_by(id=blogId).first()
-        if blog is None:
-            return 'blog is not exist'
-        post_data = request.get_json()
-        title = post_data.pop('title', None)
-        content = post_data.pop('content', None)
-        tags = post_data.pop('tags', None)
-        category = post_data.pop('category', None)
-        content_type = post_data.pop('content_type', None)
-        if title is not None:
-            blog.title = title
-        if content is not None:
-            blog.content = content
-        if content_type is not None:
-            if content_type == Blog.CONTENT_TYPE_MARKDOWN:
-                blog.content_type = content_type
-            else:
-                blog.content_type = Blog.CONTENT_TYPE_ORGMODE
-        if tags is not None:
-            blog_tags = []
-            tags = tags.split(',')
-            for t in tags:
-                tag = Tags.query.filter_by(name=t).first()
-                if tag is None:
-                    tag = Tags()
-                    tag.name = t
-                    tag.save()
-                blog_tags.append(tag)
-            blog.tags = blog_tags
-        if category is not None:
-            blog_category = Category.query.filter_by(name=category).first()
-            if blog_category is None:
-                blog_category = Category()
-                blog_category.name = category
-                blog_category.save()
-            blog.category = blog_category
-        blog.save()
-        return 'success'
 
-    @login_required
-    def delete(self, blogId):
-        if not current_user.is_superuser:
-            return 'forbidden'
-        blog = Blog.query.filter_by(id=blogId).first()
-        if blog is None:
-            return 'blog is not exist'
-        blog.delete()
-        return 'success'
-
-
-class CommentListView(BaseView):
-    # form = CommentForm()
-
-    def __init__(self):
-        super(MethodView, self).__init__()
-        self.form = CommentForm()
-
-    @cache.cached(timeout=180, key_prefix=cache_key)
-    def get(self, blogId):
-        page, number = self.get_page_info()
-        filter_dict = {}
-        filter_dict.update(blog_id=blogId)
-        comments = Comment.get_list(page, number, filter_dict)
-        data = {'comments': comments, 'form': self.form}
-        return render_template('blog/commentlist.html', **data)
-
+class CommentListView(MethodView):
     @login_required
     def post(self, blogId):
-        if not writer_permission.can():
-            flash(_('You have not confirm your account'))
-            return redirect(url_for('blog.blog', blogId=blogId))
-        if self.form.validate_on_submit():
+        user = request.user
+        form = CommentForm()
+        if form.validate_on_submit():
             comment = Comment()
-            comment.author = current_user
-            comment.content = self.form.content.data
+            comment.content = form.content.data
             comment.blog_id = blogId
+            comment.author = user
             db.session.add(comment)
             db.session.commit()
             return redirect(
@@ -212,51 +89,18 @@ class CommentListView(BaseView):
                 'blog.blog', blogId=blogId, _anchor='blog-comment'))
 
 
-class BlogArchiveView(BaseView):
+class BlogArchiveView(BlogListView):
     per_page = 30
 
-    def get_filter_dict(self):
-        category = request.args.get('category')
-        tag = request.args.get('tag')
-        author = request.args.get('author')
-        filter_dict = {}
-        if category is not None:
-            filter_dict.update(category__name=category)
-        if tag is not None:
-            filter_dict.update(tags__name=tag)
-        if author is not None:
-            filter_dict.update(author__username=author)
-        return filter_dict
-
-    @cache.cached(timeout=180, key_prefix=cache_key)
-    def get(self):
-        page, number = self.get_page_info()
-        filter_dict = self.get_filter_dict()
-        blogs = Blog.get_list(page, number, filter_dict)
-        data = {'blogs': blogs}
-        return render_template('blog/archives.html', **data)
-
-
-class BlogTimeArchiveView(BaseView):
-    per_page = 30
-
-    @cache.cached(timeout=180, key_prefix=cache_key)
-    def get(self, year, month):
-        page, number = self.get_page_info()
-        from sqlalchemy import extract
-        blogs = db.session.query(Blog).filter(
-            extract('year', Blog.created_at) == year,
-            extract('month', Blog.created_at) == month).paginate(page, number,
-                                                                 True)
-        data = {'blogs': blogs}
-        return render_template('blog/archives.html', **data)
+    def render_template(self, *args, **kwargs):
+        return render_template('blog/archives.html', **kwargs)
 
 
 class BlogRssView(MethodView):
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self):
         feed = AtomFeed(
-            _("HonMaple's Blog"),
+            _("honmaple's Blog"),
             feed_url=request.url,
             url=request.url_root,
             subtitle='I like solitude, yearning for freedom')

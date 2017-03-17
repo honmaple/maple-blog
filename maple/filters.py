@@ -6,30 +6,12 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期一 2016-12-26 22:57:6 (CST)
+# Last Update:星期五 2017-3-17 19:47:18 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from flask import Markup
-from misaka import Markdown, HtmlRenderer
-from bleach import clean
 from datetime import datetime
 from maple.main.record import record
-
-
-def safe_clean(text):
-    tags = ['b', 'i', 'font', 'br', 'div', 'h2', 'blockquote', 'ul', 'li', 'a',
-            'p', 'strong', 'span', 'h1', 'pre', 'code', 'img', 'h3', 'h4',
-            'em', 'hr', 'ol', 'h5', 'table', 'colgroup', 'col', 'th', 'td','tr',
-            'tbody', 'thead']
-    attrs = {
-        '*': ['style', 'id', 'class'],
-        'font': ['color'],
-        'a': ['href'],
-        'img': ['src', 'alt']
-    }
-    styles = ['color']
-    return clean(text, tags=tags, attributes=attrs, styles=styles)
 
 
 def encrypt(text):
@@ -38,18 +20,6 @@ def encrypt(text):
     secret_key = current_app.config.get('SECRET_KEY', 'never')
     s = URLSafeSerializer(secret_key)
     return s.dumps(text)
-
-
-def safe_markdown(text):
-    renderer = HtmlRenderer()
-    md = Markdown(renderer, extensions=('fenced-code', ))
-    return Markup(safe_clean(md(text)))
-
-
-def markdown(text):
-    renderer = HtmlRenderer()
-    md = Markdown(renderer, extensions=('fenced-code', ))
-    return Markup(md(text))
 
 
 def timesince(dt, default="just now"):
@@ -75,49 +45,7 @@ def timesince(dt, default="just now"):
     return default
 
 
-def random_fortune():
-    from fortune import fortune
-    return fortune.show()
-
-
-def tag_archives():
-    from maple.extensions import db
-    from sqlalchemy import func
-    from maple.blog.models import Tags, Blog
-    tags = db.session.query(
-        Tags, func.count(Blog.id)).outerjoin(Tags.blogs).group_by(Tags.id)
-    return tags.all()
-
-
-def category_archives():
-    from maple.extensions import db
-    from sqlalchemy import func
-    from maple.blog.models import Category, Blog
-    categories = db.session.query(
-        Category,
-        func.count(Blog.id)).outerjoin(Category.blogs).group_by(Category.id)
-    return categories.all()
-
-
-def time_archives():
-    from maple.extensions import db
-    from sqlalchemy import func, extract
-    from maple.blog.models import Blog
-    times = db.session.query(
-        extract('year', Blog.created_at).label('y'),
-        extract('month', Blog.created_at).label('m'),
-        func.count("*")).group_by('y', 'm')
-    return times.all()
-
-
 def register_jinja2(app):
-
-    app.jinja_env.globals['tag_archives'] = tag_archives
-    app.jinja_env.globals['category_archives'] = category_archives
-    app.jinja_env.globals['time_archives'] = time_archives
-    app.jinja_env.globals['random_fortune'] = random_fortune
-    app.jinja_env.filters['safe_markdown'] = safe_markdown
-    app.jinja_env.filters['markdown'] = markdown
     app.jinja_env.filters['visit_total'] = record.get
     app.jinja_env.filters['timesince'] = timesince
     app.jinja_env.filters['encrypt'] = encrypt

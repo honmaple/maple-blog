@@ -1,35 +1,17 @@
-{% extends 'base/base.html' %}
-{% from 'book/_macro.html' import header %}
-{% from 'book/_macro.html' import headerlist %}
-
-{% block title -%}
-{{ title }}
-{% endblock %}
-
-{% block header -%}
-{{ header() }}
-{%- endblock header %}
-
-{% block list -%}
-{{ headerlist() }}
-{%- endblock list %}
-
+{% extends 'book/base.html' %}
 {% block content %}
-<div>
-    <div class="pull-left" style="margin-right:8px">
-        <img src="{{ url_for('images',filename='books/'+book.name+'.jpg') }}" alt="book" style="width:80px;height:120px;"/>
-    </div>
-    <ul style="margin:0;padding:0;">
-        <li> <b>书籍名称:</b>  {{ book.name }}</li>
-        <br />
-        <li> <b>类型:</b>  {{ book.tag }}</li>
-        <br />
-        <li> <b>title:</b>  {{ book.title }}</li>
-        <br />
-        <br />
-        <li> <b>作者简介:</b>  {{ book.author }}</li>
-        <br />
-        <li> <b>内容概要:</b>  {{ book.content }}</li>
-    </ul>
+<div class="media">
+  <div class="media-left media-middle">
+    <a href="{{ url_for('book.book',bookId=book.id) }}">
+      <img :src="{{ url_for('images',filename='books/'+book.name+'.jpg') }}" class="media-object" style="width:80px;height:120px;"/>
+    </a>
+  </div>
+  <div class="media-body">
+    <p><b>书籍名称:</b>  {{ book.name }}</p>
+    <p><b>类型:</b>  {{ book.tag }}</p>
+    <p><b>title:</b>  {{ book.title }}</p>
+  </div>
+  <p><b>作者简介:</b>  {{ book.author }}</p>
+  <p><b>内容概要:</b>  {{ book.content }}</p>
 </div>
 {% endblock %}

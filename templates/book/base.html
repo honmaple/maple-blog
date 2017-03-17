@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+{% from 'book/_macro.html' import header %}
+{% from 'book/_macro.html' import headerlist %}
+
+{% block title -%}
+{{ title }}
+{% endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update:星期日 2016-12-25 16:13:28 (CST)
+# Last Update:星期五 2017-3-17 13:22:48 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
@@ -34,11 +34,11 @@ class BaseModelView(ModelView):
     # column_display_pk = True
     form_base_class = BaseForm
 
-    def is_accessible(self):
-        return super_permission.can()
+    # def is_accessible(self):
+    #     return super_permission.can()
 
-    def inaccessible_callback(self, name, **kwargs):
-        abort(404)
+    # def inaccessible_callback(self, name, **kwargs):
+    #     abort(404)
 
 
 class BookView(BaseModelView):

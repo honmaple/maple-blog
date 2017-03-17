@@ -14,7 +14,7 @@ from maple.extensions import cache
 from maple.main.permissions import writer_permission
 from maple.question.forms import QuestionForm
 from maple.question.models import Question, db
-from flask_maple.forms import flash_errors
+from flask_maple.form import flash_errors
 from flask_babelex import gettext as _
 
 

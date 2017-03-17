@@ -37,6 +37,12 @@ def register(app):
     register_logging(app)
     register_app(app)
 
+    # from flask import render_template
+
+    # @app.route('/admin')
+    # def aaaa():
+    #     return render_template('admin/base.html')
+
 
 def register_extensions(app):
     extension = LazyExtension(

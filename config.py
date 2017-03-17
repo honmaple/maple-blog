@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update:星期二 2017-3-14 19:44:44 (CST)
+# Last Update:星期五 2017-3-17 23:30:9 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -29,11 +29,10 @@ AUTHOR_NAME = 'Copyright © 2015-2016 honmaple. All rights reserved.'
 ADMIN_URL = '/admin/aa'
 
 # redis
-REDIS_DB = 0
-REDIS_PASSWORD = 'redis'
+REDIS = {'db': 0, 'password': 'redis'}
 
 # Use cache
-CACHE_TYPE = 'redis'
+CACHE_TYPE = 'null'
 CACHE_DEFAULT_TIMEOUT = 60
 CACHE_KEY_PREFIX = 'cache:'
 CACHE_REDIS_HOST = '127.0.0.1'

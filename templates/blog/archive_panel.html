@@ -22,7 +22,7 @@
     <div class="panel-body" style="padding:1px 16px;">
         {% set year = year | int %}
         {% set month = month | int %}
-        <a class="a-blue" href="{{ url_for('blog.time_archive',year=year,month=month) }}">{{ _('%(year)s-%(month)s',year=year,month=month) }}</a>
+        <a class="a-blue" href="{{ url_for('blog.archive',year=year,month=month) }}">{{ _('%(year)s-%(month)s',year=year,month=month) }}</a>
         <small>({{ count }})</small>
     </div>
     {% endfor %}
@@ -31,7 +31,7 @@
         <div class="panel-body" style="padding:1px 16px;">
             {% set year = year | int %}
             {% set month = month | int %}
-            <a class="a-blue" href="{{ url_for('blog.time_archive',year=year,month=month) }}">{{ _('%(year)s-%(month)s',year=year,month=month) }}</a>
+            <a class="a-blue" href="{{ url_for('blog.archive',year=year,month=month) }}">{{ _('%(year)s-%(month)s',year=year,month=month) }}</a>
             <small>({{ count }})</small>
         </div>
         {% endfor %}

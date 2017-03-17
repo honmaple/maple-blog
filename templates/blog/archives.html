@@ -1,18 +1,4 @@
-{% extends 'base/base.html' %}
-{% from 'blog/_macro.html' import header %}
-{% from 'blog/_macro.html' import headerlist %}
-
-{% block title -%}
-{{_("HonMaple's Blog")-}}
-{% endblock %}
-
-{% block header -%}
-{{ header() }}
-{%- endblock header %}
-
-{% block list -%}
-{{ headerlist() }}
-{%- endblock list %}
+{% extends 'blog/base.html' %}
 
 {% block content %}
 <div class="row">

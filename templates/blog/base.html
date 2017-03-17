@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% from 'blog/_macro.html' import header %}
+{% from 'blog/_macro.html' import headerlist %}
+
+{% block title -%}
+{{_("HonMaple's Blog")-}}
+{% endblock %}
+
+{% block header -%}
+{{ header() }}
+{%- endblock header %}
+
+{% block list -%}
+{{ headerlist() }}
+{%- endblock list %}
+
+{% block content -%}
+<div class="row">
+  <div class="col-sm-9">
+    {% block item -%}
+    {%- endblock item %}
+  </div>
+  <div class="col-sm-3" style="padding-left:0">
+    {% include 'blog/panel.html' %}
+  </div>
+</div>
+{%- endblock content %}

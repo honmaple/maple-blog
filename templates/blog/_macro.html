@@ -3,41 +3,35 @@
 {%- endmacro %}
 
 {% macro headerlist() -%}
-<style>
- .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
-     color: #555;
-     background-color: #fff;
- }
-</style>
 <ul class="nav navbar-nav">
-    <li> <a href="{{ url_for('index.index') }}">{{_( 'HOME' )}}</a></li>
-    {% set categories = category_archives() %}
-    {% set cate_len = categories | length %}
-    {% for category,count in categories[:4] -%}
-    <li><a href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
-    {%- endfor %}
-    {% if cate_len > 4 %}
-    <li>
-        <a href="#" class="dropdown-toggle" id="dropdown-more" data-toggle="dropdown">······</a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-more">
-            {% for category,count in categories[4:] -%}
-            <li role="presentation"><a role="menuitem" href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
-            {%- endfor %}
-        </ul>
-    </li>
-    {% endif %}
-    <li> <a href="{{ url_for('blog.archive') }}">{{ _('Archives') }}</a></li>
-    <li> <a href="{{ url_for('blog.rss') }}">RSS</a></li>
+  <li> <a href="{{ url_for('index.index') }}">{{_( 'HOME' )}}</a></li>
+  {% set categories = category_archives() %}
+  {% set cate_len = categories | length %}
+  {% for category,count in categories[:4] -%}
+  <li><a href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
+  {%- endfor %}
+  {% if cate_len > 4 %}
+  <li>
+    <a href="#" class="dropdown-toggle" id="dropdown-more" data-toggle="dropdown">······</a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-more">
+      {% for category,count in categories[4:] -%}
+      <li role="presentation"><a role="menuitem" href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
+      {%- endfor %}
+    </ul>
+  </li>
+  {% endif %}
+  <li> <a href="{{ url_for('blog.archive') }}">{{ _('Archives') }}</a></li>
+  <li> <a href="{{ url_for('blog.rss') }}">RSS</a></li>
 </ul>
 {%- endmacro %}
 
 {% macro tags() -%}
 {% for tag,count in tag_archives() %}
 <span class="label label-primary" style="display: inline-block;">
-    {%  set category = request.args.get('category') %}
-    <a href="{{ url_for('blog.bloglist',category=category,tag=tag.name) }}" style="color:#fff;">{{ tag.name }}
-        <span class="badge tag-badge">{{ count }}</span>
-    </a>
+  {%  set category = request.args.get('category') %}
+  <a href="{{ url_for('blog.bloglist',category=category,tag=tag.name) }}" style="color:#fff;">{{ tag.name }}
+    <span class="badge tag-badge">{{ count }}</span>
+  </a>
 </span>
 {% endfor %}
 {%- endmacro %}
@@ -50,96 +44,43 @@
 <a href="https://www.facebook.com/honmaple" target="_blank" title="FaceBook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
 {%- endmacro %}
 
-{% macro blogpanel(blog) -%}
-<h3><a href="{{ url_for('blog.blog',blogId=blog.id) }}" target=_blank>{{ blog.title }}</a></h3>
-{{ blogheading(blog) }}
-{{ blogcontent(blog) }}
-{%- endmacro %}
-
-{% macro blogheading(blog) -%}
-{{ blogtime(blog.created_at) }}
-| {{ blogtags(blog.tags) }} |
-{{ blogread(blog.id) }}
-{%- endmacro %}
-
-{% macro blogtime(time) -%}
-<span class="glyphicon glyphicon-calendar" aria-hidden="true" title="{{_('publish')}}"></span>:
-<small style="color:#999">{{ time | timesince }} </small>
-{%- endmacro %}
-
-{% macro blogtags(tags) -%}
-<span class="glyphicon glyphicon-tags" aria-hidden="true"  title="{{_('tags')}}"></span> :
-{%- for tag in tags -%}
-<small><a href="{{ url_for('blog.bloglist',tag=tag.name) }}" style="color:#eb5424;">{{ tag.name }}</a></small>
-{% endfor -%}
-{%- endmacro %}
-
-{% macro blogread(id) -%}
-<span class="glyphicon glyphicon-book" aria-hidden="true"  title="{{_('read')}}"></span>:
-<small style="color:#999">{{ id | visit_total }}</small>
-{%- endmacro %}
-
-{% macro blogcontent(blog) -%}
+{% macro blog_content(blog) -%}
 <script>hljs.initHighlightingOnLoad();</script>
-{% set oid = "org-mode-parser-" + (blog.id | string) %}
-<span class="content" id="{{ oid }}">
-    {% if blog.content_type == "0" %}
-    {{ blog.content | truncate(255) | safe_markdown }}
-    {% else %}
-    {{ blog.content | truncate(255) }}
-    {%- endif -%}
+<span class="content">
+  {% if blog.content_type == "0" %}
+  {{ blog.content | truncate(255) | safe_markdown }}
+  {% else %}
+  {{ blog.content | truncate(255) | orgmode }}
+  {%- endif -%}
 </span>
-{% if blog.content_type == "1" %}
-<script type="text/javascript">
- orgParser('{{ oid }}');
-</script>
-{% endif %}
 {%- endmacro %}
 
-{% macro blogdetail(blog) -%}
-<script>hljs.initHighlightingOnLoad();</script>
-<h1 class="text-center" style="font-size:30px;">{{ blog.title }}</h1>
+{% macro info(blog) -%}
 {% set author = blog.author.username %}
 {% set tags = blog.tags %}
 {% set category = blog.category.name %}
-<footer class="pull-right">
-    <span class="glyphicon glyphicon-time"></span>
-    <abbr title="{{ blog.created_at }}">
-        <span class="label label-success">{{ blog.created_at | timesince }}</span>
-    </abbr>
-    <address style="margin-top:8px">
-        <span class="glyphicon glyphicon-user"></span>
-        <a href="{{ url_for('blog.bloglist',author=author) }}" class="label label-primary">{{ author }}</a>
-    </address>
-    <address style="margin-top:-12px">
-        <span class="glyphicon glyphicon-leaf"></span>
-        <a href="{{ url_for('blog.bloglist',category=category) }}" class="label label-default" style="display: inline-block;">{{ category }}</a>
-    </address>
-    <address style="margin-top:-12px">
-        <span class="glyphicon glyphicon-tags"></span>
-        {% for tag in tags %}
-        <a href="{{ url_for('blog.bloglist',tag=tag.name) }}" class="label label-tag" style="display: inline-block;">{{ tag.name }}</a>
-        {% endfor %}
-    </address>
-    <address style="margin-top:-12px">
-        <span class="glyphicon glyphicon-eye-open"></span>
-        <span class="label label-info">{{ blog.id | visit_total }}</span>
-    </address>
+<footer>
+  <i class="fa fa-calendar"></i>
+  <abbr title="{{ blog.created_at }}">
+    <span class="label label-success">{{ blog.created_at | timesince }}</span>
+  </abbr>
+  <address style="margin-top:8px">
+    <i class="fa fa-user"></i>
+    <a href="{{ url_for('blog.bloglist',author=author) }}" class="label label-primary">{{ author }}</a>
+  </address>
+  <address style="margin-top:-12px">
+    <i class="fa fa-leaf"></i>
+    <a href="{{ url_for('blog.bloglist',category=category) }}" class="label label-default" style="display: inline-block;">{{ category }}</a>
+  </address>
+  <address style="margin-top:-12px">
+    <i class="fa fa-tags"></i>
+    {% for tag in tags %}
+    <a href="{{ url_for('blog.bloglist',tag=tag.name) }}" class="label label-tag" style="display: inline-block;">{{ tag.name }}</a>
+    {% endfor %}
+  </address>
+  <address style="margin-top:-12px">
+    <i class="fa fa-eye"></i>
+    <span class="label label-info">{{ blog.id | visit_total }}</span>
+  </address>
 </footer>
-<div class="blog-content" id="org-mode-parser">
-    {% if blog.content_type == "0" %}
-    {{ blog.content | safe_markdown }}
-    {% else %}
-    {{ blog.content }}
-    {%- endif -%}
-</div>
-{%- if blog.is_copy == False -%}
-<div style="border-bottom:1px dashed #000000;width:60%;"></div>
-版权所有,转载请注明作者及出处
-{%- endif -%}
-{% if blog.content_type == "1" %}
-<script type="text/javascript">
- orgParser('org-mode-parser');
-</script>
-{%- endif -%}
 {%- endmacro %}

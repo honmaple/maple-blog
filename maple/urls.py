@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-08-08 15:08:36 (CST)
-# Last Update:星期二 2016-12-13 14:54:0 (CST)
+# Last Update:星期五 2017-3-17 19:29:52 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -24,6 +24,8 @@ def register_routes(app):
     app.register_blueprint(user_site, url_prefix='/u')
     app.register_blueprint(blog_site, url_prefix='/blog')
     app.register_blueprint(question_site, url_prefix='/question')
-    app.register_blueprint(book_site, url_prefix='/books')
+    app.register_blueprint(book_site)
     app.register_blueprint(timeline_site, url_prefix='/timeline')
     register_auth(app)
+    from .admin1.urls import site
+    app.register_blueprint(site)

@@ -6,37 +6,26 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-12-13 14:47:19 (CST)
-# Last Update:星期二 2016-12-13 15:41:31 (CST)
+# Last Update:星期五 2017-3-17 23:25:41 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from flask import request, current_app, render_template
-from flask.views import MethodView
+from flask import request, render_template
 from flask_login import login_required, current_user
 from maple.extensions import csrf
+from maple.common.views import BaseMethodView as MethodView
 from .models import TimeLine
 
 
 class TimeLineListView(MethodView):
     decorators = [csrf.exempt]
 
-    def get_page_info(self):
-        page = request.args.get('page', 1, type=int)
-        if hasattr(self, 'per_page'):
-            per_page = getattr(self, 'per_page')
-            number = request.args.get('number', per_page, type=int)
-        else:
-            per_page = current_app.config.setdefault('PER_PAGE', 10)
-            number = request.args.get('number', per_page, type=int)
-        if number > 100:
-            number = current_app.config['PER_PAGE']
-        return page, number
-
     def get(self):
-        page, number = self.get_page_info()
+        page, number = self.page_info
         filter_dict = {'hide': False}
-        timelines = TimeLine.get_list(page, number, filter_dict,
-                                      ('-created_at', ))
+        order_by = ('created_at', )
+        timelines = TimeLine.query.filter_by(
+            **filter_dict).order_by(*order_by).paginate(page, number)
         return render_template('blog/timeline.html', timelines=timelines)
 
     @login_required

@@ -174,3 +174,18 @@ div.category,ul.category,ul.list-group,li.list-group-item,nav.navbar,ul.dropdown
 .hidelist {
     display:none;
 }
+.navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    color: #555;
+    /* background-color: #fff; */
+}
+.blog {
+    margin-bottom:15px;
+    background-color:rgba(255, 255, 255, 0.3);
+    padding:5px 30px;
+    border:1px solid #ddd;
+    box-shadow:0px 0px 1px #ddd;
+    border-radius: 3px;
+}
+.blog:hover {
+    background-color:rgba(255, 255, 255, 0.5);
+}

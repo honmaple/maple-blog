@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-19 22:41:42 (CST)
-# Last Update:星期一 2016-12-5 10:43:2 (CST)
+# Last Update:星期五 2017-3-17 14:3:52 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -22,6 +22,13 @@ class CommonMiddleware(object):
     def preprocess_request(self):
         g.search_form = SearchForm()
         g.user = current_user
+        request.user = current_user._get_current_object()
+        if request.method == 'GET':
+            request.data = request.args.to_dict()
+        else:
+            request.data = request.json
+            if request.data is None:
+                request.data = request.form.to_dict()
 
 
 class IndexMiddleware(object):
