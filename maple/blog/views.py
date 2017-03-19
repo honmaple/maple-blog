@@ -48,7 +48,7 @@ class BlogListView(MethodView):
         keys = ['title', 'tags__name', 'category__name', 'author__username']
         equal_key = ['tags__name', 'category__name', 'author__username']
         order_by = gen_order_by(query_dict, keys)
-        filter_dict = gen_filter_dict(query_dict, keys, equal_key, user)
+        filter_dict = gen_filter_dict(query_dict, keys, equal_key)
         blogs = Blog.query.filter_by(**filter_dict)
         if year is not None:
             blogs = blogs.filter(extract('year', Blog.created_at) == year)

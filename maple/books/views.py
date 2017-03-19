@@ -17,6 +17,8 @@ from .models import Books
 
 
 class BookListView(MethodView):
+    per_page = 18
+
     @cache.cached(timeout=300, key_prefix=cache_key)
     def get(self):
         query_dict = request.data

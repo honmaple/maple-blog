@@ -48,28 +48,6 @@ li {
 .cate {
     padding:0 4px;
 }
-span.content h1 {
-    font-size:25px;
-}
-span.content h2 {
-    font-size:22px;
-}
-span.content h3 {
-    font-size:19px;
-}
-span.content blockquote {
-    font-size:14px;
-    color:#666;
-}
-span.content ul {
-    padding-left:16px;
-}
-span.content ol {
-    padding-left:16px;
-}
-span.content li {
-    list-style-type:circle;
-}
 .blog-content {
     color: #333;
 }
@@ -83,6 +61,14 @@ span.content li {
 }
 .blog-content h3 {
     font-size:19px;
+    font-weight:bold;
+}
+.blog-content h4 {
+    font-size:17px;
+    font-weight:bold;
+}
+.blog-content h5 {
+    font-size:15px;
     font-weight:bold;
 }
 .blog-content blockquote {
@@ -112,9 +98,15 @@ code.hljs {
     padding: 0;
     border-style: solid;
     border-color: #eceff2;
-    border-width: 1px 0;
+    border-width: 0px 0;
     overflow: auto;
     line-height: 22.400000000000002px;
+}
+.blog-list-content h1 {
+    margin-top:0px;
+}
+.blog-list-content h2 {
+    margin-top:0px;
 }
 .label-tag {
     background-color: #ab5424;
@@ -165,6 +157,7 @@ div.category,ul.category,ul.list-group,li.list-group-item,nav.navbar,ul.dropdown
 }
 .panel-body-border {
     border-bottom:1px solid #eea;
+    padding-left:30px;padding-right:30px;
 }
 .archives {
     padding: 0 0 0 24px;

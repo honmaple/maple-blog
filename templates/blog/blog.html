@@ -3,12 +3,12 @@
 
 {% block item -%}
 <div class="category" style="padding:0 15px;">
-  <script>hljs.initHighlightingOnLoad();</script>
   <h1 class="text-center" style="font-size:30px;">{{ blog.title }}</h1>
   <span class="pull-right">
     {{ info(blog) }}
   </span>
-  <div class="blog-content" id="org-blog-content">
+  <div class="blog-content">
+    <script>hljs.initHighlightingOnLoad();</script>
     {% if blog.content_type == "0" %}
     {{ blog.content | safe_markdown }}
     {% else %}

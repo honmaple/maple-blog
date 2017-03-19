@@ -44,17 +44,6 @@
 <a href="https://www.facebook.com/honmaple" target="_blank" title="FaceBook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
 {%- endmacro %}
 
-{% macro blog_content(blog) -%}
-<script>hljs.initHighlightingOnLoad();</script>
-<span class="content">
-  {% if blog.content_type == "0" %}
-  {{ blog.content | truncate(255) | safe_markdown }}
-  {% else %}
-  {{ blog.content | truncate(255) | orgmode }}
-  {%- endif -%}
-</span>
-{%- endmacro %}
-
 {% macro info(blog) -%}
 {% set author = blog.author.username %}
 {% set tags = blog.tags %}
@@ -72,7 +61,7 @@
     <i class="fa fa-leaf"></i>
     <a href="{{ url_for('blog.bloglist',category=category) }}" class="label label-default" style="display: inline-block;">{{ category }}</a>
   </address>
-  <address style="margin-top:-12px">
+  <address class="hidden-xs" style="margin-top:-12px">
     <i class="fa fa-tags"></i>
     {% for tag in tags %}
     <a href="{{ url_for('blog.bloglist',tag=tag.name) }}" class="label label-tag" style="display: inline-block;">{{ tag.name }}</a>
