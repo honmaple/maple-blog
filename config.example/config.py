@@ -11,7 +11,7 @@ from datetime import timedelta
 
 DEBUG = False
 SECRET_KEY = 'secret key'
-SECURITY_PASSWORD_SALT = 'you will never guess'
+SECRET_KEY_SALT = 'you will never guess'
 
 # remember me to save cookies
 PERMANENT_SESSION_LIFETIME = timedelta(days=3)
@@ -23,10 +23,10 @@ PER_PAGE = 12
 
 # This will show at html footer
 AUTHOR_NAME = 'Copyright © 2015-2016 honmaple. All rights reserved.'
+ADMIN_URL = '/admin/aa'
 
 # redis
-REDIS_DB = 0
-REDIS_PASSWORD = 'redis password'
+REDIS = {'db': 0, 'password': 'ss'}
 
 # Use cache
 CACHE_TYPE = 'redis'
@@ -39,7 +39,7 @@ CACHE_REDIS_DB = 1
 
 MIDDLEWARE = [
     'maple.common.middleware.CommonMiddleware',
-    'flask_maple.permission.middleware.PermissionMiddleware'
+    # 'flask_maple.permission.middleware.PermissionMiddleware'
 ]
 
 # Mail such as qq

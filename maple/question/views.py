@@ -8,71 +8,76 @@
 #   Created Time: 2015-11-27 17:46:41
 # *************************************************************************
 from flask import (render_template, flash, redirect, url_for, request)
-from flask.views import MethodView
-from flask_login import current_user, login_required
+from flask_login import login_required
 from maple.extensions import cache
 from maple.main.permissions import writer_permission
 from maple.question.forms import QuestionForm
-from maple.question.models import Question, db
+from maple.question.models import Question
 from flask_maple.form import flash_errors
 from flask_babelex import gettext as _
+from maple.common.views import BaseMethodView as MethodView
+from maple.common.utils import (gen_filter_dict, gen_order_by)
 
 
 class QueListView(MethodView):
-    def __init__(self):
-        super(MethodView, self).__init__()
-        self.form = QuestionForm()
-
     @cache.cached(timeout=180)
     def get(self):
-        page = request.args.get('page', 1, type=int)
-        filter_dict = {}
+        query_dict = request.data
+        page, number = self.page_info
+        keys = ['title']
+        equal_key = []
+        order_by = gen_order_by(query_dict, keys)
+        filter_dict = gen_filter_dict(query_dict, keys, equal_key)
         filter_dict.update(dict(is_private=False))
-        questions = Question.get_list(page, 18, filter_dict)
+        questions = Question.query.filter_by(
+            **filter_dict).order_by(*order_by).paginate(page, number)
         data = {
             'title': _('Answer-HonMaple'),
             'questions': questions,
-            'form': self.form
+            'form': QuestionForm()
         }
         return render_template('question/questionlist.html', **data)
 
     @login_required
     def post(self):
+        form = QuestionForm()
+        user = request.user
         if not writer_permission.can():
             flash(_('You have not confirm your account'))
             return redirect(url_for('question.quelist'))
-        if self.form.validate_on_submit():
+        if form.validate_on_submit():
             question = Question()
-            question.author = current_user
-            question.title = self.form.title.data
-            question.describ = self.form.describ.data
-            question.answer = self.form.answer.data
+            question.author = user
+            question.title = form.title.data
+            question.describ = form.describ.data
+            question.answer = form.answer.data
             '''简单私人日记实现'''
-            question.is_private = self.form.private.data
-            db.session.add(question)
-            db.session.commit()
+            question.is_private = form.private.data
+            question.save()
             flash('感谢你的提交')
             return redirect(url_for('question.quelist'))
         else:
-            if self.form.errors:
-                flash_errors(self.form)
+            if form.errors:
+                flash_errors(form)
             return redirect(url_for('question.quelist'))
 
 
 class QuePrivateView(MethodView):
-    def __init__(self):
-        super(MethodView, self).__init__()
-        self.form = QuestionForm()
-
     @login_required
     def get(self):
-        page = request.args.get('page', 1, type=int)
-        filter_dict = {}
-        filter_dict.update(dict(is_private=True, author__id=current_user.id))
-        questions = Question.get_list(page, 18, filter_dict)
+        query_dict = request.data
+        user = request.user
+        page, number = self.page_info
+        keys = ['title']
+        equal_key = []
+        order_by = gen_order_by(query_dict, keys)
+        filter_dict = gen_filter_dict(query_dict, keys, equal_key, user)
+        filter_dict.update(dict(is_private=True))
+        questions = Question.query.filter_by(
+            **filter_dict).order_by(*order_by).paginate(page, number)
         data = {
             'title': _('Answer - HonMaple'),
-            'form': self.form,
+            'form': QuestionForm(),
             'questions': questions
         }
         return render_template('question/questionlist.html', **data)
@@ -81,8 +86,9 @@ class QuePrivateView(MethodView):
 class QueView(MethodView):
     @login_required
     def get(self, queId):
-        question = Question.get(queId)
-        if question.is_private and current_user.id != question.author.id:
+        user = request.user
+        question = Question.query.filter_by(id=queId).first_or_404()
+        if question.is_private and user.id != question.author.id:
             flash('你没有权限查看')
             return redirect(url_for('question.quelist'))
         data = {

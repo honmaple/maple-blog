@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update:星期五 2017-3-17 23:30:9 (CST)
+# Last Update:星期三 2017-3-22 19:37:24 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -14,7 +14,7 @@ from datetime import timedelta
 
 DEBUG = True
 SECRET_KEY = 'secret key'
-SECURITY_PASSWORD_SALT = 'you will never guess'
+SECRET_KEY_SALT = 'you will never guess'
 
 # remember me to save cookies
 PERMANENT_SESSION_LIFETIME = timedelta(days=3)
@@ -42,7 +42,7 @@ CACHE_REDIS_DB = 1
 
 MIDDLEWARE = [
     'maple.common.middleware.CommonMiddleware',
-    'flask_maple.permission.middleware.PermissionMiddleware'
+    # 'flask_maple.permission.middleware.PermissionMiddleware'
 ]
 
 # Mail such as qq

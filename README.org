@@ -8,18 +8,39 @@
 
   This version I use postgresql to storage the contents of articles
 
+  *Send email has some bugs*,I'm restoring it 
 
 * How to use
   
 ** Install necessary package
    #+BEGIN_SRC python
-  pip install -r requestments.txt 
+   pip install -r requestments.txt 
    #+END_SRC
+
+   About *flask-maple*,you should use
+    #+BEGIN_SRC sh
+    git clone https://github.com/honmaple/flask-maple
+    cd flask-maple
+    python setup.py install
+    #+END_SRC
+    
+    About *fortune*
+    #+BEGIN_SRC sh
+    git clone https://github.com/honmaple/fortune
+    ln -s path/fortune/fortune blog_path/fortune
+    #+END_SRC
+
+    About *org.py*
+    #+BEGIN_SRC sh
+    git clone https://github.com/honmaple/org-python
+    ln -s path/org-python/org.py blog_path/org.py
+    #+END_SRC
+
    
 ** Configure
    Please perfect configure at *config/config.py*
    #+BEGIN_SRC shell
-    mv config.example config
+   mv config.example/config.py ./config.py
    #+END_SRC
 
 ** Initialization sql
@@ -31,12 +52,12 @@
    
 ** Create superuser
    #+BEGIN_SRC shell
-python manager.py create_user
+    python manager.py create_user
    #+END_SRC
 
 ** Run 
    #+BEGIN_SRC shell
-python runserver.py or python manager.py runserver
+    python runserver.py or python manager.py runserver
    #+END_SRC
 
 

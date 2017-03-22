@@ -10,10 +10,9 @@ Flask-BabelEx==0.9.3
 Flask-Cache==0.13.1
 Flask-Login==0.4.0
 Flask-Mail==0.9.1
-Flask-Maple==0.4.6
 Flask-Principal==0.4.0
 Flask-Script==2.0.5
-Flask-SQLAlchemy==3.0.dev20161113
+Flask-SQLAlchemy==2.2
 Flask-WTF==0.13.1
 gevent==1.1.2
 gunicorn==19.6.0
