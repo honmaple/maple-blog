@@ -1,66 +1,64 @@
 {% extends 'maple/base.html' %}
-{% import 'maple/auth.html'  as auth_base %}
 {% from 'base/paginate.html' import paginate %}
-{% block script -%}
-{{ super() }}
-<script  type="text/javascript" src="{{ url_for('static',filename='style/honmaple.js')}}"></script>
-{%- endblock -%}
+
+{% block title -%}
+  {{_("honmaple's blog")}} - {{_('Love is precious, free price is higher.')}}
+{% endblock %}
 
 {% block style -%}
-{{ super() }}
-<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<style>
- body {
-     background-color: #ffffff;
-     background-image: url('{{ url_for('static',filename='images/snow.jpg') }}');
-     background-repeat: no-repeat;
-     background-attachment: fixed;
-     background-size:100% 100%;
-     color:#444;
- }
-</style>
+  {{ super() }}
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <style>
+   body {
+       background-color: #ffffff;
+       background-image: url('{{ url_for('static',filename='images/snow.jpg') }}');
+       background-repeat: no-repeat;
+       background-attachment: fixed;
+       background-size:100% 100%;
+       color:#444;
+   }
+  </style>
 {%- endblock -%}
 
 {% block main %}
-<nav class="navbar navbar-default  col-md-offset-1 col-md-10 header-back">
+  <nav class="navbar navbar-default  col-md-offset-1 col-md-10 header-back">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-header" aria-expanded="false">
-                <span class="sr-only"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            {% block header %}{% endblock %}
-        </div>
-        <div class="collapse navbar-collapse" id="bs-header">
-            {% block list %}{% endblock %}
-            {% include 'base/auth.html' %}
-            <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;" >
-                <div class="form-group has-feedback">
-                    {{ g.search_form.search(class="form-control input-sm",placeholder=_("Search"))}}
-                    <i class="icon-search form-control-feedback"></i>
-                </div>
-            </form>
-        </div>
-    </div>
-</nav>
-<div class="col-md-offset-1 col-md-10 padding">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <div class="alert alert-info" style="padding:8px">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-header" aria-expanded="false">
+          <span class="sr-only"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
         </button>
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }} </li>
-            {% endfor %}
-        </ul>
+        {% block header %}{% endblock %}
+      </div>
+      <div class="collapse navbar-collapse" id="bs-header">
+        {% block list %}{% endblock %}
+        <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;" >
+          <div class="form-group has-feedback">
+            {{ g.search_form.search(class="form-control input-sm",placeholder=_("Search"))}}
+            <i class="fa fa-search form-control-feedback"></i>
+          </div>
+        </form>
+      </div>
     </div>
-    {% endif %}
+  </nav>
+  <div class="col-md-offset-1 col-md-10 padding">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info" style="padding:8px">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <ul>
+            {% for message in messages %}
+              <li>{{ message }} </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
-</div>
+  </div>
 {%- endblock -%}
 

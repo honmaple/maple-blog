@@ -2,25 +2,20 @@
 {% from 'common/_macro.html' import header %}
 {% from 'common/_macro.html' import headerlist %}
 
-{% block title -%}
-{{_("HonMaple's Blog")-}}
-{% endblock %}
-
 {% block header -%}
-{{ header() }}
+  {{ header() }}
 {%- endblock header %}
 
 {% block list -%}
-{{ headerlist() }}
+  {{ headerlist() }}
 {%- endblock list %}
 
 {% block content %}
-<div>
   <div id="carousel-item" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#carousel-item" data-slide-to="0" class="active"></li>
-      <li data-target="#carousel-item" data-slide-to="1" class=""></li>
-      <li data-target="#carousel-item" data-slide-to="2" class=""></li>
+      <li data-target="#carousel-item" data-slide-to="1"></li>
+      <li data-target="#carousel-item" data-slide-to="2"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
       {{ item('/static/images/bg1.jpg','welcome to my blog',notice.notice,True) }}
@@ -36,39 +31,38 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
-</div>
-<br/>
-<div class="row">
-  <div class="page-header text-center" style="margin-top:10px;margin-bottom:10px;">
-    <h3>HELLO WORLD</h3>
+  <br/>
+  <div class="row">
+    <div class="page-header text-center" style="margin-top:10px;margin-bottom:10px;">
+      <h3>HELLO WORLD</h3>
+    </div>
+    {{ thumbmail('/static/images/bg1.jpg','https://forums.honmaple.org','maple-bbs') }}
+    {{ thumbmail('/static/images/bg1.jpg','https://cloud.honmaple.com','maple-cloud') }}
+    {{ thumbmail('/static/images/bg1.jpg','https://github.com/honmaple/maple-file','maple-file') }}
+    {{ thumbmail('/static/images/bg1.jpg','https://github.com/honmaple/flask-maple','flask-maple') }}
   </div>
-  {{ thumbmail('/static/images/bg1.jpg','maple-bbs') }}
-  {{ thumbmail('/static/images/bg1.jpg','maple-cloud') }}
-  {{ thumbmail('/static/images/bg1.jpg','flask-maple') }}
-  {{ thumbmail('/static/images/bg1.jpg','flask-avatar') }}
-</div>
 {% endblock %}
 
 {% macro item(src,title,description='',active=False) -%}
-<div class="item {% if active %}active{% endif %}">
-  <img src="{{ src }}" style="height:300px;width:100%">
-  <div class="carousel-caption">
-    <h3>{{ title }}</h3>
-    <p>{{ description }}</p>
-  </div>
-</div>
-{%- endmacro %}
-
-{% macro thumbmail(src,title,description='') -%}
-<div class="col-sm-6 col-md-3">
-  <div class="thumbnail" style="padding:0;border-radius:5px;">
-    <img src="{{ src }}" alt="">
-    <div class="caption text-center">
-      <a href="" style="text-decoration:none">
-        <h4 style="color:#666">{{ title }}</h4>
-        <p>{{ description }}</p>
-      </a>
+  <div class="item {% if active %}active{% endif %}">
+    <img src="{{ src }}" style="height:300px;width:100%" />
+    <div class="carousel-caption">
+      <h3>{{ title }}</h3>
+      <p>{{ description }}</p>
     </div>
   </div>
-</div>
+{%- endmacro %}
+
+{% macro thumbmail(src,href,title,description='') -%}
+  <div class="col-sm-6 col-md-3">
+    <div class="thumbnail" style="padding:0;border-radius:5px;">
+      <img src="{{ src }}" alt="" />
+      <div class="caption text-center">
+        <a href="{{ href }}" style="text-decoration:none" target="_blank">
+          <h4 style="color:#666">{{ title }}</h4>
+          <p>{{ description }}</p>
+        </a>
+      </div>
+    </div>
+  </div>
 {%- endmacro %}

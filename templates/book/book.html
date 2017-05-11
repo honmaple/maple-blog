@@ -3,7 +3,7 @@
 <div class="media">
   <div class="media-left media-middle">
     <a href="{{ url_for('book.book',bookId=book.id) }}">
-      <img :src="{{ url_for('images',filename='books/'+book.name+'.jpg') }}" class="media-object" style="width:80px;height:120px;"/>
+      <img src="{{ url_for('images',filename='books/'+book.name+'.jpg') }}" class="media-object" style="width:80px;height:120px;"/>
     </a>
   </div>
   <div class="media-body">

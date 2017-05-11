@@ -17,7 +17,7 @@ from werkzeug.security import generate_password_hash
 from datetime import datetime
 import os
 
-app = create_app()
+app = create_app('config')
 migrate = Migrate(app, db)
 manager = Manager(app)
 
@@ -33,10 +33,15 @@ def clear_cache():
         cache.clear()
 
 
-@manager.option('-u', '--user_id', dest='user_id')
-def token(user_id):
-    user_id = int(user_id)
-    return User.query.get(user_id).token
+# @manager.option('-u', '--user_id', dest='user_id')
+# def token(user_id):
+#     user_id = int(user_id)
+#     return User.query.get(user_id).token
+
+
+@manager.option('-u', '--username', dest='username')
+def token(username):
+    return User.query.filter_by(username=username).first().token
 
 
 @manager.command

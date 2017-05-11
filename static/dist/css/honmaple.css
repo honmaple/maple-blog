@@ -85,8 +85,8 @@ li {
     list-style-type:circle;
 }
 .blog-content img {
-    max-width: 480px;
-    width:100%;
+    /* max-width: 480px; */
+    max-width:100%;
     height: auto;
     display: block;
 }

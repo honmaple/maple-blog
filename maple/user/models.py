@@ -13,7 +13,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, \
      check_password_hash
 from datetime import datetime
-from flask_maple.permission.models import Group
+from flask_maple.auth.models import GroupMixin
 from itsdangerous import (URLSafeTimedSerializer, BadSignature,
                           SignatureExpired)
 from flask import current_app
@@ -25,6 +25,10 @@ group_user = db.Table(
     'group_user',
     db.Column('group_id', db.Integer, db.ForeignKey('groups.id')),
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')))
+
+
+class Group(db.Model, GroupMixin):
+    __tablename__ = 'groups'
 
 
 class User(db.Model, UserMixin, BaseModel):
@@ -82,7 +86,7 @@ class User(db.Model, UserMixin, BaseModel):
     def token(self):
         config = current_app.config
         secret_key = config.setdefault('SECRET_KEY')
-        salt = config.setdefault('SECURITY_PASSWORD_SALT')
+        salt = config.setdefault('SECRET_KEY_SALT')
         serializer = URLSafeTimedSerializer(secret_key)
         token = serializer.dumps(self.username, salt=salt)
         return token
@@ -91,7 +95,7 @@ class User(db.Model, UserMixin, BaseModel):
     def check_token(token, max_age=86400):
         config = current_app.config
         secret_key = config.setdefault('SECRET_KEY')
-        salt = config.setdefault('SECURITY_PASSWORD_SALT')
+        salt = config.setdefault('SECRET_KEY_SALT')
         serializer = URLSafeTimedSerializer(secret_key)
         try:
             username = serializer.loads(token, salt=salt, max_age=max_age)

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期五 2017-3-17 23:3:42 (CST)
+# Last Update:星期四 2017-5-11 16:44:3 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -23,7 +23,6 @@ from flask_login import LoginManager
 from flask_cache import Cache
 from flask_babelex import Babel, Domain
 from flask_babelex import lazy_gettext as _
-from flask_principal import Principal
 from flask_maple.models import db
 import os
 
@@ -32,7 +31,7 @@ def register_maple(app):
     maple = Bootstrap(
         css=('dist/css/honmaple.css', 'dist/css/monokai.css'),
         js=('dist/js/highlight.js', 'dist/js/rain.js', 'dist/js/org.js'),
-        use_auth=True)
+        use_auth=False)
     maple.init_app(app)
     Captcha(app)
     Error(app)
@@ -40,7 +39,7 @@ def register_maple(app):
 
 def register_login():
     login_manager = LoginManager()
-    login_manager.login_view = "auth.login"
+    # login_manager.login_view = "auth.login"
     login_manager.session_protection = "basic"
     login_manager.login_message = _("Please login to access this page.")
 
@@ -84,7 +83,6 @@ csrf = CsrfProtect()
 cache = Cache()
 babel = register_babel()
 mail = Mail()
-principals = Principal()
 admin = Admin(name='HonMaple', template_mode='bootstrap3')
 login_manager = register_login()
 redis_data = Redis()

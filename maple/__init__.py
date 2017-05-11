@@ -37,19 +37,12 @@ def register(app):
     register_logging(app)
     register_app(app)
 
-    # from flask import render_template
-
-    # @app.route('/admin')
-    # def aaaa():
-    #     return render_template('admin/base.html')
-
 
 def register_extensions(app):
     extension = LazyExtension(
         module='maple.extensions.',
         extension=['db', 'login_manager', 'csrf', 'cache', 'babel',
-                   'principals', 'redis_data', 'maple_app', 'middleware',
-                   'mail'])
+                   'redis_data', 'maple_app', 'middleware', 'mail'])
     extension.init_app(app)
     admin.index_view.url = app.config['ADMIN_URL']
     admin.init_app(app)

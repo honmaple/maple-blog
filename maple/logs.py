@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-08-08 15:59:24 (CST)
-# Last Update:星期三 2016-10-5 18:40:19 (CST)
+# Last Update:星期四 2017-5-4 13:45:57 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -14,12 +14,19 @@ import os
 import logging
 from logging.handlers import SMTPHandler
 from logging import Formatter
+from threading import Thread
+
+
+class ThreadedSMTPHandler(SMTPHandler):
+    def emit(self, record):
+        thread = Thread(target=SMTPHandler.emit, args=(self, record))
+        thread.start()
 
 
 def register_logging(app):
     config = app.config
-    logs_folder = os.path.abspath(os.path.join(
-        os.path.dirname(__file__), os.pardir, 'logs'))
+    logs_folder = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), os.pardir, 'logs'))
     if not os.path.exists(logs_folder):
         os.mkdir(logs_folder)
     formatter = Formatter('''
@@ -55,12 +62,13 @@ def register_logging(app):
     if app.config["SEND_LOGS"]:
         credentials = (config['MAIL_USERNAME'], config['MAIL_PASSWORD'])
         mailhost = (config['MAIL_SERVER'], config['MAIL_PORT'])
-        mail_handler = SMTPHandler(secure=(),
-                                   mailhost=mailhost,
-                                   fromaddr=config['MAIL_DEFAULT_SENDER'],
-                                   toaddrs=config['RECEIVER'],
-                                   subject='Your Application Failed',
-                                   credentials=credentials)
+        mail_handler = ThreadedSMTPHandler(
+            secure=(),
+            mailhost=mailhost,
+            fromaddr=config['MAIL_DEFAULT_SENDER'],
+            toaddrs=config['RECEIVER'],
+            subject='Your Application Failed',
+            credentials=credentials)
 
         mail_handler.setLevel(logging.ERROR)
         mail_handler.setFormatter(formatter)

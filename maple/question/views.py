@@ -10,11 +10,11 @@
 from flask import (render_template, flash, redirect, url_for, request)
 from flask_login import login_required
 from maple.extensions import cache
-from maple.main.permissions import writer_permission
 from maple.question.forms import QuestionForm
 from maple.question.models import Question
 from flask_maple.form import flash_errors
 from flask_babelex import gettext as _
+from flask_login import current_user
 from maple.common.views import BaseMethodView as MethodView
 from maple.common.utils import (gen_filter_dict, gen_order_by)
 
@@ -42,7 +42,7 @@ class QueListView(MethodView):
     def post(self):
         form = QuestionForm()
         user = request.user
-        if not writer_permission.can():
+        if not current_user.is_confirmed:
             flash(_('You have not confirm your account'))
             return redirect(url_for('question.quelist'))
         if form.validate_on_submit():

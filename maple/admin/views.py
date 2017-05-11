@@ -6,18 +6,17 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update:星期五 2017-3-17 23:32:18 (CST)
+# Last Update:星期四 2017-5-11 16:29:16 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
-from maple.main.permissions import super_permission
 from maple.user.models import User
 from maple.extensions import db
 from wtforms.validators import DataRequired, Email
 from flask import abort, url_for, Markup, request
-from flask_admin import form
 from flask_admin.contrib.sqla import ModelView
 from flask_wtf import Form
+from flask_login import current_user
 
 
 class BaseForm(Form):
@@ -35,7 +34,7 @@ class BaseModelView(ModelView):
     form_base_class = BaseForm
 
     def is_accessible(self):
-        return super_permission.can()
+        return current_user.is_superuser is True
 
     def inaccessible_callback(self, name, **kwargs):
         abort(404)

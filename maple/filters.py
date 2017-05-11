@@ -6,12 +6,11 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期五 2017-3-17 19:47:18 (CST)
+# Last Update:星期四 2017-5-11 16:27:5 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from datetime import datetime
-from maple.main.record import record
 
 
 def encrypt(text):
@@ -46,7 +45,6 @@ def timesince(dt, default="just now"):
 
 
 def register_jinja2(app):
-    app.jinja_env.filters['visit_total'] = record.get
     app.jinja_env.filters['timesince'] = timesince
     app.jinja_env.filters['encrypt'] = encrypt
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')

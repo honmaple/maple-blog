@@ -6,18 +6,18 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 22:37:36 (CST)
-# Last Update:星期六 2016-11-5 21:55:14 (CST)
+# Last Update:星期日 2017-4-2 0:0:11 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask_cache import Cache
-from maple import create_app
+from forums import create_app
 
-app = create_app()
+app = create_app('config')
 
 
 def register_cache(app):
-    cache = Cache(config={'CACHE_TYPE': 'redis'})
+    cache = Cache()
     return cache
 
 
