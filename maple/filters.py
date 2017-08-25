@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:59:38 (CST)
-# Last Update:星期四 2017-5-11 16:27:5 (CST)
+# Last Update:星期四 2017-8-24 14:24:43 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -44,7 +44,7 @@ def timesince(dt, default="just now"):
     return default
 
 
-def register_jinja2(app):
+def init_app(app):
     app.jinja_env.filters['timesince'] = timesince
     app.jinja_env.filters['encrypt'] = encrypt
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')

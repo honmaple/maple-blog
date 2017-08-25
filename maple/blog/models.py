@@ -10,7 +10,7 @@
 from maple.extensions import db
 from datetime import datetime
 from flask_maple.models import ModelMixin
-from maple.main.record import record
+from maple.utils import Record
 
 tag_blog = db.Table(
     'tag_blog', db.Column('tags_id', db.Integer, db.ForeignKey('tags.id')),
@@ -90,7 +90,11 @@ class Blog(db.Model, ModelMixin):
 
     @property
     def read_times(self):
-        return record.get(self.id)
+        return Record.get(self.id)
+
+    @read_times.setter
+    def read_times(self, value):
+        Record.set('article:{}'.format(self.id))
 
 
 class Comment(db.Model, ModelMixin):

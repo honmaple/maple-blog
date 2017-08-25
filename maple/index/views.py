@@ -10,7 +10,7 @@
 from flask import (render_template, redirect, url_for, make_response)
 from flask.views import MethodView
 from maple.extensions import cache
-from .models import Notice
+from maple.models import Notice
 
 
 class IndexView(MethodView):

@@ -11,7 +11,7 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from maple import create_app
 from maple.extensions import db, cache
-from maple.user.models import User
+from maple.models import User
 from getpass import getpass
 from werkzeug.security import generate_password_hash
 from datetime import datetime
@@ -142,7 +142,6 @@ def gunicorn(host, port, workers):
 
     application = FlaskApplication()
     return application.run()
-
 
 manager.add_command('db', MigrateCommand)
 

@@ -6,11 +6,11 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update:星期四 2017-5-11 16:29:16 (CST)
+# Last Update:星期五 2017-8-25 17:16:52 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
-from maple.user.models import User
+from maple.models import User
 from maple.extensions import db
 from wtforms.validators import DataRequired, Email
 from flask import abort, url_for, Markup, request
@@ -34,7 +34,7 @@ class BaseModelView(ModelView):
     form_base_class = BaseForm
 
     def is_accessible(self):
-        return current_user.is_superuser is True
+        return current_user.is_authenticated and current_user.is_superuser is True
 
     def inaccessible_callback(self, name, **kwargs):
         abort(404)

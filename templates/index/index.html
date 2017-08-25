@@ -1,14 +1,4 @@
 {% extends 'base/base.html' %}
-{% from 'common/_macro.html' import header %}
-{% from 'common/_macro.html' import headerlist %}
-
-{% block header -%}
-  {{ header() }}
-{%- endblock header %}
-
-{% block list -%}
-  {{ headerlist() }}
-{%- endblock list %}
 
 {% block content %}
   <div id="carousel-item" class="carousel slide" data-ride="carousel">

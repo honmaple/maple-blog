@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-17 19:39:37 (CST)
-# Last Update:星期六 2017-3-18 23:48:52 (CST)
+# Last Update:星期一 2017-8-21 9:29:58 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -17,7 +17,7 @@ from misaka import Markdown, HtmlRenderer
 from bleach import clean
 from fortune import fortune
 from itsdangerous import URLSafeSerializer
-from org import org_to_html
+from orgpython import org_to_html
 from .models import Category, Blog, Tags
 
 
@@ -55,7 +55,7 @@ def markdown(text):
 
 
 def orgmode(text):
-    text = org_to_html(text).to_html()
+    text = org_to_html(text)
     return Markup(safe_clean(text))
 
 

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-12-13 15:41:50 (CST)
-# Last Update:星期二 2016-12-13 15:45:13 (CST)
+# Last Update:星期五 2017-8-25 17:18:4 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -23,7 +23,7 @@ class TimeLineView(BaseModelView):
     form_widget_args = {'content': {'rows': 10}}
 
 
-def register_timeline(admin):
+def init_admin(admin):
     admin.add_view(
         TimeLineView(
             TimeLine,

@@ -6,14 +6,14 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-12-13 14:42:26 (CST)
-# Last Update:星期二 2016-12-13 14:47:12 (CST)
+# Last Update:星期五 2017-8-25 16:52:2 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from maple.extensions import db
 from flask_maple.models import ModelMixin
 from datetime import datetime
-from maple.user.models import User
+from maple.models import User
 
 
 class TimeLine(db.Model, ModelMixin):

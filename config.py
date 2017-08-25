@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update:星期五 2017-5-12 23:41:42 (CST)
+# Last Update:星期五 2017-8-25 17:10:39 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -40,8 +40,8 @@ BABEL_DEFAULT_LOCALE = 'en'
 BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 MIDDLEWARE = [
-    'maple.common.middleware.CommonMiddleware',
-    #'maple.common.middleware.IndexMiddleware',
+    'maple.common.middleware.Middleware',
+    # 'maple.index.middleware.Middleware',
 ]
 
 MAIL_SERVER = 'smtp.qq.com'
@@ -62,3 +62,5 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@localhost/blog'
 # SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
 # SQLALCHEMY_DATABASE_URI = 'mysql://username:password@server/db'
+MAPLE_BLUEPRINT = ['maple.index', 'maple.blog', 'maple.timeline',
+                   'maple.question', 'maple.admin']

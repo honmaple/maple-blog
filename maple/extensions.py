@@ -6,21 +6,20 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期四 2017-5-11 16:44:3 (CST)
+# Last Update:星期五 2017-8-25 17:34:31 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask import request
-from flask_admin import Admin
 from flask_maple import Bootstrap, Captcha, Error
 from flask_maple.redis import Redis
 from flask_maple.mail import Mail
 from flask_maple.middleware import Middleware
 from flask_maple.app import App
 from flask_maple.json import CustomJSONEncoder
-from flask_wtf.csrf import CsrfProtect
-from flask_login import LoginManager
-from flask_cache import Cache
+from flask_wtf.csrf import CSRFProtect
+from flask_login import LoginManager, login_user
+from flask_caching import Cache
 from flask_babelex import Babel, Domain
 from flask_babelex import lazy_gettext as _
 from flask_maple.models import db
@@ -28,11 +27,11 @@ import os
 
 
 def register_maple(app):
-    maple = Bootstrap(
+    bootstrap = Bootstrap(
         css=('dist/css/honmaple.css', 'dist/css/monokai.css'),
         js=('dist/js/highlight.js', 'dist/js/rain.js', 'dist/js/org.js'),
         use_auth=False)
-    maple.init_app(app)
+    bootstrap.init_app(app)
     Captcha(app)
     Error(app)
 
@@ -45,17 +44,18 @@ def register_login():
 
     @login_manager.user_loader
     def user_loader(id):
-        from maple.user.models import User
+        from maple.models import User
         user = User.query.get(int(id))
         return user
 
     @login_manager.request_loader
     def user_loader_from_request(request):
-        from maple.user.models import User
+        from maple.models import User
         token = request.args.get('token')
         if token is not None:
             user = User.check_token(token)
             if user:
+                login_user(user, True)
                 return user
 
     return login_manager
@@ -79,12 +79,24 @@ def register_babel():
 
 
 db = db
-csrf = CsrfProtect()
+csrf = CSRFProtect()
 cache = Cache()
 babel = register_babel()
 mail = Mail()
-admin = Admin(name='HonMaple', template_mode='bootstrap3')
 login_manager = register_login()
 redis_data = Redis()
 middleware = Middleware()
 maple_app = App(json=CustomJSONEncoder)
+
+
+def init_app(app):
+    db.init_app(app)
+    csrf.init_app(app)
+    cache.init_app(app)
+    babel.init_app(app)
+    mail.init_app(app)
+    login_manager.init_app(app)
+    redis_data.init_app(app)
+    middleware.init_app(app)
+    maple_app.init_app(app)
+    register_maple(app)

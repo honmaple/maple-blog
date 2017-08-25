@@ -10,11 +10,9 @@
 from flask import (render_template, request, redirect, url_for, flash)
 from flask_login import login_required
 from maple.extensions import db, cache
-from maple.blog.forms import CommentForm
 from maple.helper import cache_key
 from flask_babelex import gettext as _
 from urllib.parse import urljoin
-from maple.main.record import record
 from maple.common.views import BaseMethodView as MethodView
 from maple.common.utils import (gen_filter_dict, gen_order_by)
 from .models import Blog, Comment
@@ -31,7 +29,6 @@ class BlogListView(MethodView):
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self):
         query_dict = request.data
-        user = request.user
         query_dict['descent'] = 'created_at'
         tag = query_dict.pop('tag', None)
         category = query_dict.pop('category', None)
@@ -62,9 +59,9 @@ class BlogListView(MethodView):
 class BlogView(MethodView):
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self, blogId):
-        '''记录用户浏览次数'''
-        record.add('article:%s' % str(blogId))
         blog = Blog.query.filter_by(id=blogId).first_or_404()
+        '''记录用户浏览次数'''
+        blog.read_times = 1
         data = {'blog': blog}
         return render_template('blog/blog.html', **data)
 
@@ -73,7 +70,7 @@ class CommentListView(MethodView):
     @login_required
     def post(self, blogId):
         user = request.user
-        form = CommentForm()
+        form = ''
         if form.validate_on_submit():
             comment = Comment()
             comment.content = form.content.data

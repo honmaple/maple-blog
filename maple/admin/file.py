@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-26 16:14:42 (CST)
-# Last Update:星期日 2016-12-4 22:30:19 (CST)
+# Last Update:星期五 2017-8-25 17:17:45 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -18,7 +18,7 @@ from os import path as op
 from werkzeug import secure_filename
 from time import time
 from maple.extensions import db
-from maple.index.models import Images
+from maple.models import Images
 
 __all__ = ['register_file']
 
@@ -70,5 +70,5 @@ class ImageView(BaseModelView):
                 pass
 
 
-def register_file(admin):
+def init_admin(admin):
     admin.add_view(ImageView(Images, db.session))

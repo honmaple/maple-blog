@@ -30,13 +30,22 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        {% block header %}{% endblock %}
+        {% block header %}
+          <a class="navbar-brand" href="{{ url_for('index.index') }}" style="color:#EB5424;">HonMaple</a>
+        {% endblock %}
       </div>
       <div class="collapse navbar-collapse" id="bs-header">
-        {% block list %}{% endblock %}
+        {% block list %}
+          <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('blog.bloglist') }}">{{_('Blog')}}</a></li>
+            <li><a href="{{ url_for('question.quelist') }}">{{ _('Answer')}}</a></li>
+            <li><a href="https://cloud.honmaple.com">{{ _('Cloud')}}</a></li>
+            <li><a href="{{ url_for('index.about') }}">{{_('About me')}}</a></li>
+          </ul>
+        {% endblock %}
         <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;" >
           <div class="form-group has-feedback">
-            {{ g.search_form.search(class="form-control input-sm",placeholder=_("Search"))}}
+            <input class="form-control input-sm" id="search" name="search" placeholder="搜索内容" type="text" value="">
             <i class="fa fa-search form-control-feedback"></i>
           </div>
         </form>

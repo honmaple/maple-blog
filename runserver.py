@@ -14,4 +14,4 @@ app = create_app('config')
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 if __name__ == '__main__':
-    app.run(port=8000)
+    app.run(port=8000, debug=True)

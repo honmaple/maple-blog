@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-26 16:07:56 (CST)
-# Last Update:星期一 2016-12-12 18:32:54 (CST)
+# Last Update:星期五 2017-8-25 17:17:55 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -46,7 +46,7 @@ class CommentView(BaseModelView):
     column_filters = ['created_at', 'author']
 
 
-def register_blog(admin):
+def init_admin(admin):
     admin.add_view(
         BlogView(
             Blog,

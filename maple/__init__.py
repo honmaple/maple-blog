@@ -8,13 +8,8 @@
 #   Created Time: 2015-11-18 08:03:11
 # *************************************************************************
 from flask import Flask
-from flask_maple.lazy import LazyExtension
-from .extensions import register_maple
-from .filters import register_jinja2
-from .logs import register_logging
-from .urls import register_routes
-from .app import register_app
-from maple.admin.urls import admin
+from maple import apps, filters, logs, extensions
+from importlib import import_module
 import os
 
 
@@ -30,19 +25,12 @@ def create_app(config):
 
 
 def register(app):
-    register_extensions(app)
-    register_routes(app)
-    register_jinja2(app)
-    register_maple(app)
-    register_logging(app)
-    register_app(app)
+    extensions.init_app(app)
+    apps.init_app(app)
+    filters.init_app(app)
+    logs.init_app(app)
 
-
-def register_extensions(app):
-    extension = LazyExtension(
-        module='maple.extensions.',
-        extension=['db', 'login_manager', 'csrf', 'cache', 'babel',
-                   'redis_data', 'maple_app', 'middleware', 'mail'])
-    extension.init_app(app)
-    admin.index_view.url = app.config['ADMIN_URL']
-    admin.init_app(app)
+    blueprints = app.config.get('MAPLE_BLUEPRINT', [])
+    for blueprint in blueprints:
+        blueprint = import_module(blueprint)
+        blueprint.init_app(app)

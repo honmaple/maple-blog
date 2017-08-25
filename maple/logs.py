@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-08-08 15:59:24 (CST)
-# Last Update:星期四 2017-5-4 13:45:57 (CST)
+# Last Update:星期四 2017-8-24 14:25:22 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -23,7 +23,7 @@ class ThreadedSMTPHandler(SMTPHandler):
         thread.start()
 
 
-def register_logging(app):
+def init_app(app):
     config = app.config
     logs_folder = os.path.abspath(
         os.path.join(os.path.dirname(__file__), os.pardir, 'logs'))

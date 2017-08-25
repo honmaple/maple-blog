@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # **************************************************************************
-# Copyright © 2016 jianglin
-# File Name: record.py
+# Copyright © 2017 jianglin
+# File Name: utils.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
-# Created: 2016-12-03 21:44:43 (CST)
-# Last Update:星期六 2016-12-3 22:31:53 (CST)
+# Email: lin.jiang@upai.com
+# Created: 2017-08-25 16:17:26 (CST)
+# Last Update:星期五 2017-8-25 16:19:25 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -15,10 +15,8 @@ from maple.extensions import redis_data as redis
 
 
 class Record(object):
-    def add(self,
-            key,
-            user_key=lambda: 'user:%s',
-            timeout=300):
+    @classmethod
+    def set(cls, key, user_key=lambda: 'user:%s', timeout=300):
         if callable(user_key):
             user_key = user_key()
         if '%s' in user_key:
@@ -29,12 +27,10 @@ class Record(object):
             redis.expire(user_key, timeout)
             redis.zincrby('visited:article', key, 1)
 
-    def get(self, key):
+    @classmethod
+    def get(cls, key):
         count = redis.zscore("visited:article", "article:%s" % str(key))
         if count is None:
             count = 0.0
         count = int(count)
         return count
-
-
-record = Record()
