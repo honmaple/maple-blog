@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-05-13 00:09+0800\n"
+"POT-Creation-Date: 2017-08-26 08:19+0800\n"
 "PO-Revision-Date: 2016-04-16 13:45+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -16,44 +16,21 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.4.0\n"
+"Generated-By: Babel 2.5.0\n"
 
-#: maple/extensions.py:44
+#: maple/extensions.py:43
 msgid "Please login to access this page."
 msgstr "这个页面要求登陆，请登陆"
 
-#: maple/blog/forms.py:17 templates/blog/comment.html:4
-msgid "Comment"
-msgstr "评论"
-
-#: maple/blog/forms.py:18
-msgid "Post comment"
-msgstr "发表评论"
-
-#: maple/blog/forms.py:22
-msgid "search"
-msgstr "搜索"
-
-#: maple/blog/views.py:103
+#: maple/blog/views.py:100
 msgid "honmaple's Blog"
 msgstr ""
 
-#: maple/books/views.py:32
-msgid "Books - HonMaple"
-msgstr "书籍查询 - HonMaple"
-
-#: maple/books/views.py:41
-#, python-format
-msgid "%(name)s - Books - HonMaple"
-msgstr "%(name)s - 书籍查询 - HonMaple"
-
 #: maple/common/response.py:24
-msgid ""
-"Your confirm link have not out of time,        Please confirm your email "
-"in time"
+msgid "Your confirm link have not out of time,Please confirm your email in time"
 msgstr "验证链接还未过期，请及时验证!"
 
-#: maple/common/response.py:26
+#: maple/common/response.py:25
 msgid "Blog ID should exist"
 msgstr "文章ID不存在"
 
@@ -74,24 +51,39 @@ msgstr "自问自答 - HonMaple"
 msgid "%(title)s - Answer - HonMaple"
 msgstr "%(title)s - 自问自答 - HonMaple"
 
-#: templates/base/base.html:5
-msgid "honmaple's blog"
-msgstr "honmaple's 博客"
-
-#: templates/base/base.html:5
+#: templates/base/base.html:5 templates/index.html:7 templates/index.html:48
 msgid "Love is precious, free price is higher."
 msgstr "爱情诚可贵，自由价更高."
 
-#: templates/base/base.html:39
-msgid "Search"
-msgstr "搜索内容"
+#: templates/base/base.html:40 templates/index.html:29
+msgid "Blog"
+msgstr "个人博客"
+
+#: templates/base/base.html:41 templates/index.html:30
+msgid "Answer"
+msgstr "自问自答"
+
+#: templates/base/base.html:42 templates/index.html:31
+msgid "Cloud"
+msgstr "物联网云"
+
+#: templates/base/base.html:43 templates/index.html:32
+msgid "About me"
+msgstr "关于我"
+
+#: templates/index.html:36
+msgid "search"
+msgstr "搜索"
+
+#: templates/base/base.html:5
+msgid "honmaple's blog"
+msgstr "honmaple's 博客"
 
 #: templates/blog/_macro.html:2
 msgid "BLOG"
 msgstr "博客"
 
-#: templates/blog/_macro.html:7 templates/book/_macro.html:7
-#: templates/question/_macro.html:7
+#: templates/blog/_macro.html:7 templates/question/_macro.html:7
 msgid "HOME"
 msgstr "主页"
 
@@ -110,7 +102,7 @@ msgstr "%(year)s年%(month)s月"
 
 #: templates/blog/archive_panel.html:39 templates/blog/archive_panel.html:68
 msgid "open"
-msgstr ""
+msgstr "展开"
 
 #: templates/blog/archive_panel.html:45
 msgid "Archives By Category"
@@ -119,6 +111,10 @@ msgstr "按分类归档"
 #: templates/blog/archive_panel.html:55
 msgid "Archives By Tags"
 msgstr "按节点归档"
+
+#: templates/blog/comment.html:4
+msgid "Comment"
+msgstr "评论"
 
 #: templates/blog/comment.html:9
 msgid "write your comments"
@@ -136,7 +132,7 @@ msgstr "头像"
 msgid "I like solitude, yearning for freedom"
 msgstr "坚定的决心，充足的信心，足够的耐心"
 
-#: templates/blog/panel.html:49 templates/index/friends.html:21
+#: templates/blog/panel.html:49 templates/index/friends.html:11
 msgid "Friends"
 msgstr "友情链接"
 
@@ -144,29 +140,9 @@ msgstr "友情链接"
 msgid "TimeLine"
 msgstr "时间轴"
 
-#: templates/book/_macro.html:2
-msgid "BOOK"
-msgstr "书籍"
-
-#: templates/common/_macro.html:7
-msgid "Blog"
-msgstr "个人博客"
-
-#: templates/common/_macro.html:8
-msgid "Books"
-msgstr "书籍查询"
-
-#: templates/common/_macro.html:9
-msgid "Answer"
-msgstr "自问自答"
-
-#: templates/common/_macro.html:10
-msgid "Cloud"
-msgstr "物联网云"
-
-#: templates/common/_macro.html:11
-msgid "About me"
-msgstr "关于我"
+#: templates/index/index.html:27
+msgid "HELLO WORLD"
+msgstr "你好 世界"
 
 #: templates/question/_macro.html:2
 msgid "ANSWER"
@@ -335,4 +311,31 @@ msgstr "私人问题"
 
 #~ msgid "HonMaple's Blog"
 #~ msgstr "HonMaple's 博客"
+
+#~ msgid "Post comment"
+#~ msgstr "发表评论"
+
+#~ msgid "Books - HonMaple"
+#~ msgstr "书籍查询 - HonMaple"
+
+#~ msgid "%(name)s - Books - HonMaple"
+#~ msgstr "%(name)s - 书籍查询 - HonMaple"
+
+#~ msgid "Search"
+#~ msgstr "搜索内容"
+
+#~ msgid "BOOK"
+#~ msgstr "书籍"
+
+#~ msgid "Books"
+#~ msgstr "书籍查询"
+
+#~ msgid ""
+#~ "Your confirm link have not out of"
+#~ " time,        Please confirm your email "
+#~ "in time"
+#~ msgstr "验证链接还未过期，请及时验证!"
+
+#~ msgid "Your confirm link have not out of time"
+#~ msgstr ""
 

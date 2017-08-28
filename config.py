@@ -6,12 +6,13 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update:星期五 2017-8-25 17:10:39 (CST)
+# Last Update:星期五 2017-8-25 23:1:7 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from datetime import timedelta
 
+TEMPLATES_AUTO_RELOAD = True
 DEBUG = False
 SECRET_KEY = 'asdadasd'
 SECRET_KEY_SALT = 'asdasdads'

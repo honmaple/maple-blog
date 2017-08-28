@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-06-02 12:35:57 (CST)
-# Last Update:星期五 2017-8-25 17:34:31 (CST)
+# Last Update:星期日 2017-8-27 23:54:16 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -51,7 +51,9 @@ def register_login():
     @login_manager.request_loader
     def user_loader_from_request(request):
         from maple.models import User
-        token = request.args.get('token')
+        token = request.headers.get('Token')
+        if not token:
+            token = request.args.get('token')
         if token is not None:
             user = User.check_token(token)
             if user:

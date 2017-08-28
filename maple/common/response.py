@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-05 15:18:19 (CST)
-# Last Update:星期六 2016-11-5 19:12:35 (CST)
+# Last Update:星期六 2017-8-26 8:19:47 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -21,7 +21,6 @@ class HTTPResponse(Response):
 
     STATUS_DESCRIPTION = {
         NORMAL_STATUS: 'normal',
-        USER_EMAIL_WAIT: _('Your confirm link have not out of time,\
-        Please confirm your email in time'),
+        USER_EMAIL_WAIT: _('Your confirm link have not out of time,Please confirm your email in time'),
         BLOG_ID_NOT_EXIST: _('Blog ID should exist')
     }

@@ -88,6 +88,15 @@ class Blog(db.Model, ModelMixin):
     def __str__(self):
         return self.title
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'category': self.category.name,
+            'tags': ','.join([tag.name for tag in self.tags]),
+            'author': self.author.username
+        }
+
     @property
     def read_times(self):
         return Record.get(self.id)

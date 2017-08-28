@@ -28,10 +28,19 @@ def runserver():
 
 
 @manager.command
+def publish():
+    import requests
+    url = 'http://127.0.0.1:8000/blog'
+    data = {'title': '1', 'content': '* 1\n** 2', 'category': '11', 'tags': '11'}
+    headers = {'Token': 'Imhvbm1hcGxlIg.DIR8OQ.2jwp4nwEdmE03tIx8s_SeSm4iy4'}
+    response = requests.post(url, data=data, headers=headers)
+    return response.text
+
+
+@manager.command
 def clear_cache():
     with app.app_context():
         cache.clear()
-
 
 # @manager.option('-u', '--user_id', dest='user_id')
 # def token(user_id):
@@ -142,6 +151,7 @@ def gunicorn(host, port, workers):
 
     application = FlaskApplication()
     return application.run()
+
 
 manager.add_command('db', MigrateCommand)
 

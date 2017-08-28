@@ -1,0 +1,124 @@
+html,body {
+    height:100%;
+}
+body {
+    background: url("https://honmaple.com/static/images/snow.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size:100% 100%;
+    /* background-size: cover; */
+}
+.footer {
+    position:fixed;
+    text-align:center;
+    bottom:20px;
+    width:100%;
+    color: #294d59;
+}
+.center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width:50%;
+    height: 50%;
+    text-align:center;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+.center h2 {
+    margin-top:5px;
+    /* color:#e0bc88; */
+    color:#294d59;
+    font-size:24px;
+    cursor:pointer;
+}
+.center h2:hover {
+    color:#e0bc88;
+    /* color:#294d59; */
+}
+.center p {
+    /* color:#e0bc88; */
+    color:#294d59;
+}
+@keyframes circle
+{
+    from {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+.circle {
+    animation: circle 8s linear infinite;
+    -moz-animation: circle 8s linear infinite;
+    -webkit-animation: circle 8s linear infinite;
+    -o-animation: circle 8s linear infinite;
+}
+ul {
+    padding:0px;
+    margin:0px;
+}
+ul.list-inline li{
+    margin-bottom:8px;
+    max-width: 100px;
+    max-height: 100px;
+}
+ul.list-inline li a{
+    font-size:30px;
+    border-radius: 100%;
+    border:1px solid #333834;
+    padding:5px 10px;
+    color:#294d59;
+}
+ul.list-inline li a:hover{
+    color:#e0bc88;
+    border:1px solid #e0bc88;
+}
+.particles-js {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+}
+nav.navbar,ul.dropdown-menu {
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3f000000',endColorstr='#3f000000');
+    background-color:rgba(255, 255, 255, 0);
+    border:none;
+}
+.navbar-default .navbar-nav > li > a {
+    /* color: #555; */
+    /* color: #27a0bc; */
+    color:#BBB39E;
+}
+.navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    /* color: #555; */
+    /* color: #27a0bc; */
+    color:#BBB39E;
+}
+.navbar-default .navbar-brand {
+    /* color: #1784b3; */
+    color:#BBB39E;
+}
+.form-control {
+    background-color:rgba(255, 255, 255, 0);
+    color:#555;
+    /* border:1px solid rgba(41,77,89,0.2); */
+    border:1px solid rgba(187,179,158,0.2);
+}
+.form-control:focus {
+    border-color: #BBB39E;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(187,179,158,0.6);
+}

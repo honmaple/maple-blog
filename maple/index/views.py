@@ -13,6 +13,12 @@ from maple.extensions import cache
 from maple.models import Notice
 
 
+class IView(MethodView):
+    @cache.cached(timeout=180)
+    def get(self):
+        return render_template('index.html')
+
+
 class IndexView(MethodView):
     @cache.cached(timeout=180)
     def get(self):
