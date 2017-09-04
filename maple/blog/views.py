@@ -7,20 +7,24 @@
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-18 08:11:38
 # *************************************************************************
-from flask import (render_template, request, redirect, url_for, flash, jsonify)
-from flask_login import login_required
-from maple.extensions import db, cache, csrf
-from maple.helper import cache_key
-from flask_babelex import gettext as _
 from urllib.parse import urljoin
-from maple.common.views import BaseMethodView as MethodView
-from maple.common.utils import (gen_filter_dict, gen_order_by)
-from maple.common.validator import Validator
-from .models import Blog, Comment, Category, Tags
-from .filters import safe_markdown
+
+from flask import flash, jsonify, redirect, render_template, request, url_for
+from flask_babelex import gettext as _
+from flask_login import login_required
 from sqlalchemy import extract
 from werkzeug.contrib.atom import AtomFeed
 from werkzeug.utils import escape
+
+from maple.common.utils import gen_filter_dict, gen_order_by
+from maple.common.validator import Validator
+from maple.common.views import BaseMethodView as MethodView
+from maple.extensions import cache, csrf, db
+from maple.helper import cache_key
+from maple.utils import superuser_required
+
+from .filters import safe_markdown
+from .models import Blog, Category, Comment, Tags
 
 
 class BlogListView(MethodView):
@@ -58,7 +62,7 @@ class BlogListView(MethodView):
 
     decorators = [csrf.exempt]
 
-    @login_required
+    @superuser_required
     def post(self):
         validator = Validator('blog')
         validator.add_validator('title', type=str, required=True)

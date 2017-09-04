@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: lin.jiang@upai.com
 # Created: 2017-08-24 15:13:33 (CST)
-# Last Update:星期五 2017-8-25 17:16:27 (CST)
+# Last Update:星期一 2017-9-4 11:48:7 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -71,11 +71,9 @@ class User(db.Model, UserMixin):
         self.introduce = form.introduce.data
         db.session.commit()
 
-    def __repr__(self):
-        return "<User %r>" % self.username
-
-    def __str__(self):
-        return self.username
+    @property
+    def is_logined(self):
+        return self.is_authenticated
 
     @property
     def token(self):

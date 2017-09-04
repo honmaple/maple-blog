@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-12-13 14:42:26 (CST)
-# Last Update:星期五 2017-8-25 16:52:2 (CST)
+# Last Update:星期一 2017-8-28 16:26:41 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -39,3 +39,6 @@ class TimeLine(db.Model, ModelMixin):
 
     def __str__(self):
         return self.content[:10]
+
+    def to_json(self):
+        return {'id': self.id, 'content': self.content, 'hide': self.hide}

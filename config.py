@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update:星期五 2017-8-25 23:1:7 (CST)
+# Last Update:星期一 2017-9-4 13:30:39 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -42,6 +42,7 @@ BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 MIDDLEWARE = [
     'maple.common.middleware.Middleware',
+    # 'maple.common.middleware.CProfileMiddleware'
     # 'maple.index.middleware.Middleware',
 ]
 

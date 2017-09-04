@@ -4,54 +4,54 @@
 <link rel="stylesheet" href="{{ url_for('static',filename='dist/css/aplayer.css') }}" type="text/css" media="screen" />
 <br/>
 <div class="panel panel-default transparency7">
-    <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.3);">
-        {{ _('Tips') }}
-    </div>
-    <div class="panel-body">
-        <b>{{ random_fortune() }}</b>
-    </div>
+  <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.3);">
+    {{ _('Tips') }}
+  </div>
+  <div class="panel-body">
+    <b>{{ random_fortune() }}</b>
+  </div>
 </div>
 <ul class="list-group">
-    <li class="list-group-item hidden-xs" style="text-align:center;">
-        <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" style="max-width:270px;" /> <br />
-        <span style="display: inline-block;width:80%;" class="label label-default">
-            <a href="{{url_for('index.about')}}" style="color:#fff;"> 
-                Author
-            </a>
-        </span>
-        <span style="display: inline-block;width:80%;" class="label label-primary">
-            About me
-        </span>
-        <br/>
-        <span>
-            <i>{{ _('I like solitude, yearning for freedom') }}</i>
-        </span>
-    </li>
-    <li class="list-group-item text-center" style="font-size:24px;">
-        {% from 'blog/_macro.html' import social %}
-        {{ social() }}
-    </li>
-    <li class="list-group-item">
-        {% from 'blog/_macro.html' import tags %}
-        {{ tags() }}
-    </li>
+  <li class="list-group-item hidden-xs" style="text-align:center;">
+    <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" style="max-width:270px;" /> <br />
+    <span style="display: inline-block;width:80%;" class="label label-default">
+      <a href="{{url_for('index.about')}}" style="color:#fff;"> 
+        Author
+      </a>
+    </span>
+    <span style="display: inline-block;width:80%;" class="label label-primary">
+      About me
+    </span>
+    <br/>
+    <span>
+      <i>{{ _('I like solitude, yearning for freedom') }}</i>
+    </span>
+  </li>
+  <li class="list-group-item text-center" style="font-size:24px;">
+    {% from 'blog/_macro.html' import social %}
+    {{ social() }}
+  </li>
+  <li class="list-group-item">
+    {% from 'blog/_macro.html' import tags %}
+    {{ tags() }}
+  </li>
 </ul>
 <div id="timeline"></div>
 <script type="text/javascript">
- $.get("{{ url_for('timeline.timelinelist') }}", function(response){
+ $.get("{{ url_for('timeline.timelinelist',from='blog') }}", function(response){
      $("#timeline").html(response);
  });
 </script>
 <ul class="list-group">
-    <li class="list-group-item text-center">
-        <a href="{{ url_for('index.friend') }}">
-            <span class="fa fa-link"></span>
-            {{ _('Friends') }}
-        </a>
-    </li>
+  <li class="list-group-item text-center">
+    <a href="{{ url_for('index.friend') }}">
+      <span class="fa fa-link"></span>
+      {{ _('Friends') }}
+    </a>
+  </li>
 </ul>
 <div style="position:fixed; bottom:0;left:30%;width:100%;">
-    <ul class="pager">
-        <li><a href="#"><i class="fa fa-hand-o-up" aria-hidden="true"></i></a></li>
-    </ul>
+  <ul class="pager">
+    <li><a href="#"><i class="fa fa-hand-o-up" aria-hidden="true"></i></a></li>
+  </ul>
 </div>

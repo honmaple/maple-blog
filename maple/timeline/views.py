@@ -6,41 +6,50 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-12-13 14:47:19 (CST)
-# Last Update:星期五 2017-3-17 23:25:41 (CST)
+# Last Update:星期一 2017-9-4 11:14:43 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from flask import request, render_template
-from flask_login import login_required, current_user
-from maple.extensions import csrf
+from flask import jsonify, render_template, request
+from flask_login import login_required
+
+from maple.common.validator import Validator
 from maple.common.views import BaseMethodView as MethodView
+from maple.extensions import cache, csrf
+from maple.helper import cache_key
+from maple.utils import superuser_required
+
 from .models import TimeLine
 
 
 class TimeLineListView(MethodView):
+    per_page = 10
     decorators = [csrf.exempt]
 
+    @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self):
+        query_dict = request.data
         page, number = self.page_info
         filter_dict = {'hide': False}
-        order_by = ('created_at', )
+        order_by = ('-created_at', )
         timelines = TimeLine.query.filter_by(
             **filter_dict).order_by(*order_by).paginate(page, number)
-        return render_template('blog/timeline.html', timelines=timelines)
+        if query_dict.pop('from', None) == 'blog':
+            return render_template('timeline/_macro.html', timelines=timelines)
+        return render_template('timeline/timeline.html', timelines=timelines)
 
-    @login_required
+    @superuser_required
     def post(self):
-        if not current_user.is_superuser:
-            return 'Fobidden'
-        post_data = request.get_json()
+        author = request.user
+        validator = Validator('timeline')
+        validator.add_validator('content', type=str, required=True)
+        post_data = request.data
+        v = validator.is_valid(post_data)
+        if v is not True:
+            return jsonify(status=401, message=v)
         content = post_data.pop('content', None)
         hide = post_data.pop('hide', None)
-        if content is None:
-            return 'content is None'
-        hide = True if hide == 'True' or hide == '1' else False
-        timeline = TimeLine()
-        timeline.content = content
-        timeline.hide = hide
-        timeline.author = current_user
+        hide = True if hide in ['true', 'True', '1', True] else False
+        timeline = TimeLine(content=content, hide=hide, author=author)
         timeline.save()
-        return 'success'
+        return jsonify(status='200', message=timeline.to_json())
