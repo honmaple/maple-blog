@@ -6,26 +6,19 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-04-11 17:35:11 (CST)
-# Last Update:星期五 2017-8-25 17:33:11 (CST)
+# Last Update: 星期四 2018-01-25 13:41:50 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask_admin import Admin
-from maple.models import User, Notice
-from maple.question.models import Question
-from maple.extensions import db
+from maple.model import User
+from maple.model import Question
+from maple.extension import db
 from maple.admin import blog, file, timeline
-from .views import (NoticeView, UserView, QueView, BookView)
+from .views import (UserView, QueView)
 
 admin = Admin(name='HonMaple', template_mode='bootstrap3')
 
-admin.add_view(
-    NoticeView(
-        Notice,
-        db.session,
-        name='管理公告',
-        endpoint='admin_notice',
-        url='notices'))
 admin.add_view(
     UserView(
         User, db.session, name='管理用户', endpoint='admin_user', url='users'))

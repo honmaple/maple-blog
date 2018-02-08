@@ -11,7 +11,7 @@
           {% for blog in blogs.items %}
             <i class="fa fa-calendar"></i>
             <span>{{ blog.created_at | timesince }}</span>
-            <a href="{{ url_for('blog.blog',blogId=blog.id) }}">{{ blog.title }}</a>
+            <a href="{{ url_for('blog.blog',pk=blog.id) }}">{{ blog.title }}</a>
             <br />
           {% endfor %}
         </div>

@@ -1,30 +1,3 @@
-{% macro header() -%}
-<a class="navbar-brand" href="{{ url_for('blog.bloglist') }}" style="color:#EB5424;">{{_('BLOG')}}</a>
-{%- endmacro %}
-
-{% macro headerlist() -%}
-<ul class="nav navbar-nav">
-  <li> <a href="{{ url_for('index.index') }}">{{_( 'HOME' )}}</a></li>
-  {% set categories = category_archives() %}
-  {% set cate_len = categories | length %}
-  {% for category,count in categories[:4] -%}
-  <li><a href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
-  {%- endfor %}
-  {% if cate_len > 4 %}
-  <li>
-    <a href="#" class="dropdown-toggle" id="dropdown-more" data-toggle="dropdown">······</a>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-more">
-      {% for category,count in categories[4:] -%}
-      <li role="presentation"><a role="menuitem" href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
-      {%- endfor %}
-    </ul>
-  </li>
-  {% endif %}
-  <li> <a href="{{ url_for('blog.archive') }}">{{ _('Archives') }}</a></li>
-  <li> <a href="{{ url_for('blog.rss') }}">RSS</a></li>
-</ul>
-{%- endmacro %}
-
 {% macro tags() -%}
 {% for tag,count in tag_archives() %}
 <span class="label label-primary" style="display: inline-block;">
@@ -45,7 +18,7 @@
 {%- endmacro %}
 
 {% macro info(blog) -%}
-{% set author = blog.author.username %}
+{% set author = blog.user.username %}
 {% set tags = blog.tags %}
 {% set category = blog.category.name %}
 <footer>

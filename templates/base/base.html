@@ -1,5 +1,5 @@
 {% extends 'maple/base.html' %}
-{% from 'base/paginate.html' import paginate %}
+{% from 'maple/paginate.html' import paginate %}
 
 {% block title -%}
   {{_("honmaple's blog")}} - {{_('Love is precious, free price is higher.')}}
@@ -8,16 +8,6 @@
 {% block style -%}
   {{ super() }}
   <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <style>
-   body {
-       background-color: #ffffff;
-       background-image: url('{{ url_for('static',filename='images/snow.jpg') }}');
-       background-repeat: no-repeat;
-       background-attachment: fixed;
-       background-size:100% 100%;
-       color:#444;
-   }
-  </style>
 {%- endblock -%}
 
 {% block main %}
@@ -31,16 +21,15 @@
           <span class="icon-bar"></span>
         </button>
         {% block header %}
-          <a class="navbar-brand" href="{{ url_for('index.index') }}" style="color:#EB5424;">HonMaple</a>
+          <a class="navbar-brand" href="{{ url_for('index') }}" style="color:#EB5424;">HonMaple</a>
         {% endblock %}
       </div>
       <div class="collapse navbar-collapse" id="bs-header">
         {% block list %}
           <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('blog.bloglist') }}">{{_('Blog')}}</a></li>
-            <li><a href="{{ url_for('question.quelist') }}">{{ _('Answer')}}</a></li>
+            <li><a href="{{ url_for('bloglist') }}">{{_('Blog')}}</a></li>
             <li><a href="https://cloud.honmaple.com">{{ _('Cloud')}}</a></li>
-            <li><a href="{{ url_for('index.about') }}">{{_('About me')}}</a></li>
+            <li><a href="{{ url_for('about') }}">{{_('About me')}}</a></li>
           </ul>
         {% endblock %}
         <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;" >
@@ -70,4 +59,3 @@
     {% block content %}{% endblock %}
   </div>
 {%- endblock -%}
-

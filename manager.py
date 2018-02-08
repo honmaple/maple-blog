@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
-#   File Name: db_create.py
+#   File Name: manager.py
 #   Author:JiangLin
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2016-02-11 13:34:38
@@ -10,8 +10,8 @@
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from maple import create_app
-from maple.extensions import db, cache
-from maple.models import User
+from maple.extension import db, cache
+from maple.model import User
 from getpass import getpass
 from werkzeug.security import generate_password_hash
 from datetime import datetime
@@ -82,8 +82,8 @@ def init_db():
     """
     Drops and re-creates the SQL schema
     """
-    # db.drop_all()
-    # db.configure_mappers()
+    db.drop_all()
+    db.configure_mappers()
     db.create_all()
     db.session.commit()
 
@@ -125,11 +125,10 @@ def create_user(username, email, password):
         password = getpass('Password:')
     user = User()
     user.username = username
-    user.password = generate_password_hash(password)
+    user.set_password(password)
     user.email = email
     user.is_superuser = True
     user.is_confirmed = True
-    user.roles = 'Super'
     user.confirmed_time = datetime.utcnow()
     db.session.add(user)
     db.session.commit()

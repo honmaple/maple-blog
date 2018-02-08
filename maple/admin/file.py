@@ -6,21 +6,20 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-26 16:14:42 (CST)
-# Last Update:星期五 2017-8-25 17:17:45 (CST)
+# Last Update: 星期四 2018-01-25 13:46:44 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from .views import BaseModelView
+from .views import AdminView
 from flask import url_for, Markup, request
 from flask_admin import form
 import os
 from os import path as op
 from werkzeug import secure_filename
 from time import time
-from maple.extensions import db
-from maple.models import Images
+from maple.extension import db
+from maple.model import Images
 
-__all__ = ['register_file']
 
 file_path = op.join(
     op.dirname(__file__), op.pardir, op.pardir, 'images', 'blog')
@@ -36,7 +35,7 @@ def prefix_name(obj, file_data):
     return secure_filename('blog-%s%s' % (name, part))
 
 
-class ImageView(BaseModelView):
+class ImageView(AdminView):
     def _list_thumbnail(view, context, model, name):
         if not model.path:
             return ''

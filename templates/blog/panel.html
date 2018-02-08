@@ -15,7 +15,7 @@
   <li class="list-group-item hidden-xs" style="text-align:center;">
     <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" style="max-width:270px;" /> <br />
     <span style="display: inline-block;width:80%;" class="label label-default">
-      <a href="{{url_for('index.about')}}" style="color:#fff;"> 
+      <a href="{{url_for('about')}}" style="color:#fff;">
         Author
       </a>
     </span>
@@ -28,23 +28,23 @@
     </span>
   </li>
   <li class="list-group-item text-center" style="font-size:24px;">
-    {% from 'blog/_macro.html' import social %}
+    {% from 'blog/macro.html' import social %}
     {{ social() }}
   </li>
   <li class="list-group-item">
-    {% from 'blog/_macro.html' import tags %}
+    {% from 'blog/macro.html' import tags %}
     {{ tags() }}
   </li>
 </ul>
 <div id="timeline"></div>
 <script type="text/javascript">
- $.get("{{ url_for('timeline.timelinelist',from='blog') }}", function(response){
+ $.get("{{ url_for('timeline',from='blog') }}", function(response){
      $("#timeline").html(response);
  });
 </script>
 <ul class="list-group">
   <li class="list-group-item text-center">
-    <a href="{{ url_for('index.friend') }}">
+    <a href="{{ url_for('friend') }}">
       <span class="fa fa-link"></span>
       {{ _('Friends') }}
     </a>

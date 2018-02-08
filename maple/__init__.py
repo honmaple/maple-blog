@@ -8,8 +8,7 @@
 #   Created Time: 2015-11-18 08:03:11
 # *************************************************************************
 from flask import Flask
-from maple import apps, filters, logs, extensions
-from importlib import import_module
+from maple import extension, admin, api, blueprint, jinja
 import os
 
 
@@ -20,17 +19,11 @@ def create_app(config):
         os.path.join(os.path.dirname(__file__), os.pardir, 'static'))
     app = Flask(__name__, template_folder=templates, static_folder=static)
     app.config.from_object(config)
-    register(app)
+
+    extension.init_app(app)
+    jinja.init_app(app)
+    admin.init_app(app)
+    api.init_app(app)
+    blueprint.init_app(app)
+
     return app
-
-
-def register(app):
-    extensions.init_app(app)
-    apps.init_app(app)
-    filters.init_app(app)
-    logs.init_app(app)
-
-    blueprints = app.config.get('MAPLE_BLUEPRINT', [])
-    for blueprint in blueprints:
-        blueprint = import_module(blueprint)
-        blueprint.init_app(app)

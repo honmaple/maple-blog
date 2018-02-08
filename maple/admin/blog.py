@@ -6,19 +6,17 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-11-26 16:07:56 (CST)
-# Last Update:星期五 2017-8-25 17:17:55 (CST)
+# Last Update: 星期四 2018-01-25 13:46:44 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from .views import BaseModelView
-from maple.blog.models import Blog, Comment, Tags, Category
-from maple.extensions import db
-
-__all__ = ['register_blog']
+from .views import AdminView
+from maple.model import Blog, Comment, Tag, Category
+from maple.extension import db
 
 
-class BlogView(BaseModelView):
-    # column_exclude_list = ['author']
+class BlogView(AdminView):
+    # column_exclude_list = ['user']
     column_searchable_list = ['title']
     column_filters = ['category', 'created_at']
     form_widget_args = {'content': {'rows': 10}}
@@ -33,17 +31,17 @@ class BlogView(BaseModelView):
     form_choices = {'content_type': Blog.CONTENT_TYPE}
 
 
-class TagView(BaseModelView):
+class TagView(AdminView):
     column_editable_list = ['name']
 
 
-class CategoryView(BaseModelView):
+class CategoryView(AdminView):
     column_editable_list = ['name']
 
 
-class CommentView(BaseModelView):
-    column_editable_list = ['author', 'blog']
-    column_filters = ['created_at', 'author']
+class CommentView(AdminView):
+    column_editable_list = ['user', 'blog']
+    column_filters = ['created_at', 'user']
 
 
 def init_admin(admin):
@@ -63,7 +61,7 @@ def init_admin(admin):
             category='管理博客'))
     admin.add_view(
         TagView(
-            Tags,
+            Tag,
             db.session,
             name='管理节点',
             endpoint='admin_tag',

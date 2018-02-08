@@ -6,20 +6,18 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2016-12-13 15:41:50 (CST)
-# Last Update:星期五 2017-8-25 17:18:4 (CST)
+# Last Update: 星期四 2018-01-25 13:46:44 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from .views import BaseModelView
-from maple.timeline.models import TimeLine
-from maple.extensions import db
-
-__all__ = ['register_timeline']
+from .views import AdminView
+from maple.model import TimeLine
+from maple.extension import db
 
 
-class TimeLineView(BaseModelView):
-    column_editable_list = ['hide', 'author']
-    column_filters = ['created_at', 'author']
+class TimeLineView(AdminView):
+    column_editable_list = ['is_hidden', 'user']
+    column_filters = ['created_at', 'user']
     form_widget_args = {'content': {'rows': 10}}
 
 

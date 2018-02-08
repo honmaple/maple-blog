@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update:星期一 2017-9-4 13:30:39 (CST)
+# Last Update: 星期五 2018-02-09 16:54:47 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -41,9 +41,7 @@ BABEL_DEFAULT_LOCALE = 'en'
 BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 MIDDLEWARE = [
-    'maple.common.middleware.Middleware',
-    # 'maple.common.middleware.CProfileMiddleware'
-    # 'maple.index.middleware.Middleware',
+    'maple.middleware.Middleware',
 ]
 
 MAIL_SERVER = 'smtp.qq.com'
@@ -56,13 +54,29 @@ MAIL_DEFAULT_SENDER = 'admin@honmaple.com'
 
 SEND_LOGS = True
 RECEIVER = ["xiyang0807@gmail.com"]
-INFO_LOG = "info.log"
-ERROR_LOG = "error.log"
-ADMIN_URL = '/admin/hello'
+
+ADMIN_URL = '/admin'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@localhost/blog'
-# SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
+# SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@localhost/blog'
+SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
 # SQLALCHEMY_DATABASE_URI = 'mysql://username:password@server/db'
-MAPLE_BLUEPRINT = ['maple.index', 'maple.blog', 'maple.timeline',
-                   'maple.question', 'maple.admin']
+
+LOGGING = {
+    'info': 'logs/info.log',
+    'error': 'logs/error.log',
+    'send_mail': False,
+    'toaddrs': [],
+    'subject': 'Your Application Failed',
+    'formatter': '''
+            Message type:       %(levelname)s
+            Location:           %(pathname)s:%(lineno)d
+            Module:             %(module)s
+            Function:           %(funcName)s
+            Time:               %(asctime)s
+
+            Message:
+
+            %(message)s
+            '''
+}
