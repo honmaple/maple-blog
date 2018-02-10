@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-08-26 08:19+0800\n"
+"POT-Creation-Date: 2018-02-10 13:56+0800\n"
 "PO-Revision-Date: 2016-04-16 13:45+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -16,145 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.0\n"
-
-#: maple/extensions.py:43
-msgid "Please login to access this page."
-msgstr "这个页面要求登陆，请登陆"
-
-#: maple/blog/views.py:100
-msgid "honmaple's Blog"
-msgstr ""
-
-#: maple/common/response.py:24
-msgid "Your confirm link have not out of time,Please confirm your email in time"
-msgstr "验证链接还未过期，请及时验证!"
-
-#: maple/common/response.py:25
-msgid "Blog ID should exist"
-msgstr "文章ID不存在"
-
-#: maple/question/views.py:35
-msgid "Answer-HonMaple"
-msgstr "自问自答 - HonMaple"
-
-#: maple/question/views.py:46
-msgid "You have not confirm your account"
-msgstr "你的账户未验证"
-
-#: maple/question/views.py:79
-msgid "Answer - HonMaple"
-msgstr "自问自答 - HonMaple"
-
-#: maple/question/views.py:95
-#, python-format
-msgid "%(title)s - Answer - HonMaple"
-msgstr "%(title)s - 自问自答 - HonMaple"
-
-#: templates/base/base.html:5 templates/index.html:7 templates/index.html:48
-msgid "Love is precious, free price is higher."
-msgstr "爱情诚可贵，自由价更高."
-
-#: templates/base/base.html:40 templates/index.html:29
-msgid "Blog"
-msgstr "个人博客"
-
-#: templates/base/base.html:41 templates/index.html:30
-msgid "Answer"
-msgstr "自问自答"
-
-#: templates/base/base.html:42 templates/index.html:31
-msgid "Cloud"
-msgstr "物联网云"
-
-#: templates/base/base.html:43 templates/index.html:32
-msgid "About me"
-msgstr "关于我"
-
-#: templates/index.html:36
-msgid "search"
-msgstr "搜索"
-
-#: templates/base/base.html:5
-msgid "honmaple's blog"
-msgstr "honmaple's 博客"
-
-#: templates/blog/_macro.html:2
-msgid "BLOG"
-msgstr "博客"
-
-#: templates/blog/_macro.html:7 templates/question/_macro.html:7
-msgid "HOME"
-msgstr "主页"
-
-#: templates/blog/_macro.html:23
-msgid "Archives"
-msgstr "归档"
-
-#: templates/blog/archive_panel.html:18
-msgid "Archives By Time"
-msgstr "按时间归档"
-
-#: templates/blog/archive_panel.html:25 templates/blog/archive_panel.html:34
-#, python-format
-msgid "%(year)s-%(month)s"
-msgstr "%(year)s年%(month)s月"
-
-#: templates/blog/archive_panel.html:39 templates/blog/archive_panel.html:68
-msgid "open"
-msgstr "展开"
-
-#: templates/blog/archive_panel.html:45
-msgid "Archives By Category"
-msgstr "按分类归档"
-
-#: templates/blog/archive_panel.html:55
-msgid "Archives By Tags"
-msgstr "按节点归档"
-
-#: templates/blog/comment.html:4
-msgid "Comment"
-msgstr "评论"
-
-#: templates/blog/comment.html:9
-msgid "write your comments"
-msgstr "写下你的评论"
-
-#: templates/blog/panel.html:8
-msgid "Tips"
-msgstr "小贴士"
-
-#: templates/blog/panel.html:16
-msgid "header image"
-msgstr "头像"
-
-#: templates/blog/panel.html:27
-msgid "I like solitude, yearning for freedom"
-msgstr "坚定的决心，充足的信心，足够的耐心"
-
-#: templates/blog/panel.html:49 templates/index/friends.html:11
-msgid "Friends"
-msgstr "友情链接"
-
-#: templates/blog/timeline.html:4
-msgid "TimeLine"
-msgstr "时间轴"
-
-#: templates/index/index.html:27
-msgid "HELLO WORLD"
-msgstr "你好 世界"
-
-#: templates/question/_macro.html:2
-msgid "ANSWER"
-msgstr "问答"
-
-#: templates/question/_macro.html:8
-msgid "All Questions"
-msgstr "所有问题"
-
-#: templates/question/_macro.html:9
-msgid "Private Questions"
-msgstr "私人问题"
+"Generated-By: Babel 2.5.1\n"
 
 #~ msgid "Username:"
 #~ msgstr "用户名:"
@@ -338,4 +200,109 @@ msgstr "私人问题"
 
 #~ msgid "Your confirm link have not out of time"
 #~ msgstr ""
+
+#~ msgid "Please login to access this page."
+#~ msgstr "这个页面要求登陆，请登陆"
+
+#~ msgid "honmaple's Blog"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Your confirm link have not out of"
+#~ " time,Please confirm your email in "
+#~ "time"
+#~ msgstr "验证链接还未过期，请及时验证!"
+
+#~ msgid "Blog ID should exist"
+#~ msgstr "文章ID不存在"
+
+#~ msgid "Answer-HonMaple"
+#~ msgstr "自问自答 - HonMaple"
+
+#~ msgid "You have not confirm your account"
+#~ msgstr "你的账户未验证"
+
+#~ msgid "Answer - HonMaple"
+#~ msgstr "自问自答 - HonMaple"
+
+#~ msgid "%(title)s - Answer - HonMaple"
+#~ msgstr "%(title)s - 自问自答 - HonMaple"
+
+#~ msgid "Love is precious, free price is higher."
+#~ msgstr "爱情诚可贵，自由价更高."
+
+#~ msgid "Blog"
+#~ msgstr "个人博客"
+
+#~ msgid "Answer"
+#~ msgstr "自问自答"
+
+#~ msgid "Cloud"
+#~ msgstr "物联网云"
+
+#~ msgid "About me"
+#~ msgstr "关于我"
+
+#~ msgid "search"
+#~ msgstr "搜索"
+
+#~ msgid "honmaple's blog"
+#~ msgstr "honmaple's 博客"
+
+#~ msgid "BLOG"
+#~ msgstr "博客"
+
+#~ msgid "HOME"
+#~ msgstr "主页"
+
+#~ msgid "Archives"
+#~ msgstr "归档"
+
+#~ msgid "Archives By Time"
+#~ msgstr "按时间归档"
+
+#~ msgid "%(year)s-%(month)s"
+#~ msgstr "%(year)s年%(month)s月"
+
+#~ msgid "open"
+#~ msgstr "展开"
+
+#~ msgid "Archives By Category"
+#~ msgstr "按分类归档"
+
+#~ msgid "Archives By Tags"
+#~ msgstr "按节点归档"
+
+#~ msgid "Comment"
+#~ msgstr "评论"
+
+#~ msgid "write your comments"
+#~ msgstr "写下你的评论"
+
+#~ msgid "Tips"
+#~ msgstr "小贴士"
+
+#~ msgid "header image"
+#~ msgstr "头像"
+
+#~ msgid "I like solitude, yearning for freedom"
+#~ msgstr "坚定的决心，充足的信心，足够的耐心"
+
+#~ msgid "Friends"
+#~ msgstr "友情链接"
+
+#~ msgid "TimeLine"
+#~ msgstr "时间轴"
+
+#~ msgid "HELLO WORLD"
+#~ msgstr "你好 世界"
+
+#~ msgid "ANSWER"
+#~ msgstr "问答"
+
+#~ msgid "All Questions"
+#~ msgstr "所有问题"
+
+#~ msgid "Private Questions"
+#~ msgstr "私人问题"
 

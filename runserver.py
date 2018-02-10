@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: 星期六 2018-02-10 13:44:48 (CST)
+# Last Update: 星期六 2018-02-10 13:55:36 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -60,28 +60,29 @@ def initdb():
 
 
 @cli.command()
-def babel_init():
-    pybabel = 'pybabel'
-    os.system(pybabel +
-              ' extract -F babel.cfg -k lazy_gettext -o messages.pot maple')
-    os.system(pybabel + ' init -i messages.pot -d translations -l zh')
+@click.option('-l', '--lang', default='zh')
+def babel_init(lang):
+    babel_conf = "LANG/babel.cfg"
+    src_path = ["maple", "templates"]
+    os.system('pybabel extract -F {0} -k lazy_gettext -o messages.pot {1}'.
+              format(babel_conf, ' '.join(src_path)))
+    os.system('pybabel init -i messages.pot -d LANG -l {0}'.format(lang))
     os.unlink('messages.pot')
 
 
 @cli.command()
 def babel_update():
-    pybabel = 'pybabel'
-    os.system(
-        pybabel +
-        ' extract -F babel.cfg -k lazy_gettext -o messages.pot maple templates')
-    os.system(pybabel + ' update -i messages.pot -d translations')
+    babel_conf = "LANG/babel.cfg"
+    src_path = ["maple", "templates"]
+    os.system('pybabel extract -F {0} -k lazy_gettext -o messages.pot {1}'.
+              format(babel_conf, ' '.join(src_path)))
+    os.system('pybabel update -i messages.pot -d LANG')
     os.unlink('messages.pot')
 
 
 @cli.command()
 def babel_compile():
-    pybabel = 'pybabel'
-    os.system(pybabel + ' compile -d translations')
+    os.system('pybabel compile -d LANG')
 
 
 @cli.command()
