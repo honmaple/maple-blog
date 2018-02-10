@@ -1,0 +1,79 @@
+html,body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', cursive;
+    background-color: #212121;
+}
+h1, h2, p, span, input {
+    font-family: 'Press Start 2P', cursive;
+}
+.console {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.console .console-output span {
+    line-height: 20px;
+}
+.console .console-output span.grey {
+    color: #cccccc;
+}
+.console .console-output span.green {
+    color: #2ecc71;
+}
+.console .console-output span.red {
+    color: #e74c3c;
+}
+.console .console-output span.blue {
+    color: #3498db;
+}
+.console .console-output pre {
+    font-size: 6px;
+    -webkit-animation: glitch 0.2s linear infinite;
+    animation: glitch 0.2s linear infinite;
+    font-family: 'Press Start 2P', monospace;
+}
+.console .action {
+    width: 100%;
+    font-size: 14px;
+    margin-top: 20px;
+}
+.console .action span {
+    color: white;
+}
+.console .action input {
+    background: none;
+    border: none;
+    color: white;
+}
+.console .action input:focus {
+    outline: none;
+}
+.console .console-output {
+    color:#cccccc;
+}
+span.console-host {
+    color:#AA5500;
+}
+span.console-path {
+    color:#ffff55;
+}
+.console-ps1 span.console-host {
+    color:#AA5500;
+}
+.console-ps1 span.console-path {
+    color:#ffff55;
+}
+span.seperator {
+    font-size: 12px;
+    -webkit-animation: changeColor 10s ease-in-out infinite;
+    animation: changeColor 10s ease-in-out infinite;
+}
+.fa {
+    color:#ffffff;
+    font-size:30px;
+    margin: 5px;
+}

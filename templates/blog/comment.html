@@ -1,0 +1,22 @@
+{% macro comment(items) -%}
+<div class="panel panel-info">
+    <div class="panel-heading">
+        {{ _('Comment') }}
+    </div>
+    <div class="panel-body" style="padding:0px;">
+        <form action="{{ request.path }}" method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.content(class="form-control",placeholder=_('write your comments') ,style="height:80px;border-radius:0") }}
+            {{ form.submit(class="btn btn-info btn-sm",style="margin-top:5px;") }}
+        </form>
+    </div>
+    {% for comment in comments.items %}
+    <div class="panel-heading">
+        {{ comment.author.username }}于{{ comment.created_at | timesince }}发表
+    </div>
+    <div class="panel-body">
+        {{ comment.content }}
+    </div>
+    {% endfor %}
+</div>
+{%- endmacro %}

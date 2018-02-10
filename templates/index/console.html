@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html >
+    <head>
+        <meta charset="UTF-8">
+        <title>HonMaple's Blog</title>
+        <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdn.bootcss.com/typed.js/1.1.4/typed.min.js"></script>
+        <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Press+Start+2P'>
+        <link rel="stylesheet" href="{{ url_for('static',filename='console/console.css') }}" type="text/css" media="screen" />
+    </head>
+    <body>
+        <script id="console-title" type="text/template">
+__        _______ _     ____ ___  __  __ _____
+\ \      / / ____| |   / ___/ _ \|  \/  | ____|
+ \ \ /\ / /|  _| | |  | |  | | | | |\/| |  _|
+  \ V  V / | |___| |__| |__| |_| | |  | | |___
+   \_/\_/  |_____|_____\____\___/|_|  |_|_____|
+
+ _____ ___    __  ____   __  ____  _     ___   ____
+|_   _/ _ \  |  \/  \ \ / / | __ )| |   / _ \ / ___|
+  | || | | | | |\/| |\ V /  |  _ \| |  | | | | |  _
+  | || |_| | | |  | | | |   | |_) | |__| |_| | |_| |
+  |_| \___/  |_|  |_| |_|   |____/|_____\___/ \____|
+  _______________________________________
+ / I like solitude, yearning for freedom \
+ \                        -- ?           /
+  ---------------------------------------
+  \     .    _  .
+   \    |\_|/__/|
+       / / \/ \  \
+      /__|O||O|__ \
+     |/_ \_/\_/ _\ |
+     | | (____) | ||
+     \/\___/\__/  //
+     (_/         ||
+      |          ||
+      |          ||\
+       \        //_/
+        \______//
+       __ || __||
+      (____(____)
+                </script>
+        <div class="console">
+            <div class="console-output">
+                <span>Initializing...</span><br/>
+		<span class="green">0.0002ms ok!</span><br/>
+		<span class="seperator">== == == == == == == == == == == == == == == == == ==</span></br>
+		<pre class="console-title"></pre>
+                <br/>
+		<span class="seperator">== == == == == == == == == == == == == == == == == ==</span></br>
+		<span>Hope you have fun discovering all the <span class="red">hidden gems</span>!</span>
+		</br>
+		<span class="blue">type '<span class="grey">help</span>' to see a list of comands available</span><br>
+            </div>
+	    <div class="action">
+		<span class="console-ps1">
+                    ┌─[<span class="console-host">honmaple</span>]─[<span class="console-path">~</span>] <br/>
+                    └──╼
+                </span>
+                <input class="console-input" name="console-input" type="text" />
+	    </div>
+            <script type="text/javascript" src="{{ url_for('static',filename='console/console.js') }}"></script>
+        </div>
+        <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+         ga('create', 'UA-88401692-1', 'auto');
+         ga('send', 'pageview');
+
+        </script>
+    </body>
+</html>

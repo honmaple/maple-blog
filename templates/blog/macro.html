@@ -1,0 +1,48 @@
+{% macro tags() -%}
+{% for tag,count in tag_archives() %}
+<span class="label label-primary" style="display: inline-block;">
+  {%  set category = request.args.get('category') %}
+  <a href="{{ url_for('blog.bloglist',category=category,tag=tag.name) }}" style="color:#fff;">{{ tag.name }}
+    <span class="badge tag-badge">{{ count }}</span>
+  </a>
+</span>
+{% endfor %}
+{%- endmacro %}
+
+{% macro social() -%}
+<a href="https://github.com/honmaple" target="_blank" title="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a>
+<a href="https://honmaple.com/blog/" target="_blank" title="Blog"><i class="fa fa-leaf" aria-hidden="true"></i></a>
+<a href="https://honmaple.com/books/" target="_blank" title="Book"><i class="fa fa-book" aria-hidden="true"></i></a>
+<a href="xiyang0807@gmail.com" target="_blank" title="Gmail"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+<a href="https://www.facebook.com/honmaple" target="_blank" title="FaceBook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+{%- endmacro %}
+
+{% macro info(blog) -%}
+{% set author = blog.user.username %}
+{% set tags = blog.tags %}
+{% set category = blog.category.name %}
+<footer>
+  <i class="fa fa-calendar"></i>
+  <abbr title="{{ blog.created_at }}">
+    <span class="label label-success">{{ blog.created_at | timesince }}</span>
+  </abbr>
+  <address style="margin-top:8px">
+    <i class="fa fa-user"></i>
+    <a href="{{ url_for('blog.bloglist',author=author) }}" class="label label-primary">{{ author }}</a>
+  </address>
+  <address style="margin-top:-12px">
+    <i class="fa fa-leaf"></i>
+    <a href="{{ url_for('blog.bloglist',category=category) }}" class="label label-default" style="display: inline-block;">{{ category }}</a>
+  </address>
+  <address class="hidden-xs" style="margin-top:-12px">
+    <i class="fa fa-tags"></i>
+    {% for tag in tags %}
+    <a href="{{ url_for('blog.bloglist',tag=tag.name) }}" class="label label-tag" style="display: inline-block;">{{ tag.name }}</a>
+    {% endfor %}
+  </address>
+  <address style="margin-top:-12px">
+    <i class="fa fa-eye"></i>
+    <span class="label label-info">{{ blog.read_times }}</span>
+  </address>
+</footer>
+{%- endmacro %}

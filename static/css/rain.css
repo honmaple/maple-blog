@@ -1,0 +1,82 @@
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+html, body, canvas {
+    width: 100%;
+    height: 100%;
+}
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #222;
+    background-image: url("http://honmaple.com/static/images/storm-bg.jpg");
+    background-size: cover;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 0;
+}
+body:after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    -webkit-animation: thunder-bg 6s infinite;
+    animation: thunder-bg 6s infinite;
+}
+canvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#canvas3 {
+    z-index: 5;
+}
+
+#canvas2 {
+    z-index: 10;
+}
+
+#canvas1 {
+    z-index: 100;
+}
+@-webkit-keyframes thunder-bg {
+    0% {
+        background-color: rgba(34, 34, 34, 0.9);
+    }
+    9% {
+        background-color: rgba(34, 34, 34, 0.9);
+    }
+    10% {
+        background-color: rgba(59, 59, 59, 0.3);
+    }
+    10.5% {
+        background-color: rgba(34, 34, 34, 0.9);
+    }
+    80% {
+        background-color: rgba(34, 34, 34, 0.9);
+    }
+    82% {
+        background-color: rgba(59, 59, 59, 0.3);
+    }
+    83% {
+        background-color: rgba(34, 34, 34, 0.9);
+    }
+    83.5% {
+        background-color: rgba(59, 59, 59, 0.3);
+    }
+    100% {
+        background-color: rgba(34, 34, 34, 0.9);
+    }
+}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-16 21:48+0800\n"
+"POT-Creation-Date: 2017-08-26 08:19+0800\n"
 "PO-Revision-Date: 2016-04-16 13:45+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -16,222 +16,326 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.3\n"
+"Generated-By: Babel 2.5.0\n"
 
-#: maple/__init__.py:133
+#: maple/extensions.py:43
 msgid "Please login to access this page."
 msgstr "这个页面要求登陆，请登陆"
 
-#: maple/auth/forms.py:17
-msgid "Username:"
-msgstr "用户名:"
+#: maple/blog/views.py:100
+msgid "honmaple's Blog"
+msgstr ""
 
-#: maple/auth/forms.py:19
-msgid "Password:"
-msgstr "密码:"
+#: maple/common/response.py:24
+msgid "Your confirm link have not out of time,Please confirm your email in time"
+msgstr "验证链接还未过期，请及时验证!"
 
-#: maple/auth/forms.py:22 maple/auth/forms.py:36
-msgid "Captcha:"
-msgstr "验证码:"
+#: maple/common/response.py:25
+msgid "Blog ID should exist"
+msgstr "文章ID不存在"
 
-#: maple/auth/forms.py:26
-msgid "Email:"
-msgstr "邮箱:"
+#: maple/question/views.py:35
+msgid "Answer-HonMaple"
+msgstr "自问自答 - HonMaple"
 
-#: maple/auth/forms.py:30
-msgid "Remember me"
-msgstr "记住我"
-
-#: maple/auth/forms.py:35
-msgid "Register Email:"
-msgstr "注册邮箱:"
-
-#: maple/auth/views.py:36 maple/auth/views.py:86 maple/auth/views.py:185
-msgid "The validate code is error"
-msgstr "验证码错误"
-
-#: maple/auth/views.py:51
-msgid "You have logined in"
-msgstr "你已成功登陆"
-
-#: maple/auth/views.py:54
-msgid "Name or Password is error"
-msgstr "用户名或密码错误"
-
-#: maple/auth/views.py:91
-msgid "The name has been registered"
-msgstr "用户名已被注册"
-
-#: maple/auth/views.py:94
-msgid "The email has been registered"
-msgstr "邮箱已被注册"
-
-#: maple/auth/views.py:109
-msgid "Please confirm  your email"
-msgstr "请验证你的邮箱"
-
-#: maple/auth/views.py:119 maple/auth/views.py:166 maple/auth/views.py:171
-msgid "An email has been sent to your.Please receive"
-msgstr "一封邮件已发送到你的邮箱,请查收"
-
-#: maple/auth/views.py:134
-msgid "The confirm link has been out of time.Please confirm your email again"
-msgstr "验证链接已过期，请重新验证"
-
-#: maple/auth/views.py:139
-msgid "The email has been confirmed. Please login."
-msgstr "邮箱已验证成功，请登陆"
-
-#: maple/auth/views.py:157
-msgid "Your account has been confirmed,don't need again"
-msgstr "你的账户已经验证，不能重复验证"
-
-#: maple/auth/views.py:164
-msgid "Please confirm your email"
-msgstr "请验证你的邮箱"
-
-#: maple/auth/views.py:200
-msgid ""
-"An email has been sent to you.Please receive and update your password in "
-"time"
-msgstr "一封邮件已发送到你的邮箱，请查收并及时修改你的密码"
-
-#: maple/auth/views.py:204
-msgid "The email is error"
-msgstr "邮箱错误"
-
-#: maple/blog/forms.py:18
-msgid "title"
-msgstr "标题"
-
-#: maple/blog/forms.py:19
-msgid "content"
-msgstr "内容"
-
-#: maple/blog/forms.py:21
-msgid "category"
-msgstr "分类"
-
-#: maple/blog/forms.py:24 maple/templates/blog/link.html:7
-#: maple/templates/blog/panel.html:22
-msgid "tags"
-msgstr "标签"
-
-#: maple/blog/forms.py:25
-msgid "is reprinted"
-msgstr "是否为转载"
-
-#: maple/blog/forms.py:29
-msgid "Comment"
-msgstr "评论"
-
-#: maple/blog/forms.py:30
-msgid "Post comment"
-msgstr "发表评论"
-
-#: maple/blog/forms.py:34
-msgid "replies"
-msgstr "回复"
-
-#: maple/blog/forms.py:35
-msgid "Post replies"
-msgstr "发表回复"
-
-#: maple/blog/views.py:135 maple/blog/views.py:154
+#: maple/question/views.py:46
 msgid "You have not confirm your account"
 msgstr "你的账户未验证"
 
-#: maple/templates/auth/forget.html:11
-msgid "forget password"
-msgstr "忘记密码"
+#: maple/question/views.py:79
+msgid "Answer - HonMaple"
+msgstr "自问自答 - HonMaple"
 
-#: maple/templates/auth/forget.html:52
-msgid "confirm"
-msgstr "确认"
+#: maple/question/views.py:95
+#, python-format
+msgid "%(title)s - Answer - HonMaple"
+msgstr "%(title)s - 自问自答 - HonMaple"
 
-#: maple/templates/auth/login.html:11 maple/templates/auth/login.html:55
-msgid "login"
-msgstr "登陆"
+#: templates/base/base.html:5 templates/index.html:7 templates/index.html:48
+msgid "Love is precious, free price is higher."
+msgstr "爱情诚可贵，自由价更高."
 
-#: maple/templates/auth/login.html:56
-msgid "forget password?"
-msgstr "忘记密码?"
-
-#: maple/templates/auth/login.html:65
-msgid "not register"
-msgstr "还未注册"
-
-#: maple/templates/auth/register.html:11 maple/templates/auth/register.html:60
-msgid "register"
-msgstr "注册"
-
-#: maple/templates/auth/validate.html:2
-msgid "Captcha"
-msgstr "验证码"
-
-#: maple/templates/base/header.html:3 maple/templates/base/header.html:37
+#: templates/base/base.html:40 templates/index.html:29
 msgid "Blog"
 msgstr "个人博客"
 
-#: maple/templates/base/header.html:5
-msgid "Book"
-msgstr "书籍查询"
-
-#: maple/templates/base/header.html:7 maple/templates/base/header.html:39
-#: maple/templates/question/question.html:11
-#: maple/templates/question/question_view.html:11
+#: templates/base/base.html:41 templates/index.html:30
 msgid "Answer"
 msgstr "自问自答"
 
-#: maple/templates/base/header.html:16 maple/templates/base/header.html:24
-#: maple/templates/base/header.html:31
-msgid "HOME"
-msgstr "主页"
+#: templates/base/base.html:42 templates/index.html:31
+msgid "Cloud"
+msgstr "物联网云"
 
-#: maple/templates/base/header.html:19
-msgid "Life"
-msgstr "生活随笔"
-
-#: maple/templates/base/header.html:32
-msgid "All Questions"
-msgstr "所有问题"
-
-#: maple/templates/base/header.html:33
-msgid "Private Questions"
-msgstr "私人问题"
-
-#: maple/templates/base/header.html:38
-msgid "Books"
-msgstr "书籍查询"
-
-#: maple/templates/base/header.html:40
+#: templates/base/base.html:43 templates/index.html:32
 msgid "About me"
 msgstr "关于我"
 
-#: maple/templates/blog/blog.html:11 maple/templates/blog/blog_archives.html:11
-#: maple/templates/blog/blog_category.html:11
-#: maple/templates/blog/blog_page.html:11 maple/templates/blog/blog_tag.html:11
-msgid "HonMaple's Blog"
-msgstr "HonMaple's 博客"
+#: templates/index.html:36
+msgid "search"
+msgstr "搜索"
 
-#: maple/templates/blog/link.html:10
-msgid "read"
-msgstr "浏览次数"
+#: templates/base/base.html:5
+msgid "honmaple's blog"
+msgstr "honmaple's 博客"
 
-#: maple/templates/blog/panel.html:4
+#: templates/blog/_macro.html:2
+msgid "BLOG"
+msgstr "博客"
+
+#: templates/blog/_macro.html:7 templates/question/_macro.html:7
+msgid "HOME"
+msgstr "主页"
+
+#: templates/blog/_macro.html:23
+msgid "Archives"
+msgstr "归档"
+
+#: templates/blog/archive_panel.html:18
+msgid "Archives By Time"
+msgstr "按时间归档"
+
+#: templates/blog/archive_panel.html:25 templates/blog/archive_panel.html:34
+#, python-format
+msgid "%(year)s-%(month)s"
+msgstr "%(year)s年%(month)s月"
+
+#: templates/blog/archive_panel.html:39 templates/blog/archive_panel.html:68
+msgid "open"
+msgstr "展开"
+
+#: templates/blog/archive_panel.html:45
+msgid "Archives By Category"
+msgstr "按分类归档"
+
+#: templates/blog/archive_panel.html:55
+msgid "Archives By Tags"
+msgstr "按节点归档"
+
+#: templates/blog/comment.html:4
+msgid "Comment"
+msgstr "评论"
+
+#: templates/blog/comment.html:9
+msgid "write your comments"
+msgstr "写下你的评论"
+
+#: templates/blog/panel.html:8
+msgid "Tips"
+msgstr "小贴士"
+
+#: templates/blog/panel.html:16
 msgid "header image"
 msgstr "头像"
 
-#: maple/templates/blog/panel.html:29
-msgid "link"
-msgstr "链接"
+#: templates/blog/panel.html:27
+msgid "I like solitude, yearning for freedom"
+msgstr "坚定的决心，充足的信心，足够的耐心"
 
-#: maple/templates/blog/panel.html:31
-msgid "blog"
-msgstr "个人博客"
+#: templates/blog/panel.html:49 templates/index/friends.html:11
+msgid "Friends"
+msgstr "友情链接"
 
-#: maple/templates/blog/panel.html:44
-msgid "TOP"
-msgstr "返回顶部"
+#: templates/blog/timeline.html:4
+msgid "TimeLine"
+msgstr "时间轴"
 
+#: templates/index/index.html:27
+msgid "HELLO WORLD"
+msgstr "你好 世界"
+
+#: templates/question/_macro.html:2
+msgid "ANSWER"
+msgstr "问答"
+
+#: templates/question/_macro.html:8
+msgid "All Questions"
+msgstr "所有问题"
+
+#: templates/question/_macro.html:9
+msgid "Private Questions"
+msgstr "私人问题"
+
+#~ msgid "Username:"
+#~ msgstr "用户名:"
+
+#~ msgid "Password:"
+#~ msgstr "密码:"
+
+#~ msgid "Captcha:"
+#~ msgstr "验证码:"
+
+#~ msgid "Email:"
+#~ msgstr "邮箱:"
+
+#~ msgid "Remember me"
+#~ msgstr "记住我"
+
+#~ msgid "Register Email:"
+#~ msgstr "注册邮箱:"
+
+#~ msgid "The validate code is error"
+#~ msgstr "验证码错误"
+
+#~ msgid "You have logined in"
+#~ msgstr "你已成功登陆"
+
+#~ msgid "Name or Password is error"
+#~ msgstr "用户名或密码错误"
+
+#~ msgid "The name has been registered"
+#~ msgstr "用户名已被注册"
+
+#~ msgid "The email has been registered"
+#~ msgstr "邮箱已被注册"
+
+#~ msgid "Please confirm  your email"
+#~ msgstr "请验证你的邮箱"
+
+#~ msgid "An email has been sent to your.Please receive"
+#~ msgstr "一封邮件已发送到你的邮箱,请查收"
+
+#~ msgid "The confirm link has been out of time.Please confirm your email again"
+#~ msgstr "验证链接已过期，请重新验证"
+
+#~ msgid "The email has been confirmed. Please login."
+#~ msgstr "邮箱已验证成功，请登陆"
+
+#~ msgid "Your account has been confirmed,don't need again"
+#~ msgstr "你的账户已经验证，不能重复验证"
+
+#~ msgid "Please confirm your email"
+#~ msgstr "请验证你的邮箱"
+
+#~ msgid ""
+#~ msgstr "一封邮件已发送到你的邮箱，请查收并及时修改你的密码"
+
+#~ msgid "The email is error"
+#~ msgstr "邮箱错误"
+
+#~ msgid "title"
+#~ msgstr "标题"
+
+#~ msgid "content"
+#~ msgstr "内容"
+
+#~ msgid "category"
+#~ msgstr "分类"
+
+#~ msgid "is reprinted"
+#~ msgstr "是否为转载"
+
+#~ msgid "replies"
+#~ msgstr "回复"
+
+#~ msgid "Post replies"
+#~ msgstr "发表回复"
+
+#~ msgid "confirm"
+#~ msgstr "确认"
+
+#~ msgid "forget password?"
+#~ msgstr "忘记密码?"
+
+#~ msgid "not register"
+#~ msgstr "还未注册"
+
+#~ msgid "Captcha"
+#~ msgstr "验证码"
+
+#~ msgid "Life"
+#~ msgstr "生活随笔"
+
+#~ msgid "link"
+#~ msgstr "链接"
+
+#~ msgid "blog"
+#~ msgstr "个人博客"
+
+#~ msgid "TOP"
+#~ msgstr "返回顶部"
+
+#~ msgid "Book"
+#~ msgstr "书籍查询"
+
+#~ msgid "书籍查询 - HonMaple"
+#~ msgstr ""
+
+#~ msgid "%(name)s - 书籍查询 - HonMaple"
+#~ msgstr ""
+
+#~ msgid "自问自答-HonMaple"
+#~ msgstr ""
+
+#~ msgid "自问自答 - HonMaple"
+#~ msgstr ""
+
+#~ msgid "%(title)s - 自问自答 - HonMaple"
+#~ msgstr ""
+
+#~ msgid "forget password"
+#~ msgstr "忘记密码"
+
+#~ msgid "login"
+#~ msgstr "登陆"
+
+#~ msgid "register"
+#~ msgstr "注册"
+
+#~ msgid "My Page"
+#~ msgstr "我的主页"
+
+#~ msgid "logout"
+#~ msgstr "注销"
+
+#~ msgid "publish"
+#~ msgstr "发表时间"
+
+#~ msgid "tags"
+#~ msgstr "标签"
+
+#~ msgid "read"
+#~ msgstr "浏览次数"
+
+#~ msgid "This my website.Welcome and you can give me some suggestion"
+#~ msgstr "这是我的博客，欢迎访问并为我提供建议"
+
+#~ msgid "Recent Blogs"
+#~ msgstr "最近文章"
+
+#~ msgid "Recent Answers"
+#~ msgstr "最近问答"
+
+#~ msgid "more"
+#~ msgstr "更多"
+
+#~ msgid "HonMaple's Blog"
+#~ msgstr "HonMaple's 博客"
+
+#~ msgid "Post comment"
+#~ msgstr "发表评论"
+
+#~ msgid "Books - HonMaple"
+#~ msgstr "书籍查询 - HonMaple"
+
+#~ msgid "%(name)s - Books - HonMaple"
+#~ msgstr "%(name)s - 书籍查询 - HonMaple"
+
+#~ msgid "Search"
+#~ msgstr "搜索内容"
+
+#~ msgid "BOOK"
+#~ msgstr "书籍"
+
+#~ msgid "Books"
+#~ msgstr "书籍查询"
+
+#~ msgid ""
+#~ "Your confirm link have not out of"
+#~ " time,        Please confirm your email "
+#~ "in time"
+#~ msgstr "验证链接还未过期，请及时验证!"
+
+#~ msgid "Your confirm link have not out of time"
+#~ msgstr ""
 

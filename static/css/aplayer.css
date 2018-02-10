@@ -1,0 +1,33 @@
+.aplayer {
+    text-align:center;
+    margin:auto;
+    /* max-width:480px; */
+    background-color:rgba(255, 255, 255, 0.5);
+}
+.aplayer .aplayer-lrc {
+    display: none;
+    position: relative;
+    height: 30px;
+    background: rgba(255, 255, 255, 0);
+    text-align: center;
+    overflow: hidden;
+    margin: -10px 0 7px;
+}
+.aplayer .aplayer-lrc:before {
+    height: 0%;
+}
+.aplayer .aplayer-lrc:after {
+    height: 0%;
+}
+.aplayer .aplayer-info .aplayer-controller .aplayer-time {
+    color: #444;
+}
+.aplayer .aplayer-lrc p {
+    color: #a40000;
+}
+.aplayer .aplayer-list ol li.aplayer-list-light {
+    background: rgba(255, 255, 255, 0.4);
+}
+.aplayer .aplayer-list ol li:hover {
+    background: rgba(255, 255, 255, 0.5);
+}

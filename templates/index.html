@@ -1,88 +1,63 @@
-{% extends 'base/base.html' %}
-{% from 'common/_macro.html' import header %}
-{% from 'common/_macro.html' import headerlist %}
-
-{% block title -%}
-{{_("HonMaple's Blog")-}}
-{% endblock %}
-
-{% block header -%}
-{{ header() }}
-{%- endblock header %}
-
-{% block list -%}
-{{ headerlist() }}
-{%- endblock list %}
-
-{% macro image(text) -%}
-<img src="{{ url_for('static',filename='images/Moo.png') }}" alt="moon" style="width:100%;">
-<div class="carousel-caption">
-    <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
-    {{ text }}
-</div>
-{%- endmacro %}
-
-{% macro urllist(title,url) -%}
-<h4>
-    <a class="header-color" href="{{ url }}">
-        {{ title }}
-    </a>
-</h4>
-{%- endmacro %}
-
-{% block content %}
-<div class="col-sm-8 category" style="padding:0;">
-    <div id="index" class="carousel slide col-sm-6 hidden-xs padgin" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#index" data-slide-to="0" class="active"></li>
-            <li data-target="#index" data-slide-to="1"></li>
-            <li data-target="#index" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner" role="listbox">
-            <div class="item active">
-                {{ image(notice.notice)}}
-            </div>
-            <div class="item">
-                {{ image('Hello HonMaple')}}
-            </div>
-            <div class="item">
-                {{ image(_('This my website.Welcome and you can give me some suggestion'))}}
-            </div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>honmaple - {{_('Love is precious, free price is higher.')}}</title>
+    <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div class="particles-js" id="particles-js"></div>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-header" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">honmaple</a>
         </div>
+        <div class="collapse navbar-collapse" id="nav-header">
+          <ul class="nav navbar-nav">
+            <li><a href="/blog">{{ _('Blog') }}</a></li>
+            <li><a href="/question">{{ _('Answer') }}</a></li>
+            <li><a href="/timeline">{{ _('TimeLine') }}</a></li>
+            <li><a href="https://cloud.honmaple.com">{{ _('Cloud') }}</a></li>
+            <li><a href="/about">{{_('About me') }}</a></li>
+          </ul>
+          <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;">
+            <div class="form-group has-feedback">
+              <input class="form-control input-sm" id="search" name="search" placeholder="{{ _('search') }}" type="text" value="">
+              <i class="fa fa-search form-control-feedback"></i>
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="center">
+      <span class="avater">
+        <img class="circle img-circle" src="https://honmaple.com/static/images/header.png" height="120px" width="120px">
+      </span>
+      <h2>Lin.Jiang</h2>
+      <p>{{_('Love is precious, free price is higher.')}}</p>
+      <ul class="list-inline">
+        <li><a href="https://honmaple.com/blog"><i class="fa fa-home" title="BLOG"></i></a></li>
+        <li><a href="http://honmaple.org" target="_blank"><i class="fa fa-globe" title="MINE"></i></a></li>
+        <li><a href="https://github.com/honmaple" target="_blank"><i class="fa fa-github" title="GITHUB"></i></a></li>
+        <li><a href="mailto:xiyang0807@gmail.com" target="_blank"><i class="fa fa-envelope" title="EMAIL"></i></a></li>
+      </ul>
     </div>
-    <div class="col-sm-6 font-big">
-        {{ urllist(_('Recent Blogs'),url_for('blog.bloglist')) }}
-        <p>
-            {% for blog in blogs %}
-            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-            <a href="{{ url_for('blog.blog',blogId=blog.id) }}">{{ blog.title }}</a>
-            <br />
-            {% endfor %}
-        </p>
+    <div class="footer">
+      Copyright © 2015-2017 honmaple.
     </div>
-</div>
-<div class="col-sm-4 category">
-    <div class="font-big">
-        {{ urllist(_('Recent Answers'),url_for('question.quelist')) }}
-        <p>
-            {% for question in questions %}
-            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-            <a href="{{ url_for('question.que',queId=question.id) }}">{{ question.title }}</a>
-            <br />
-            {% endfor %}
-        </p>
-    </div>
-</div>
-{% for blog in blogs %}
-{%- if loop.index >= 3 %}{% break %}{% endif %}
-<div class="col-sm-12 category">
-    {% from 'blog/_macro.html' import blogpanel %}
-    {{ blogpanel(blog) }}
-    {%- if loop.index == 2 -%}
-    <a class="btn btn-primary btn-sm" href="{{ url_for('blog.bloglist') }}" role="button">
-        {{_('more')}}
-    </a>
-    {% endif %}
-</div>
-{% endfor %}
-{% endblock %}
+    <script src="https://cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/index.js') }}"></script>
+  </body>
+</html>

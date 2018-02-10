@@ -1,0 +1,58 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <div id="carousel-item" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-item" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-item" data-slide-to="1"></li>
+      <li data-target="#carousel-item" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      {{ item('/static/images/bg1.jpg','welcome to my blog') }}
+      {{ item('/static/images/bg1.jpg','Welcome') }}
+      {{ item('/static/images/bg1.jpg','Hello World') }}
+    </div>
+    <a class="left carousel-control" href="#carousel-item" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-item" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="page-header text-center" style="margin-top:10px;margin-bottom:10px;">
+      <h3>{{_('HELLO WORLD')}}</h3>
+    </div>
+    {{ thumbmail('/static/images/bg1.jpg','https://forums.honmaple.org','maple-bbs') }}
+    {{ thumbmail('/static/images/bg1.jpg','https://cloud.honmaple.com','maple-cloud') }}
+    {{ thumbmail('/static/images/bg1.jpg','https://github.com/honmaple/maple-file','maple-file') }}
+    {{ thumbmail('/static/images/bg1.jpg','https://github.com/honmaple/flask-maple','flask-maple') }}
+  </div>
+{% endblock %}
+
+{% macro item(src,title,description='',active=False) -%}
+  <div class="item {% if active %}active{% endif %}">
+    <img src="{{ src }}" style="height:300px;width:100%" />
+    <div class="carousel-caption">
+      <h3>{{ title }}</h3>
+      <p>{{ description }}</p>
+    </div>
+  </div>
+{%- endmacro %}
+
+{% macro thumbmail(src,href,title,description='') -%}
+  <div class="col-sm-6 col-md-3">
+    <div class="thumbnail" style="padding:0;border-radius:5px;">
+      <img src="{{ src }}" alt="" />
+      <div class="caption text-center">
+        <a href="{{ href }}" style="text-decoration:none" target="_blank">
+          <h4 style="color:#666">{{ title }}</h4>
+          <p>{{ description }}</p>
+        </a>
+      </div>
+    </div>
+  </div>
+{%- endmacro %}

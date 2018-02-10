@@ -8,50 +8,22 @@
 #   Created Time: 2015-11-18 08:03:11
 # *************************************************************************
 from flask import Flask
-from .extensions import register_maple
-from .extensions import (redis_data, csrf, cache, babel, mail, db, principals,
-                         login_manager, avatar)
-from .filters import register_jinja2
-from .logs import register_logging
-from .urls import register_routes
-from .app import register_app
-from maple.admin.urls import admin
-from maple.chatroom.views import socketio
+from maple import extension, admin, api, blueprint, jinja
 import os
 
 
-def create_app(config=None):
+def create_app(config):
     templates = os.path.abspath(
         os.path.join(os.path.dirname(__file__), os.pardir, 'templates'))
     static = os.path.abspath(
         os.path.join(os.path.dirname(__file__), os.pardir, 'static'))
     app = Flask(__name__, template_folder=templates, static_folder=static)
-    if config is None:
-        app.config.from_object('config.config')
-    else:
-        app.config.from_object(config)
-    register(app)
-    return app
+    app.config.from_object(config)
 
-
-def register(app):
-    register_extensions(app)
-    register_routes(app)
-    register_jinja2(app)
-    register_maple(app)
-    register_logging(app)
-    register_app(app)
-
-
-def register_extensions(app):
-    db.init_app(app)
-    socketio.init_app(app)
-    login_manager.init_app(app)
-    csrf.init_app(app)
-    cache.init_app(app)
-    babel.init_app(app)
-    mail.init_app(app)
-    principals.init_app(app)
+    extension.init_app(app)
+    jinja.init_app(app)
     admin.init_app(app)
-    redis_data.init_app(app)
-    avatar.init_app(app)
+    api.init_app(app)
+    blueprint.init_app(app)
+
+    return app
