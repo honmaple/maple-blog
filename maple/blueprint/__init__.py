@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2018-01-08 14:24:18 (CST)
-# Last Update: 星期六 2018-02-10 13:44:49 (CST)
+# Last Update: 星期六 2018-02-10 15:29:53 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -27,6 +27,8 @@ def init_app(app):
 
     app.add_url_rule('/blog', view_func=BlogListView.as_view('blog.bloglist'))
     app.add_url_rule('/blog/<int:pk>', view_func=BlogView.as_view('blog.blog'))
-    app.add_url_rule('/archives', view_func=ArchiveView.as_view('blog.archive'))
+    app.add_url_rule(
+        '/archives', view_func=ArchiveView.as_view('blog.archive'))
 
-    app.add_url_rule('/timeline', view_func=TimeLineView.as_view('timeline'))
+    app.add_url_rule(
+        '/timeline', view_func=TimeLineView.as_view('timeline'))

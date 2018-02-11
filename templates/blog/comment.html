@@ -12,7 +12,7 @@
     </div>
     {% for comment in comments.items %}
     <div class="panel-heading">
-        {{ comment.author.username }}于{{ comment.created_at | timesince }}发表
+        {{ comment.user.username }}于{{ comment.created_at | timesince }}发表
     </div>
     <div class="panel-body">
         {{ comment.content }}

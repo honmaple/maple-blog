@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: 星期六 2018-02-10 13:55:36 (CST)
+# Last Update: 星期六 2018-02-10 15:25:51 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -16,9 +16,13 @@ from flask_migrate import Migrate
 from werkzeug.contrib.fixers import ProxyFix
 from code import interact
 from getpass import getpass
+from random import choice, sample, randrange
+from string import ascii_letters, digits
+
 from maple.extension import db, cache
 from maple import create_app
-from maple.model import User
+from maple.model import User, Blog, Tag, Category, TimeLine
+
 import click
 import os
 import sys
@@ -41,6 +45,57 @@ def shell_command():
 @cli.command()
 def runserver():
     app.run()
+
+
+@cli.command()
+def random_init():
+    def random_sep(n=6):
+        sep = [' '] * n
+        sep.append("\n")
+        sep.append("\n\n")
+        return choice(sep)
+
+    def random_word(n=20, sep=True):
+        word = ''.join(sample(ascii_letters + digits, randrange(2, n)))
+        if not sep:
+            return word
+        return word + random_sep()
+
+    random_users = [User(
+        username=random_word(12, False),
+        password=random_word(12, False),
+        email=random_word(15, False)) for _ in range(4)]
+    random_tags = [Tag(name=random_word(12, False)) for i in range(15)]
+    random_categories = [Category(name=random_word(12, False))
+                         for i in range(5)]
+
+    db.session.bulk_save_objects(random_users)
+    db.session.bulk_save_objects(random_tags)
+    db.session.bulk_save_objects(random_categories)
+    db.session.commit()
+
+    random_users = User.query.all()
+    random_tags = Tag.query.all()
+
+    for category in Category.query.all():
+        print(category, category.id)
+        random_blogs = [Blog(
+            category_id=category.id,
+            title=random_word(20, False),
+            content=' '.join([random_word() for _ in range(1000)]),
+            user_id=choice(random_users).id,
+            tags=[choice(random_tags) for _ in range(randrange(1, 4))])
+                        for _ in range(randrange(3, 15))]
+        db.session.bulk_save_objects(random_blogs)
+        db.session.commit()
+
+    random_timelines = [TimeLine(
+        content=' '.join([random_word() for _ in range(100)]),
+        user_id=choice(random_users).id,
+        is_hidden=choice([True, False])) for _ in range(100)]
+
+    db.session.bulk_save_objects(random_timelines)
+    db.session.commit()
 
 
 @cli.command()

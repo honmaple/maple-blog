@@ -1,0 +1,6 @@
+{% extends 'blog/base.html' %}
+
+{% block item -%}
+  {% include "timeline/macro.html" %}
+  {{ paginate(timelines,'timeline') }}
+{% endblock item %}

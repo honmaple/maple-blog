@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2018-02-08 14:45:34 (CST)
-# Last Update: 星期六 2018-02-10 13:44:49 (CST)
+# Last Update: 星期六 2018-02-10 15:28:13 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -30,5 +30,5 @@ class TimeLineView(MethodView):
         timelines = TimeLine.query.filter_by(
             **filter_dict).order_by(*order_by).paginate(page, number)
         if query_dict.pop('from', None) == 'blog':
-            return render_template('timeline/_macro.html', timelines=timelines)
-        return render_template('timeline/timeline.html', timelines=timelines)
+            return render_template('timeline/macro.html', timelines=timelines)
+        return render_template('timeline/itemlist.html', timelines=timelines)

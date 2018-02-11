@@ -6,16 +6,16 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: 星期六 2018-02-10 13:35:21 (CST)
+# Last Update: 星期六 2018-02-10 15:28:53 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from datetime import timedelta
 
-TEMPLATES_AUTO_RELOAD = True
-DEBUG = False
+DEBUG = True
 SECRET_KEY = 'asdadasd'
 SECRET_KEY_SALT = 'asdasdads'
+TEMPLATES_AUTO_RELOAD = True
 
 AUTHOR_NAME = 'Copyright © 2015-2016 honmaple. All rights reserved.'
 PERMANENT_SESSION_LIFETIME = timedelta(days=3)
