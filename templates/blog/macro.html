@@ -1,20 +1,18 @@
-{% macro tags() -%}
-{% for tag,count in tag_archives() %}
-<span class="label label-primary" style="display: inline-block;">
-  {%  set category = request.args.get('category') %}
-  <a href="{{ url_for('blog.bloglist',category=category,tag=tag.name) }}" style="color:#fff;">{{ tag.name }}
-    <span class="badge tag-badge">{{ count }}</span>
-  </a>
-</span>
-{% endfor %}
+{% macro aplayer() -%}
+<div id="player" class="aplayer"></div>
+<script type="text/javascript" src="https://cdn.bootcss.com/aplayer/1.5.8/APlayer.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='lib/aplayer/aplayer.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='lib/aplayer/aplayer.css') }}" type="text/css" media="screen" />
+<br/>
 {%- endmacro %}
 
-{% macro social() -%}
-<a href="https://github.com/honmaple" target="_blank" title="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a>
-<a href="https://honmaple.com/blog/" target="_blank" title="Blog"><i class="fa fa-leaf" aria-hidden="true"></i></a>
-<a href="https://honmaple.com/books/" target="_blank" title="Book"><i class="fa fa-book" aria-hidden="true"></i></a>
-<a href="xiyang0807@gmail.com" target="_blank" title="Gmail"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-<a href="https://www.facebook.com/honmaple" target="_blank" title="FaceBook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+{% macro timeline() -%}
+<div id="timeline"></div>
+<script type="text/javascript">
+ $.get("{{ url_for('timeline',from='blog') }}", function(response){
+     $("#timeline").html(response);
+ });
+</script>
 {%- endmacro %}
 
 {% macro info(blog) -%}

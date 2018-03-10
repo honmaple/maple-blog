@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: 星期六 2018-02-10 15:28:53 (CST)
+# Last Update: Saturday 2018-03-11 01:18:04 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -17,15 +17,17 @@ SECRET_KEY = 'asdadasd'
 SECRET_KEY_SALT = 'asdasdads'
 TEMPLATES_AUTO_RELOAD = True
 
-AUTHOR_NAME = 'Copyright © 2015-2016 honmaple. All rights reserved.'
+AUTHOR_NAME = '© 2015-2018 honmaple. All rights reserved.'
 PERMANENT_SESSION_LIFETIME = timedelta(days=3)
 REMEMBER_COOKIE_DURATION = timedelta(days=3)
 
+# WTF_CSRF_CHECK_DEFAULT = False
 ONLINE_LAST_MINUTES = 5
 
 PER_PAGE = 6
 
 SERVER_NAME = '127.0.0.1:8000'
+SESSION_COOKIE_DOMAIN = "127.0.0.1:8000"
 REDIS = {'db': 0, 'password': 'redis'}
 
 # 定制缓存 = 60

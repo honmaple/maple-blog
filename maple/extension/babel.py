@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2018-01-25 11:50:49 (CST)
-# Last Update: 星期六 2018-02-10 13:48:01 (CST)
+# Last Update: Saturday 2018-03-11 01:33:45 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -22,6 +22,8 @@ babel = Babel(default_domain=domain)
 
 @babel.localeselector
 def locale():
+    if request.path.startswith('/admin'):
+        return 'zh_Hans_CN'
     return request.accept_languages.best_match(['zh', 'en'])
 
 

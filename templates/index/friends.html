@@ -1,24 +1,14 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-<style>
- .bottom-line {
-     border-bottom:1px solid #eee;
- }
-</style>
-<div class="panel panel-default category">
+<div class="panel panel-default trans">
     <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.5);">
         <b>{{ _('Friends') }}</b>
     </div>
-    <div class="panel-body bottom-line">
+    <div class="panel-body panel-body-bottom">
         <div class="row">
             {{ media('honmaple论坛','爱生活，更爱自由','/static/images/header.png','https://forums.honmaple.org') }}
             {{ media('honmaple\'blog','自由','/static/images/header.png','http://honmaple.org') }}
-        </div>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            {{ media('创造狮','创意工作者导航',url_for('images',filename='avatar/chuangzaoshi.jpg'),'http://chuangzaoshi.com/') }}
         </div>
     </div>
 </div>

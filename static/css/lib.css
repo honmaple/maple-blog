@@ -1,0 +1,18 @@
+ul.list-group,li.list-group-item,nav.navbar,ul.dropdown-menu {
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3f000000',endColorstr='#3f000000');
+    background-color:rgba(255, 255, 255, 0.5);
+}
+.navbar-default .navbar-nav > li > a {
+    color: #555;
+}
+.navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    color: #555;
+    /* background-color: #fff; */
+}
+.panel-body-border {
+    border-bottom:1px solid #eea;
+    padding-left:30px;padding-right:30px;
+}
+.label-tag {
+    background-color: #ab5424;
+}

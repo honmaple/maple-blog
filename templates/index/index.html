@@ -1,58 +1,62 @@
-{% extends 'base/base.html' %}
-
-{% block content %}
-  <div id="carousel-item" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carousel-item" data-slide-to="0" class="active"></li>
-      <li data-target="#carousel-item" data-slide-to="1"></li>
-      <li data-target="#carousel-item" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-      {{ item('/static/images/bg1.jpg','welcome to my blog') }}
-      {{ item('/static/images/bg1.jpg','Welcome') }}
-      {{ item('/static/images/bg1.jpg','Hello World') }}
-    </div>
-    <a class="left carousel-control" href="#carousel-item" role="button" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#carousel-item" role="button" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-  <br/>
-  <div class="row">
-    <div class="page-header text-center" style="margin-top:10px;margin-bottom:10px;">
-      <h3>{{_('HELLO WORLD')}}</h3>
-    </div>
-    {{ thumbmail('/static/images/bg1.jpg','https://forums.honmaple.org','maple-bbs') }}
-    {{ thumbmail('/static/images/bg1.jpg','https://cloud.honmaple.com','maple-cloud') }}
-    {{ thumbmail('/static/images/bg1.jpg','https://github.com/honmaple/maple-file','maple-file') }}
-    {{ thumbmail('/static/images/bg1.jpg','https://github.com/honmaple/flask-maple','flask-maple') }}
-  </div>
-{% endblock %}
-
-{% macro item(src,title,description='',active=False) -%}
-  <div class="item {% if active %}active{% endif %}">
-    <img src="{{ src }}" style="height:300px;width:100%" />
-    <div class="carousel-caption">
-      <h3>{{ title }}</h3>
-      <p>{{ description }}</p>
-    </div>
-  </div>
-{%- endmacro %}
-
-{% macro thumbmail(src,href,title,description='') -%}
-  <div class="col-sm-6 col-md-3">
-    <div class="thumbnail" style="padding:0;border-radius:5px;">
-      <img src="{{ src }}" alt="" />
-      <div class="caption text-center">
-        <a href="{{ href }}" style="text-decoration:none" target="_blank">
-          <h4 style="color:#666">{{ title }}</h4>
-          <p>{{ description }}</p>
-        </a>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>honmaple - {{_('Love is precious, free price is higher.')}}</title>
+    <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static',filename='lib/index/index.css') }}" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div class="particles-js" id="particles-js"></div>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-header" aria-expanded="false">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">honmaple</a>
+        </div>
+        <div class="collapse navbar-collapse" id="nav-header">
+          <ul class="nav navbar-nav">
+            <li><a href="/blog">{{ _('Blog') }}</a></li>
+            <li><a href="/timeline">{{ _('TimeLine') }}</a></li>
+            <li><a href="https://cloud.honmaple.com">{{ _('Cloud') }}</a></li>
+            <li><a href="/about">{{_('About me') }}</a></li>
+          </ul>
+          <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;">
+            <div class="form-group has-feedback">
+              <input class="form-control input-sm" id="search" name="search" placeholder="{{ _('search') }}" type="text" value="">
+              <i class="fa fa-search form-control-feedback"></i>
+            </div>
+          </form>
+        </div>
       </div>
+    </nav>
+    <div class="center">
+      <span class="avater">
+        <img class="circle img-circle" src="https://honmaple.com/static/images/header.png" height="120px" width="120px">
+      </span>
+      <h2>Lin.Jiang</h2>
+      <p>{{_('Love is precious, free price is higher.')}}</p>
+      <ul class="list-inline">
+        <li><a href="https://honmaple.com/blog"><i class="fa fa-home" title="BLOG"></i></a></li>
+        <li><a href="http://honmaple.org" target="_blank"><i class="fa fa-globe" title="MINE"></i></a></li>
+        <li><a href="https://github.com/honmaple" target="_blank"><i class="fa fa-github" title="GITHUB"></i></a></li>
+        <li><a href="mailto:xiyang0807@gmail.com" target="_blank"><i class="fa fa-envelope" title="EMAIL"></i></a></li>
+      </ul>
     </div>
-  </div>
-{%- endmacro %}
+    <div class="footer">
+      © 2015-2018 honmaple.
+    </div>
+    <script src="https://cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='lib/index/index.js') }}"></script>
+  </body>
+</html>

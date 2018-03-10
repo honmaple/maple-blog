@@ -1,33 +1,30 @@
 {% extends 'blog/base.html' %}
-{% from 'blog/macro.html' import info %}
+{% from 'maple/paginate.html' import paginate %}
+{% import 'blog/macro.html' as macro %}
 
 {% block item -%}
-<ul class="media-list">
-  {%- for blog in blogs.items -%}
-  <li class="media blog">
-    <h3><a href="{{ url_for('blog.blog',pk=blog.id) }}">{{ blog.title }}</a></h3>
-    <hr style="max-width:none" />
-    <div class="media-body">
-      <div class="pull-left" style="margin-right:10px;">
-        {{ info(blog) }}
-      </div>
-      <div class="blog-content blog-list-content">
-        <script>hljs.initHighlightingOnLoad();</script>
-        {% if blog.content_type == "0" %}
-        {{ blog.content | truncate(512) | safe_markdown }}
-        {% else %}
-        {{ blog.content | truncate(512) | orgmode }}
-        {%- endif -%}
-      </div>
-      <div class="media-footer text-right" style="margin-top:auto;display:block;width:100%;">
-        <a href="{{ url_for('blog.blog',pk=blog.id) }}">read more</a>
-      </div>
+{%- for blog in blogs.items -%}
+<article class="blog-list">
+  <h1 class="blog-title"><a href="{{ url_for('blog.blog',pk=blog.id) }}">{{ blog.title }}</a></h1>
+  <hr/>
+  <div class="blog-content">
+    <div class="blog-info">
+      {{ macro.info(blog) }}
     </div>
-  </li>
-  {% endfor -%}
-  {% set category = request.args.get('category') %}
-  {% set tag = request.args.get('tag') %}
-  {% set author = request.args.get('author') %}
-  {{ paginate(blogs,'blog.bloglist',dict(category=category,tag=tag,author=author)) }}
-</ul>
+    <script>hljs.initHighlightingOnLoad();</script>
+    {% if blog.content_type == "0" %}
+    {{ blog.content | truncate(512) | safe_markdown }}
+    {% else %}
+    {{ blog.content | truncate(512) | orgmode }}
+    {%- endif -%}
+  </div>
+  <div class="text-center">
+    <a class="btn blog-read-more" href="{{ url_for('blog.blog',pk=blog.id) }}">read more</a>
+  </div>
+</article>
+{% endfor -%}
+{% set category = request.args.get('category') %}
+{% set tag = request.args.get('tag') %}
+{% set author = request.args.get('author') %}
+{{ paginate(blogs,'blog.bloglist',dict(category=category,tag=tag,author=author)) }}
 {% endblock %}

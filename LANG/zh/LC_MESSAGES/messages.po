@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-02-10 13:56+0800\n"
+"POT-Creation-Date: 2018-03-11 01:28+0800\n"
 "PO-Revision-Date: 2016-04-16 13:45+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -17,6 +17,84 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
+
+#: maple/extension/login.py:42
+msgid "Please login to access this page."
+msgstr ""
+
+#: templates/base/base.html:4
+msgid "honmaple's blog"
+msgstr ""
+
+#: templates/base/base.html:4 templates/index/index.html:7
+#: templates/index/index.html:48
+msgid "Love is precious, free price is higher."
+msgstr "爱情诚可贵，自由价更高"
+
+#: templates/base/base.html:29 templates/index/index.html:29
+msgid "Blog"
+msgstr "博客"
+
+#: templates/base/base.html:30 templates/index/index.html:31
+msgid "Cloud"
+msgstr "物联网云"
+
+#: templates/base/base.html:31 templates/index/index.html:32
+msgid "About me"
+msgstr "关于我"
+
+#: templates/blog/archive_panel.html:14
+#, python-format
+msgid "%(year)s-%(month)s"
+msgstr ""
+
+#: templates/blog/archive_panel.html:20
+msgid "open"
+msgstr ""
+
+#: templates/blog/archive_panel.html:29
+msgid "Archives By Time"
+msgstr "按时间归档"
+
+#: templates/blog/archive_panel.html:43
+msgid "Archives By Category"
+msgstr "按分类归档"
+
+#: templates/blog/archive_panel.html:53
+msgid "Archives By Tags"
+msgstr "按节点归档"
+
+#: templates/blog/base.html:4
+msgid "BLOG"
+msgstr "博客"
+
+#: templates/blog/base.html:9
+msgid "HOME"
+msgstr "主页"
+
+#: templates/blog/base.html:25
+msgid "Archives"
+msgstr "归档"
+
+#: templates/blog/panel.html:5
+msgid "header image"
+msgstr ""
+
+#: templates/blog/panel.html:9
+msgid "I like solitude, yearning for freedom"
+msgstr "爱生活，更爱自由"
+
+#: templates/blog/panel.html:34 templates/index/friends.html:6
+msgid "Friends"
+msgstr "友链"
+
+#: templates/index/index.html:30 templates/timeline/macro.html:4
+msgid "TimeLine"
+msgstr "时间轴"
+
+#: templates/index/index.html:36
+msgid "search"
+msgstr "搜索"
 
 #~ msgid "Username:"
 #~ msgstr "用户名:"
@@ -305,4 +383,3 @@ msgstr ""
 
 #~ msgid "Private Questions"
 #~ msgstr "私人问题"
-

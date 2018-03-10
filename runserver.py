@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: 星期六 2018-02-10 15:25:51 (CST)
+# Last Update: Saturday 2018-03-11 01:34:56 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -155,6 +155,13 @@ def create_user(username, email, password):
         username=username, email=email, is_superuser=True, is_confirmed=True)
     user.set_password(password)
     user.save()
+
+
+@cli.command()
+@click.option('-u', '--username')
+def token(username):
+    r = User.query.filter_by(username=username).first().token
+    print(r)
 
 
 if __name__ == '__main__':

@@ -6,14 +6,20 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-08-24 15:13:33 (CST)
-# Last Update: 星期六 2018-02-10 13:44:49 (CST)
+# Last Update: Saturday 2018-03-11 00:50:18 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from maple.extension import db
 from flask_maple.auth.models import UserMixin, GroupMixin
 from flask_maple.permission.models import PermissionMixin
 from flask_maple.models import ModelUserMixin, ModelMixin
+
+from flask import current_app
+from itsdangerous import (URLSafeTimedSerializer, BadSignature,
+                          SignatureExpired)
+
+from maple.extension import db
+from maple.count import Count
 
 
 class Images(db.Model):
@@ -32,6 +38,31 @@ class Images(db.Model):
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
+
+    @staticmethod
+    def _token_serializer():
+        config = current_app.config
+        secret_key = config.setdefault('SECRET_KEY')
+        salt = config.setdefault('SECRET_KEY_SALT')
+        serializer = URLSafeTimedSerializer(secret_key)
+        return serializer, salt
+
+    @property
+    def token(self):
+        serializer, salt = User._token_serializer()
+        token = serializer.dumps(self.username, salt=salt)
+        return token
+
+    @staticmethod
+    def check_token(token, max_age=86400):
+        serializer, salt = User._token_serializer()
+        try:
+            username = serializer.loads(token, salt=salt, max_age=max_age)
+        except BadSignature:
+            return False
+        except SignatureExpired:
+            return False
+        return User.query.filter_by(username=username).first()
 
 
 class Group(db.Model, GroupMixin):
@@ -136,13 +167,13 @@ class Blog(db.Model, ModelUserMixin):
             'author': self.author.username
         }
 
-    # @property
-    # def read_times(self):
-    #     return Record.get(self.id)
+    @property
+    def read_times(self):
+        return Count.get(self.id)
 
-    # @read_times.setter
-    # def read_times(self, value):
-    #     Record.set('article:{}'.format(self.id))
+    @read_times.setter
+    def read_times(self, value):
+        Count.set('article:{}'.format(self.id))
 
 
 class Comment(db.Model, ModelUserMixin):

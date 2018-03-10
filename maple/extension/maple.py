@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2018-01-25 11:52:26 (CST)
-# Last Update: 星期六 2018-02-10 13:44:49 (CST)
+# Last Update: Saturday 2018-03-11 00:21:26 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -19,7 +19,7 @@ from flask_maple.middleware import Middleware
 from flask_maple.log import Logging
 
 bootstrap = Bootstrap(
-    css=('css/honmaple.css', 'css/monokai.css'),
+    css=('css/honmaple.css', 'css/monokai.css', 'css/lib.css'),
     js=('js/highlight.js', 'js/rain.js', 'js/org.js'),
     use_auth=False)
 

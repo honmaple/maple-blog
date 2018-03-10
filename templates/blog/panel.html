@@ -1,47 +1,32 @@
-<script type="text/javascript" src="https://cdn.bootcss.com/aplayer/1.5.8/APlayer.min.js"></script>
-<div id="player" class="aplayer"></div>
-<script type="text/javascript" src="{{ url_for('static',filename='lib/aplayer/aplayer.js') }}"></script>
-<link rel="stylesheet" href="{{ url_for('static',filename='lib/aplayer/aplayer.css') }}" type="text/css" media="screen" />
-<br/>
-<div class="panel panel-default transparency7">
-  <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.3);">
-    {{ _('Tips') }}
-  </div>
-  <div class="panel-body">
-    <b>{{ random_fortune() }}</b>
-  </div>
-</div>
+{% import "blog/macro.html" as macro %}
+{{ macro.aplayer() }}
 <ul class="list-group">
-  <li class="list-group-item hidden-xs" style="text-align:center;">
-    <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" width="60%" style="max-width:270px;" /> <br />
-    <span style="display: inline-block;width:80%;" class="label label-default">
-      <a href="{{url_for('about')}}" style="color:#fff;">
-        Author
-      </a>
-    </span>
-    <span style="display: inline-block;width:80%;" class="label label-primary">
-      About me
-    </span>
+  <li class="list-group-item text-center hidden-xs">
+    <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" style="max-width:80%;" /> <br />
+    <a href="{{url_for('about')}}" class="label label-default blog-introduce">Author</a>
+    <span class="label label-primary blog-introduce">About me</span>
     <br/>
-    <span>
-      <i>{{ _('I like solitude, yearning for freedom') }}</i>
-    </span>
+    <span><i>{{ _('I like solitude, yearning for freedom') }}</i></span>
   </li>
-  <li class="list-group-item text-center" style="font-size:24px;">
-    {% from 'blog/macro.html' import social %}
-    {{ social() }}
+  <li class="list-group-item blog-social">
+    <a href="https://github.com/honmaple" target="_blank" title="GitHub"><i class="fa fa-github"></i></a>
+    <a href="https://honmaple.com/blog/" target="_blank" title="Blog"><i class="fa fa-leaf"></i></a>
+    <a href="https://honmaple.com/books/" target="_blank" title="Book"><i class="fa fa-book"></i></a>
+    <a href="xiyang0807@gmail.com" target="_blank" title="Gmail"><i class="fa fa-envelope"></i></a>
+    <a href="https://www.facebook.com/honmaple" target="_blank" title="FaceBook"><i class="fa fa-facebook"></i></a>
   </li>
   <li class="list-group-item">
-    {% from 'blog/macro.html' import tags %}
-    {{ tags() }}
+    {% for tag,count in tag_archives() %}
+    <span class="label label-primary blog-label">
+      {% set category = request.args.get('category') %}
+      <a href="{{ url_for('blog.bloglist',category=category,tag=tag.name) }}">
+        {{ tag.name }}
+        <span class="badge">{{ count }}</span>
+      </a>
+    </span>
+    {% endfor %}
   </li>
 </ul>
-<div id="timeline"></div>
-<script type="text/javascript">
- $.get("{{ url_for('timeline',from='blog') }}", function(response){
-     $("#timeline").html(response);
- });
-</script>
 <ul class="list-group">
   <li class="list-group-item text-center">
     <a href="{{ url_for('friend') }}">
@@ -50,8 +35,6 @@
     </a>
   </li>
 </ul>
-<div style="position:fixed; bottom:0;left:30%;width:100%;">
-  <ul class="pager">
-    <li><a href="#"><i class="fa fa-hand-o-up" aria-hidden="true"></i></a></li>
-  </ul>
+<div class="blog-back-top">
+  <a href="#bs-header"><i class="fa fa-hand-o-up" aria-hidden="true"></i></a>
 </div>
