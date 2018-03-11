@@ -3,6 +3,13 @@
 {% import 'blog/macro.html' as macro %}
 
 {% block item -%}
+<script>
+ $(document).ready(function() {
+     $('pre').each(function(i, block) {
+         hljs.highlightBlock(block);
+     });
+ });
+</script>
 {%- for blog in blogs.items -%}
 <article class="blog-list">
   <h1 class="blog-title"><a href="{{ url_for('blog.blog',pk=blog.id) }}">{{ blog.title }}</a></h1>
@@ -11,7 +18,6 @@
     <div class="blog-info">
       {{ macro.info(blog) }}
     </div>
-    <script>hljs.initHighlightingOnLoad();</script>
     {% if blog.content_type == "0" %}
     {{ blog.content | truncate(512) | safe_markdown }}
     {% else %}

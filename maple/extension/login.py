@@ -6,12 +6,12 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2018-01-25 11:49:01 (CST)
-# Last Update: Saturday 2018-03-11 00:52:24 (CST)
+# Last Update: Sunday 2018-03-11 14:23:53 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask_login import LoginManager, login_user
-from flask_babelex import lazy_gettext as _
+from flask_babel import lazy_gettext as _
 
 login_manager = LoginManager()
 

@@ -6,12 +6,14 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: Saturday 2018-03-11 01:18:04 (CST)
+# Last Update: Sunday 2018-03-11 21:14:13 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from datetime import timedelta
+import os
 
+PATH = os.path.abspath(os.path.dirname(__file__))
 DEBUG = True
 SECRET_KEY = 'asdadasd'
 SECRET_KEY_SALT = 'asdasdads'
@@ -26,9 +28,10 @@ ONLINE_LAST_MINUTES = 5
 
 PER_PAGE = 6
 
-SERVER_NAME = '127.0.0.1:8000'
-SESSION_COOKIE_DOMAIN = "127.0.0.1:8000"
+# SERVER_NAME = '127.0.0.1:8000'
+# SESSION_COOKIE_DOMAIN = "127.0.0.1:8000"
 REDIS = {'db': 0, 'password': 'redis'}
+
 
 # 定制缓存 = 60
 CACHE_TYPE = 'null'
@@ -40,12 +43,7 @@ CACHE_REDIS_PASSWORD = 'redis'
 CACHE_REDIS_DB = 0
 CACHE_NO_NULL_WARNING = True
 
-BABEL_DEFAULT_LOCALE = 'en'
-BABEL_DEFAULT_TIMEZONE = 'UTC'
-
-MIDDLEWARE = [
-    'maple.middleware.Middleware',
-]
+MIDDLEWARE = ['maple.middleware.Middleware', ]
 
 MAIL_SERVER = ""
 MAIL_PORT = 25
@@ -64,6 +62,10 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@localhost/blog'
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
 # SQLALCHEMY_DATABASE_URI = 'mysql://username:password@server/db'
+
+BABEL_DEFAULT_LOCALE = 'en'
+BABEL_DEFAULT_TIMEZONE = 'UTC'
+BABEL_TRANSLATION_DIRECTORIES = os.path.join(PATH, 'LANG')
 
 LOGGING = {
     'info': 'logs/info.log',

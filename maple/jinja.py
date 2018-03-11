@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2018-02-08 15:25:56 (CST)
-# Last Update: 星期六 2018-02-10 13:44:50 (CST)
+# Last Update: Sunday 2018-03-11 14:46:31 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -15,7 +15,6 @@ from flask import Markup, current_app
 from sqlalchemy import func, extract
 from misaka import Markdown, HtmlRenderer
 from bleach import clean
-from fortune import fortune
 from itsdangerous import URLSafeSerializer
 from orgpython import org_to_html
 from datetime import datetime
@@ -60,10 +59,6 @@ def orgmode(text):
     return Markup(safe_clean(text))
 
 
-def random_fortune():
-    return fortune.show()
-
-
 def tag_archives():
     tags = db.session.query(
         Tag, func.count(Blog.id)).outerjoin(Tag.blogs).group_by(Tag.id)
@@ -86,7 +81,7 @@ def time_archives():
 
 
 def timesince(dt, default="just now"):
-    from flask_babelex import format_datetime
+    from flask_babel import format_datetime
     now = datetime.utcnow()
     diff = now - dt
     if diff.days > 10:
@@ -116,4 +111,3 @@ def init_app(app):
     app.add_template_global(category_archives)
     app.add_template_global(tag_archives)
     # app.add_template_global(time_archives)
-    app.add_template_global(random_fortune)

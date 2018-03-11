@@ -8,7 +8,7 @@
 #   Created Time: 2015-11-18 08:03:11
 # *************************************************************************
 from flask import Flask
-from maple import extension, admin, blueprint, jinja
+from maple import extension, admin, blueprint, jinja, api
 from maple import app as ap
 import os
 
@@ -26,5 +26,6 @@ def create_app(config):
     admin.init_app(app)
     ap.init_app(app)
     blueprint.init_app(app)
+    api.init_app(app)
 
     return app

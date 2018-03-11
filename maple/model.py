@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-08-24 15:13:33 (CST)
-# Last Update: Saturday 2018-03-11 00:50:18 (CST)
+# Last Update: Sunday 2018-03-11 21:43:48 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -17,6 +17,7 @@ from flask_maple.models import ModelUserMixin, ModelMixin
 from flask import current_app
 from itsdangerous import (URLSafeTimedSerializer, BadSignature,
                           SignatureExpired)
+from flask_babel import format_datetime
 
 from maple.extension import db
 from maple.count import Count
@@ -84,6 +85,10 @@ class TimeLine(db.Model, ModelUserMixin):
 
     def __str__(self):
         return self.content[:10]
+
+    @property
+    def datetime_format(self):
+        return format_datetime(self.created_at, 'Y-M-d H:M')
 
     def to_json(self):
         return {'id': self.id, 'content': self.content, 'hide': self.hide}
@@ -169,7 +174,7 @@ class Blog(db.Model, ModelUserMixin):
 
     @property
     def read_times(self):
-        return Count.get(self.id)
+        return Count.get('article:{}'.format(self.id))
 
     @read_times.setter
     def read_times(self, value):
@@ -196,7 +201,7 @@ class Question(db.Model, ModelUserMixin):
     __tablename__ = 'question'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(48), nullable=False)
-    describ = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text, nullable=False)
     answer = db.Column(db.Text, nullable=False)
     is_hidden = db.Column(db.Boolean, default=False, nullable=False)
 
