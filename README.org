@@ -6,10 +6,6 @@
 
   You can have a look [[https://honmaple.com][here]]
 
-  This version I use postgresql to storage the contents of articles
-
-  *Send email has some bugs*,I'm restoring it 
-
 * How to use
   
 ** Install necessary package
@@ -17,47 +13,35 @@
    pip install -r requestments.txt 
    #+END_SRC
 
-   About *flask-maple*,you should use
-    #+BEGIN_SRC sh
-    git clone https://github.com/honmaple/flask-maple
-    cd flask-maple
-    python setup.py install
-    #+END_SRC
-    
-    About *fortune*
-    #+BEGIN_SRC sh
+   About *fortune*
+   #+BEGIN_SRC sh
     git clone https://github.com/honmaple/fortune
     ln -s path/fortune/fortune blog_path/fortune
-    #+END_SRC
+   #+END_SRC
 
-    About *org.py*
-    #+BEGIN_SRC sh
-    git clone https://github.com/honmaple/org-python
-    ln -s path/org-python/org.py blog_path/org.py
-    #+END_SRC
-
-   
 ** Configure
-   Please perfect configure at *config/config.py*
-   #+BEGIN_SRC shell
-   mv config.example/config.py ./config.py
+   remember to modify *config.py*
+   #+BEGIN_EXAMPLE
+emacs config.py
+   #+END_EXAMPLE
+** Initialization sql
+   #+BEGIN_SRC bash
+   $ python runserver.py db init
+   $ python runserver.py db migrate
+   $ python runserver.py db upgrade
+   #+END_SRC
+   or 
+   #+BEGIN_SRC bash
+   $ python runserver.py db initdb
    #+END_SRC
 
-** Initialization sql
-   #+BEGIN_SRC python
-   $ python manager.py db init
-   $ python manager.py db migrate
-   $ python manager.py db upgrade
-   #+END_SRC
-   
 ** Create superuser
    #+BEGIN_SRC shell
-    python manager.py create_user
+    python runserver.py create_user
    #+END_SRC
-
 ** Run 
    #+BEGIN_SRC shell
-    python runserver.py or python manager.py runserver
+    python runserver.py
    #+END_SRC
 
 

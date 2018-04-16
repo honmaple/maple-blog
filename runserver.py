@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: Sunday 2018-03-11 21:44:55 (CST)
+# Last Update: Saturday 2018-04-16 11:56:35 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -162,6 +162,28 @@ def create_user(username, email, password):
 def token(username):
     r = User.query.filter_by(username=username).first().token
     print(r)
+
+
+@cli.command()
+def list_routers():
+    table = [["URL", "METHOD", "ENDPOINT"]]
+    s_max = [25, 25, 25]
+    for rule in app.url_map.iter_rules():
+        name = rule.rule
+        if len(name) > s_max[0]:
+            s_max[0] = len(name)
+        method = ",".join(rule.methods)
+        if len(method) > s_max[1]:
+            s_max[1] = len(method)
+        endpoint = rule.endpoint
+        if len(method) > s_max[2]:
+            s_max[2] = len(endpoint)
+        table.append([name, method, endpoint])
+    s_max = [i + 2 for i in s_max]
+    for t in table:
+        print("|{0}|{1}|{2}|".format(* ["-" * s_max[i] for i in range(3)]))
+        print("|{0}|{1}|{2}|".format(* [t[i] + " " * (s_max[i] - len(t[i]))
+                                        for i in range(3)]))
 
 
 if __name__ == '__main__':

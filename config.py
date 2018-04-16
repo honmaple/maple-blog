@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: Sunday 2018-03-11 21:14:13 (CST)
+# Last Update: Saturday 2018-03-17 18:00:41 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -28,8 +28,8 @@ ONLINE_LAST_MINUTES = 5
 
 PER_PAGE = 6
 
-# SERVER_NAME = '127.0.0.1:8000'
-# SESSION_COOKIE_DOMAIN = "127.0.0.1:8000"
+SERVER_NAME = '127.0.0.1:8001'
+SESSION_COOKIE_DOMAIN = "127.0.0.1:8001"
 REDIS = {'db': 0, 'password': 'redis'}
 
 
@@ -52,9 +52,6 @@ MAIL_USE_SSL = False
 MAIL_USERNAME = ""
 MAIL_PASSWORD = "as"
 MAIL_DEFAULT_SENDER = ''
-
-SEND_LOGS = True
-RECEIVER = [""]
 
 ADMIN_URL = '/admin'
 
