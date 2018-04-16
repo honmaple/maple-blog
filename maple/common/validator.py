@@ -4,9 +4,9 @@
 # Copyright © 2017 jianglin
 # File Name: validator.py
 # Author: jianglin
-# Email: lin.jiang@upai.com
+# Email: xiyang0807@gmail.com
 # Created: 2017-08-27 23:14:48 (CST)
-# Last Update:星期日 2017-8-27 23:50:0 (CST)
+# Last Update: 星期一 2018-02-05 13:34:41 (CST)
 #          By:
 # Description:
 # **************************************************************************

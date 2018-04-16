@@ -4,9 +4,9 @@
 # Copyright © 2017 jianglin
 # File Name: models.py
 # Author: jianglin
-# Email: lin.jiang@upai.com
+# Email: xiyang0807@gmail.com
 # Created: 2017-08-24 15:13:33 (CST)
-# Last Update:星期一 2017-9-4 11:48:7 (CST)
+# Last Update: 星期一 2018-02-05 13:34:41 (CST)
 #          By:
 # Description:
 # **************************************************************************

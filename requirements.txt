@@ -10,6 +10,7 @@ Flask-BabelEx==0.9.3
 Flask-Cache==0.13.1
 Flask-Login==0.4.0
 Flask-Mail==0.9.1
+Flask-Maple==0.5.0
 Flask-Principal==0.4.0
 Flask-Script==2.0.5
 Flask-SQLAlchemy==2.2

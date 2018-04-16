@@ -4,9 +4,9 @@
 # Copyright © 2017 jianglin
 # File Name: __init__.py
 # Author: jianglin
-# Email: lin.jiang@upai.com
+# Email: xiyang0807@gmail.com
 # Created: 2017-08-24 14:30:21 (CST)
-# Last Update:星期四 2017-8-24 14:30:49 (CST)
+# Last Update: 星期一 2018-02-05 13:34:41 (CST)
 #          By:
 # Description:
 # **************************************************************************

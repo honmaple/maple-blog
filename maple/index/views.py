@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # *************************************************************************
 #   Copyright © 2015 JiangLin. All rights reserved.
-#   File Name: index.py
+#   File Name: views.py
 #   Author:JiangLin
 #   Mail:xiyang0807@gmail.com
 #   Created Time: 2015-11-25 02:21:04
@@ -37,12 +37,6 @@ class AboutView(MethodView):
     @cache.cached(timeout=180)
     def get(self):
         return render_template('index/about.html')
-
-
-class ResumeView(MethodView):
-    @cache.cached(timeout=180)
-    def get(self):
-        return render_template('index/resume.html')
 
 
 class FriendView(MethodView):

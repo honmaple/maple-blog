@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: xiyang0807@gmail.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update:星期一 2017-9-4 13:30:39 (CST)
+# Last Update: 星期一 2018-02-05 13:42:36 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -46,16 +46,16 @@ MIDDLEWARE = [
     # 'maple.index.middleware.Middleware',
 ]
 
-MAIL_SERVER = 'smtp.qq.com'
-MAIL_PORT = 25
+MAIL_SERVER = ''
+MAIL_PORT = 26
 MAIL_USE_TLS = True
 MAIL_USE_SSL = False
-MAIL_USERNAME = "admin@honmaple.com"
-MAIL_PASSWORD = "as"
-MAIL_DEFAULT_SENDER = 'admin@honmaple.com'
+MAIL_USERNAME = ""
+MAIL_PASSWORD = ""
+MAIL_DEFAULT_SENDER = ''
 
 SEND_LOGS = True
-RECEIVER = ["xiyang0807@gmail.com"]
+RECEIVER = ["youemail@gmail.com"]
 INFO_LOG = "info.log"
 ERROR_LOG = "error.log"
 ADMIN_URL = '/admin/hello'
