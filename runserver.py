@@ -4,15 +4,14 @@
 # Copyright © 2018 jianglin
 # File Name: runserver.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: Saturday 2018-04-16 11:56:35 (CST)
+# Last Update: Tuesday 2018-11-06 13:52:20 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask import current_app
 from flask.cli import FlaskGroup, run_command
-from flask_migrate import Migrate
 from werkzeug.contrib.fixers import ProxyFix
 from code import interact
 from getpass import getpass
@@ -33,7 +32,11 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 cli = FlaskGroup(add_default_commands=False, create_app=lambda r: app)
 cli.add_command(run_command)
 
-migrate = Migrate(app, db)
+try:
+    from flask_migrate import Migrate
+    migrate = Migrate(app, db)
+except ImportError:
+    pass
 
 
 @cli.command('shell', short_help='Starts an interactive shell.')
@@ -61,13 +64,16 @@ def random_init():
             return word
         return word + random_sep()
 
-    random_users = [User(
-        username=random_word(12, False),
-        password=random_word(12, False),
-        email=random_word(15, False)) for _ in range(4)]
+    random_users = [
+        User(
+            username=random_word(12, False),
+            password=random_word(12, False),
+            email=random_word(15, False)) for _ in range(4)
+    ]
     random_tags = [Tag(name=random_word(12, False)) for i in range(15)]
-    random_categories = [Category(name=random_word(12, False))
-                         for i in range(5)]
+    random_categories = [
+        Category(name=random_word(12, False)) for i in range(5)
+    ]
 
     db.session.bulk_save_objects(random_users)
     db.session.bulk_save_objects(random_tags)
@@ -79,20 +85,24 @@ def random_init():
 
     for category in Category.query.all():
         print(category, category.id)
-        random_blogs = [Blog(
-            category_id=category.id,
-            title=random_word(20, False),
-            content=' '.join([random_word() for _ in range(1000)]),
-            user_id=choice(random_users).id,
-            tags=[choice(random_tags) for _ in range(randrange(1, 4))])
-                        for _ in range(randrange(3, 15))]
+        random_blogs = [
+            Blog(
+                category_id=category.id,
+                title=random_word(20, False),
+                content=' '.join([random_word() for _ in range(1000)]),
+                user_id=choice(random_users).id,
+                tags=[choice(random_tags) for _ in range(randrange(1, 4))])
+            for _ in range(randrange(3, 15))
+        ]
         db.session.bulk_save_objects(random_blogs)
         db.session.commit()
 
-    random_timelines = [TimeLine(
-        content=' '.join([random_word() for _ in range(100)]),
-        user_id=choice(random_users).id,
-        is_hidden=choice([True, False])) for _ in range(100)]
+    random_timelines = [
+        TimeLine(
+            content=' '.join([random_word() for _ in range(100)]),
+            user_id=choice(random_users).id,
+            is_hidden=choice([True, False])) for _ in range(100)
+    ]
 
     db.session.bulk_save_objects(random_timelines)
     db.session.commit()
@@ -119,8 +129,9 @@ def initdb():
 def babel_init(lang):
     babel_conf = "LANG/babel.cfg"
     src_path = ["maple", "templates"]
-    os.system('pybabel extract -F {0} -k lazy_gettext -o messages.pot {1}'.
-              format(babel_conf, ' '.join(src_path)))
+    os.system(
+        'pybabel extract -F {0} -k lazy_gettext -o messages.pot {1}'.format(
+            babel_conf, ' '.join(src_path)))
     os.system('pybabel init -i messages.pot -d LANG -l {0}'.format(lang))
     os.unlink('messages.pot')
 
@@ -129,8 +140,9 @@ def babel_init(lang):
 def babel_update():
     babel_conf = "LANG/babel.cfg"
     src_path = ["maple", "templates"]
-    os.system('pybabel extract -F {0} -k lazy_gettext -o messages.pot {1}'.
-              format(babel_conf, ' '.join(src_path)))
+    os.system(
+        'pybabel extract -F {0} -k lazy_gettext -o messages.pot {1}'.format(
+            babel_conf, ' '.join(src_path)))
     os.system('pybabel update -i messages.pot -d LANG')
     os.unlink('messages.pot')
 
@@ -181,9 +193,9 @@ def list_routers():
         table.append([name, method, endpoint])
     s_max = [i + 2 for i in s_max]
     for t in table:
-        print("|{0}|{1}|{2}|".format(* ["-" * s_max[i] for i in range(3)]))
-        print("|{0}|{1}|{2}|".format(* [t[i] + " " * (s_max[i] - len(t[i]))
-                                        for i in range(3)]))
+        print("|{0}|{1}|{2}|".format(*["-" * s_max[i] for i in range(3)]))
+        print("|{0}|{1}|{2}|".format(
+            *[t[i] + " " * (s_max[i] - len(t[i])) for i in range(3)]))
 
 
 if __name__ == '__main__':

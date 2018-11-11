@@ -1,0 +1,116 @@
+.timeline {
+    list-style: circle;
+    margin-left: 0px;
+    margin-bottom:15px;
+    padding-left: 15px;
+}
+.timeline li {
+    margin-left:30px;
+}
+.timeline h1,
+.timeline h2,
+.timeline h3,
+.timeline h4,
+.timeline h5,
+.timeline h6 {
+    color:#444;
+    /* font-weight:700; */
+}
+.timeline h1:before,
+.timeline h2:before,
+.timeline h3:before,
+.timeline h4:before,
+.timeline h5:before,
+.timeline h6:before {
+    content: '';
+    border-left: 4px solid #C74451;
+    padding-left:8px;
+}
+.timeline:last-child {
+    margin-bottom:0px;
+}
+.timeline p{
+    margin-bottom: 0;
+}
+.timeline-count {
+    color:#999;
+    font-size:13px;
+}
+.timeline-content {
+    padding-top:5px;
+    padding-bottom:5px;
+}
+/* for Desktop */
+@media ( min-width : 640px ){
+    .timeline li {
+        margin:0;
+        overflow: hidden;
+        position: relative;
+    }
+    .timeline-item-more {
+        color: transparent;
+    }
+    .timeline-date {
+        width: 80px;
+        float: left;
+        padding-left:15px;
+        color: #666;
+    }
+    .timeline-date:after {
+        content: "";
+        width: 12px;
+        height: 12px;
+        background: rgba(0,0,0,0.7);
+        position: absolute;
+        left: 91px;
+        top: 4px;
+        border-radius: 100%;
+    }
+    .timeline-content {
+        max-width: calc(100% - 95px);
+        float: left;
+        word-wrap:break-word;
+        padding-left: 45px;
+        padding-bottom:15px;
+        padding-top:0px;
+    }
+    .timeline li:last-child .timeline-content{
+        padding-bottom:0px;
+    }
+    .timeline-content:before {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 3px;
+        left: 95px;
+        background-color: rgba(0,0,0,0.4);
+    }
+    .timeline li:first-of-type .timeline-content:before{
+        content: "";
+        position: absolute;
+        height: calc(100% - 8px);
+        top: 8px;
+        width: 3px;
+        left:95px;
+        background-color: rgba(0,0,0,0.4);
+    }
+    .timeline li:last-of-type .timeline-content:before{
+        content: "";
+        position: absolute;
+        height: calc(100% - 8px);
+        bottom: 8px;
+        width: 3px;
+        left:95px;
+        background-color: rgba(0,0,0,0.4);
+    }
+    .timeline li:only-of-type .timeline-content:before{
+        content: "";
+        position: absolute;
+        height: calc(100% - 16px);
+        top: 8px;
+        bottom: 8px;
+        width: 3px;
+        left:95px;
+        background-color: rgba(0,0,0,0.4);
+    }
+}

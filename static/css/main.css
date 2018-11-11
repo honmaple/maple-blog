@@ -1,6 +1,5 @@
 body {
-    background-color: #ffffff;
-    background: url("http://7xs8ln.com1.z0.glb.clouddn.com/snow.jpg");
+    background-color: #f6f6f6;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size:100% 100%;
@@ -39,42 +38,30 @@ a:focus, a:hover {
     color:#EB5455;
     text-decoration: none;
 }
-
-/* ------ */
-.a-blue {
-    color: #369;
-}
-.trans {
-    margin-bottom:15px;
-    border:1px solid #ddd;
-    box-shadow:0px 0px 1px #ddd;
-    border-radius: 3px;
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3f000000',endColorstr='#3f000000');
-    background-color:rgba(255, 255, 255, 0.5);
-}
-.trans:hover {
-    background-color:rgba(255, 255, 255, 0.6);
-}
 article {
-    background-color:rgba(255, 255, 255, 0.5);
+    background-color: #fff;
     border:1px solid #ddd;
-    box-shadow:0px 0px 1px #ddd;
     border-radius: 5px;
     padding:10px 20px;
-}
-article:hover {
-    background-color:rgba(255, 255, 255, 0.6);
+    margin-bottom: 10px;
 }
 .blog-title {
-    text-align:center;
-    font-size: 30px;
+    font-size: 1.6em;
+    padding-bottom: 5px;
 }
-
 .blog-info {
-    float:right;
+    font-size:0.8em;
+    color:#999;
+}
+.blog-info-sep {
+    margin-left:3px;
+    margin-right:3px;
 }
 .blog-content {
     color: #333;
+}
+.blog-content #table-of-contents {
+    display:none;
 }
 .blog-content h1 {
     font-size:25px;
@@ -112,16 +99,9 @@ article:hover {
     height: auto;
     display: block;
 }
-.blog-list {
-    margin-bottom:15px;
-}
 /* .blog-list .blog-content #table-of-contents { */
 /*      display:none; */
 /* } */
-.blog-list .blog-content .blog-info {
-    float:left;
-    margin-right:10px;
-}
 .blog-collapse {
     padding: 0;
     color: #666;
@@ -133,13 +113,77 @@ article:hover {
     width:100%;
     display:block;
 }
-.blog-introduce{
-    display: inline-block;
-    width:80%;
+.blog-panel {
+    padding:20px 10px;
+    background-color:#fff;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
 }
+.blog-tabs{
+    background-color:#fff;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+.blog-tabs .nav-tabs.nav-justified>.active>a,
+.blog-tabs .nav-tabs.nav-justified>.active>a:focus,
+.blog-tabs .nav-tabs.nav-justified>.active>a:hover {
+    border-top:none;
+}
+
+.blog-tabs .table-no-content {
+    text-align:center;
+    padding: 10px;
+    color: #999;
+}
+.blog-tabs-fixed {
+    width: 18.5%;
+    position:fixed;
+    top: 0;
+}
+
+#table-content  ul{
+    padding-left: 1.5em;
+}
+
+#table-content  ul:first-child{
+    padding-left: 0;
+}
+
+#table-content  li > ul{
+    display: none;
+}
+
+#table-content  li:hover > ul{
+    display: block;
+}
+
 .blog-social {
     text-align:center;
-    font-size:24px;
+    font-size: 1.6em;
+    border-top: 1px dashed #ccc;
+    border-bottom: 1px dashed #ccc;
+    padding: 10px 0;
+    margin-top: 10px;
+}
+.blog-social > li{
+    padding-right: 10px;
+}
+.blog-social > li:not(:last-child){
+    border-right:1px solid #d9d9d9;
+}
+.blog-friend {
+    text-align: center;
+    padding:3px 0 8px;
+    border-bottom: 1px dashed #ccc;
+}
+.blog-friend a {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.blog-tag {
+    margin-top: 10px;
 }
 .blog-label {
     display:inline-block;
@@ -185,6 +229,15 @@ article:hover {
     transition-duration: .2s;
     transition-timing-function: ease-in-out;
     transition-delay: 0s;
+}
+.footer {
+    border:1px solid #ddd;
+    border-bottom:none;
+    border-radius:5px;
+    background-color:#fff;
+    text-align:center;
+    padding-top: 10px !important;
+    height: 40px;
 }
 .org-center {
     text-align:center;

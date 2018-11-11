@@ -1,39 +1,22 @@
 {% extends 'base/base.html' %}
 
 {% block header -%}
-<a class="navbar-brand" href="{{ url_for('blog.bloglist') }}" style="color:#EB5424;">{{_('BLOG')}}</a>
+  <a class="navbar-brand" href="{{ url_for('blog.bloglist') }}" style="color:#a40000;">紅楓</a>
 {%- endblock header %}
 
-{% block list -%}
-<ul class="nav navbar-nav">
-  <li> <a href="{{ url_for('index') }}">{{_( 'HOME' )}}</a></li>
-  {% set categories = category_archives() %}
-  {% set cate_len = categories | length %}
-  {% for category,count in categories[:4] -%}
-  <li><a href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
-  {%- endfor %}
-  {% if cate_len > 4 %}
-  <li>
-    <a href="#" class="dropdown-toggle" id="dropdown-more" data-toggle="dropdown">······</a>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-more">
-      {% for category,count in categories[4:] -%}
-      <li role="presentation"><a role="menuitem" href="{{ url_for('blog.bloglist',category=category.name) }}">{{ category.name }}</a></li>
-      {%- endfor %}
-    </ul>
-  </li>
-  {% endif %}
-  <li> <a href="{{ url_for('blog.archive') }}">{{ _('Archives') }}</a></li>
-</ul>
-{%- endblock list %}
-
 {% block content -%}
-<div class="row">
-  <div class="col-sm-9">
-    {% block item -%}
-    {%- endblock item %}
+  <div class="row">
+    <div class="col-sm-9" style="padding-right: 5px;">
+      {% block item -%}
+      {%- endblock item %}
+    </div>
+    <div class="col-sm-3" style="padding-left: 0px;">
+      {% block panel -%}
+        {% include 'blog/panel.html' %}
+      {%- endblock panel %}
+    </div>
   </div>
-  <div class="col-sm-3" style="padding-left:0">
-    {% include 'blog/panel.html' %}
+  <div class="blog-back-top">
+    <a href="#bs-header"><i class="fa fa-hand-o-up" aria-hidden="true"></i></a>
   </div>
-</div>
 {%- endblock content %}

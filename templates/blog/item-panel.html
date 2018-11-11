@@ -1,0 +1,15 @@
+<div class="blog-tabs">
+  <ul class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation" class="active"><a href="#table-content" role="tab" data-toggle="tab" style="border-left:none;">目录</a></li>
+    <li role="presentation"><a href="#info" role="tab" data-toggle="tab"  style="border-right:none;">站点信息</a></li>
+  </ul>
+
+  <div class="tab-content" style="padding:5px 10px;">
+    <div role="tabpanel" class="tab-pane active" id="table-content">
+      <div class="table-no-content">暂无目录</div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="info">
+      {% include "blog/site-info.html" %}
+    </div>
+  </div>
+</div>

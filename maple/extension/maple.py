@@ -4,9 +4,9 @@
 # Copyright © 2018 jianglin
 # File Name: maple.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2018-01-25 11:52:26 (CST)
-# Last Update: Sunday 2018-03-11 17:32:54 (CST)
+# Last Update: Saturday 2018-11-11 12:35:45 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -19,8 +19,8 @@ from flask_maple.middleware import Middleware
 from flask_maple.log import Logging
 
 bootstrap = Bootstrap(
-    css=('css/honmaple.css', 'css/monokai.css', 'css/lib.css'),
-    js=('js/highlight.js', 'js/rain.js', 'js/org.js'),
+    css=('css/main.css', 'css/monokai.css', 'css/lib.css', 'css/timeline.css'),
+    js=('js/main.js', 'js/highlight.js', 'js/rain.js', 'js/org.js'),
     use_auth=False)
 
 

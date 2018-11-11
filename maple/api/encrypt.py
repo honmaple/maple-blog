@@ -4,13 +4,13 @@
 # Copyright © 2018 jianglin
 # File Name: encrypt.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2018-03-17 17:52:05 (CST)
-# Last Update: Saturday 2018-03-17 21:29:24 (CST)
+# Last Update: Tuesday 2018-11-06 13:52:22 (CST)
 #          By:
 # Description:
 # ********************************************************************************
-from flask import jsonify, request, current_app
+from flask import request, current_app
 from flask.views import MethodView
 from base64 import urlsafe_b64encode
 
@@ -20,6 +20,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 from maple.extension import csrf
+from maple.response import HTTP
 
 
 class Encrypt(object):
@@ -52,9 +53,9 @@ class EncryptAPI(MethodView):
         password = request_data.pop('password', '')
         content = request_data.pop('content', '')
         if not password or not content:
-            return jsonify(status=401, msg='params required.')
+            return HTTP.BAD_REQUEST(message="params required.")
         ec = Encrypt(password, current_app.config['SECRET_KEY_SALT'])
         try:
-            return jsonify(status=200, data=ec.decrypt(content))
+            return HTTP.OK(data=ec.decrypt(content))
         except InvalidToken:
-            return jsonify(status=401, msg='password is not correct')
+            return HTTP.BAD_REQUEST(message="password is not correct")

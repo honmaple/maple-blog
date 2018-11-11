@@ -4,9 +4,9 @@
 # Copyright © 2017 jianglin
 # File Name: config.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: Saturday 2018-03-17 18:00:41 (CST)
+# Last Update: Saturday 2018-11-11 23:08:07 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -25,13 +25,13 @@ REMEMBER_COOKIE_DURATION = timedelta(days=3)
 
 # WTF_CSRF_CHECK_DEFAULT = False
 ONLINE_LAST_MINUTES = 5
+SUMMARY_MAX_LENGTH = 128
 
 PER_PAGE = 6
 
 SERVER_NAME = '127.0.0.1:8001'
 SESSION_COOKIE_DOMAIN = "127.0.0.1:8001"
 REDIS = {'db': 0, 'password': 'redis'}
-
 
 # 定制缓存 = 60
 CACHE_TYPE = 'null'
@@ -43,7 +43,9 @@ CACHE_REDIS_PASSWORD = 'redis'
 CACHE_REDIS_DB = 0
 CACHE_NO_NULL_WARNING = True
 
-MIDDLEWARE = ['maple.middleware.Middleware', ]
+MIDDLEWARE = [
+    'maple.middleware.Middleware',
+]
 
 MAIL_SERVER = ""
 MAIL_PORT = 25
@@ -57,6 +59,7 @@ ADMIN_URL = '/admin'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@localhost/blog'
+# SQLALCHEMY_ECHO = True
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
 # SQLALCHEMY_DATABASE_URI = 'mysql://username:password@server/db'
 

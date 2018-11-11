@@ -4,9 +4,9 @@
 # Copyright © 2016 jianglin
 # File Name: helper.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2016-11-26 23:47:44 (CST)
-# Last Update:星期日 2016-11-27 0:12:29 (CST)
+# Last Update: Tuesday 2018-11-06 13:52:23 (CST)
 #          By:
 # Description:
 # **************************************************************************

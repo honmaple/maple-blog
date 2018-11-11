@@ -4,17 +4,17 @@
 # Copyright © 2018 jianglin
 # File Name: timeline.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2018-03-11 20:51:54 (CST)
-# Last Update: Sunday 2018-03-11 21:42:21 (CST)
+# Last Update: Tuesday 2018-11-06 13:52:22 (CST)
 #          By:
 # Description:
 # ********************************************************************************
-from flask import jsonify
 from flask_maple.views import MethodView
 from flask_maple.serializer import Serializer
 
 from maple.model import TimeLine
+from maple.response import HTTP
 
 
 class TimeLineAPI(MethodView):
@@ -28,4 +28,4 @@ class TimeLineAPI(MethodView):
             timelines,
             exclude=['user', 'user_id', 'is_hidden'],
             extra=['datetime_format'])
-        return jsonify(status=200, data=serializer.data)
+        return HTTP.OK(data=serializer.data)

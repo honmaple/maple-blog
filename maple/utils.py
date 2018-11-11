@@ -4,9 +4,9 @@
 # Copyright © 2018 jianglin
 # File Name: utils.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2018-02-08 15:04:16 (CST)
-# Last Update: 星期六 2018-02-10 13:44:49 (CST)
+# Last Update: Tuesday 2018-11-06 13:52:21 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -58,3 +58,27 @@ def gen_filter_dict(query_dict=dict(), keys=[], equal_key=[], user=None):
     if user is not None and user.is_authenticated:
         filter_dict.update(author__id=user.id)
     return filter_dict
+
+
+def update_maybe(ins, request_data, columns):
+    for column in columns:
+        value = request_data.get(column)
+        if value:
+            setattr(ins, column, value)
+    return ins
+
+
+def filter_maybe(request_data, columns, params=None):
+    if params is None:
+        params = dict()
+    is_dict = isinstance(columns, dict)
+    for column in columns:
+        value = request_data.get(column)
+        if not value:
+            continue
+        key = column if not is_dict else columns.get(column, column)
+
+        if key in ["created_at__gte", "created_at__lte"]:
+            value = datetime.strptime(value, '%Y-%m-%d')
+        params.update({key: value})
+    return params

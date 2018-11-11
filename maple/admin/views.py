@@ -4,9 +4,9 @@
 # Copyright © 2016 jianglin
 # File Name: views.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update: Sunday 2018-03-11 20:51:04 (CST)
+# Last Update: Saturday 2018-11-11 12:57:35 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
@@ -34,8 +34,8 @@ class AdminView(ModelView):
 
     # column_display_pk = True
 
-    def is_accessible(self):
-        return current_user.is_authenticated and current_user.is_superuser
+    # def is_accessible(self):
+    #     return current_user.is_authenticated and current_user.is_superuser
 
     def inaccessible_callback(self, name, **kwargs):
         abort(404)

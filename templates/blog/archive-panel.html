@@ -1,0 +1,44 @@
+{% macro label_archive_show(label,count,label_name='tag') -%}
+  <span class="label label-primary blog-label">
+    <a href="{{ url_for('blog.archive',**{label_name:label.name}) }}">
+      {{ label.name }}
+      <span class="badge">{{ count }}</span>
+    </a>
+  </span>
+{%- endmacro %}
+
+{% macro archive_collapse(name) -%}
+  <div class="panel-footer blog-collapse" title="{{ _('open') }}">
+    <a data-toggle="collapse" href="#blog-{{ name }}-hidelist">
+      <i class="fa fa-angle-double-down"></i>
+    </a>
+  </div>
+{%- endmacro %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{ _('Archives By Category') }}
+  </div>
+  <div class="panel-body">
+    {% for category,count in category_archives() %}
+      {{ label_archive_show(category, count, 'category') }}
+    {% endfor %}
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{ _('Archives By Tags') }}
+  </div>
+  <div class="panel-body">
+    {% set tags = tag_archives() %}
+    {% for tag,count in tags[:5] %}
+      {{ label_archive_show(tag, count) }}
+    {% endfor %}
+    <div class="collapse" id="blog-tag-hidelist">
+      {% for tag,count in tags[5:] %}
+        {{ label_archive_show(tag, count) }}
+      {% endfor %}
+    </div>
+  </div>
+  {{ archive_collapse('tag') }}
+</div>

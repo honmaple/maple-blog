@@ -13,6 +13,14 @@ function dispatch() {
     }
 }
 $(document).ready(function(){
+    var text = $("#text-table-of-contents").html();
+    if (text) {
+        $("#table-content").html(text);
+    }
+    var tabs = $(".blog-tabs");
+    $(window).on("scroll", function() {
+        tabs.toggleClass("blog-tabs-fixed", window.pageYOffset > 100);
+    });
     $('div#archive-list').click(function() {
         $('#hidelist').toggle();
         var i = $("div#archive-list").children('i');

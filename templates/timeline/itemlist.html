@@ -2,6 +2,17 @@
 {% from 'maple/paginate.html' import paginate %}
 
 {% block item -%}
-  {% include "timeline/macro.html" %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <i class="fa fa-calendar" style="color:#a40000"></i>
+      {{ _('TimeLine') }}
+    </div>
+    {% for timeline in timelines.items %}
+      <div class="panel-body panel-body-border" style="word-break:break-all;">
+        {{ timeline.content }}
+        <footer><small style="color:#999;">{{ timeline.created_at | timesince }}</small></footer>
+      </div>
+    {% endfor %}
+  </div>
   {{ paginate(timelines,'timeline') }}
 {% endblock item %}

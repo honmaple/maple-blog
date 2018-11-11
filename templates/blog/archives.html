@@ -1,28 +1,34 @@
 {% extends 'blog/base.html' %}
-{% from 'maple/paginate.html' import paginate %}
 
-{% block content %}
-<div class="row">
-  <div class="col-sm-9">
-    <div class="panel panel-default trans">
-      <div class="panel-heading" style="background-color:rgba(255, 255, 255, 0.3);">
-        Archives of honmaple
-      </div>
-      <div class="panel-body">
-        {% for blog in blogs.items %}
-        <i class="fa fa-calendar"></i>
-        <span>{{ blog.created_at | timesince }}</span>
-        <a href="{{ url_for('blog.blog',pk=blog.id) }}">{{ blog.title }}</a>
-        <br />
-        {% endfor %}
-      </div>
+{% block item %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <i class="fa fa-calendar" style="color:#a40000"></i>
+      时间归档
     </div>
-    {% set category = request.args.get('category') %}
-    {% set tag = request.args.get('tag') %}
-    {{ paginate(blogs,'blog.archive',dict(category=category,tag=tag)) }}
+    <div class="panel-body">
+      {% for k,v in blogs.items() %}
+        <ul class="timeline">
+          <h4>
+            {{ k }}
+            <span class="timeline-count">{{ "（%s篇文章）" | format(v | length) }}</span>
+          </h4>
+          {% for blog in v %}
+            <li class="itemline-item">
+              <p class="timeline-date {% if not loop.first %}timeline-item-more{% endif %}">
+                {{ blog.created_at.strftime("%m月%d日") }}
+              </p>
+              <div class="timeline-content">
+                <a href="{{ url_for('blog.blog',pk=blog.id) }}">{{ blog.title }}</a>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </div>
   </div>
-  <div class="col-sm-3" style="padding-left:0">
-    {% include "blog/archive_panel.html" %}
-  </div>
-</div>
-{% endblock content %}
+{% endblock item %}
+
+{% block panel -%}
+  {% include "blog/archive-panel.html" %}
+{%- endblock panel %}

@@ -1,0 +1,24 @@
+{% set author = blog.user.username %}
+{% set tags = blog.tags %}
+{% set category = blog.category.name %}
+<div class="blog-info">
+  <span title="{{ blog.created_at }}">
+    <i class="fa fa-calendar-o"></i>
+    发表于
+    <span class="label label-success">{{ blog.created_at | timesince }}</span>
+  </span>
+  <span class="blog-info-sep">|</span>
+  <span>
+    <i class="fa fa-folder-o"></i>
+    分类:
+    <a href="{{ url_for('blog.bloglist',category=category) }}" class="label label-default">{{ category }}</a>
+  </span>
+  <span class="blog-info-sep">|</span>
+  <span>
+    <i class="fa fa-bookmark-o"></i>
+    标签:
+    {% for tag in blog.tags %}
+      <a href="{{ url_for('blog.bloglist',tag=tag.name) }}" class="label label-tag" style="display: inline-block;">{{ tag.name }}</a>
+    {% endfor %}
+  </span>
+</div>

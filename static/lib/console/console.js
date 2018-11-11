@@ -88,7 +88,7 @@ function contactMe() {
     '<a href="https://honmaple.com/blog/" target="_blank" title="Blog"><i class="fa fa-leaf" aria-hidden="true"></i></a>',
     '<a href="https://honmaple.com/books/" target="_blank" title="Book"><i class="fa fa-book" aria-hidden="true"></i></a>',
     '<a href="http://weibo.com/honmaple" target="_blank" title="WeiBo"><i class="fa fa-weibo" aria-hidden="true"></i></a>',
-    '<a href="xiyang0807@gmail.com" target="_blank" title="Gmail"><i class="fa fa-envelope" aria-hidden="true"></i></a>',
+    '<a href="mail@honmaple.com" target="_blank" title="Gmail"><i class="fa fa-envelope" aria-hidden="true"></i></a>',
   ];
   for (var i = 0; i < contactArray.length; i++) {
     var out = '<span>' + contactArray[i] + '</span>';

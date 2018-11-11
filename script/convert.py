@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # ********************************************************************************
 # Copyright © 2018 jianglin
-# File Name: blog.py
+# File Name: convert.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2018-03-10 18:37:00 (CST)
-# Last Update: Saturday 2018-03-10 19:26:54 (CST)
+# Last Update: Tuesday 2018-11-06 13:52:20 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -42,7 +42,7 @@ def write_to_blog(attr, file_type='org'):
 
     user = User.query.filter_by(username=_author).first()
     if not user:
-        user = User(username=_author, email='xiyang0807@gmail.com')
+        user = User(username=_author, email='mail@honmaple.com')
         user.set_password('123123')
         user.save()
 

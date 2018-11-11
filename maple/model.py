@@ -4,9 +4,9 @@
 # Copyright © 2017 jianglin
 # File Name: model.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2017-08-24 15:13:33 (CST)
-# Last Update: Sunday 2018-03-11 21:43:48 (CST)
+# Last Update: Tuesday 2018-11-06 13:52:21 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -21,6 +21,7 @@ from flask_babel import format_datetime
 
 from maple.extension import db
 from maple.count import Count
+from maple.markup import markdown_to_html, orgmode_to_html
 
 
 class Images(db.Model):
@@ -94,9 +95,9 @@ class TimeLine(db.Model, ModelUserMixin):
         return {'id': self.id, 'content': self.content, 'hide': self.hide}
 
 
-tag_blog = db.Table(
-    'tag_blog', db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
-    db.Column('blog_id', db.Integer, db.ForeignKey('blog.id')))
+tag_blog = db.Table('tag_blog',
+                    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+                    db.Column('blog_id', db.Integer, db.ForeignKey('blog.id')))
 
 
 class Tag(db.Model, ModelMixin):
@@ -106,8 +107,7 @@ class Tag(db.Model, ModelMixin):
     blogs = db.relationship(
         'Blog',
         secondary=tag_blog,
-        backref=db.backref(
-            'tags', lazy='dynamic'),
+        backref=db.backref('tags', lazy='dynamic'),
         lazy='dynamic')
 
     def __repr__(self):
@@ -145,8 +145,7 @@ class Blog(db.Model, ModelUserMixin):
     is_copy = db.Column(db.Boolean, nullable=True, default=False)
     category_id = db.Column(
         db.Integer,
-        db.ForeignKey(
-            'category.id', ondelete="CASCADE"),
+        db.ForeignKey('category.id', ondelete="CASCADE"),
         nullable=False)
     category = db.relationship(
         'Category',
@@ -172,6 +171,12 @@ class Blog(db.Model, ModelUserMixin):
             'author': self.author.username
         }
 
+    def to_html(self):
+        length = current_app.config.get("SUMMARY_MAX_LENGTH")
+        if self.content_type == self.CONTENT_TYPE_MARKDOWN:
+            return markdown_to_html(self.content, length)
+        return orgmode_to_html(self.content, length)
+
     @property
     def read_times(self):
         return Count.get('article:{}'.format(self.id))
@@ -185,9 +190,8 @@ class Comment(db.Model, ModelUserMixin):
     __tablename__ = 'comment'
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
-    blog_id = db.Column(
-        db.Integer, db.ForeignKey(
-            'blog.id', ondelete="CASCADE"))
+    blog_id = db.Column(db.Integer, db.ForeignKey(
+        'blog.id', ondelete="CASCADE"))
     blog = db.relationship(
         'Blog',
         backref=db.backref(

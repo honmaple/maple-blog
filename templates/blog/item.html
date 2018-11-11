@@ -1,24 +1,17 @@
 {% extends 'blog/base.html' %}
-{% import 'blog/macro.html' as macro %}
 
 {% block item -%}
-<article>
-  <h1 class="blog-title">{{ blog.title }}</h1>
-  <hr/>
-  <div class="blog-content">
-    <div class="blog-info">
-      {{ macro.info(blog) }}
+  <article>
+    <h1 class="blog-title">{{ blog.title }}</h1>
+    {% include "blog/info.html" %}
+    <hr/>
+    <div class="blog-content">
+      {{ blog.to_html() }}
     </div>
-    <script>hljs.initHighlightingOnLoad();</script>
-    {% if blog.content_type == "0" %}
-    {{ blog.content | safe_markdown }}
-    {% else %}
-    {{ blog.content | orgmode }}
-    {%- endif -%}
-  </div>
-  {%- if blog.is_copy == False -%}
-  <div style="border-bottom:1px dashed #000000;width:60%;"></div>
-  <!-- 版权所有,转载请注明作者及出处 -->
-  {%- endif -%}
-</article>
+  </article>
+  {% include "blog/highlight.html" %}
 {% endblock %}
+
+{% block panel -%}
+  {% include 'blog/item-panel.html' %}
+{%- endblock panel %}

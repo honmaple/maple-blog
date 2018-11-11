@@ -4,72 +4,70 @@
 # Copyright © 2018 jianglin
 # File Name: blog.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2018-02-08 14:42:15 (CST)
-# Last Update: 星期六 2018-02-10 13:44:49 (CST)
+# Last Update: Saturday 2018-11-11 22:27:27 (CST)
 #          By:
 # Description:
 # ********************************************************************************
-from flask import render_template, request
+from flask import request
 from flask_maple.views import MethodView
-from sqlalchemy import func, extract
-from maple.utils import gen_filter_dict, gen_order_by
-from maple.extension import cache, db
+from maple.utils import filter_maybe
+from maple.extension import cache
+from maple.response import HTTP
 from maple.helper import cache_key
 from maple.model import Blog
 
 
 class BlogListView(MethodView):
-    def render_template(self, *args, **kwargs):
-        return render_template(*args, **kwargs)
-
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self):
-        query_dict = request.data
-        query_dict['descent'] = 'created_at'
-        tag = query_dict.pop('tag', None)
-        category = query_dict.pop('category', None)
-        author = query_dict.pop('author', None)
-        year = query_dict.pop('year', None)
-        month = query_dict.pop('month', None)
-        if tag is not None:
-            query_dict.update(tags__name=tag)
-        if category is not None:
-            query_dict.update(category__name=category)
-        if author is not None:
-            query_dict.update(author__name=author)
+        request_data = request.data
         page, number = self.pageinfo
-        keys = ['title', 'tags__name', 'category__name', 'author__username']
-        equal_key = ['tags__name', 'category__name', 'author__username']
-        order_by = gen_order_by(query_dict, keys)
-        filter_dict = gen_filter_dict(query_dict, keys, equal_key)
-        blogs = Blog.query.filter_by(**filter_dict)
-        if year is not None:
-            blogs = blogs.filter(extract('year', Blog.created_at) == year)
-        if month is not None:
-            blogs = blogs.filter(extract('month', Blog.created_at) == month)
-        blogs = blogs.order_by(*order_by).paginate(page, number)
-        data = {'blogs': blogs}
-        return self.render_template('blog/itemlist.html', **data)
+        kwargs = filter_maybe(
+            request_data, {
+                "tag": "tags__name",
+                "category": "category__name",
+                "author": "author__name",
+                "title": "title__contains",
+                "year": "created_at__year",
+                "month": "created_at__month"
+            })
+        order_by = ("-created_at", )
+
+        ins = Blog.query.filter_by(**kwargs).order_by(*order_by).paginate(
+            page, number)
+        return HTTP.HTML('blog/itemlist.html', blogs=ins)
 
 
 class BlogView(MethodView):
     @cache.cached(timeout=180, key_prefix=cache_key)
     def get(self, pk):
-        blog = Blog.query.filter_by(id=pk).first_or_404()
+        ins = Blog.query.filter_by(id=pk).first_or_404()
         '''记录用户浏览次数'''
-        blog.read_times = 1
-        data = {'blog': blog}
-        return render_template('blog/item.html', **data)
+        ins.read_times = 1
+        data = {'blog': ins}
+        return HTTP.HTML('blog/item.html', **data)
 
 
-class ArchiveView(BlogListView):
-    per_page = 30
+class ArchiveView(MethodView):
+    @cache.cached(timeout=180, key_prefix=cache_key)
+    def get(self):
+        request_data = request.data
+        kwargs = filter_maybe(
+            request_data, {
+                "tag": "tags__name",
+                "category": "category__name",
+                "author": "author__name",
+                "title": "title__contains",
+                "year": "created_at__year",
+                "month": "created_at__month"
+            })
+        order_by = ("-created_at", )
 
-    def render_template(self, *args, **kwargs):
-        times = db.session.query(
-            extract('year', Blog.created_at).label('y'),
-            extract('month', Blog.created_at).label('m'),
-            func.count("*")).group_by('y', 'm')
-        kwargs.update(times=times)
-        return render_template('blog/archives.html', **kwargs)
+        ins = {}
+        for blog in Blog.query.filter_by(**kwargs).order_by(*order_by):
+            date = blog.created_at.strftime("%Y年%m月")
+            ins.setdefault(date, [])
+            ins[date].append(blog)
+        return HTTP.HTML('blog/archives.html', blogs=ins)

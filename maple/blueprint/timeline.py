@@ -4,18 +4,19 @@
 # Copyright © 2018 jianglin
 # File Name: timeline.py
 # Author: jianglin
-# Email: xiyang0807@gmail.com
+# Email: mail@honmaple.com
 # Created: 2018-02-08 14:45:34 (CST)
-# Last Update: 星期六 2018-02-10 15:28:13 (CST)
+# Last Update: Tuesday 2018-11-06 13:52:23 (CST)
 #          By:
 # Description:
 # ********************************************************************************
-from flask import render_template, request
+from flask import request
 from flask_maple.views import MethodView
 
 from maple.extension import cache
 from maple.helper import cache_key
 from maple.model import TimeLine
+from maple.response import HTTP
 
 
 class TimeLineView(MethodView):
@@ -30,5 +31,5 @@ class TimeLineView(MethodView):
         timelines = TimeLine.query.filter_by(
             **filter_dict).order_by(*order_by).paginate(page, number)
         if query_dict.pop('from', None) == 'blog':
-            return render_template('timeline/macro.html', timelines=timelines)
-        return render_template('timeline/itemlist.html', timelines=timelines)
+            return HTTP.HTML('timeline/macro.html', timelines=timelines)
+        return HTTP.HTML('timeline/itemlist.html', timelines=timelines)

@@ -1,40 +1,35 @@
-{% import "blog/macro.html" as macro %}
-{{ macro.aplayer() }}
-<ul class="list-group">
-  <li class="list-group-item text-center hidden-xs">
-    <img src="{{ url_for('static',filename='images/header.png') }}" alt="{{_('header image')}}" style="max-width:80%;" /> <br />
-    <a href="{{url_for('about')}}" class="label label-default blog-introduce">Author</a>
-    <span class="label label-primary blog-introduce">About me</span>
-    <br/>
-    <span><i>{{ _('I like solitude, yearning for freedom') }}</i></span>
-  </li>
-  <li class="list-group-item blog-social">
-    <a href="https://github.com/honmaple" target="_blank" title="GitHub"><i class="fa fa-github"></i></a>
-    <a href="https://honmaple.com/blog/" target="_blank" title="Blog"><i class="fa fa-leaf"></i></a>
-    <a href="https://honmaple.com/books/" target="_blank" title="Book"><i class="fa fa-book"></i></a>
-    <a href="xiyang0807@gmail.com" target="_blank" title="Gmail"><i class="fa fa-envelope"></i></a>
-    <a href="https://www.facebook.com/honmaple" target="_blank" title="FaceBook"><i class="fa fa-facebook"></i></a>
-  </li>
-  <li class="list-group-item">
-    {% for tag,count in tag_archives() %}
-    <span class="label label-primary blog-label">
-      {% set category = request.args.get('category') %}
-      <a href="{{ url_for('blog.bloglist',category=category,tag=tag.name) }}">
-        {{ tag.name }}
-        <span class="badge">{{ count }}</span>
-      </a>
-    </span>
+<div class="blog-panel">
+  {% include "blog/site-info.html" %}
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    标签
+  </div>
+  <div class="panel-body">
+    {% set tags = tag_archives() %}
+    {% for tag,count in tags[:15] %}
+      <span class="label label-primary blog-label">
+        <a href="{{ url_for('blog.bloglist',category=request.args.get('category'),tag=tag.name) }}">
+          {{ tag.name }}
+          <span class="badge">{{ count }}</span>
+        </a>
+      </span>
     {% endfor %}
-  </li>
-</ul>
-<ul class="list-group">
-  <li class="list-group-item text-center">
-    <a href="{{ url_for('friend') }}">
-      <span class="fa fa-link"></span>
-      {{ _('Friends') }}
+    <div class="collapse" id="blog-tag-list">
+      {% for tag,count in tags[15:] %}
+        <span class="label label-primary blog-label">
+          <a href="{{ url_for('blog.bloglist',category=request.args.get('category'),tag=tag.name) }}">
+            {{ tag.name }}
+            <span class="badge">{{ count }}</span>
+          </a>
+        </span>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="panel-footer blog-collapse">
+    <a data-toggle="collapse" href="#blog-tag-list">
+      <i class="fa fa-angle-double-down"></i>
     </a>
-  </li>
-</ul>
-<div class="blog-back-top">
-  <a href="#bs-header"><i class="fa fa-hand-o-up" aria-hidden="true"></i></a>
+  </div>
 </div>
