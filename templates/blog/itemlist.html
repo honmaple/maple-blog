@@ -17,6 +17,7 @@
         </div>
       </article>
     {% endfor -%}
-    {{ paginate(blogs,'blog.bloglist',request.args.to_dict()) }}
+    {% set kw = request.args.to_dict() %}
+    {{ paginate(blogs,'blog.bloglist',dict(tag=kw.get('tag'), category=kw.get('category'))) }}
   </div>
 {% endblock %}

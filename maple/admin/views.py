@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update: Saturday 2018-11-11 12:57:35 (CST)
+# Last Update: Saturday 2018-11-11 23:40:03 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
@@ -34,8 +34,8 @@ class AdminView(ModelView):
 
     # column_display_pk = True
 
-    # def is_accessible(self):
-    #     return current_user.is_authenticated and current_user.is_superuser
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.is_superuser
 
     def inaccessible_callback(self, name, **kwargs):
         abort(404)
@@ -65,8 +65,7 @@ class UserView(AdminView):
     def scaffold_form(self):
         form_class = super(UserView, self).scaffold_form()
         form_class.password = PasswordField(
-            "Password", [DataRequired(), Length(
-                min=4, max=20)])
+            "Password", [DataRequired(), Length(min=4, max=20)])
         return form_class
 
     def create_model(self, form):

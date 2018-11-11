@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: Saturday 2018-11-11 23:08:07 (CST)
+# Last Update: Saturday 2018-11-11 23:40:16 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -25,7 +25,7 @@ REMEMBER_COOKIE_DURATION = timedelta(days=3)
 
 # WTF_CSRF_CHECK_DEFAULT = False
 ONLINE_LAST_MINUTES = 5
-SUMMARY_MAX_LENGTH = 128
+SUMMARY_MAX_LENGTH = 64
 
 PER_PAGE = 6
 

@@ -34,7 +34,7 @@
 <div class="blog-tag">
   {% for category,count in category_archives() %}
     <span class="label label-primary blog-label">
-      <a href="{{ url_for('blog.bloglist',tag=request.args.get('tag'),category=category.name) }}">
+      <a href="{{ url_for('blog.bloglist',category=category.name) }}">
         {{ category.name }}
         <span class="badge">{{ count }}</span>
       </a>

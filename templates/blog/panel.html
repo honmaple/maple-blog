@@ -10,7 +10,7 @@
     {% set tags = tag_archives() %}
     {% for tag,count in tags[:15] %}
       <span class="label label-primary blog-label">
-        <a href="{{ url_for('blog.bloglist',category=request.args.get('category'),tag=tag.name) }}">
+        <a href="{{ url_for('blog.bloglist',tag=tag.name) }}">
           {{ tag.name }}
           <span class="badge">{{ count }}</span>
         </a>
@@ -19,7 +19,7 @@
     <div class="collapse" id="blog-tag-list">
       {% for tag,count in tags[15:] %}
         <span class="label label-primary blog-label">
-          <a href="{{ url_for('blog.bloglist',category=request.args.get('category'),tag=tag.name) }}">
+          <a href="{{ url_for('blog.bloglist',tag=tag.name) }}">
             {{ tag.name }}
             <span class="badge">{{ count }}</span>
           </a>
