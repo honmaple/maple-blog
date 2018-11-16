@@ -6,13 +6,18 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2016-11-26 23:47:44 (CST)
-# Last Update: Tuesday 2018-11-06 13:52:23 (CST)
+# Last Update: Friday 2018-11-16 16:51:46 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from flask import request
 
 
+def accept_language():
+    return request.accept_languages.best_match(['zh', 'en'], 'zh')
+
+
 def cache_key():
     key = request.url
-    return 'view:%s' % key
+    lang = accept_language()
+    return 'view:{0}:{1}'.format(lang, key)

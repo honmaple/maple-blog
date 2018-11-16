@@ -6,12 +6,16 @@
     {% include "blog/info.html" %}
     <hr/>
     <div class="blog-content">
-      {{ blog.to_html() }}
+      {{ blog.to_html(truncate=False) }}
     </div>
   </article>
-  {% include "blog/highlight.html" %}
 {% endblock %}
 
 {% block panel -%}
   {% include 'blog/item-panel.html' %}
 {%- endblock panel %}
+
+{% block script -%}
+  {{ super() }}
+  {% include "blog/highlight.html" %}
+{%- endblock script %}

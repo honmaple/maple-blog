@@ -1,124 +1,33 @@
-function dispatch() {
-  var q = document.getElementById("search");
-  if (q.value !== "") {
-    var url = 'https://www.google.com/search?q=site:honmaple.org%20' + q.value;
-    if (navigator.userAgent.indexOf('iPad') > -1 || navigator.userAgent.indexOf('iPod') > -1 || navigator.userAgent.indexOf('iPhone') > -1) {
-      location.href = url;
-    } else {
-      window.open(url, "_blank");
+$(function() {
+    if (!String.prototype.format) {
+        String.prototype.format = function() {
+            var args = arguments;
+            return this.replace(/{(\d+)}/g, function(match, number) {
+                return typeof args[number] != 'undefined'? args[number]: match;
+            });
+        };
     }
-    return false;
-  } else {
-    return false;
-  }
-}
-particlesJS("particles-js", {
-  "particles": {
-    "number": {
-      "value": 100,
-      "density": {
-        "enable": true,
-        "value_area": 800
-      }
-    },
-    "color": {
-      "value": "#ddd"
-    },
-    "shape": {
-      "type": "circle",
-      "stroke": {
-        "width": 0,
-        "color": "#000000"
-      },
-      "polygon": {
-        "nb_sides": 5
-      },
-      "image": {
-        "src": "img/github.svg",
-        "width": 100,
-        "height": 100
-      }
-    },
-    "opacity": {
-      "value": 0.5,
-      "random": false,
-      "anim": {
-        "enable": false,
-        "speed": 1,
-        "opacity_min": 0.1,
-        "sync": false
-      }
-    },
-    "size": {
-      "value": 3,
-      "random": true,
-      "anim": {
-        "enable": false,
-        "speed": 36,
-        "size_min": 0.1,
-        "sync": false
-      }
-    },
-    "line_linked": {
-      "enable": true,
-      "distance": 120,
-      "color": "#999",
-      "opacity": 0.6,
-      "width": 1
-    },
-    "move": {
-      "enable": true,
-      "speed": 12,
-      "direction": "none",
-      "random": false,
-      "straight": false,
-      "out_mode": "out",
-      "bounce": false,
-      "attract": {
-        "enable": false,
-        "rotateX": 600,
-        "rotateY": 1200
-      }
+    var count = 0;
+    function randomPoem() {
+        $.ajax({
+            type: "GET",
+            url: "https://poem.honmaple.com/api/poem/random",
+            dataType: "json",
+            success: function (response) {
+                var title = '<h3>{0}</h3>'.format(response.data.title);
+                var author = '<p>{0}</p>'.format(response.data.author);
+                var paragraphs = '<div>{0}</div>'.format(response.data.paragraphs.map(function(item) {
+                    return "<p>{0}</p>".format(item);
+                }).join(""));
+                $(".entry-cover > .entry-cover-right > .entry-center").fadeOut(500, function() {
+                    $(this).html(title + author + paragraphs).fadeIn(500);
+                });
+            }
+        });
+        count = count + 1;
+        // setTimeout(randomPoem, 2000 + count * 1000);
     }
-  },
-  "interactivity": {
-    "detect_on": "window",
-    "events": {
-      "onhover": {
-        "enable": true,
-        "mode": "grab"
-      },
-      "onclick": {
-        "enable": true,
-        "mode": "repulse"
-      },
-      "resize": true
-    },
-    "modes": {
-      "grab": {
-        "distance": 200,
-        "line_linked": {
-          "opacity": 1
-        }
-      },
-      "bubble": {
-        "distance": 800,
-        "size": 80,
-        "duration": 2,
-        "opacity": 0.8,
-        "speed": 3
-      },
-      "repulse": {
-        "distance": 200,
-        "duration": 0.4
-      },
-      "push": {
-        "particles_nb": 4
-      },
-      "remove": {
-        "particles_nb": 2
-      }
+    if ($(window).width() > 600) {
+        randomPoem();
     }
-  },
-  "retina_detect": true
 });

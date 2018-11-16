@@ -24,7 +24,7 @@ def init_app(app):
     app.add_url_rule('/about', view_func=about_view)
     app.add_url_rule('/friends', view_func=friend_view)
 
-    app.add_url_rule('/blog', view_func=BlogListView.as_view('blog.bloglist'))
+    app.add_url_rule('/blog', view_func=BlogListView.as_view('blog'))
     app.add_url_rule('/blog/<int:pk>', view_func=BlogView.as_view('blog.blog'))
     app.add_url_rule(
         '/archives', view_func=ArchiveView.as_view('blog.archive'))

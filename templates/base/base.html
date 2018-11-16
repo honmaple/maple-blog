@@ -1,8 +1,6 @@
 {% extends 'maple/base.html' %}
 
-{% block title -%}
-  {{_("honmaple's blog")}} - {{_('Love is precious, free price is higher.')}}
-{% endblock %}
+{% block title -%}{{_("honmaple's blog")}} - {{_('Love is precious, free price is higher.')}}{% endblock %}
 
 {% block style -%}
   {{ super() }}
@@ -22,7 +20,7 @@
               <span class="icon-bar"></span>
             </button>
             {% block header %}
-              <a class="navbar-brand" href="{{ url_for('index') }}" style="color:#a40000;">紅楓</a>
+              <a class="navbar-brand text-main" href="{{ url_for('index') }}">{{ _("honmaple") }}</a>
             {% endblock %}
           </div>
           <div class="collapse navbar-collapse" id="bs-header">

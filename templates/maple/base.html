@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{%- endblock -%}</title>
+    {% block style %}
+      <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      {%- assets "home_css" %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}" />
+      {%- endassets %}
+    {%- endblock %}
+  </head>
+  <body>
+    {% block wrap -%}
+      <div class="wrap">
+        <div class="main">
+          {% block main -%}{%- endblock -%}
+        </div>
+      </div>
+      {% block footer -%}
+        {% include 'maple/footer.html' %}
+      {%- endblock -%}
+    {%- endblock wrap %}
+    {%- block script %}
+      <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+      <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script type="text/javascript">
+       var g = {
+           csrftoken: "{{ csrf_token() }}"
+       };
+      </script>
+      {%- assets "home_js" -%}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+      {%- endassets %}
+    {%- endblock -%}
+  </body>
+</html>

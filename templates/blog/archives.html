@@ -3,8 +3,8 @@
 {% block item %}
   <div class="panel panel-default">
     <div class="panel-heading">
-      <i class="fa fa-calendar" style="color:#a40000"></i>
-      时间归档
+      <i class="fa fa-calendar text-main"></i>
+      {{ _("Archives By Datetime") }}
     </div>
     <div class="panel-body">
       {% for k,v in blogs.items() %}
@@ -30,5 +30,5 @@
 {% endblock item %}
 
 {% block panel -%}
-  {% include "blog/archive-panel.html" %}
+  {% include "blog/archives-panel.html" %}
 {%- endblock panel %}

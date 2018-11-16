@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-11 20:40+0800\n"
+"POT-Creation-Date: 2018-11-20 10:47+0800\n"
 "PO-Revision-Date: 2016-04-16 13:45+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -16,89 +16,100 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.3\n"
+"Generated-By: Babel 2.3.4\n"
 
 #: maple/extension/login.py:42
 msgid "Please login to access this page."
-msgstr ""
+msgstr "请登录后访问"
 
-#: templates/base/base.html:4
+#: templates/base/base.html:3
 msgid "honmaple's blog"
 msgstr ""
 
-#: templates/base/base.html:4 templates/index/index.html:7
-#: templates/index/index.html:49
+#: templates/base/base.html:3
 msgid "Love is precious, free price is higher."
 msgstr "爱情诚可贵，自由价更高"
 
-#: templates/base/base.html:29 templates/index/index.html:29
-msgid "Blog"
-msgstr "博客"
+#: templates/base/base.html:23 templates/blog/base.html:4
+msgid "honmaple"
+msgstr "紅楓"
 
-#: templates/base/base.html:30 templates/index/index.html:32
-msgid "Cloud"
-msgstr "物联网云"
-
-#: templates/base/base.html:31 templates/index/index.html:33
-msgid "About me"
-msgstr "关于我"
-
-#: templates/blog/archive_panel.html:14
-#, python-format
-msgid "%(year)s-%(month)s"
-msgstr ""
-
-#: templates/blog/archive_panel.html:20
-msgid "open"
-msgstr ""
-
-#: templates/blog/archive_panel.html:29
-msgid "Archives By Time"
-msgstr "按时间归档"
-
-#: templates/blog/archive_panel.html:43
-msgid "Archives By Category"
-msgstr "按分类归档"
-
-#: templates/blog/archive_panel.html:53
-msgid "Archives By Tags"
-msgstr "按节点归档"
-
-#: templates/blog/base.html:4
-msgid "BLOG"
-msgstr "博客"
-
-#: templates/blog/base.html:9
-msgid "HOME"
-msgstr "主页"
-
-#: templates/blog/base.html:25
-msgid "Archives"
-msgstr "归档"
-
-#: templates/blog/panel.html:5
-msgid "header image"
-msgstr ""
-
-#: templates/blog/panel.html:9
-msgid "I like solitude, yearning for freedom"
-msgstr "爱生活，更爱自由"
-
-#: templates/blog/panel.html:34 templates/index/friends.html:6
-msgid "Friends"
-msgstr "友链"
-
-#: templates/index/index.html:30 templates/timeline/macro.html:4
-msgid "TimeLine"
-msgstr "时间轴"
-
-#: templates/index/index.html:31
+#: templates/base/link.html:2
 msgid "Poem"
 msgstr "诗词"
 
-#: templates/index/index.html:37
-msgid "search"
-msgstr "搜索"
+#: templates/base/link.html:3
+msgid "Cloud"
+msgstr "物联网云"
+
+#: templates/base/link.html:4 templates/pvp/pvp.html:7
+#: templates/timeline/itemlist.html:8
+msgid "TimeLine"
+msgstr "时间轴"
+
+#: templates/base/link.html:5
+msgid "Archives"
+msgstr "归档"
+
+#: templates/base/link.html:6 templates/index/about.html:6
+msgid "About me"
+msgstr "关于我"
+
+#: templates/base/search.html:3
+msgid "Search Content"
+msgstr "搜索内容"
+
+#: templates/blog/archives-panel.html:13
+msgid "Archives By Category"
+msgstr "按分类归档"
+
+#: templates/blog/archives-panel.html:24
+msgid "Archives By Tags"
+msgstr "按节点归档"
+
+#: templates/blog/archives-panel.html:37
+msgid "open"
+msgstr "展开"
+
+#: templates/blog/archives.html:7
+msgid "Archives By Datetime"
+msgstr "按时间归档"
+
+#: templates/blog/info.html:7
+msgid "Posted in"
+msgstr "发表于"
+
+#: templates/blog/info.html:13
+msgid "Category"
+msgstr "分类"
+
+#: templates/blog/info.html:19 templates/blog/panel.html:7
+msgid "Tags"
+msgstr "标签"
+
+#: templates/blog/item-panel.html:3
+msgid "Contents"
+msgstr "目录"
+
+#: templates/blog/item-panel.html:4
+msgid "Site"
+msgstr "站点"
+
+#: templates/blog/item-panel.html:9
+msgid "NO CONTENTS"
+msgstr "暂无目录"
+
+#: templates/blog/site-info.html:9
+msgid "I like solitude, yearning for freedom"
+msgstr "爱生活，更爱自由"
+
+#: templates/blog/site-info.html:28 templates/index/friends.html:6
+msgid "Friends"
+msgstr "友链"
+
+#: templates/blog/site-info.html:31
+msgid "RSS"
+msgstr ""
 
 #~ msgid "Username:"
 #~ msgstr "用户名:"
@@ -152,7 +163,7 @@ msgstr "搜索"
 #~ msgstr "请验证你的邮箱"
 
 #~ msgid ""
-#~ msgstr "一封邮件已发送到你的邮箱，请查收并及时修改你的密码"
+#~ msgstr "验证链接还未过期，请及时验证!"
 
 #~ msgid "The email is error"
 #~ msgstr "邮箱错误"
@@ -274,12 +285,6 @@ msgstr "搜索"
 #~ msgid "Books"
 #~ msgstr "书籍查询"
 
-#~ msgid ""
-#~ "Your confirm link have not out of"
-#~ " time,        Please confirm your email "
-#~ "in time"
-#~ msgstr "验证链接还未过期，请及时验证!"
-
 #~ msgid "Your confirm link have not out of time"
 #~ msgstr ""
 
@@ -288,12 +293,6 @@ msgstr "搜索"
 
 #~ msgid "honmaple's Blog"
 #~ msgstr ""
-
-#~ msgid ""
-#~ "Your confirm link have not out of"
-#~ " time,Please confirm your email in "
-#~ "time"
-#~ msgstr "验证链接还未过期，请及时验证!"
 
 #~ msgid "Blog ID should exist"
 #~ msgstr "文章ID不存在"
@@ -314,7 +313,7 @@ msgstr "搜索"
 #~ msgstr "爱情诚可贵，自由价更高."
 
 #~ msgid "Blog"
-#~ msgstr "个人博客"
+#~ msgstr "博客"
 
 #~ msgid "Answer"
 #~ msgstr "自问自答"
@@ -344,7 +343,7 @@ msgstr "搜索"
 #~ msgstr "按时间归档"
 
 #~ msgid "%(year)s-%(month)s"
-#~ msgstr "%(year)s年%(month)s月"
+#~ msgstr ""
 
 #~ msgid "open"
 #~ msgstr "展开"
@@ -365,7 +364,7 @@ msgstr "搜索"
 #~ msgstr "小贴士"
 
 #~ msgid "header image"
-#~ msgstr "头像"
+#~ msgstr ""
 
 #~ msgid "I like solitude, yearning for freedom"
 #~ msgstr "坚定的决心，充足的信心，足够的耐心"

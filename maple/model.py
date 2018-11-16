@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2017-08-24 15:13:33 (CST)
-# Last Update: Tuesday 2018-11-06 13:52:21 (CST)
+# Last Update: Tuesday 2018-11-20 10:27:20 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -171,8 +171,10 @@ class Blog(db.Model, ModelUserMixin):
             'author': self.author.username
         }
 
-    def to_html(self):
-        length = current_app.config.get("SUMMARY_MAX_LENGTH")
+    def to_html(self, length=None, truncate=True):
+        length = length or current_app.config.get("SUMMARY_MAX_LENGTH")
+        if not truncate:
+            length = None
         if self.content_type == self.CONTENT_TYPE_MARKDOWN:
             return markdown_to_html(self.content, length)
         return orgmode_to_html(self.content, length)

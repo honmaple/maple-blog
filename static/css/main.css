@@ -38,6 +38,9 @@ a:focus, a:hover {
     color:#EB5455;
     text-decoration: none;
 }
+.text-main {
+    color: #a40000 !important;
+}
 article {
     background-color: #fff;
     border:1px solid #ddd;

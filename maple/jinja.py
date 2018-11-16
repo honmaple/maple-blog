@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 15:25:56 (CST)
-# Last Update: Tuesday 2018-11-06 13:53:37 (CST)
+# Last Update: Tuesday 2018-11-13 10:47:02 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -17,16 +17,16 @@ from maple.extension import db
 from maple.model import Category, Blog, Tag
 
 
-def tag_archives():
-    tags = db.session.query(Tag, func.count(Blog.id)).outerjoin(
-        Tag.blogs).group_by(Tag.id)
-    return tags.all()
+class Archives:
+    def categories():
+        ins = db.session.query(Category, func.count(Blog.id)).outerjoin(
+            Category.blogs).group_by(Category.id)
+        return ins
 
-
-def category_archives():
-    categories = db.session.query(Category, func.count(Blog.id)).outerjoin(
-        Category.blogs).group_by(Category.id)
-    return categories.all()
+    def tags():
+        ins = db.session.query(Tag, func.count(Blog.id)).outerjoin(
+            Tag.blogs).group_by(Tag.id)
+        return ins
 
 
 def timesince(dt, default="just now"):
@@ -53,5 +53,4 @@ def timesince(dt, default="just now"):
 
 def init_app(app):
     app.add_template_filter(timesince)
-    app.add_template_global(category_archives)
-    app.add_template_global(tag_archives)
+    app.add_template_global(Archives)

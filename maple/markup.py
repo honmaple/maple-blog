@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-11-06 11:29:39 (CST)
-# Last Update: Saturday 2018-11-10 18:32:53 (CST)
+# Last Update: Tuesday 2018-11-20 10:59:46 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -183,14 +183,15 @@ def markup_clean(text):
 
 
 def markdown_to_html(text, length=None):
-    text = markdown(text, extensions=['codehilite', 'fenced_code'])
+    # text = markdown(text, extensions=['codehilite', 'fenced_code'])
+    text = markdown(text)
     if length is None:
         return Markup(text)
     return Markup(truncate_html_words(text, length))
 
 
 def orgmode_to_html(text, length=None):
-    text = markup_clean(org_to_html(text))
+    text = org_to_html(text)
     if length is None:
         return Markup(text)
     return Markup(truncate_html_words(text, length))

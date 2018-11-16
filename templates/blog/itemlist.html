@@ -2,7 +2,6 @@
 {% from 'maple/paginate.html' import paginate %}
 
 {% block item -%}
-  {% include "blog/highlight.html" %}
   <div class="blog-list">
     {% for blog in blogs.items -%}
       <article>
@@ -18,6 +17,11 @@
       </article>
     {% endfor -%}
     {% set kw = request.args.to_dict() %}
-    {{ paginate(blogs,'blog.bloglist',dict(tag=kw.get('tag'), category=kw.get('category'))) }}
+    {{ paginate(blogs,'blog',dict(tag=kw.get('tag'), category=kw.get('category'))) }}
   </div>
 {% endblock %}
+
+{% block script -%}
+  {{ super() }}
+  {% include "blog/highlight.html" %}
+{%- endblock script %}

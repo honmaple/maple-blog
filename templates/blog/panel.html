@@ -4,13 +4,13 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    标签
+    {{ _("Tags") }}
   </div>
   <div class="panel-body">
-    {% set tags = tag_archives() %}
+    {% set tags = Archives.tags() %}
     {% for tag,count in tags[:15] %}
       <span class="label label-primary blog-label">
-        <a href="{{ url_for('blog.bloglist',tag=tag.name) }}">
+        <a href="{{ url_for('blog',tag=tag.name) }}">
           {{ tag.name }}
           <span class="badge">{{ count }}</span>
         </a>
@@ -19,7 +19,7 @@
     <div class="collapse" id="blog-tag-list">
       {% for tag,count in tags[15:] %}
         <span class="label label-primary blog-label">
-          <a href="{{ url_for('blog.bloglist',tag=tag.name) }}">
+          <a href="{{ url_for('blog',tag=tag.name) }}">
             {{ tag.name }}
             <span class="badge">{{ count }}</span>
           </a>
