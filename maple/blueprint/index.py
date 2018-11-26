@@ -6,13 +6,13 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 14:45:03 (CST)
-# Last Update: Friday 2018-11-16 11:16:19 (CST)
+# Last Update: Wednesday 2018-11-21 14:05:45 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask.views import MethodView
+from flask_maple.response import HTTP
 from maple.extension import cache
-from maple.response import HTTP
 
 
 class IndexView(MethodView):

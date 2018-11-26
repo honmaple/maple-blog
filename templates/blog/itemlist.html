@@ -12,7 +12,7 @@
           {{ blog.to_html() }}
         </div>
         <div class="text-center">
-          <a class="btn blog-read-more" href="{{ url_for('blog.blog',pk=blog.id) }}">read more</a>
+          <a class="btn blog-read-more" href="{{ url_for('blog.blog',pk=blog.id) }}">read more »</a>
         </div>
       </article>
     {% endfor -%}

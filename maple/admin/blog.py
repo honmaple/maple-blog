@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2016-11-26 16:07:56 (CST)
-# Last Update: Tuesday 2018-11-06 13:52:21 (CST)
+# Last Update: Monday 2018-11-26 11:48:12 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -21,8 +21,7 @@ class BlogView(AdminView):
     column_filters = ['category', 'created_at']
     form_widget_args = {'content': {'rows': 10}}
     column_formatters = dict(
-        content=lambda v, c, m, p: m.content[:100] + '...',
-        content_type=lambda v, c, m, p: m.get_choice_display('content_type', 'CONTENT_TYPE')
+        content=lambda v, c, m, p: m.content[:100] + '...'
     )
 
     column_editable_list = ['title', 'category', 'is_copy', 'content_type']

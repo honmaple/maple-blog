@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-03-17 17:52:05 (CST)
-# Last Update: Tuesday 2018-11-06 13:52:22 (CST)
+# Last Update: Wednesday 2018-11-21 11:25:44 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -20,7 +20,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 from maple.extension import csrf
-from maple.response import HTTP
+from flask_maple.response import HTTP
 
 
 class Encrypt(object):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-20 10:47+0800\n"
+"POT-Creation-Date: 2018-11-25 14:14+0800\n"
 "PO-Revision-Date: 2016-04-16 13:45+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -59,15 +59,15 @@ msgstr "关于我"
 msgid "Search Content"
 msgstr "搜索内容"
 
-#: templates/blog/archives-panel.html:13
+#: templates/blog/archives-panel.html:4
 msgid "Archives By Category"
 msgstr "按分类归档"
 
-#: templates/blog/archives-panel.html:24
+#: templates/blog/archives-panel.html:20
 msgid "Archives By Tags"
 msgstr "按节点归档"
 
-#: templates/blog/archives-panel.html:37
+#: templates/blog/archives-panel.html:25
 msgid "open"
 msgstr "展开"
 
@@ -75,17 +75,21 @@ msgstr "展开"
 msgid "Archives By Datetime"
 msgstr "按时间归档"
 
-#: templates/blog/info.html:7
+#: templates/blog/info.html:6
 msgid "Posted in"
 msgstr "发表于"
 
-#: templates/blog/info.html:13
+#: templates/blog/info.html:12
 msgid "Category"
 msgstr "分类"
 
-#: templates/blog/info.html:19 templates/blog/panel.html:7
+#: templates/blog/info.html:18 templates/blog/panel.html:7
 msgid "Tags"
 msgstr "标签"
+
+#: templates/blog/info.html:26
+msgid "Read"
+msgstr "阅读"
 
 #: templates/blog/item-panel.html:3
 msgid "Contents"
@@ -103,11 +107,11 @@ msgstr "暂无目录"
 msgid "I like solitude, yearning for freedom"
 msgstr "爱生活，更爱自由"
 
-#: templates/blog/site-info.html:28 templates/index/friends.html:6
+#: templates/blog/site-info.html:17 templates/index/friends.html:6
 msgid "Friends"
 msgstr "友链"
 
-#: templates/blog/site-info.html:31
+#: templates/blog/site-info.html:20
 msgid "RSS"
 msgstr ""
 

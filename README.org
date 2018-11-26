@@ -13,16 +13,10 @@
    pip install -r requestments.txt 
    #+END_SRC
 
-   About *fortune*
-   #+BEGIN_SRC sh
-    git clone https://github.com/honmaple/fortune
-    ln -s path/fortune/fortune blog_path/fortune
-   #+END_SRC
-
 ** Configure
    remember to modify *config.py*
    #+BEGIN_EXAMPLE
-emacs config.py
+     emacs config.py
    #+END_EXAMPLE
 ** Initialization sql
    #+BEGIN_SRC bash

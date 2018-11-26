@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: Saturday 2018-11-11 23:40:16 (CST)
+# Last Update: Wednesday 2018-11-21 11:17:25 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -19,7 +19,7 @@ SECRET_KEY = 'asdadasd'
 SECRET_KEY_SALT = 'asdasdads'
 TEMPLATES_AUTO_RELOAD = True
 
-AUTHOR_NAME = '© 2015-2018 honmaple. All rights reserved.'
+FOOTER_MESSAGE = '©2015-2018 honmaple. All rights reserved.'
 PERMANENT_SESSION_LIFETIME = timedelta(days=3)
 REMEMBER_COOKIE_DURATION = timedelta(days=3)
 
@@ -44,7 +44,7 @@ CACHE_REDIS_DB = 0
 CACHE_NO_NULL_WARNING = True
 
 MIDDLEWARE = [
-    'maple.middleware.Middleware',
+    'flask_maple.middleware.RequestMiddleware',
 ]
 
 MAIL_SERVER = ""

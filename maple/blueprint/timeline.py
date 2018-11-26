@@ -6,17 +6,16 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 14:45:34 (CST)
-# Last Update: Tuesday 2018-11-06 13:52:23 (CST)
+# Last Update: Wednesday 2018-11-21 14:01:51 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask import request
 from flask_maple.views import MethodView
-
+from flask_maple.response import HTTP
 from maple.extension import cache
 from maple.helper import cache_key
 from maple.model import TimeLine
-from maple.response import HTTP
 
 
 class TimeLineView(MethodView):

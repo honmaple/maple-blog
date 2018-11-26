@@ -1,12 +1,3 @@
-{% macro label_archive_show(label,count,label_name='tag') -%}
-  <span class="label label-primary blog-label">
-    <a href="{{ url_for('blog.archive',**{label_name:label.name}) }}">
-      {{ label.name }}
-      <span class="badge">{{ count }}</span>
-    </a>
-  </span>
-{%- endmacro %}
-
 <div class="panel panel-default">
   <div class="panel-heading">
     <i class="fa fa-folder-o text-main"></i>
@@ -14,7 +5,12 @@
   </div>
   <div class="panel-body">
     {% for category,count in Archives.categories() %}
-      {{ label_archive_show(category, count, 'category') }}
+      <span class="label label-primary blog-label">
+        <a href="{{ url_for('blog',category=category.name) }}">
+          {{ category.name }}
+          <span class="badge">{{ count }}</span>
+        </a>
+      </span>
     {% endfor %}
   </div>
 </div>
@@ -24,18 +20,10 @@
     {{ _('Archives By Tags') }}
   </div>
   <div class="panel-body">
-    {% set tags = Archives.tags() %}
-    {% for tag,count in tags[:5] %}
-      {{ label_archive_show(tag, count) }}
-    {% endfor %}
-    <div class="collapse" id="blog-tag-hidelist">
-      {% for tag,count in tags[5:] %}
-        {{ label_archive_show(tag, count) }}
-      {% endfor %}
-    </div>
+    {% include "blog/tags.html" %}
   </div>
   <div class="panel-footer blog-collapse" title="{{ _('open') }}">
-    <a data-toggle="collapse" href="#blog-tag-hidelist">
+    <a data-toggle="collapse" href="#blog-tag-list">
       <i class="fa fa-angle-double-down"></i>
     </a>
   </div>

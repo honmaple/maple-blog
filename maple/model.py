@@ -6,13 +6,13 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2017-08-24 15:13:33 (CST)
-# Last Update: Tuesday 2018-11-20 10:27:20 (CST)
+# Last Update: Sunday 2018-11-25 13:59:32 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from flask_maple.auth.models import UserMixin, GroupMixin
-from flask_maple.permission.models import PermissionMixin
 from flask_maple.models import ModelUserMixin, ModelMixin
+from flask_maple.models.permission import PermissionMixin
+from flask_maple.auth.models import UserMixin, GroupMixin
 
 from flask import current_app
 from itsdangerous import (URLSafeTimedSerializer, BadSignature,
@@ -168,7 +168,6 @@ class Blog(db.Model, ModelUserMixin):
             'title': self.title,
             'category': self.category.name,
             'tags': ','.join([tag.name for tag in self.tags]),
-            'author': self.author.username
         }
 
     def to_html(self, length=None, truncate=True):
@@ -178,6 +177,14 @@ class Blog(db.Model, ModelUserMixin):
         if self.content_type == self.CONTENT_TYPE_MARKDOWN:
             return markdown_to_html(self.content, length)
         return orgmode_to_html(self.content, length)
+
+    @property
+    def next_blog(self):
+        return Blog.query.filter_by(id__lt=self.id).order_by("-id").first()
+
+    @property
+    def previous_blog(self):
+        return Blog.query.filter_by(id__gt=self.id).order_by("id").first()
 
     @property
     def read_times(self):

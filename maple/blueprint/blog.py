@@ -6,17 +6,18 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 14:42:15 (CST)
-# Last Update: Saturday 2018-11-11 22:27:27 (CST)
+# Last Update: Sunday 2018-11-25 13:44:20 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask import request
 from flask_maple.views import MethodView
+from flask_maple.response import HTTP
 from maple.utils import filter_maybe
 from maple.extension import cache
-from maple.response import HTTP
 from maple.helper import cache_key
 from maple.model import Blog
+from collections import OrderedDict
 
 
 class BlogListView(MethodView):
@@ -28,7 +29,6 @@ class BlogListView(MethodView):
             request_data, {
                 "tag": "tags__name",
                 "category": "category__name",
-                "author": "author__name",
                 "title": "title__contains",
                 "year": "created_at__year",
                 "month": "created_at__month"
@@ -58,14 +58,13 @@ class ArchiveView(MethodView):
             request_data, {
                 "tag": "tags__name",
                 "category": "category__name",
-                "author": "author__name",
                 "title": "title__contains",
                 "year": "created_at__year",
                 "month": "created_at__month"
             })
         order_by = ("-created_at", )
 
-        ins = {}
+        ins = OrderedDict()
         for blog in Blog.query.filter_by(**kwargs).order_by(*order_by):
             date = blog.created_at.strftime("%Y年%m月")
             ins.setdefault(date, [])

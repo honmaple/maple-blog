@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-01-25 11:52:26 (CST)
-# Last Update: Saturday 2018-11-11 12:35:45 (CST)
+# Last Update: Wednesday 2018-11-21 11:00:34 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -21,7 +21,7 @@ from flask_maple.log import Logging
 bootstrap = Bootstrap(
     css=('css/main.css', 'css/monokai.css', 'css/lib.css', 'css/timeline.css'),
     js=('js/main.js', 'js/highlight.js', 'js/rain.js', 'js/org.js'),
-    use_auth=False)
+    auth=False)
 
 
 def init_app(app):

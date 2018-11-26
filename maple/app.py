@@ -6,13 +6,13 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-03-11 00:56:32 (CST)
-# Last Update: Saturday 2018-11-11 23:08:50 (CST)
+# Last Update: Wednesday 2018-11-21 14:02:17 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask import redirect, request
 from flask_login import current_user, login_required, login_user, logout_user
-from maple.response import HTTP
+from flask_maple.response import HTTP
 
 
 def init_app(app):
