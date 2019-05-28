@@ -1,0 +1,26 @@
+<div class="media">
+  <div class="media-left">
+    <a href="{{ url_for('about') }}">
+      <img class="media-object" src="{{ url_for('static',filename='images/header.png') }}" alt="..." style="width:64px;">
+    </a>
+  </div>
+  <div class="media-body" style="padding-top:9px;">
+    <h4 class="media-heading">{{ DEFAULT.SITE["author"] }}</h4>
+    <i style="font-size:0.8em;">{{ DEFAULT.SITE["subtitle"] }}</i>
+  </div>
+</div>
+<ul class="list-inline entry-social">
+  {% for item in DEFAULT.INFO %}
+    <li><a href="{{ item.url }}" target="_blank" title="{{ item.name }}"><i class="fa {{ item.icon }}"></i></a></li>
+  {% endfor %}
+</ul>
+<div class="entry-tag">
+  {% for category,count in Archives.categories() %}
+    <span class="label label-primary entry-label">
+      <a href="{{ url_for('blog.articles',category=category.name) }}">
+        {{ category.name }}
+        <span class="badge">{{ count }}</span>
+      </a>
+    </span>
+  {% endfor %}
+</div>

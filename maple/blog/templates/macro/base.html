@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+
+{% block header -%}
+  <a class="navbar-brand text-main" href="{{ url_for('blog.articles') }}">{{ _("honmaple") }}</a>
+{%- endblock header %}
+
+{% block content -%}
+  <div class="row">
+    <div class="col-sm-9">
+      {% block item -%}
+      {%- endblock item %}
+    </div>
+    <div class="col-sm-3">
+      {% block panel -%}
+        {% include 'macro/panel.html' %}
+      {%- endblock panel %}
+    </div>
+  </div>
+  <div class="back-to-top back-to-top-on">
+    <i class="fa fa-hand-o-up" title="back to top"></i>
+  </div>
+{%- endblock content %}

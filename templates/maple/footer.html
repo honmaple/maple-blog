@@ -1,7 +1,18 @@
-<div class="container-fluid">
-  <div class="row" style="margin-top: -30px;">
-    <div class="col-md-offset-1 col-md-9 col-center footer">
-      {{ FOOTER_MESSAGE }}
-    </div>
-  </div>
+<div class="footer">
+  <ul class="list-inline social">
+    {% for item in DEFAULT.INFO %}
+      <li><a href="{{ item.url }}" target="_blank" title="{{ item.name }}"><i class="fa {{ item.icon }}"></i></a></li>
+    {% endfor %}
+    <li><i class="fa fa-list" id="entry-scale" style="cursor:pointer;"></i></li>
+  </ul>
+  <ul class="list-inline copyright">
+    <li class="hidden-xs">{{ DEFAULT.FOOTER["copyright"] }}</li>
+    <li class="hidden-xs">·</li>
+    <li>
+      {% for item in DEFAULT.FOOTER["links"] %}
+        <a href="{% if item.url.startswith("http") %}{{ item.url }}{% else %}{{ url_for(item.url) }}{% endif %}">{{ _(item.name) }}</a>
+        {% if not loop.last %}<span> | </span>{% endif %}
+      {% endfor %}
+    </li>
+  </ul>
 </div>

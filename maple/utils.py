@@ -6,11 +6,40 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 15:04:16 (CST)
-# Last Update: Sunday 2018-11-25 13:43:31 (CST)
+# Last Update: Wednesday 2019-05-29 00:18:01 (CST)
 #          By:
 # Description:
 # ********************************************************************************
-from datetime import datetime, timedelta
+import hashlib
+from datetime import datetime
+from functools import wraps
+
+from flask import request
+from flask_maple.response import HTTP
+from flask_maple.views import MethodView as _MethodView
+from maple.extension import cache
+
+
+def accept_language():
+    return request.accept_languages.best_match(['zh', 'en'], 'zh')
+
+
+def cache_key():
+    key = 'view:{0}:{1}'.format(accept_language, request.url)
+    return str(hashlib.md5(key.encode("UTF-8")).hexdigest())
+
+
+class MethodView(_MethodView):
+    cache = True
+
+    def dispatch_request(self, *args, **kwargs):
+        f = super(MethodView, self).dispatch_request
+        if self.cache and request.method in ["GET", "HEAD"]:
+            return cache.cached(
+                timeout=180,
+                key_prefix=cache_key,
+            )(f)(*args, **kwargs)
+        return f(*args, **kwargs)
 
 
 def gen_order_by(query_dict=dict(), keys=[], date_key=True):
@@ -48,3 +77,25 @@ def filter_maybe(request_data, columns, params=None):
             value = datetime.strptime(value, '%Y-%m-%d')
         params.update({key: value})
     return params
+
+
+def check_params(keys, req=None):
+    '''
+    only check is not NULL
+    '''
+
+    def _check_params(func):
+        @wraps(func)
+        def decorator(*args, **kwargs):
+            if req is not None:
+                request_data = req
+            else:
+                request_data = request.data
+            for key in keys:
+                if not request_data.get(key):
+                    return HTTP.BAD_REQUEST(message='{0} required'.format(key))
+            return func(*args, **kwargs)
+
+        return decorator
+
+    return _check_params

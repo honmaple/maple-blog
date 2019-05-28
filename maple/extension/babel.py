@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-01-25 11:50:49 (CST)
-# Last Update: Friday 2018-11-16 16:52:55 (CST)
+# Last Update: Wednesday 2019-05-29 00:09:50 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -17,14 +17,14 @@ babel = Babel()
 
 
 @babel.localeselector
-def locale():
+def localeselector():
     if request.path.startswith('/admin'):
         return 'zh_Hans_CN'
     return request.accept_languages.best_match(['zh', 'en'])
 
 
 @babel.timezoneselector
-def timezone():
+def timezoneselector():
     return 'UTC'
 
 

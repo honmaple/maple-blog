@@ -1,36 +1,10 @@
 {% extends 'maple/base.html' %}
+{% from 'maple/paginate.html' import paginate %}
 
-{% block title -%}{{_("honmaple's blog")}} - {{_('Love is precious, free price is higher.')}}{% endblock %}
-
-{% block style -%}
-  {{ super() }}
-  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-{%- endblock -%}
+{% block title -%}{{_("honmaple's blog")}} - {{ DEFAULT.SITE["subtitle"] }}{% endblock %}
 
 {% block main %}
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-offset-1 col-md-9 col-center">
-        <nav class="navbar navbar-default">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-header" aria-expanded="false">
-              <span class="sr-only"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            {% block header %}
-              <a class="navbar-brand text-main" href="{{ url_for('index') }}">{{ _("honmaple") }}</a>
-            {% endblock %}
-          </div>
-          <div class="collapse navbar-collapse" id="bs-header">
-            {% include "base/link.html" %}
-            {% include "base/search.html" %}
-          </div>
-        </nav>
-        {% include "base/message.html" %}
-        {% block content %}{% endblock %}
-      </div>
-    </div>
-  </div>
+  {% include "base/nav.html" %}
+  {% include "base/message.html" %}
+  {% block content %}{% endblock %}
 {%- endblock -%}

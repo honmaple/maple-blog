@@ -1,0 +1,17 @@
+{% extends 'macro/base.html' %}
+
+{% block item -%}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <i class="fa fa-calendar text-main"></i>
+      {{ _('TimeLine') }}
+    </div>
+    {% for timeline in timelines.items %}
+      <div class="panel-body panel-body-border" style="word-break:break-all;">
+        {{ timeline.content }}
+        <footer><small style="color:#999;">{{ timeline.created_at | timesince }}</small></footer>
+      </div>
+    {% endfor %}
+  </div>
+  {{ paginate(timelines,'blog.timelines') }}
+{% endblock item %}

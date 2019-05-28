@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: Wednesday 2018-11-21 11:17:25 (CST)
+# Last Update: Wednesday 2019-05-29 00:08:48 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -58,9 +58,9 @@ MAIL_DEFAULT_SENDER = ''
 ADMIN_URL = '/admin'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@localhost/blog'
+# SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@localhost/blog'
 # SQLALCHEMY_ECHO = True
-# SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
 # SQLALCHEMY_DATABASE_URI = 'mysql://username:password@server/db'
 
 BABEL_DEFAULT_LOCALE = 'en'

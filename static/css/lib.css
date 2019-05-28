@@ -25,3 +25,9 @@ ul.list-group,li.list-group-item,nav.navbar,ul.dropdown-menu {
     margin: 0 auto;
     padding:0;
 }
+.collapsing {
+    opacity: 0.3;
+    -webkit-transition: opacity .25s ease, height .35s ease;
+    -o-transition: opacity .25s ease, height .35s ease;
+    transition: opacity .25s ease, height .35s ease;
+}

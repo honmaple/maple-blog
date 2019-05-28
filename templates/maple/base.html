@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{%- endblock -%}</title>
-    {% block style %}
+    {%- block style %}
       <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" >
       {%- assets "home_css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
       {%- endassets %}
@@ -15,7 +16,7 @@
   <body>
     {% block wrap -%}
       <div class="wrap">
-        <div class="main">
+        <div class="main" style="max-width: 1024px; margin:0 auto;">
           {% block main -%}{%- endblock -%}
         </div>
       </div>
@@ -30,6 +31,7 @@
        var g = {
            csrftoken: "{{ csrf_token() }}"
        };
+       $(document).ready(function() {$('.entry-content pre').each(function(i, block) {hljs.highlightBlock(block);});})
       </script>
       {%- assets "home_js" -%}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>

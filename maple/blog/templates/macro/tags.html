@@ -1,0 +1,15 @@
+{% set tags = Archives.tags() %}
+{% for tag,count in tags %}
+  {% if loop.index == 15 %}
+    <div class="collapse" id="entry-tag-list">
+  {% endif %}
+  <span class="label label-primary entry-label">
+    <a href="{{ url_for('blog.articles',tag=tag.name) }}">
+      {{ tag.name }}
+      <span class="badge">{{ count }}</span>
+    </a>
+  </span>
+  {% if loop.index >= 15 and loop.last %}
+    </div>
+  {% endif %}
+{% endfor %}

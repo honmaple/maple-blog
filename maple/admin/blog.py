@@ -6,28 +6,37 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2016-11-26 16:07:56 (CST)
-# Last Update: Monday 2018-11-26 11:48:12 (CST)
+# Last Update: Friday 2019-06-07 19:12:18 (CST)
 #          By:
 # Description:
 # **************************************************************************
 from .views import AdminView
-from maple.model import Blog, Comment, Tag, Category
+from flask import url_for, Markup
+from maple.blog.db import Article, Comment, Tag, Category
 from maple.extension import db
 
 
-class BlogView(AdminView):
-    # column_exclude_list = ['user']
-    column_searchable_list = ['title']
-    column_filters = ['category', 'created_at']
-    form_widget_args = {'content': {'rows': 10}}
-    column_formatters = dict(
-        content=lambda v, c, m, p: m.content[:100] + '...'
-    )
+class ArticleView(AdminView):
+    def _title(view, context, model, name):
+        return Markup('<a href="%s" target="_blank">%s</a>' % (url_for(
+            "blog.article", pk=model.id), model.title))
 
-    column_editable_list = ['title', 'category', 'is_copy', 'content_type']
+    def _content_type(view, context, model, name):
+        return dict(Article.CONTENT_TYPE)[model.content_type]
+
+    column_filters = ['category', 'created_at']
+    column_exclude_list = ["content", "created_at"]
+    column_searchable_list = ['title']
+    column_editable_list = ['category', 'content_type']
+    column_formatters = {
+        "title": _title,
+        "content_type": _content_type,
+    }
+
     # inline_models = [Tags]
+    form_widget_args = {'content': {'rows': 10}}
     form_excluded_columns = ['comments']
-    form_choices = {'content_type': Blog.CONTENT_TYPE}
+    form_choices = {'content_type': Article.CONTENT_TYPE}
 
 
 class TagView(AdminView):
@@ -39,36 +48,36 @@ class CategoryView(AdminView):
 
 
 class CommentView(AdminView):
-    column_editable_list = ['user', 'blog']
+    column_editable_list = ['user', 'article']
     column_filters = ['created_at', 'user']
 
 
 def init_admin(admin):
+    category = '管理博客'
     admin.add_view(
-        BlogView(
-            Blog,
+        ArticleView(
+            Article,
             db.session,
             name='管理文章',
-            endpoint='admin_article',
-            category='管理博客'))
+            category=category,
+        ))
     admin.add_view(
         CategoryView(
             Category,
             db.session,
             name='管理分类',
-            endpoint='admin_category',
-            category='管理博客'))
-    admin.add_view(
-        TagView(
-            Tag,
-            db.session,
-            name='管理节点',
-            endpoint='admin_tag',
-            category='管理博客'))
+            category=category,
+        ))
+    admin.add_view(TagView(
+        Tag,
+        db.session,
+        name='管理标签',
+        category=category,
+    ))
     admin.add_view(
         CommentView(
             Comment,
             db.session,
             name='管理回复',
-            endpoint='admin_comment',
-            category='管理博客'))
+            category=category,
+        ))

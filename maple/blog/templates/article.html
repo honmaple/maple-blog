@@ -1,0 +1,72 @@
+{% extends 'macro/base.html' %}
+
+{% block item -%}
+  <article>
+    <div class="entry-header">
+      <h1 class="entry-title"><a href="{{ url_for('blog.article',pk=article.id) }}">{{ article.title }}</a></h1>
+      {% include "macro/article_info.html" %}
+    </div>
+    <hr class="entry-hr" />
+    <div class="entry-content">
+      {{ article.to_html(truncate=False) }}
+    </div>
+    <div class="entry-copyright">
+      <div>
+        <i class="fa fa-user-o"></i>
+        {{ _("作者") }}:
+        <a href="">{{ article.user.username }}</a>
+      </div>
+      <div>
+        <i class="fa fa-link"></i>
+        {{ _("链接") }}:
+        <a href="{{ request.base_url }}">{{ request.base_url }}</a>
+      </div>
+      <div>
+        <i class="fa fa-copyright"></i>
+        {{ _("版权") }}:
+        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">
+          {{ _("知识共享署名-非商业性使用-相同方式共享4.0国际许可协议") }}
+        </a>
+      </div>
+    </div>
+    <hr class="entry-hr" />
+    <ul class="entry-pager">
+      {% set next = article.next_article %}
+      {% set previous = article.previous_article %}
+      {% if previous %}
+        <li class="previous">
+          <a href="{{ url_for('blog.article',pk=previous.id) }}" title="Previous article: {{ previous.title }}">
+            <i class="fa fa-chevron-left"></i>
+            {{ previous.title }}
+          </a>
+        </li>
+      {% endif %}
+      {% if next %}
+        <li class="next">
+          <a href="{{ url_for('blog.article',pk=next.id) }}" title="Next article: {{ next.title }}">
+            <i class="fa fa-chevron-right"></i>
+            {{ next.title }}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </article>
+{% endblock %}
+
+{% block panel -%}
+  <div class="entry-tabs">
+    <ul class="nav nav-tabs nav-justified" role="tablist">
+      <li role="presentation" class="active"><a href="#table-content" role="tab" data-toggle="tab" style="border-left:none;">{{ _("Contents") }}</a></li>
+      <li role="presentation"><a href="#info" role="tab" data-toggle="tab"  style="border-right:none;">{{ _("Site") }}</a></li>
+    </ul>
+
+    <div class="tab-content" style="padding:5px 10px;">
+      <div role="tabpanel" class="tab-pane active" id="table-content">
+        <div class="table-no-content">{{ _("NO CONTENTS") }}</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="info">
+        {% include "macro/site_info.html" %}
+      </div>
+    </div>
+  </div>
+{%- endblock panel %}

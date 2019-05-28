@@ -1,0 +1,23 @@
+{% extends 'macro/base.html' %}
+
+{% block item -%}
+  <div class="entry-list">
+    {% for article in articles.items -%}
+      <article>
+        <div class="entry-header">
+          <h1 class="entry-title"><a href="{{ url_for('blog.article',pk=article.id) }}">{{ article.title }}</a></h1>
+          {% include "macro/article_info.html" %}
+        </div>
+        <hr class="entry-hr" />
+        <div class="entry-content">
+          {{ article.to_html() }}
+        </div>
+        <div class="text-center">
+          <a class="btn entry-read-more" href="{{ url_for('blog.article',pk=article.id) }}">read more »</a>
+        </div>
+      </article>
+    {% endfor -%}
+    {% set kw = request.args.to_dict() %}
+    {{ paginate(articles,'blog.articles',dict(tag=kw.get('tag'), category=kw.get('category'))) }}
+  </div>
+{% endblock %}

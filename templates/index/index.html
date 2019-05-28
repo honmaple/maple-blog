@@ -14,8 +14,10 @@
         <h3>lin.jiang</h3>
         <cite>风落花语风落天，花落风雨花落田.</cite>
         <ul class="list-inline">
-          <li><a href="{{ url_for("blog") }}"><i class="fa fa-home" title="BLOG"></i></a></li>
-          {% include "base/social.html" %}
+          <li><a href="{{ url_for("blog.articles") }}"><i class="fa fa-home" title="BLOG"></i></a></li>
+          {% for item in DEFAULT.INFO %}
+            <li><a href="{{ item.url }}" target="_blank" title="{{ item.name }}"><i class="fa {{ item.icon }}"></i></a></li>
+          {% endfor %}
         </ul>
       </div>
     </div>

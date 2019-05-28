@@ -6,15 +6,16 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2016-04-15 13:19:04 (CST)
-# Last Update: Saturday 2018-11-11 23:40:03 (CST)
+# Last Update: Friday 2019-06-07 15:45:54 (CST)
 #          By: jianglin
 # Description:
 # **************************************************************************
-from maple.model import User
 from flask import abort
-from flask_login import current_user
 from flask_admin.contrib.sqla import ModelView
+from flask_login import current_user
 from flask_wtf import FlaskForm as Form
+from maple.extension import db
+from maple.model import User
 from wtforms import PasswordField
 from wtforms.validators import DataRequired, Email, Length
 
@@ -41,18 +42,12 @@ class AdminView(ModelView):
         abort(404)
 
 
-class QueView(AdminView):
-    column_editable_list = ['title', 'is_hidden', 'user']
-    column_filters = ['is_hidden', 'created_at']
-    column_searchable_list = ['title']
-
-
 class UserView(AdminView):
     column_searchable_list = ['username']
     column_filters = ['is_confirmed', 'is_superuser']
     column_exclude_list = ['password']
     column_editable_list = ['username', 'is_confirmed', 'is_superuser']
-    form_excluded_columns = ['blogs', 'comments', 'questions']
+    form_excluded_columns = ['articles', 'comments']
     form_args = {
         'username': {
             'validators': [DataRequired()]
@@ -77,3 +72,8 @@ class UserView(AdminView):
     # def update_model(self, form, model):
     #     form.password.data = model.set_password(form.password.data)
     #     return super(UserView, self).update_model(form, model)
+
+
+def init_admin(admin):
+    admin.add_view(
+        UserView(User, db.session, name='管理用户', endpoint='admin_user'))

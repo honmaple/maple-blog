@@ -6,12 +6,13 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-01-25 11:49:01 (CST)
-# Last Update: Tuesday 2018-11-06 13:52:22 (CST)
+# Last Update: Friday 2019-05-24 23:01:01 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask_login import LoginManager, login_user
 from flask_babel import lazy_gettext as _
+from flask_maple.response import HTTP
 
 login_manager = LoginManager()
 
@@ -19,21 +20,25 @@ login_manager = LoginManager()
 @login_manager.user_loader
 def user_loader(id):
     from maple.model import User
-    user = User.query.get(int(id))
-    return user
+    return User.query.get(int(id))
 
 
 @login_manager.request_loader
-def user_loader_from_request(request):
+def request_loader(request):
     from maple.model import User
-    token = request.headers.get('Token')
-    if not token:
-        token = request.args.get('token')
-    if token is not None:
+    token = request.headers.get('Token', request.args.get('token'))
+    user = None
+    if token:
         user = User.check_token(token)
-        if user:
-            login_user(user, True)
-            return user
+    if not user:
+        return
+    login_user(user, True)
+    return user
+
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return HTTP.UNAUTHORIZED()
 
 
 def init_app(app):

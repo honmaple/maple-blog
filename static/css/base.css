@@ -1,0 +1,85 @@
+html::-webkit-scrollbar-track
+{
+    border-radius: 2px;
+    background-color: #F5F5F5;
+}
+
+html::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: #ddd;
+}
+
+html::-webkit-scrollbar-thumb
+{
+    border-radius: 2px;
+    background-color: #ddd;
+}
+pre::-webkit-scrollbar-track
+{
+    border-radius: 2px;
+    background-color: #23241f;
+}
+pre::-webkit-scrollbar-corner {
+    border-radius: 5px;
+    background-color: #23241f;
+}
+pre::-webkit-scrollbar
+{
+    width: 5px;
+    height: 5px;
+    background-color: #23241f;
+}
+pre::-webkit-scrollbar-thumb
+{
+    background-color: #666;
+}
+body {
+    background-color: #f6f6f6;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size:100% 100%;
+    color:#444;
+    line-height: 1.5;
+    /* color:#515a6e; */
+}
+img {
+    width:100%
+}
+li {
+    list-style-type:none;
+}
+code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #c0341d;
+    background-color:rgba(252,239,237,0.5);
+    border-radius: 3px;
+}
+pre{
+    background-color:#23241f;
+    padding: 10px;
+    color: #ddd;
+    margin:10px 0;
+    overflow: auto;
+    border-style: solid;
+    border-color: #eceff2;
+    border-radius: 3px;
+    border-width: 0px 0;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+a {
+    color: #444;
+}
+a:focus, a:hover {
+    color:#333;
+    text-decoration: none;
+}
+article {
+    background-color: #fff;
+    border:1px solid #ddd;
+    border-radius: 5px;
+    padding:10px 20px;
+    margin-bottom: 10px;
+}

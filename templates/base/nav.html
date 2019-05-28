@@ -1,0 +1,26 @@
+<nav class="navbar navbar-default">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-header" aria-expanded="false">
+      <span class="sr-only"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    {% block header %}
+      <a class="navbar-brand text-main" href="{{ url_for('index') }}">{{ _("honmaple") }}</a>
+    {% endblock %}
+  </div>
+  <div class="collapse navbar-collapse" id="nav-header">
+    <ul class="nav navbar-nav">
+      {% for item in DEFAULT.HEADER %}
+        <li><a href="{% if item.url.startswith("http") %}{{ item.url }}{% else %}{{ url_for(item.url) }}{% endif %}">{{ _(item.name) }}</a></li>
+      {% endfor %}
+    </ul>
+    <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;" >
+      <div class="form-group has-feedback">
+        <input class="form-control input-sm" id="search" name="search" placeholder="{{ _('Search Content') }}" type="text" value="">
+        <i class="fa fa-search form-control-feedback"></i>
+      </div>
+    </form>
+  </div>
+</nav>

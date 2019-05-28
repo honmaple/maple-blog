@@ -6,27 +6,13 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 15:25:56 (CST)
-# Last Update: Tuesday 2018-11-13 10:47:02 (CST)
+# Last Update: Friday 2019-05-24 22:49:14 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask_babel import format_datetime
-from sqlalchemy import func
 from datetime import datetime
-from maple.extension import db
-from maple.model import Category, Blog, Tag
-
-
-class Archives:
-    def categories():
-        ins = db.session.query(Category, func.count(Blog.id)).outerjoin(
-            Category.blogs).group_by(Category.id)
-        return ins
-
-    def tags():
-        ins = db.session.query(Tag, func.count(Blog.id)).outerjoin(
-            Tag.blogs).group_by(Tag.id)
-        return ins
+from maple import default
 
 
 def timesince(dt, default="just now"):
@@ -53,4 +39,4 @@ def timesince(dt, default="just now"):
 
 def init_app(app):
     app.add_template_filter(timesince)
-    app.add_template_global(Archives)
+    app.jinja_env.globals['DEFAULT'] = default

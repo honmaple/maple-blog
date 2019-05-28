@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-01-25 11:52:26 (CST)
-# Last Update: Wednesday 2018-11-21 11:00:34 (CST)
+# Last Update: Friday 2019-06-07 15:49:10 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -18,14 +18,14 @@ from flask_maple.json import CustomJSONEncoder
 from flask_maple.middleware import Middleware
 from flask_maple.log import Logging
 
-bootstrap = Bootstrap(
-    css=('css/main.css', 'css/monokai.css', 'css/lib.css', 'css/timeline.css'),
-    js=('js/main.js', 'js/highlight.js', 'js/rain.js', 'js/org.js'),
-    auth=False)
-
 
 def init_app(app):
-    bootstrap.init_app(app)
+    Bootstrap(
+        app,
+        css=('css/base.css', 'css/main.css', 'css/monokai.css', 'css/lib.css',
+             'css/timeline.css'),
+        js=('js/main.js', 'js/highlight.js'),
+        auth=False)
     Captcha(app)
     Error(app)
     App(app, json=CustomJSONEncoder)

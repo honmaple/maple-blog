@@ -6,25 +6,26 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: Tuesday 2018-11-06 13:52:20 (CST)
+# Last Update: Friday 2019-06-07 15:56:03 (CST)
 #          By:
 # Description:
 # ********************************************************************************
-from flask import current_app
-from flask.cli import FlaskGroup, run_command
-from werkzeug.contrib.fixers import ProxyFix
-from code import interact
-from getpass import getpass
-from random import choice, sample, randrange
-from string import ascii_letters, digits
-
-from maple.extension import db, cache
-from maple import create_app
-from maple.model import User, Blog, Tag, Category, TimeLine
-
-import click
 import os
 import sys
+from code import interact
+from random import choice, randrange, sample
+from string import ascii_letters, digits
+
+import requests
+
+import click
+from flask import current_app
+from flask.cli import FlaskGroup, run_command
+from maple import create_app
+from maple.blog.db import Article, Category, Tag, TimeLine
+from maple.extension import cache, db
+from maple.model import User
+from werkzeug.contrib.fixers import ProxyFix
 
 app = create_app('config')
 app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -37,6 +38,8 @@ try:
     migrate = Migrate(app, db)
 except ImportError:
     pass
+
+DEFAULT_KEY = 'IjEyMzQ1Ig.XDWNHw.uLdy7jFgNZpM7bhgpAeRasqnM'
 
 
 @cli.command('shell', short_help='Starts an interactive shell.')
@@ -51,7 +54,7 @@ def runserver():
 
 
 @cli.command()
-def random_init():
+def init():
     def random_sep(n=6):
         sep = [' '] * n
         sep.append("\n")
@@ -86,7 +89,7 @@ def random_init():
     for category in Category.query.all():
         print(category, category.id)
         random_blogs = [
-            Blog(
+            Article(
                 category_id=category.id,
                 title=random_word(20, False),
                 content=' '.join([random_word() for _ in range(1000)]),
@@ -152,28 +155,49 @@ def babel_compile():
     os.system('pybabel compile -d LANG')
 
 
-@cli.command()
-@click.option('-u', '--username')
-@click.option('-e', '--email')
-@click.option('-w', '--password')
+@cli.command(short_help='Create user.')
+@click.option('-u', '--username', prompt=True, default="admin")
+@click.option('-e', '--email', prompt=True)
+@click.password_option('-p', '--password')
 def create_user(username, email, password):
-    if username is None:
-        username = input('Username(default admin):') or 'admin'
-    if email is None:
-        email = input('Email:')
-    if password is None:
-        password = getpass('Password:')
     user = User(
-        username=username, email=email, is_superuser=True, is_confirmed=True)
+        username=username,
+        email=email,
+        is_superuser=True,
+        is_confirmed=True,
+    )
     user.set_password(password)
     user.save()
 
 
 @cli.command()
-@click.option('-u', '--username')
+@click.option('-u', '--username', prompt=True, default="admin")
 def token(username):
-    r = User.query.filter_by(username=username).first().token
-    print(r)
+    r = User.query.filter_by(username=username).first()
+    if r:
+        print(r.token)
+        return
+    print("username is not exists")
+
+
+@cli.command()
+@click.option('-h', '--host', default="http://127.0.0.1:8001")
+@click.option('-b', '--bucket', default="default")
+@click.option('-k', '--key', default=DEFAULT_KEY)
+@click.option('-f', '--files', multiple=True)
+def upload(host, bucket, key, files):
+    url = host + '/api/file/{0}'.format(bucket)
+    multiple_files = []
+    for f in files:
+        i = ('images', (os.path.basename(f), open(f, 'rb'), 'image/png'))
+        multiple_files.append(i)
+
+    headers = {
+        'Api-Key': key,
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36'
+    }
+    r = requests.post(url, files=multiple_files, headers=headers)
+    print(r.text)
 
 
 @cli.command()
