@@ -6,14 +6,25 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-24 17:11:51 (CST)
-# Last Update: Friday 2019-06-07 14:59:22 (CST)
+# Last Update: Sunday 2019-06-09 01:47:45 (CST)
 #          By:
 # Description:
 # ********************************************************************************
+import os
+import re
 from hashlib import sha512
 from io import BytesIO
+from re import match
+
 from PIL import Image as ImagePIL
+from werkzeug.urls import url_parse
+from werkzeug.utils import PY2, text_type
+
 from . import config
+
+_windows_device_files = ('CON', 'AUX', 'COM1', 'COM2', 'COM3', 'COM4', 'LPT1',
+                         'LPT2', 'LPT3', 'PRN', 'NUL')
+_filename_gbk_strip_re = re.compile(r"[^\u3e00-\u9fa5()A-Za-z0-9_.-]")
 
 
 class Disk(object):
@@ -30,18 +41,31 @@ class Disk(object):
         pass
 
 
+def secure_filename(filename):
+    if isinstance(filename, text_type):
+        from unicodedata import normalize
+        filename = normalize('NFKD', filename).encode('utf-8', 'ignore')
+        if not PY2:
+            filename = filename.decode('utf-8')
+    for sep in os.path.sep, os.path.altsep:
+        if sep:
+            filename = filename.replace(sep, ' ')
+    filename = str(_filename_gbk_strip_re.sub('', '_'.join(
+        filename.split()))).strip('._')
+
+    if os.name == 'nt' and filename and \
+       filename.split('.')[0].upper() in _windows_device_files:
+        filename = '_' + filename
+    return filename
+
+
 def gen_hash(image):
     sha = sha512()
-    # while True:
-    #     data = f.read(block_size)
-    #     if not data:
-    #         break
-    # sha1.update(data)
     sha.update(image.read())
     return sha.hexdigest()
 
 
-def gen_thumb_image(path, width=0, height=0, filetype='PNG'):
+def gen_thumb_image(path, width=0, height=0, filetype='webp'):
     '''
     生成缩略图
     '''
@@ -70,3 +94,17 @@ def file_is_image(filename):
     if file_type in ["png", "jpg", "jpeg"]:
         return True
     return False
+
+
+def referer_is_block(request):
+    referrer = request.referrer
+    if referrer is None:
+        return False
+
+    hostname = url_parse(referrer).host
+    for r in config.ALLOWED_REFERER:
+        if r.startswith("*.") and match(".*." + r.split(".", 1)[1], hostname):
+            return False
+        if r == hostname:
+            return False
+    return True

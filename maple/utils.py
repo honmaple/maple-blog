@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 15:04:16 (CST)
-# Last Update: Wednesday 2019-05-29 00:18:01 (CST)
+# Last Update: Sunday 2019-06-09 17:59:47 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -31,12 +31,13 @@ def cache_key():
 
 class MethodView(_MethodView):
     cache = True
+    cache_time = 180
 
     def dispatch_request(self, *args, **kwargs):
         f = super(MethodView, self).dispatch_request
         if self.cache and request.method in ["GET", "HEAD"]:
             return cache.cached(
-                timeout=180,
+                timeout=self.cache_time,
                 key_prefix=cache_key,
             )(f)(*args, **kwargs)
         return f(*args, **kwargs)

@@ -28,4 +28,5 @@ def create_app(config):
 
     apps = ["maple.blog", "maple.storage", "maple.tool"]
     [import_string(i).init_app(app) for i in apps]
+
     return app

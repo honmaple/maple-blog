@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:40 (CST)
-# Last Update: Friday 2019-06-07 13:17:57 (CST)
+# Last Update: Sunday 2019-06-09 17:55:38 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -34,9 +34,17 @@ site.add_url_rule(
     '/api/file/<bucket>/<int:pk>',
     view_func=FileView.as_view('file'),
 )
+
+show = FileShowView.as_view("show")
+
 site.add_url_rule(
-    "/storage/<path:filename>",
-    view_func=FileShowView.as_view("show"),
+    "/",
+    defaults={"filename": "index.html"},
+    view_func=show,
+)
+site.add_url_rule(
+    "/<path:filename>",
+    view_func=show,
 )
 
 

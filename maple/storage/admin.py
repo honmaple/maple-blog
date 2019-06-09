@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-06-07 01:40:32 (CST)
-# Last Update: Friday 2019-06-07 15:03:05 (CST)
+# Last Update: Sunday 2019-06-16 15:03:02 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -14,13 +14,12 @@ from os import path as op
 
 from flask import Markup, url_for
 from flask_admin import form
-from maple.admin.views import AdminView
+from maple.admin import AdminView
 from maple.extension import db
-from werkzeug import secure_filename
 
 from . import config
 from .db import Bucket, File
-from .util import gen_hash
+from .util import gen_hash, secure_filename
 
 
 class BucketView(AdminView):
@@ -30,11 +29,15 @@ class BucketView(AdminView):
 
 class FileView(AdminView):
     def _list_thumbnail(view, context, model, name):
+        args = dict(filename=model.relpath)
+        if config.HTTPS:
+            args.update(**dict(_external=True, _scheme="https"))
+
         if model.file_type.startswith("image"):
             return Markup('<img src="%s">' % url_for(
-                "storage.show", filename=model.relpath, type="small"))
+                "storage.show", type="mini", **args))
         return Markup('<a href="%s" target="_blank">%s</a>' % (url_for(
-            "storage.show", filename=model.relpath), model.name))
+            "storage.show", **args), model.name))
 
     def _prefix_name(obj, file_data):
         part = op.splitext(file_data.filename)
@@ -44,7 +47,9 @@ class FileView(AdminView):
         file_data.seek(0)
         return obj.relpath
 
+    column_filters = ["file_type", "path"]
     column_editable_list = ["name", "path"]
+    column_searchable_list = ["name", "path"]
     column_exclude_list = ["updated_at"]
     column_formatters = {'hash': _list_thumbnail}
     form_excluded_columns = ['hash', "name", "file_type"]

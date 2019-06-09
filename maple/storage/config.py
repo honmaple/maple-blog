@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-24 16:49:50 (CST)
-# Last Update: Friday 2019-06-07 03:27:11 (CST)
+# Last Update: Sunday 2019-06-09 17:49:39 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -17,7 +17,7 @@ CORS = {
         "origins": [r'^https://.+honmaple.com$', r"https://honmaple.me"]
     }
 }
-# SUBDOMAIN = "static.honmaple.com"
+HTTPS = True
 SUBDOMAIN = None
 UPLOAD_FOLDER = os.path.abspath(
     os.path.join(
@@ -26,4 +26,31 @@ UPLOAD_FOLDER = os.path.abspath(
         os.path.pardir,
         'storage',
     ))
-UPLOAD_ALLOWED_EXTENSIONS = ["js", "css", "png", "jpg"]
+
+UPLOAD_ALLOWED_EXTENSIONS = [
+    "ico",
+    "txt",
+    "html",
+    "js",
+    "css",
+    "png",
+    "jpg",
+    # "woff2",  # fonts
+    # "woff",
+    # "ttf",
+    # "otf",
+    # "eot",
+    # "svg",
+]
+
+ALLOWED_REFERER = [
+    "honmaple.com",
+    "*.honmaple.com",
+    "honmaple.me",
+    "honmaple.org",
+    "*.honmaple.org",
+    "jianglin.me",
+    "localhost",
+    "*.localhost",
+    "127.0.0.1",
+]

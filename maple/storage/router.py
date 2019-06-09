@@ -6,22 +6,25 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:36 (CST)
-# Last Update: Friday 2019-06-07 15:04:39 (CST)
+# Last Update: Sunday 2019-06-16 19:21:34 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 import os
+from datetime import datetime as dt
+from datetime import timedelta
 
-from flask import request, send_from_directory, current_app, make_response
+from flask import abort, make_response, request, send_from_directory
+
 from flask_maple.response import HTTP
 from flask_maple.serializer import Serializer
 from flask_maple.views import IsAuthMethodView
-from maple.utils import check_params, filter_maybe, update_maybe, MethodView
-from werkzeug import secure_filename
+from maple.utils import MethodView, check_params, filter_maybe, update_maybe
 
 from . import config
 from .db import Bucket, File
-from .util import file_is_allowed, file_is_image, gen_hash, gen_thumb_image
+from .util import (file_is_allowed, file_is_image, gen_hash, gen_thumb_image,
+                   referer_is_block, secure_filename)
 
 
 class BucketListView(IsAuthMethodView):
@@ -171,31 +174,51 @@ class FileView(IsAuthMethodView):
 
 
 class FileShowView(MethodView):
-    cache = False
+    cache = True
+    cache_time = 3600
 
     def render_image(self, filename):
+        '''
+        默认设置为webp, 减少传输大小
+        '''
         typ = request.args.get("type")
+        width = request.args.get("width", 0, type=int)
+        height = request.args.get("height", 0, type=int)
 
-        if typ == "thumb":
-            width, height = 600, 0
+        if typ == "iloveyou":  # 哈哈
+            return send_from_directory(config.UPLOAD_FOLDER, filename)
+
+        if typ == "mini":
+            width, height = 120, 0
         elif typ == "small":
             width, height = 360, 0
+        elif typ == "thumb":
+            width, height = 600, 0
         elif typ == "show":
             width, height = 960, 0
-        else:
-            width = request.args.get("width", 0, type=int)
-            height = request.args.get("height", 0, type=int)
+        elif width == height == 0:
+            width, height = 960, 0
 
-        if width or height:
-            img = os.path.join(config.UPLOAD_FOLDER, filename)
-            stream = gen_thumb_image(img, width, height)
-            buf_value = stream.getvalue()
-            response = make_response(buf_value)
-            response.headers['Content-Type'] = 'image/png'
-            return response
-        return send_from_directory(config.UPLOAD_FOLDER, filename)
+        img = os.path.join(config.UPLOAD_FOLDER, filename)
+        stream = gen_thumb_image(img, width, height)
+        buf_value = stream.getvalue()
+        response = make_response(buf_value)
+
+        max_age = 30 * 3600 * 24
+        response.mimetype = "image/webp"
+        # 不要设置last_modified, 避免浏览器与服务端多一次交互
+        # response.last_modified = os.path.getmtime(img)
+        response.expires = dt.utcnow() + timedelta(seconds=max_age)
+        # response.cache_control.public = True
+        response.cache_control.max_age = max_age
+        response.add_etag()
+        return response.make_conditional(request)
 
     def get(self, filename):
+        if referer_is_block(request):
+            abort(403)
+        if not os.path.exists(os.path.join(config.UPLOAD_FOLDER, filename)):
+            abort(404)
         if file_is_image(filename):
             return self.render_image(filename)
         return send_from_directory(config.UPLOAD_FOLDER, filename)

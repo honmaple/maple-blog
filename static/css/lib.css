@@ -31,3 +31,20 @@ ul.list-group,li.list-group-item,nav.navbar,ul.dropdown-menu {
     -o-transition: opacity .25s ease, height .35s ease;
     transition: opacity .25s ease, height .35s ease;
 }
+.label {
+    padding-top:.2em;
+    padding-bottom: 0.18em;
+}
+.label-times {
+    padding-top: .15em;
+    padding-bottom: 0.1em;
+    border:1px solid #ccc;
+    color:#999;
+}
+.netease-music {
+    height:100px;
+    width:100%;
+    max-width:320px;
+    display:block;
+    margin:0 auto;
+}

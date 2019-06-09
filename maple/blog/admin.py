@@ -2,18 +2,19 @@
 # -*- coding: utf-8 -*-
 # **************************************************************************
 # Copyright © 2016 jianglin
-# File Name: blog.py
+# File Name: admin.py
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2016-11-26 16:07:56 (CST)
-# Last Update: Friday 2019-06-07 19:12:18 (CST)
+# Last Update: Sunday 2019-06-16 15:03:20 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from .views import AdminView
-from flask import url_for, Markup
-from maple.blog.db import Article, Comment, Tag, Category
+from flask import Markup, url_for
+from maple.admin import AdminView
 from maple.extension import db
+
+from .db import Article, Category, Comment, Tag, TimeLine
 
 
 class ArticleView(AdminView):
@@ -33,10 +34,12 @@ class ArticleView(AdminView):
         "content_type": _content_type,
     }
 
-    # inline_models = [Tags]
+    # inline_models = [Tag]
     form_widget_args = {'content': {'rows': 10}}
     form_excluded_columns = ['comments']
-    form_choices = {'content_type': Article.CONTENT_TYPE}
+    form_choices = {
+        'content_type': [(str(i[0]), i[1]) for i in Article.CONTENT_TYPE]
+    }
 
 
 class TagView(AdminView):
@@ -52,32 +55,44 @@ class CommentView(AdminView):
     column_filters = ['created_at', 'user']
 
 
+class TimeLineView(AdminView):
+    column_editable_list = ['is_hidden', 'user']
+    column_filters = ['created_at', 'user']
+    form_widget_args = {'content': {'rows': 10}}
+
+
 def init_admin(admin):
-    category = '管理博客'
     admin.add_view(
         ArticleView(
             Article,
             db.session,
             name='管理文章',
-            category=category,
+            category='管理博客',
         ))
     admin.add_view(
         CategoryView(
             Category,
             db.session,
             name='管理分类',
-            category=category,
+            category='管理博客',
         ))
     admin.add_view(TagView(
         Tag,
         db.session,
         name='管理标签',
-        category=category,
+        category='管理博客',
     ))
     admin.add_view(
         CommentView(
             Comment,
             db.session,
             name='管理回复',
-            category=category,
+            category='管理博客',
         ))
+    admin.add_view(
+        TimeLineView(
+            TimeLine,
+            db.session,
+            name='管理时间轴',
+            endpoint='admin_timeline',
+            category='管理博客'))

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: Friday 2019-06-07 15:56:03 (CST)
+# Last Update: Friday 2019-06-14 19:16:06 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -166,6 +166,18 @@ def create_user(username, email, password):
         is_superuser=True,
         is_confirmed=True,
     )
+    user.set_password(password)
+    user.save()
+
+
+@cli.command()
+@click.option('-u', '--username', prompt=True, default="admin")
+@click.password_option('-p', '--password')
+def password(username, password):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        print("username is not exists")
+        return
     user.set_password(password)
     user.save()
 

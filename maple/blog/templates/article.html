@@ -13,19 +13,19 @@
     <div class="entry-copyright">
       <div>
         <i class="fa fa-user-o"></i>
-        {{ _("作者") }}:
+        {{ _("Author") }}:
         <a href="">{{ article.user.username }}</a>
       </div>
       <div>
         <i class="fa fa-link"></i>
-        {{ _("链接") }}:
+        {{ _("Link") }}:
         <a href="{{ request.base_url }}">{{ request.base_url }}</a>
       </div>
       <div>
         <i class="fa fa-copyright"></i>
-        {{ _("版权") }}:
+        {{ _("Copyright") }}:
         <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">
-          {{ _("知识共享署名-非商业性使用-相同方式共享4.0国际许可协议") }}
+          {{ _("CC BY-NC-SA 4.0") }}
         </a>
       </div>
     </div>
@@ -59,8 +59,7 @@
       <li role="presentation" class="active"><a href="#table-content" role="tab" data-toggle="tab" style="border-left:none;">{{ _("Contents") }}</a></li>
       <li role="presentation"><a href="#info" role="tab" data-toggle="tab"  style="border-right:none;">{{ _("Site") }}</a></li>
     </ul>
-
-    <div class="tab-content" style="padding:5px 10px;">
+    <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="table-content">
         <div class="table-no-content">{{ _("NO CONTENTS") }}</div>
       </div>

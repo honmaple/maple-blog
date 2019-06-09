@@ -46,8 +46,8 @@ body {
 img {
     width:100%
 }
-li {
-    list-style-type:none;
+ul > li {
+    list-style-type: none;
 }
 code {
     padding: 2px 4px;
@@ -75,6 +75,13 @@ a {
 a:focus, a:hover {
     color:#333;
     text-decoration: none;
+}
+blockquote {
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-left-color: #9954bb;
+    border-top-right-radius:3px;
+    border-bottom-right-radius:3px;
 }
 article {
     background-color: #fff;

@@ -38,6 +38,9 @@
     font-size:0.8em;
     text-align: center;
 }
+.entry-info span{
+    display:inline-block;
+}
 .entry-info-sep {
     margin-left:3px;
     margin-right:3px;
@@ -69,13 +72,10 @@
     font-size: 1em;
     color:#666;
 }
-.entry-content ul {
+.entry-content ul,.entry-content ol {
     margin-left: -1.5em;
 }
-/* .entry-content ol { */
-/*     padding-left:16px; */
-/* } */
-.entry-content li {
+.entry-content ul li {
     list-style-type:circle;
 }
 .entry-content img {
@@ -86,9 +86,6 @@
 .entry-content a {
     color: #C74451;
 }
-/* .entry-list .entry-content #table-of-contents { */
-/*      display:none; */
-/* } */
 .entry-collapse {
     padding: 0;
     color: #666;
@@ -118,28 +115,42 @@
 .entry-tabs .nav-tabs.nav-justified>.active>a:hover {
     border-top:none;
 }
+.entry-tabs .tab-content {
+    padding: 5px 10px;
+}
 
-.entry-tabs .table-no-content {
+.table-no-content {
     text-align:center;
     padding: 10px;
     color: #999;
 }
-
 #table-content  ul{
-    padding-left: 1.5em;
+    padding-left: 1em;
     counter-reset: section;
 }
-#table-content li a::before {
+#table-content ul:first-child{
+    padding-left: 0;
+}
+#table-content li > a::before {
     counter-increment: section;
     content: counters(section, ".") ". ";
 }
-#table-content  ul:first-child{
-    padding-left: 0;
+#table-content li > a {
+    color: #2f4f4f;
+    padding: 3px 0px 3px 10px;
+    margin-left: -10px;
+    margin-right: -10px;
 }
-#table-content  li > ul{
+#table-content li > ul{
     display: none;
 }
-#table-content  li:hover > ul{
+#table-content li:hover > ul{
+    display: block;
+}
+#table-content li.active > a {
+    font-weight: 700;
+}
+#table-content li.active > ul{
     display: block;
 }
 
@@ -327,18 +338,19 @@
         width: inherit;
     }
     .col-sm-9 {
-        padding-right: 2px;
+        padding-right: 8px;
     }
     .col-sm-3 {
-        padding-left: 3px;
+        padding-left: 0px;
     }
 }
 @media (max-width : 768px ){
     .col-sm-9 {
-        padding-right: 2px;
+        padding-right: 15px;
     }
     .col-sm-3 {
         display:none;
+        padding-left: 15px;
     }
 }
 @media (max-width : 1024px) and (min-width : 768px){

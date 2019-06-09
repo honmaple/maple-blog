@@ -1,21 +1,25 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 # **************************************************************************
-# Copyright © 2016 jianglin
-# File Name: views.py
+# Copyright © 2016-2019 jianglin
+# File Name: admin.py
 # Author: jianglin
 # Email: mail@honmaple.com
-# Created: 2016-04-15 13:19:04 (CST)
-# Last Update: Friday 2019-06-07 15:45:54 (CST)
-#          By: jianglin
+# Created: 2016-04-11 17:35:11 (CST)
+# Last Update: Sunday 2019-06-16 15:06:04 (CST)
+#          By:
 # Description:
 # **************************************************************************
 from flask import abort
+from flask_admin import Admin
+from flask_admin.base import AdminIndexView
 from flask_admin.contrib.sqla import ModelView
+from flask_babel import lazy_gettext as _
 from flask_login import current_user
 from flask_wtf import FlaskForm as Form
 from maple.extension import db
 from maple.model import User
+from werkzeug import import_string
 from wtforms import PasswordField
 from wtforms.validators import DataRequired, Email, Length
 
@@ -32,8 +36,6 @@ class AdminView(ModelView):
     page_size = 10
     can_view_details = True
     form_base_class = BaseForm
-
-    # column_display_pk = True
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.is_superuser
@@ -74,6 +76,29 @@ class UserView(AdminView):
     #     return super(UserView, self).update_model(form, model)
 
 
+def init_app(app):
+    admin = Admin(
+        name=_("honmaple"),
+        index_view=AdminIndexView(
+            template="admin/index.html",
+            url=app.config.get("ADMIN_URL", "/"),
+        ),
+        template_mode="bootstrap3")
+
+    admins = [
+        "maple.admin",
+        "maple.blog.admin",
+        "maple.storage.admin",
+    ]
+    [import_string(i).init_admin(admin) for i in admins]
+    admin.init_app(app)
+
+
 def init_admin(admin):
     admin.add_view(
-        UserView(User, db.session, name='管理用户', endpoint='admin_user'))
+        UserView(
+            User,
+            db.session,
+            name='管理用户',
+            endpoint='admin_user',
+        ))

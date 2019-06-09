@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{%- endblock -%}</title>
     {%- block style %}
-      <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" >
+      <link href="https://static.honmaple.com/static/css/lib.min.css" rel="stylesheet">
       {%- assets "home_css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
       {%- endassets %}
@@ -25,8 +24,7 @@
       {%- endblock -%}
     {%- endblock wrap %}
     {%- block script %}
-      <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
-      <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="https://static.honmaple.com/static/js/lib.min.js"></script>
       <script type="text/javascript">
        var g = {
            csrftoken: "{{ csrf_token() }}"

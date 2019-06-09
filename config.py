@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: Wednesday 2019-05-29 00:08:48 (CST)
+# Last Update: Sunday 2019-06-09 01:38:04 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -19,18 +19,25 @@ SECRET_KEY = 'asdadasd'
 SECRET_KEY_SALT = 'asdasdads'
 TEMPLATES_AUTO_RELOAD = True
 
-FOOTER_MESSAGE = '©2015-2018 honmaple. All rights reserved.'
+FOOTER_MESSAGE = '©2015-2019 honmaple. All rights reserved.'
 PERMANENT_SESSION_LIFETIME = timedelta(days=3)
 REMEMBER_COOKIE_DURATION = timedelta(days=3)
 
 # WTF_CSRF_CHECK_DEFAULT = False
 ONLINE_LAST_MINUTES = 5
-SUMMARY_MAX_LENGTH = 64
+SUMMARY_MAX_LENGTH = 48
+
+PREFERRED_URL_SCHEME = "https"
+SERVER_NAME = "localhost:8001"
+STORAGE = {
+    "SUBDOMAIN": "static",
+    "HTTPS": False,
+}
 
 PER_PAGE = 6
 
-SERVER_NAME = '127.0.0.1:8001'
-SESSION_COOKIE_DOMAIN = "127.0.0.1:8001"
+# SERVER_NAME = '127.0.0.1:8001'
+# SESSION_COOKIE_DOMAIN = SERVER_NAME
 REDIS = {'db': 0, 'password': 'redis'}
 
 # 定制缓存 = 60

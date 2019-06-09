@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:05 (CST)
-# Last Update: Friday 2019-06-07 14:44:34 (CST)
+# Last Update: Saturday 2019-06-08 15:26:15 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -120,11 +120,16 @@ def file_update_listen(mapper, connection, target):
     change = {
         "name": (target.name, target.name),
         "path": (target.path, target.path),
+        "hash": (target.hash, target.hash),
         "bucket": (target.bucket, target.bucket)
     }
     history = get_history(target, "bucket")
     if history.added and history.deleted:
         change["bucket"] = (history.deleted[0], history.added[0])
+
+    history = get_history(target, "hash")
+    if history.added and history.deleted:
+        change["hash"] = (history.deleted[0], history.added[0])
 
     history = get_history(target, "name")
     if history.added and history.deleted:
@@ -146,7 +151,13 @@ def file_update_listen(mapper, connection, target):
         change["path"][1].lstrip("/"),
         change["name"][1],
     )
-    if oldpath != newpath and os.path.exists(oldpath):
+    file_change = change["hash"][0] != change["hash"][1]
+    filepath_change = oldpath != newpath and os.path.exists(oldpath)
+
+    if file_change and filepath_change:
+        os.remove(oldpath)
+
+    if not file_change and filepath_change:
         dirname = os.path.dirname(newpath)
         if not os.path.exists(dirname):
             os.makedirs(dirname)

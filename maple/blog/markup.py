@@ -6,20 +6,22 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-11-06 11:29:39 (CST)
-# Last Update: Thursday 2019-06-06 23:09:01 (CST)
+# Last Update: Monday 2019-06-10 01:21:19 (CST)
 #          By:
 # Description:
 # ********************************************************************************
-from flask import Markup
-from bleach import clean
-from orgpython import org_to_html
-from markdown import markdown
+import re
 
+import orgpython
+import six
+from markdown import markdown
+from orgpython import org_to_html
+from orgpython import regex as R
 from six.moves import html_entities
 from six.moves.html_parser import HTMLParser
-import six
-import re
-import orgpython
+
+from bleach import clean
+from flask import Markup
 
 
 class _HTMLWordTruncator(HTMLParser):
@@ -204,4 +206,38 @@ def table_init(self):
     [self.append(line.rstrip()) for line in self.lines]
 
 
+def to_image(src):
+    label = '<a href="{0}" data-fancybox="image"><img data-src="{1}" class="lazyload" /></a>'
+    url = re.compile(r'https?://static.honmaple.com')
+    if url.match(src):
+        return label.format(src + '?type=show', src + '?type=thumb')
+    return label.format(src, src)
+
+
+def image(self, text):
+    if not R.image.search(text):
+        return text
+
+    def _match(match):
+        return to_image(match.group(1))
+
+    return R.image.sub(_match, text)
+
+
+def link(self, text):
+    if not R.link.search(text):
+        return text
+
+    def _match(match):
+        href = match.group(1)
+        text = match.group(2)
+        if not text:
+            return to_image(href)
+        return '<a href="{0}">{1}</a>'.format(href, text)
+
+    return R.link.sub(_match, text)
+
+
+orgpython.inline.InlineText.image = image
+orgpython.inline.InlineText.link = link
 orgpython.block.Table.init = table_init

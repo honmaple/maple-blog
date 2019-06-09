@@ -9,13 +9,13 @@
   <span class="entry-info-sep">|</span>
   <span>
     <i class="fa fa-folder-o"></i>
-    {{ _("Category") }}:
+    {{ _("Category") }}
     <a href="{{ url_for('blog.articles',category=category) }}" class="label label-default">{{ category }}</a>
   </span>
   <span class="entry-info-sep">|</span>
   <span>
     <i class="fa fa-bookmark-o"></i>
-    {{ _("Tags") }}:
+    {{ _("Tags") }}
     {% for tag in article.tags %}
       <a href="{{ url_for('blog.articles',tag=tag.name) }}" class="label label-tag" style="display: inline-block;">{{ tag.name }}</a>
     {% endfor %}
@@ -23,8 +23,8 @@
   <span class="entry-info-sep hidden-xs">|</span>
   <span class="hidden-xs">
     <i class="fa fa-eye"></i>
-    {{ _("Read") }}:
-    <span class="label" style="border:1px solid #ccc;color:#999;padding:.1em .6em;">
+    {{ _("Read") }}
+    <span class="label label-times">
       {{ article.read_times }}
     </span>
   </span>

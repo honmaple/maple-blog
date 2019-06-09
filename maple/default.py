@@ -6,36 +6,39 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-09 22:34:08 (CST)
-# Last Update: Wednesday 2019-05-29 01:24:37 (CST)
+# Last Update: Friday 2019-06-07 22:26:12 (CST)
 #          By:
 # Description:
 # ********************************************************************************
+from flask_babel import lazy_gettext as _
+
 SITE = {
-    'title': '紅楓',
-    'subtitle': '爱情诚可贵，自由价更高',
+    'title': _('紅楓'),
+    'subtitle': _('爱情诚可贵，自由价更高'),
     "author": "lin.jiang",
 }
+
 EXTENSION = {"login": False}
 SUBDOMAIN = {"static": True}
 HEADER = [
     {
-        "name": "Poem",
+        "name": _("Poem"),
         "url": "https://poem.honmaple.com"
     },
     {
-        "name": "Cloud",
+        "name": _("Cloud"),
         "url": "https://cloud.honmaple.com"
     },
     {
-        "name": "TimeLine",
+        "name": _("TimeLine"),
         "url": "blog.timelines"
     },
     {
-        "name": "Archives",
+        "name": _("Archives"),
         "url": "blog.archives"
     },
     {
-        "name": "About me",
+        "name": _("About me"),
         "url": "about"
     },
 ]
@@ -43,16 +46,16 @@ HEADER = [
 FOOTER = {
     "copyright": "© 2015-2019 honmaple",
     "links": [{
-        "name": "Friends",
+        "name": _("Friends"),
         "url": "friend"
     }, {
-        "name": "Contact",
+        "name": _("Contact"),
         "url": "contact"
     }, {
-        "name": "Poem",
+        "name": _("Poem"),
         "url": "https://poem.honmaple.com"
     }, {
-        "name": "TimeLine",
+        "name": _("TimeLine"),
         "url": "blog.timelines"
     }],
     "socials": [
