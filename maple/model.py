@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2017-08-24 15:13:33 (CST)
-# Last Update: Friday 2019-06-07 15:43:08 (CST)
+# Last Update: Monday 2019-07-01 20:00:58 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -26,8 +26,8 @@ class User(db.Model, UserMixin):
     def token(self):
         return self.email_token
 
-    @staticmethod
-    def check_token(cls, token, max_age=86400):
+    @classmethod
+    def check_token(cls, token, max_age=24 * 3600 * 30):
         return cls.check_email_token(token, max_age)
 
 

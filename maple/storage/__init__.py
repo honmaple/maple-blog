@@ -6,11 +6,13 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:40 (CST)
-# Last Update: Sunday 2019-06-09 17:55:38 (CST)
+# Last Update: Sunday 2019-06-30 14:15:42 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask import Blueprint
+
+from maple.extension import csrf
 
 from . import config
 from .router import (BucketListView, BucketView, FileListView, FileShowView,
@@ -59,3 +61,4 @@ def init_conf(app):
 def init_app(app):
     init_conf(app)
     app.register_blueprint(site, subdomain=config.SUBDOMAIN)
+    csrf.exempt(site)

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 15:04:16 (CST)
-# Last Update: Sunday 2019-06-09 17:59:47 (CST)
+# Last Update: Sunday 2019-06-30 14:22:16 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -100,3 +100,9 @@ def check_params(keys, req=None):
         return decorator
 
     return _check_params
+
+
+def is_true(value):
+    if isinstance(value, str):
+        return value == "1" or value == "True" or value == "true"
+    return bool(value)

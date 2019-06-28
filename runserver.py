@@ -6,26 +6,27 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: Friday 2019-06-14 19:16:06 (CST)
+# Last Update: Friday 2019-06-28 16:33:52 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 import os
 import sys
 from code import interact
+from mimetypes import guess_type
 from random import choice, randrange, sample
 from string import ascii_letters, digits
 
-import requests
-
 import click
+import requests
 from flask import current_app
 from flask.cli import FlaskGroup, run_command
+from werkzeug.contrib.fixers import ProxyFix
+
 from maple import create_app
 from maple.blog.db import Article, Category, Tag, TimeLine
 from maple.extension import cache, db
 from maple.model import User
-from werkzeug.contrib.fixers import ProxyFix
 
 app = create_app('config')
 app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -39,7 +40,7 @@ try:
 except ImportError:
     pass
 
-DEFAULT_KEY = 'IjEyMzQ1Ig.XDWNHw.uLdy7jFgNZpM7bhgpAeRasqnM'
+DEFAULT_KEY = 'Im1haWxAaG9ubWFwbGUuY29tIg.XRW9Sw.VEGQC5Ilyw-NtrBQDJU4TWx9Sg8'
 
 
 @cli.command('shell', short_help='Starts an interactive shell.')
@@ -193,22 +194,24 @@ def token(username):
 
 
 @cli.command()
-@click.option('-h', '--host', default="http://127.0.0.1:8001")
-@click.option('-b', '--bucket', default="default")
-@click.option('-k', '--key', default=DEFAULT_KEY)
+@click.option('-h', '--host', default="http://static.localhost:8001")
+@click.option('-b', '--bucket', prompt=True, default="default")
+@click.option('-p', '--path', prompt=True, default="/")
+@click.option('-k', '--key', prompt=True, default=DEFAULT_KEY)
 @click.option('-f', '--files', multiple=True)
-def upload(host, bucket, key, files):
+def upload(host, bucket, path, key, files):
     url = host + '/api/file/{0}'.format(bucket)
     multiple_files = []
     for f in files:
-        i = ('images', (os.path.basename(f), open(f, 'rb'), 'image/png'))
+        i = ('files', (os.path.basename(f), open(f, 'rb'), guess_type(f)[0]))
         multiple_files.append(i)
 
     headers = {
-        'Api-Key': key,
+        'MapleToken': key,
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36'
     }
-    r = requests.post(url, files=multiple_files, headers=headers)
+    data = {"path": path}
+    r = requests.post(url, data=data, files=multiple_files, headers=headers)
     print(r.text)
 
 

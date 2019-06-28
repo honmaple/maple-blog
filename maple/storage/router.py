@@ -6,23 +6,26 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:36 (CST)
-# Last Update: Sunday 2019-06-16 19:21:34 (CST)
+# Last Update: Sunday 2019-06-30 15:13:55 (CST)
 #          By:
 # Description:
 # ********************************************************************************
+import json
 import os
 from datetime import datetime as dt
 from datetime import timedelta
 
 from flask import abort, make_response, request, send_from_directory
-
+from flask_babel import gettext as _
 from flask_maple.response import HTTP
-from flask_maple.serializer import Serializer
 from flask_maple.views import IsAuthMethodView
-from maple.utils import MethodView, check_params, filter_maybe, update_maybe
+
+from maple.utils import (MethodView, check_params, filter_maybe, is_true,
+                         update_maybe)
 
 from . import config
-from .db import Bucket, File
+from .db import Bucket, File, FilePath
+from .serializer import BucketSerializer, FilePathSerializer, FileSerializer
 from .util import (file_is_allowed, file_is_image, gen_hash, gen_thumb_image,
                    referer_is_block, secure_filename)
 
@@ -35,7 +38,7 @@ class BucketListView(IsAuthMethodView):
 
         params = filter_maybe(data, {"name": "name__contains"})
         ins = user.buckets.filter_by(**params).paginate(page, number)
-        serializer = Serializer(ins)
+        serializer = BucketSerializer(ins)
         return HTTP.OK(data=serializer.data)
 
     @check_params(["name"])
@@ -51,7 +54,7 @@ class BucketListView(IsAuthMethodView):
             bucket.description = description
         bucket.save()
 
-        rep = Serializer(bucket).data
+        rep = BucketSerializer(bucket).data
         return HTTP.OK(data=rep)
 
 
@@ -59,7 +62,7 @@ class BucketView(IsAuthMethodView):
     def get(self, pk):
         user = request.user
         ins = user.buckets.filter_by(id=pk).get_or_404("bucket not found")
-        rep = Serializer(ins).data
+        rep = BucketSerializer(ins).data
         return HTTP.OK(data=rep)
 
     def put(self, pk):
@@ -70,7 +73,7 @@ class BucketView(IsAuthMethodView):
         ins = update_maybe(ins, data, ["name", "description"])
         ins.save()
 
-        rep = Serializer(ins).data
+        rep = BucketSerializer(ins).data
         return HTTP.OK(data=rep)
 
     def delete(self, pk):
@@ -87,63 +90,93 @@ class FileListView(IsAuthMethodView):
         page, number = self.pageinfo
 
         bucket = user.buckets.filter_by(
-            id=bucket).get_or_404("bucket not found")
+            name=bucket).get_or_404("bucket not found")
 
         params = filter_maybe(data, {
             "name": "name__contains",
-            "path": "path",
             "type": "file_type"
         })
+        path_params = {"name": "/"}
+        path_id = request.data.get("path_id")
+        if path_id:
+            path_params = {"id": path_id}
 
-        ins = bucket.files.filter_by(**params).paginate(page, number)
-        serializer = Serializer(ins)
-        return HTTP.OK(data=serializer.data)
+        filepath = bucket.paths.filter_by(
+            **path_params).get_or_404("filepath not found")
+        for path in request.data.get("path", "/").split("/"):
+            if path == "":
+                continue
+            filepath = filepath.child_paths.filter_by(
+                name=path).get_or_404("filepath not found")
+
+        paths = filepath.child_paths.paginate(page, number)
+        files = filepath.files.filter_by(**params).paginate(page, number)
+        path_serializer = FilePathSerializer(paths)
+        file_serializer = FileSerializer(files)
+        return HTTP.OK(
+            data=dict(
+                paths=path_serializer.data,
+                files=file_serializer.data,
+            ))
 
     def post(self, bucket):
         user = request.user
         bucket = user.buckets.filter_by(
-            id=bucket).get_or_404("bucket not found")
+            name=bucket).get_or_404("bucket not found")
+        filepath = bucket.paths.filter_by(
+            name="/").get_or_404("filepath not found")
+
+        filepath = FilePath.check(request.data.get("path", "/"), filepath)
 
         files = request.files.getlist('files')
         if files:
-            return self.post_with_multi(user, bucket, files)
-        return self.post_with_one(user, bucket)
+            return self.post_with_multi(filepath, files)
+        return self.post_with_one(filepath)
 
-    def post_with_one(self, user, bucket, f=None):
+    def post_with_one(self, filepath, f=None):
         if not f:
             f = request.files.get("file")
         if not f:
             return HTTP.BAD_REQUEST(message="file is null")
 
+        force = is_true(request.data.get("force"))
+
         filename = secure_filename(f.filename)
         if not file_is_allowed(filename):
-            msg = '{name} 不允许的扩展'.format(name=filename)
+            msg = _("%(name)s unsupported extension", name=filename)
             return HTTP.BAD_REQUEST(message=msg)
 
         file_type = f.content_type
         hash = gen_hash(f)
-        ins = File.query.filter_by(hash=hash, user=user).first()
+        ins = File.query.filter_by(
+            name=filename, hash=hash, path_id=filepath.id).first()
+        if ins and not force:
+            msg = _("%(name)s file is exists", name=filename)
+            return HTTP.BAD_REQUEST(message=msg)
         if not ins:
             ins = File(
+                name=filename,
                 hash=hash,
-                path="",
+                path_id=filepath.id,
                 file_type=file_type,
-                user=user,
-                bucket=bucket)
+            )
+            ins.save()
         # 保存到磁盘中
         # http://stackoverflow.com/questions/42569942/calculate-md5-from-werkzeug-datastructures-filestorage-but-saving-the-object-as
-        path = os.path.join(config.UPLOAD_FOLDER, filename)
+        dirname = os.path.dirname(ins.abspath)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
         f.seek(0)
-        f.save(path)
-        rep = Serializer(ins).data
+        f.save(ins.abspath)
+        rep = FileSerializer(ins).data
         return HTTP.OK(data=rep)
 
-    def post_with_multi(self, user, bucket, files):
+    def post_with_multi(self, filepath, files):
         fail = []
         for f in files:
-            resp = self.post_with_one(Bucket, f)
+            resp = self.post_with_one(filepath, f)
             if resp.status_code != 200:
-                fail.append(resp.data)
+                fail.append(json.loads(resp.data)["message"])
         return HTTP.OK(data=fail)
 
 
@@ -152,7 +185,7 @@ class FileView(IsAuthMethodView):
         user = request.user
         ins = File.query.filter_by(
             id=pk, bucket__user_id=user.id).get_or_404("file not found")
-        rep = Serializer(ins).data
+        rep = FileSerializer(ins).data
         return HTTP.OK(data=rep)
 
     def put(self, pk):
@@ -162,7 +195,7 @@ class FileView(IsAuthMethodView):
             id=pk, bucket__user_id=user.id).get_or_404("file not found")
         ins = update_maybe(ins, data, ["name"])
         ins.save()
-        rep = Serializer(ins).data
+        rep = FileSerializer(ins).data
         return HTTP.OK(data=rep)
 
     def delete(self, pk):

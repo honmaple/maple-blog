@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-06-10 01:02+0800\n"
+"POT-Creation-Date: 2019-06-30 14:29+0800\n"
 "PO-Revision-Date: 2016-04-16 13:45+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -17,6 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
+
+#: maple/admin.py:81 maple/blog/templates/macro/base.html:4
+#: templates/base/nav.html:10
+msgid "honmaple"
+msgstr "紅楓"
 
 #: maple/default.py:16
 msgid "紅楓"
@@ -62,11 +67,6 @@ msgstr "刚刚"
 #: maple/router.py:49
 msgid "Username or Password Error"
 msgstr "用户名或密码错误"
-
-#: maple/admin/__init__.py:21 maple/blog/templates/macro/base.html:4
-#: templates/base/nav.html:10
-msgid "honmaple"
-msgstr "紅楓"
 
 #: maple/blog/templates/archives.html:7
 msgid "Archives By Datetime"
@@ -121,7 +121,7 @@ msgid "Category"
 msgstr "分类"
 
 #: maple/blog/templates/macro/article_info.html:18
-#: maple/blog/templates/macro/panel.html:7
+#: maple/blog/templates/macro/panel.html:8
 msgid "Tags"
 msgstr "标签"
 
@@ -132,6 +132,16 @@ msgstr "阅读"
 #: maple/extension/login.py:47
 msgid "Please login to access this page."
 msgstr "请登录后访问"
+
+#: maple/storage/router.py:153
+#, python-format
+msgid "%(name)s unsupported extension"
+msgstr "%(name)s 不允许的扩展"
+
+#: maple/storage/router.py:161
+#, python-format
+msgid "%(name)s file is exists"
+msgstr "%(name)s 文件已存在"
 
 #: templates/base/base.html:4
 msgid "honmaple's blog"
@@ -437,4 +447,7 @@ msgstr "联系我"
 #~ msgstr ""
 
 #~ msgid "知识共享署名-非商业性使用-相同方式共享4.0国际许可协议"
+#~ msgstr ""
+
+#~ msgid "%(name)s"
 #~ msgstr ""
