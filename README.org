@@ -31,7 +31,7 @@
 
 ** Create superuser
    #+BEGIN_SRC shell
-    python runserver.py create_user
+    python runserver.py create-user
    #+END_SRC
 ** Run 
    #+BEGIN_SRC shell

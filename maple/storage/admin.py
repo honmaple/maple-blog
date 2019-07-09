@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-06-07 01:40:32 (CST)
-# Last Update: Friday 2019-06-28 15:44:05 (CST)
+# Last Update: Tuesday 2019-07-09 23:58:10 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -20,7 +20,7 @@ from maple.extension import db
 
 from . import config
 from .db import Bucket, FilePath, File
-from .util import gen_hash, secure_filename
+from .util import gen_hash, secure_filename, gen_size
 
 
 class BucketView(AdminView):
@@ -47,6 +47,7 @@ class FileView(AdminView):
         part = op.splitext(file_data.filename)
         obj.name = secure_filename('%s%s' % part)
         obj.file_type = file_data.content_type
+        obj.size = gen_size(file_data)
         obj.hash = gen_hash(file_data)
         file_data.seek(0)
         return obj.relpath
@@ -56,7 +57,7 @@ class FileView(AdminView):
     # column_searchable_list = ["name", "path"]
     column_exclude_list = ["updated_at"]
     column_formatters = {'hash': _list_thumbnail}
-    form_excluded_columns = ['hash', "name", "file_type"]
+    form_excluded_columns = ['hash', "name", "file_type", "size"]
 
     form_extra_fields = {
         "filename": form.FileUploadField(

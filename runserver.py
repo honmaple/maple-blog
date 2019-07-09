@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: Friday 2019-06-28 16:33:52 (CST)
+# Last Update: Wednesday 2019-07-10 00:40:30 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -26,6 +26,7 @@ from werkzeug.contrib.fixers import ProxyFix
 from maple import create_app
 from maple.blog.db import Article, Category, Tag, TimeLine
 from maple.extension import cache, db
+from maple.storage.shell import Shell as StorageShell
 from maple.model import User
 
 app = create_app('config')
@@ -40,7 +41,8 @@ try:
 except ImportError:
     pass
 
-DEFAULT_KEY = 'Im1haWxAaG9ubWFwbGUuY29tIg.XRW9Sw.VEGQC5Ilyw-NtrBQDJU4TWx9Sg8'
+DEFAULT_HOST = 'http://static.localhost:8001'
+DEFAULT_KEY = ''
 
 
 @cli.command('shell', short_help='Starts an interactive shell.')
@@ -194,12 +196,13 @@ def token(username):
 
 
 @cli.command()
-@click.option('-h', '--host', default="http://static.localhost:8001")
+@click.option('-h', '--host', default=DEFAULT_HOST)
 @click.option('-b', '--bucket', prompt=True, default="default")
 @click.option('-p', '--path', prompt=True, default="/")
 @click.option('-k', '--key', prompt=True, default=DEFAULT_KEY)
 @click.option('-f', '--files', multiple=True)
-def upload(host, bucket, path, key, files):
+@click.option('--force', is_flag=True, default=False)
+def upload(host, bucket, path, key, files, force):
     url = host + '/api/file/{0}'.format(bucket)
     multiple_files = []
     for f in files:
@@ -211,8 +214,20 @@ def upload(host, bucket, path, key, files):
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36'
     }
     data = {"path": path}
+    if force:
+        data["force"] = 1
     r = requests.post(url, data=data, files=multiple_files, headers=headers)
     print(r.text)
+
+
+@cli.command()
+@click.option('-h', '--host', default=DEFAULT_HOST)
+@click.option('-b', '--bucket', prompt=True, default="default")
+@click.option('-p', '--path', prompt=True, default="/")
+@click.option('-k', '--key', prompt=True, default=DEFAULT_KEY)
+def upload_shell(host, bucket, path, key):
+    s = StorageShell(host, key, bucket, path)
+    s.start()
 
 
 @cli.command()

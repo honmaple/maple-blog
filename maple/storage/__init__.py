@@ -6,36 +6,18 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:40 (CST)
-# Last Update: Sunday 2019-06-30 14:15:42 (CST)
+# Last Update: Thursday 2019-07-04 14:26:07 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask import Blueprint
-
 from maple.extension import csrf
+from maple.utils import lazyconf
 
-from . import config
-from .router import (BucketListView, BucketView, FileListView, FileShowView,
-                     FileView)
+from . import api, config
+from .router import FileShowView
 
 site = Blueprint('storage', __name__)
-
-site.add_url_rule(
-    '/api/bucket',
-    view_func=BucketListView.as_view('buckets'),
-)
-site.add_url_rule(
-    '/api/bucket/<int:pk>',
-    view_func=BucketView.as_view('bucket'),
-)
-site.add_url_rule(
-    '/api/file/<bucket>',
-    view_func=FileListView.as_view('files'),
-)
-site.add_url_rule(
-    '/api/file/<bucket>/<int:pk>',
-    view_func=FileView.as_view('file'),
-)
 
 show = FileShowView.as_view("show")
 
@@ -50,15 +32,8 @@ site.add_url_rule(
 )
 
 
-def init_conf(app):
-    variables = [item for item in dir(config) if not item.startswith("__")]
-    for k, v in app.config.get("STORAGE", dict()).items():
-        if k not in variables:
-            continue
-        setattr(config, k, v)
-
-
 def init_app(app):
-    init_conf(app)
-    app.register_blueprint(site, subdomain=config.SUBDOMAIN)
+    lazyconf(app, config, "STORAGE")
     csrf.exempt(site)
+    api.init_api(site)
+    app.register_blueprint(site, subdomain=config.SUBDOMAIN)

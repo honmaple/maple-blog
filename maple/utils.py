@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 15:04:16 (CST)
-# Last Update: Sunday 2019-06-30 14:22:16 (CST)
+# Last Update: Thursday 2019-07-04 14:13:40 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -18,15 +18,6 @@ from flask import request
 from flask_maple.response import HTTP
 from flask_maple.views import MethodView as _MethodView
 from maple.extension import cache
-
-
-def accept_language():
-    return request.accept_languages.best_match(['zh', 'en'], 'zh')
-
-
-def cache_key():
-    key = 'view:{0}:{1}'.format(accept_language, request.url)
-    return str(hashlib.md5(key.encode("UTF-8")).hexdigest())
 
 
 class MethodView(_MethodView):
@@ -41,6 +32,15 @@ class MethodView(_MethodView):
                 key_prefix=cache_key,
             )(f)(*args, **kwargs)
         return f(*args, **kwargs)
+
+
+def accept_language():
+    return request.accept_languages.best_match(['zh', 'en'], 'zh')
+
+
+def cache_key():
+    key = 'view:{0}:{1}'.format(accept_language, request.url)
+    return str(hashlib.md5(key.encode("UTF-8")).hexdigest())
 
 
 def gen_order_by(query_dict=dict(), keys=[], date_key=True):
@@ -106,3 +106,11 @@ def is_true(value):
     if isinstance(value, str):
         return value == "1" or value == "True" or value == "true"
     return bool(value)
+
+
+def lazyconf(app, config, key):
+    variables = [item for item in dir(config) if not item.startswith("__")]
+    for k, v in app.config.get(key, dict()).items():
+        if k not in variables:
+            continue
+        setattr(config, k, v)

@@ -2,6 +2,9 @@
     margin: 0;
     margin-left: -2em;
 }
+.timeline:not(:first-child) {
+    margin-top:1em;
+}
 .timeline-count {
     list-style-type: none;
     border: 1px solid #ddd;

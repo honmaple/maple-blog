@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-24 17:11:51 (CST)
-# Last Update: Sunday 2019-06-09 01:47:45 (CST)
+# Last Update: Tuesday 2019-07-09 23:59:04 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -59,10 +59,25 @@ def secure_filename(filename):
     return filename
 
 
-def gen_hash(image):
+def gen_hash(file_data):
     sha = sha512()
-    sha.update(image.read())
+    sha.update(file_data.read())
     return sha.hexdigest()
+
+
+def gen_size(file_data):
+    if file_data.content_length:
+        return file_data.content_length
+
+    try:
+        pos = file_data.tell()
+        file_data.seek(0, 2)  #seek to end
+        size = file_data.tell()
+        file_data.seek(pos)  # back to original position
+        return size
+    except (AttributeError, IOError):
+        pass
+    return 0
 
 
 def gen_thumb_image(path, width=0, height=0, filetype='webp'):

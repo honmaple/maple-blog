@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:05 (CST)
-# Last Update: Sunday 2019-06-30 15:19:19 (CST)
+# Last Update: Wednesday 2019-07-10 00:09:27 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -18,6 +18,7 @@ from maple.extension import db
 from sqlalchemy import event
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm.attributes import get_history
+from werkzeug.utils import secure_filename
 
 from . import config
 
@@ -28,9 +29,35 @@ class Bucket(ModelUserMixin, db.Model):
     name = db.Column(db.String(108), nullable=False, unique=True)
     description = db.Column(db.String(1024), default='default')
 
-    # @property
-    # def images(self):
-    #     return self.files.filter_by(file_type=File.FILE_IMAGE)
+    def get_root_path(self, path, create=False):
+        filepath = self.rootpath
+        for name in path.split("/"):
+            if name == "":
+                continue
+            childpath = filepath.child_paths.filter_by(
+                name=name,
+                bucket_id=self.id,
+            ).first()
+            if not childpath and not create:
+                return
+
+            if not childpath and create:
+                childpath = FilePath(
+                    name=name,
+                    bucket_id=self.id,
+                    parent_id=filepath.id,
+                )
+                childpath.save()
+            filepath = childpath
+        return filepath
+
+    @property
+    def rootpath(self):
+        filepath = self.paths.filter_by(name="/").first()
+        if not filepath:
+            filepath = FilePath(name="/", bucket_id=self.id)
+            filepath.save()
+        return filepath
 
     @property
     def abspath(self):
@@ -71,6 +98,14 @@ class FilePath(ModelTimeMixin, db.Model):
         db.ForeignKey('filepath.id', ondelete="CASCADE"),
     )
 
+    @property
+    def size(self):
+        size = sum([
+            i[0]
+            for i in db.session.query(File.size).filter_by(path_id=self.id)
+        ])
+        return size + sum([i.size for i in self.child_paths])
+
     @declared_attr
     def parent_path(cls):
         return db.relationship(
@@ -106,24 +141,39 @@ class FilePath(ModelTimeMixin, db.Model):
     def is_root_path(self):
         return self.name == "/" and not self.parent_id
 
-    @classmethod
-    def check(cls, name, filepath):
-        bucket_id = filepath.bucket_id
-        for path in name.split("/"):
-            if path == "":
-                continue
-            childpath = FilePath.query.filter_by(
-                name=path,
-                bucket_id=bucket_id,
-            ).first()
-            if not childpath:
-                childpath = FilePath(
-                    name=path,
-                    parent_id=filepath.id,
-                    bucket_id=bucket_id,
-                )
-                childpath.save()
-            filepath = childpath
+    def rename(self, newname):
+        newname = secure_filename(newname)
+        self.name = newname
+        self.save()
+        return self
+
+    def move(self, newpath):
+        filepath = newpath.child_paths.filter_by(name=self.name).first()
+        if not filepath:
+            self.parent_id = newpath.id
+            self.save()
+            return self
+        for fp in self.child_paths:
+            fp.move(filepath)
+        for f in self.files:
+            f.move(filepath)
+        self.delete()
+        return filepath
+
+    def copy(self, newpath):
+        # TODO: 性能优化
+        filepath = newpath.child_paths.filter_by(name=self.name).first()
+        if not filepath:
+            filepath = FilePath(
+                name=self.name,
+                bucket_id=self.bucket_id,
+                parent_id=newpath.id,
+            )
+            filepath.save()
+        for fp in self.child_paths:
+            fp.copy(filepath)
+        for f in self.files:
+            f.copy(filepath)
         return filepath
 
     def __str__(self):
@@ -141,6 +191,7 @@ class File(ModelTimeMixin, db.Model):
     name = db.Column(db.String(108), nullable=False)
     file_type = db.Column(db.String(108), nullable=False)
     hash = db.Column(db.String(1024), nullable=False)
+    size = db.Column(db.Integer, nullable=False, default=0)
 
     path_id = db.Column(
         db.Integer,
@@ -177,12 +228,35 @@ class File(ModelTimeMixin, db.Model):
         return url_for("storage.show", **args)
 
     def save(self):
-        s = self.name.split("/")
-        self.name = s[-1]
-        filepath = FilePath.query.filter_by(id=self.path_id).first()
-        filepath = FilePath.check("/".join(s[:-1]), filepath)
-        self.path_id = filepath.id
+        self.name = self.name.strip("/")
+        if "/" in self.name:
+            s = self.name.split("/")
+            filepath = FilePath.query.filter_by(id=self.path_id).first()
+            filepath = filepath.bucket.get_root_path("/".join(s[:-1]), True)
+            self.name = s[-1]
+            self.path_id = filepath.id
         return super(File, self).save()
+
+    def copy(self, newpath):
+        f = File(
+            name=self.name,
+            file_type=self.file_type,
+            hash=self.hash,
+            path_id=newpath.id,
+        )
+        f.save()
+        return f
+
+    def move(self, newpath):
+        self.path_id = newpath
+        self.save()
+        return self
+
+    def rename(self, newname):
+        newname = secure_filename(newname)
+        self.name = newname
+        self.save()
+        return self
 
     def __repr__(self):
         return '<File %r>' % self.name
