@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-24 17:11:51 (CST)
-# Last Update: Tuesday 2019-07-09 23:59:04 (CST)
+# Last Update: Wednesday 2019-07-10 21:14:01 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -71,7 +71,7 @@ def gen_size(file_data):
 
     try:
         pos = file_data.tell()
-        file_data.seek(0, 2)  #seek to end
+        file_data.seek(0, 2)  # seek to end
         size = file_data.tell()
         file_data.seek(pos)  # back to original position
         return size
@@ -95,6 +95,17 @@ def gen_thumb_image(path, width=0, height=0, filetype='webp'):
     img.thumbnail((width, height), ImagePIL.ANTIALIAS)
     img.save(stream, format=filetype, optimize=True)
     return stream
+
+
+def list_files(path):
+    files = []
+    for f in os.listdir(path):
+        f = os.path.join(path, f)
+        if os.path.isfile(f):
+            files.append(f)
+            continue
+        files.extend(list_files(f))
+    return files
 
 
 def file_is_allowed(filename):

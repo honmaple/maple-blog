@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-29 01:27:31 (CST)
-# Last Update: Wednesday 2019-07-10 00:37:05 (CST)
+# Last Update: Wednesday 2019-07-10 20:01:14 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -21,6 +21,7 @@ from datetime import datetime
 def add_tags(names):
     tags = []
     for name in names:
+        name = name.strip()
         tag = Tag.query.filter_by(name=name).first()
         if not tag:
             tag = Tag(name=name)
@@ -30,6 +31,8 @@ def add_tags(names):
 
 
 def add_category(name):
+    name = name.strip()
+    name = name.capitalize()
     category = Category.query.filter_by(name=name).first()
     if not category:
         category = Category(name=name)

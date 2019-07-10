@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: Wednesday 2019-07-10 00:40:30 (CST)
+# Last Update: Wednesday 2019-07-10 21:28:31 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -17,17 +17,17 @@ from mimetypes import guess_type
 from random import choice, randrange, sample
 from string import ascii_letters, digits
 
-import click
 import requests
+
+import click
 from flask import current_app
 from flask.cli import FlaskGroup, run_command
-from werkzeug.contrib.fixers import ProxyFix
-
 from maple import create_app
 from maple.blog.db import Article, Category, Tag, TimeLine
 from maple.extension import cache, db
-from maple.storage.shell import Shell as StorageShell
 from maple.model import User
+from maple.storage.shell import Shell as StorageShell
+from werkzeug.contrib.fixers import ProxyFix
 
 app = create_app('config')
 app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -204,20 +204,58 @@ def token(username):
 @click.option('--force', is_flag=True, default=False)
 def upload(host, bucket, path, key, files, force):
     url = host + '/api/file/{0}'.format(bucket)
-    multiple_files = []
-    for f in files:
-        i = ('files', (os.path.basename(f), open(f, 'rb'), guess_type(f)[0]))
-        multiple_files.append(i)
-
     headers = {
         'MapleToken': key,
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36'
     }
-    data = {"path": path}
-    if force:
-        data["force"] = 1
-    r = requests.post(url, data=data, files=multiple_files, headers=headers)
-    print(r.text)
+
+    def list_files(upath):
+        upload_files = []
+        upload_file = dict()
+        upload_file["path"] = os.path.join(path, upath.lstrip("images"))
+        upload_file["files"] = []
+        upload_files = [upload_file]
+        for f in os.listdir(upath):
+            f = os.path.join(upath, f)
+            if os.path.isdir(f):
+                upload_files.extend(list_files(f))
+                continue
+            finfo = (
+                'files',
+                (os.path.basename(f), open(f, 'rb'), guess_type(f)[0]),
+            )
+            upload_file["files"].append(finfo)
+        upload_file["files"].sort(key=lambda i: i[0])
+        return upload_files
+
+    upload_files = dict()
+    upload_files["files"] = [i for i in files if os.path.isfile(i)]
+    upload_files["path"] = path
+
+    upload_file = dict()
+    upload_file["path"] = path
+    upload_file["files"] = []
+    multiple_files = [upload_file]
+    for f in files:
+        if os.path.isfile(f):
+            finfo = (
+                'files',
+                (os.path.basename(f), open(f, 'rb'), guess_type(f)[0]),
+            )
+            upload_file["files"].append(finfo)
+            continue
+        multiple_files.extend(list_files(f))
+
+    multiple_files.sort(key=lambda i: i["path"])
+
+    for f in multiple_files:
+        if not f["files"]:
+            continue
+        data = {"path": f["path"]}
+        if force:
+            data["force"] = 1
+        r = requests.post(url, data=data, files=f["files"], headers=headers)
+        print(r.text)
 
 
 @cli.command()

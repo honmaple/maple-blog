@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:36 (CST)
-# Last Update: Wednesday 2019-07-10 00:02:01 (CST)
+# Last Update: Wednesday 2019-07-10 18:58:34 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -17,11 +17,11 @@ from flask import request
 from flask_babel import gettext as _
 from flask_maple.response import HTTP
 from flask_maple.views import IsAuthMethodView
-from maple.utils import filter_maybe, is_true, update_maybe, check_params
-
-from maple.storage.db import File, FilePath
+from maple.storage.db import File
 from maple.storage.serializer import FilePathSerializer, FileSerializer
-from maple.storage.util import file_is_allowed, gen_hash, secure_filename, gen_size
+from maple.storage.util import (file_is_allowed, gen_hash, gen_size,
+                                secure_filename)
+from maple.utils import check_params, filter_maybe, is_true
 
 
 class FileListView(IsAuthMethodView):

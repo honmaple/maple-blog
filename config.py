@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2017-03-14 19:34:19 (CST)
-# Last Update: Friday 2019-06-28 17:03:38 (CST)
+# Last Update: Wednesday 2019-07-10 20:58:36 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -18,13 +18,13 @@ DEBUG = True
 SECRET_KEY = 'asdadasd'
 SECRET_KEY_SALT = 'asdasdads'
 TEMPLATES_AUTO_RELOAD = True
+JSON_AS_ASCII = False
 
 FOOTER_MESSAGE = '©2015-2019 honmaple. All rights reserved.'
 PERMANENT_SESSION_LIFETIME = timedelta(days=3)
 REMEMBER_COOKIE_DURATION = timedelta(days=3)
 REMEMBER_COOKIE_DOMAIN = ".localhost"
 
-JSON_AS_ASCII = False
 # WTF_CSRF_CHECK_DEFAULT = False
 ONLINE_LAST_MINUTES = 5
 SUMMARY_MAX_LENGTH = 48

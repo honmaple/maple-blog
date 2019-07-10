@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:05 (CST)
-# Last Update: Wednesday 2019-07-10 00:09:27 (CST)
+# Last Update: Wednesday 2019-07-10 18:38:50 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -179,7 +179,10 @@ class FilePath(ModelTimeMixin, db.Model):
     def __str__(self):
         if self.is_root_path:
             return self.name
-        return "/" + self.name
+        return os.path.join(
+            self.parent_path.__str__(),
+            self.name,
+        )
 
 
 class File(ModelTimeMixin, db.Model):

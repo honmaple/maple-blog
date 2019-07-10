@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:40 (CST)
-# Last Update: Thursday 2019-07-04 14:26:07 (CST)
+# Last Update: Wednesday 2019-07-10 19:22:40 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -19,16 +19,14 @@ from .router import FileShowView
 
 site = Blueprint('storage', __name__)
 
-show = FileShowView.as_view("show")
-
 site.add_url_rule(
     "/",
-    defaults={"filename": "index.html"},
-    view_func=show,
+    defaults={"filename": "default/index.html"},
+    view_func=FileShowView.as_view("index"),
 )
 site.add_url_rule(
     "/<path:filename>",
-    view_func=show,
+    view_func=FileShowView.as_view("show"),
 )
 
 

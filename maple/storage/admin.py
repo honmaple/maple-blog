@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-06-07 01:40:32 (CST)
-# Last Update: Tuesday 2019-07-09 23:58:10 (CST)
+# Last Update: Wednesday 2019-07-10 19:52:24 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -30,10 +30,15 @@ class BucketView(AdminView):
 
 
 class FilePathView(AdminView):
+    def _list_name(view, context, model, name):
+        return model.relpath
+
     column_editable_list = ['name', "bucket"]
     form_excluded_columns = ['files']
     column_exclude_list = ["updated_at"]
     # form_ajax_refs = {'bucket': {'fields': ['name'], 'page_size': 10}}
+
+    column_formatters = {'parent_path': _list_name}
 
 
 class FileView(AdminView):
@@ -54,7 +59,7 @@ class FileView(AdminView):
 
     column_filters = ["file_type", "path.name"]
     column_editable_list = ["name", "path"]
-    # column_searchable_list = ["name", "path"]
+    column_searchable_list = ["name"]
     column_exclude_list = ["updated_at"]
     column_formatters = {'hash': _list_thumbnail}
     form_excluded_columns = ['hash', "name", "file_type", "size"]

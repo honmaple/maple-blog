@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-24 18:38:14 (CST)
-# Last Update: Friday 2019-06-07 19:01:42 (CST)
+# Last Update: Wednesday 2019-07-10 20:53:16 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -41,8 +41,15 @@ class TimeLine(db.Model, ModelUserMixin):
 
 
 article_tags = db.Table(
-    'article_tags', db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
-    db.Column('article_id', db.Integer, db.ForeignKey('article.id')))
+    'article_tags', db.Column(
+        'tag_id',
+        db.Integer,
+        db.ForeignKey('tag.id'),
+    ), db.Column(
+        'article_id',
+        db.Integer,
+        db.ForeignKey('article.id'),
+    ))
 
 
 class Tag(db.Model, ModelMixin):

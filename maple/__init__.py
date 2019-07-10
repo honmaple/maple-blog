@@ -20,6 +20,7 @@ def create_app(config):
         os.path.join(os.path.dirname(__file__), os.pardir, 'static'))
     app = Flask(__name__, template_folder=templates, static_folder=static)
     app.config.from_object(config)
+    app.url_map.redirect_defaults = False
 
     extension.init_app(app)
     jinja.init_app(app)
