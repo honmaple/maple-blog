@@ -10,7 +10,7 @@
         </div>
         <hr class="entry-hr" />
         <div class="entry-content">
-          {{ article.to_html() }}
+          {{ article.to_html(truncate=True) }}
         </div>
         <div class="text-center">
           <a class="btn entry-read-more" href="{{ url_for('blog.article',pk=article.id) }}">read more »</a>

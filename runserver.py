@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2015-11-14 21:19:56 (CST)
-# Last Update: Wednesday 2019-07-10 21:28:31 (CST)
+# Last Update: Sunday 2019-07-14 21:38:21 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -227,10 +227,6 @@ def upload(host, bucket, path, key, files, force):
             upload_file["files"].append(finfo)
         upload_file["files"].sort(key=lambda i: i[0])
         return upload_files
-
-    upload_files = dict()
-    upload_files["files"] = [i for i in files if os.path.isfile(i)]
-    upload_files["path"] = path
 
     upload_file = dict()
     upload_file["path"] = path

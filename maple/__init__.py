@@ -8,7 +8,7 @@
 #   Created Time: 2015-11-18 08:03:11
 # *************************************************************************
 from flask import Flask
-from maple import extension, router, jinja, admin
+from maple import extension, router, jinja, admin, alias
 from werkzeug import import_string
 import os
 
@@ -26,6 +26,7 @@ def create_app(config):
     jinja.init_app(app)
     admin.init_app(app)
     router.init_app(app)
+    alias.init_app(app)
 
     apps = ["maple.blog", "maple.storage", "maple.tool"]
     [import_string(i).init_app(app) for i in apps]

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-24 18:38:14 (CST)
-# Last Update: Wednesday 2019-07-10 20:53:16 (CST)
+# Last Update: Thursday 2019-07-11 17:57:00 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -123,7 +123,7 @@ class Article(db.Model, ModelUserMixin):
             'tags': ','.join([tag.name for tag in self.tags]),
         }
 
-    def to_html(self, length=None, truncate=True):
+    def to_html(self, length=None, truncate=False):
         length = length or current_app.config.get("SUMMARY_MAX_LENGTH")
         if not truncate:
             length = None

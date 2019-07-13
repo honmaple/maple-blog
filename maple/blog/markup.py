@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-11-06 11:29:39 (CST)
-# Last Update: Monday 2019-06-10 01:21:19 (CST)
+# Last Update: Thursday 2019-07-11 18:05:30 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -24,6 +24,7 @@ from bleach import clean
 from flask import Markup
 
 
+# copy from pelican
 class _HTMLWordTruncator(HTMLParser):
 
     _word_regex = re.compile(r"\w[\w'-]*", re.U)
@@ -113,9 +114,16 @@ class _HTMLWordTruncator(HTMLParser):
         if word_end < len(data):
             self.add_last_word()
 
-    def handle_ref(self, char):
+    def _handle_ref(self, name, char):
         offset = self.getoffset()
-        ref_end = self.rawdata.index(';', offset) + 1
+        ref_end = offset + len(name) + 1
+
+        try:
+            if self.rawdata[ref_end] == ';':
+                ref_end += 1
+        except IndexError:
+            # We are at the end of the string and there's no ';'
+            pass
 
         if self.last_word_end is None:
             if self._word_prefix_regex.match(char):
@@ -127,19 +135,34 @@ class _HTMLWordTruncator(HTMLParser):
                 self.add_last_word()
 
     def handle_entityref(self, name):
+        """
+        Called when an entity ref like '&mdash;' is found
+
+        `name` is the entity ref without ampersand and semicolon (e.g. `mdash`)
+        """
         try:
             codepoint = html_entities.name2codepoint[name]
+            char = six.unichr(codepoint)
         except KeyError:
-            self.handle_ref('')
-        else:
-            self.handle_ref(six.unichr(codepoint))
+            char = ''
+        self._handle_ref(name, char)
 
     def handle_charref(self, name):
-        if name.startswith('x'):
-            codepoint = int(name[1:], 16)
-        else:
-            codepoint = int(name)
-        self.handle_ref(six.unichr(codepoint))
+        """
+        Called when a char ref like '&#8212;' or '&#x2014' is found
+
+        `name` is the char ref without ampersand and semicolon (e.g. `#8212` or
+        `#x2014`)
+        """
+        try:
+            if name.startswith('x'):
+                codepoint = int(name[1:], 16)
+            else:
+                codepoint = int(name)
+            char = six.unichr(codepoint)
+        except (ValueError, OverflowError):
+            char = ''
+        self._handle_ref('#' + name, char)
 
 
 def truncate_html_words(s, num, end_text='…'):

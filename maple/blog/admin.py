@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2016-11-26 16:07:56 (CST)
-# Last Update: Sunday 2019-06-16 15:03:20 (CST)
+# Last Update: Thursday 2019-07-11 18:13:01 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -44,10 +44,12 @@ class ArticleView(AdminView):
 
 class TagView(AdminView):
     column_editable_list = ['name']
+    column_searchable_list = ['name']
 
 
 class CategoryView(AdminView):
     column_editable_list = ['name']
+    column_searchable_list = ['name']
 
 
 class CommentView(AdminView):

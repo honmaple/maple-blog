@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-24 18:43:30 (CST)
-# Last Update: Thursday 2019-06-06 23:10:18 (CST)
+# Last Update: Thursday 2019-07-11 18:06:49 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -23,6 +23,8 @@ from .db import Article, TimeLine
 
 
 class ArticleListView(MethodView):
+    per_page = 10
+
     def get(self):
         data = request.data
         page, number = self.pageinfo
@@ -51,7 +53,7 @@ class ArticleView(MethodView):
 
 
 class ArchiveView(MethodView):
-    def get(self):
+    def get(self, year=None, month=None):
         data = request.data
         params = filter_maybe(
             data, {
@@ -61,6 +63,10 @@ class ArchiveView(MethodView):
                 "year": "created_at__year",
                 "month": "created_at__month"
             })
+        if year:
+            params.update(created_at__year=year)
+        if month:
+            params.update(created_at__month=month)
         order_by = ("-created_at", )
         ins = OrderedDict()
         for article in Article.query.filter_by(**params).order_by(*order_by):

@@ -13,8 +13,13 @@
 from flask import Blueprint
 
 from . import api, config, jinja
-from .router import (ArchiveView, ArticleListView, ArticleView, ArticleRssView,
-                     TimeLineView)
+from .router import (
+    ArticleListView,
+    ArticleView,
+    ArticleRssView,
+    ArchiveView,
+    TimeLineView,
+)
 
 site = Blueprint('blog', __name__, template_folder='templates')
 
@@ -27,12 +32,22 @@ site.add_url_rule(
     view_func=ArticleView.as_view('article'),
 )
 site.add_url_rule(
-    '/archives',
-    view_func=ArchiveView.as_view('archives'),
-)
-site.add_url_rule(
     '/rss',
     view_func=ArticleRssView.as_view('rss'),
+)
+
+archives = ArchiveView.as_view('archives')
+site.add_url_rule(
+    '/archives',
+    view_func=archives,
+)
+site.add_url_rule(
+    '/archives/<int:year>',
+    view_func=archives,
+)
+site.add_url_rule(
+    '/archives/<int:year>/<int:month>',
+    view_func=archives,
 )
 site.add_url_rule(
     '/timeline',

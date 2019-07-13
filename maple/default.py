@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-09 22:34:08 (CST)
-# Last Update: Friday 2019-06-07 22:26:12 (CST)
+# Last Update: Thursday 2019-07-11 12:13:32 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -16,6 +16,7 @@ SITE = {
     'title': _('紅楓'),
     'subtitle': _('爱情诚可贵，自由价更高'),
     "author": "lin.jiang",
+    "header": "https://static.honmaple.com/images/header/header.png?type=mini"
 }
 
 EXTENSION = {"login": False}
