@@ -10,7 +10,7 @@
   
 ** Install necessary package
    #+BEGIN_SRC python
-   pip install -r requestments.txt 
+   pip install -r requirements.txt
    #+END_SRC
 
 ** Configure
