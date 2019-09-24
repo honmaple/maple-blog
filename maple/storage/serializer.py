@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-06-28 21:20:25 (CST)
-# Last Update: Wednesday 2019-07-10 00:17:25 (CST)
+# Last Update: Saturday 2019-07-20 02:58:20 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -21,7 +21,7 @@ class BucketSerializer(Serializer):
 class FileSerializer(Serializer):
     class Meta:
         exclude = ["path", "hash", "path_id"]
-        extra = ["url"]
+        extra = ["url", "is_dir"]
 
 
 class FilePathSerializer(Serializer):
@@ -34,4 +34,4 @@ class FilePathSerializer(Serializer):
             "child_paths",
             "bucket_id",
         ]
-        extra = ["size"]
+        extra = ["size", "is_dir", "fullname"]

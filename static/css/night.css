@@ -1,0 +1,57 @@
+.entry-night {
+    width: 2em;
+    height: 2em;
+    text-align:center;
+    display:inline-block;
+    border: 1px solid #ddd;
+    font-size: 0.8em;
+    color:#444;
+    border-radius:100%;
+    -webkit-transition: 0.3s ease all;
+    -moz-transition: 0.3s ease all;
+    float: right;
+}
+.entry-night:hover {
+    background-color:#23241f;
+}
+.entry-night:hover i{
+    color: #ddd;
+}
+.entry-night-menu {
+    padding:8px 10px;
+    border-top:0;
+    width: 200px;
+    left:  unset;
+    right: -1px;
+}
+.entry-table {
+    position: relative;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+.entry-table-row {
+    display: table-row;
+    height: 100%;
+}
+.entry-table-cell {
+    display: table-cell;
+    vertical-align:middle;
+    text-align: center;
+}
+.entry-table-cell i{
+    cursor: pointer;
+    color:  #666;
+}
+.entry-table-cell i.active {
+    color: #000;
+}
+.entry-table-row:not(:last-child) .entry-table-cell {
+    padding-bottom: 8px;
+}
+#entry-font-minus:after {
+    content: "-"
+}
+#entry-font-plus:after {
+    content: "+"
+}

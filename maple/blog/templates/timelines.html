@@ -1,5 +1,7 @@
 {% extends 'macro/base.html' %}
 
+{% block title -%}{{ _("TimeLine") }} · {{ super() }}{% endblock %}
+
 {% block item -%}
   <div class="panel panel-default">
     <div class="panel-heading">

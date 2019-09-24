@@ -6,31 +6,27 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-01-25 11:48:39 (CST)
-# Last Update: Friday 2019-06-28 17:13:20 (CST)
+# Last Update: Monday 2019-09-23 17:13:53 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask_maple.redis import Redis
 from flask_maple.mail import Mail
-from flask_maple.views import QuickApi
 from flask_wtf.csrf import CSRFProtect
 from flask_caching import Cache
 from flask_maple.models import db
 from flask_cors import CORS
 from . import maple, login, babel
 
-
 db = db
 csrf = CSRFProtect()
 cache = Cache()
 mail = Mail()
 redis = Redis()
-api = QuickApi()
 cors = CORS()
 
 
 def init_app(app):
-    api.init_app(app)
     db.init_app(app)
     csrf.init_app(app)
     cors.init_app(app)

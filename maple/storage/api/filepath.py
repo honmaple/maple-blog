@@ -6,20 +6,20 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-07-03 21:39:57 (CST)
-# Last Update: Tuesday 2019-07-09 01:18:01 (CST)
+# Last Update: Monday 2019-09-23 17:11:26 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask import request
 from flask_maple.response import HTTP
-from flask_maple.views import IsAuthMethodView
+from maple.utils import AuthMethodView
 from maple.storage.db import File, FilePath
 from maple.storage.serializer import FilePathSerializer
 from maple.storage.util import file_is_allowed, gen_hash, secure_filename
 from maple.utils import filter_maybe, is_true, update_maybe, check_params
 
 
-class FilePathListView(IsAuthMethodView):
+class FilePathListView(AuthMethodView):
     def get(self, bucket):
         data = request.data
         user = request.user

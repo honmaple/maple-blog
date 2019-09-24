@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:36 (CST)
-# Last Update: Wednesday 2019-07-10 18:58:34 (CST)
+# Last Update: Monday 2019-09-23 17:11:23 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -16,15 +16,15 @@ import os
 from flask import request
 from flask_babel import gettext as _
 from flask_maple.response import HTTP
-from flask_maple.views import IsAuthMethodView
+from maple.utils import AuthMethodView
 from maple.storage.db import File
 from maple.storage.serializer import FilePathSerializer, FileSerializer
-from maple.storage.util import (file_is_allowed, gen_hash, gen_size,
-                                secure_filename)
+from maple.storage.util import (
+    file_is_allowed, gen_hash, gen_size, secure_filename)
 from maple.utils import check_params, filter_maybe, is_true
 
 
-class FileListView(IsAuthMethodView):
+class FileListView(AuthMethodView):
     def get(self, bucket):
         data = request.data
         user = request.user
@@ -33,23 +33,19 @@ class FileListView(IsAuthMethodView):
         bucket = user.buckets.filter_by(
             name=bucket).get_or_404("bucket not found")
 
-        params = filter_maybe(data, {
-            "name": "name__contains",
-            "type": "file_type"
-        })
+        params = filter_maybe(
+            data, {
+                "name": "name__contains",
+                "type": "file_type"
+            })
         filepath = bucket.get_root_path(data.get("path", "/"))
         if not filepath:
             return HTTP.BAD_REQUEST(message="path not found")
 
         paths = filepath.child_paths.paginate(page, number)
         files = filepath.files.filter_by(**params).paginate(page, number)
-        path_serializer = FilePathSerializer(paths)
-        file_serializer = FileSerializer(files)
         return HTTP.OK(
-            data=dict(
-                paths=path_serializer.data,
-                files=file_serializer.data,
-            ))
+            data=FilePathSerializer(paths).data + FileSerializer(files).data)
 
     def post(self, bucket):
         data = request.data

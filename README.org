@@ -37,7 +37,3 @@
    #+BEGIN_SRC shell
     python runserver.py
    #+END_SRC
-
-
-
-   

@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:36 (CST)
-# Last Update: Thursday 2019-07-04 14:20:15 (CST)
+# Last Update: Wednesday 2019-09-11 12:15:53 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -22,7 +22,6 @@ from .util import file_is_image, gen_thumb_image, referer_is_block
 
 
 class FileShowView(MethodView):
-    cache = True
     cache_time = 3600
 
     def render_image(self, filename):

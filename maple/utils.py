@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-02-08 15:04:16 (CST)
-# Last Update: Thursday 2019-07-04 14:13:40 (CST)
+# Last Update: Monday 2019-09-23 16:57:49 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -17,21 +17,25 @@ from functools import wraps
 from flask import request
 from flask_maple.response import HTTP
 from flask_maple.views import MethodView as _MethodView
+from flask_login import login_required
 from maple.extension import cache
 
 
 class MethodView(_MethodView):
-    cache = True
     cache_time = 180
 
     def dispatch_request(self, *args, **kwargs):
         f = super(MethodView, self).dispatch_request
-        if self.cache and request.method in ["GET", "HEAD"]:
+        if self.cache_time and request.method in ["GET", "HEAD"]:
             return cache.cached(
                 timeout=self.cache_time,
                 key_prefix=cache_key,
             )(f)(*args, **kwargs)
         return f(*args, **kwargs)
+
+
+class AuthMethodView(MethodView):
+    decorators = (login_required, )
 
 
 def accept_language():
@@ -84,7 +88,6 @@ def check_params(keys, req=None):
     '''
     only check is not NULL
     '''
-
     def _check_params(func):
         @wraps(func)
         def decorator(*args, **kwargs):

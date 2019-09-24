@@ -7,8 +7,10 @@
       <span class="icon-bar"></span>
     </button>
     {% block header %}
-      <a class="navbar-brand text-main" href="{{ url_for('index') }}">{{ _("honmaple") }}</a>
+      <a class="navbar-brand text-main" href="{{ url_for('index') }}">{{ DEFAULT.SITE["title"] }}</a>
+      <p class="navbar-text">{{ DEFAULT.SITE["subtitle"] }}</p>
     {% endblock %}
+    {% include "base/night.html" %}
   </div>
   <div class="collapse navbar-collapse" id="nav-header">
     <ul class="nav navbar-nav">

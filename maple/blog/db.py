@@ -6,16 +6,17 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-24 18:38:14 (CST)
-# Last Update: Thursday 2019-07-11 17:57:00 (CST)
+# Last Update: Monday 2019-09-09 00:44:34 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask import current_app
-from flask_maple.models import ModelMixin, ModelUserMixin
-
 from flask_babel import format_datetime
+from flask_maple.models import ModelMixin, ModelUserMixin
 from maple.count import Count
 from maple.extension import db
+from sqlalchemy import text
+
 from .markup import markdown_to_html, orgmode_to_html
 
 
@@ -25,6 +26,8 @@ class TimeLine(db.Model, ModelUserMixin):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
     is_hidden = db.Column(db.Boolean, nullable=True, default=False)
+
+    __mapper_args__ = {"order_by": text("created_at desc")}
 
     def __repr__(self):
         return "<TimeLine %r>" % self.content[:10]
@@ -107,7 +110,7 @@ class Article(db.Model, ModelUserMixin):
         uselist=False,
         lazy='joined')
 
-    # __mapper_args__ = {"order_by": Article.created_at.desc()}
+    __mapper_args__ = {"order_by": text("created_at desc")}
 
     def __repr__(self):
         return "<Article %r>" % self.title
@@ -130,6 +133,10 @@ class Article(db.Model, ModelUserMixin):
         if self.content_type == self.CONTENT_TYPE_MARKDOWN:
             return markdown_to_html(self.content, length)
         return orgmode_to_html(self.content, length)
+
+    @property
+    def htmlcontent(self):
+        return self.to_html()
 
     @property
     def next_article(self):
@@ -160,7 +167,8 @@ class Comment(db.Model, ModelUserMixin):
     article = db.relationship(
         'Article',
         backref=db.backref(
-            'comments', cascade='all,delete-orphan', lazy='dynamic'))
+            'comments', cascade='all,delete-orphan', lazy='dynamic'),
+        uselist=False)
 
     def __repr__(self):
         return "<Comment %r>" % self.content

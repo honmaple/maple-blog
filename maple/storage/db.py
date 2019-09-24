@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:05 (CST)
-# Last Update: Wednesday 2019-07-10 18:38:50 (CST)
+# Last Update: Saturday 2019-07-20 12:35:33 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -100,10 +100,11 @@ class FilePath(ModelTimeMixin, db.Model):
 
     @property
     def size(self):
-        size = sum([
-            i[0]
-            for i in db.session.query(File.size).filter_by(path_id=self.id)
-        ])
+        size = sum(
+            [
+                i[0] for i in db.session.query(File.size).filter_by(
+                    path_id=self.id)
+            ])
         return size + sum([i.size for i in self.child_paths])
 
     @declared_attr
@@ -138,8 +139,21 @@ class FilePath(ModelTimeMixin, db.Model):
         )
 
     @property
+    def fullname(self):
+        if self.is_root_path:
+            return "/"
+        return os.path.join(
+            self.parent_path.fullname,
+            self.name,
+        )
+
+    @property
     def is_root_path(self):
         return self.name == "/" and not self.parent_id
+
+    @property
+    def is_dir(self):
+        return True
 
     def rename(self, newname):
         newname = secure_filename(newname)
@@ -223,12 +237,16 @@ class File(ModelTimeMixin, db.Model):
 
     @property
     def url(self):
-        args = dict(filename=self.relpath)
+        args = dict(filename=self.relpath, _external=True)
         if config.HTTPS:
-            args.update(**dict(_external=True, _scheme="https"))
+            args.update(**dict(_scheme="https"))
         if self.file_type.startswith("image"):
             args.update(type="mini")
         return url_for("storage.show", **args)
+
+    @property
+    def is_dir(self):
+        return False
 
     def save(self):
         self.name = self.name.strip("/")

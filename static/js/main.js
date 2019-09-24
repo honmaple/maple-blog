@@ -34,28 +34,6 @@ $(document).ready(function(){
         window.scrollTo(0, 0);
     });
 
-    var scale = false;
-    $("#entry-scale").click(function() {
-        $(".main").each(function(index) {
-            if (scale) {
-                $(this).css("max-width", "1024px");
-            }else {
-                $(this).css("max-width", "768px");
-            }
-        });
-        $(".footer").each(function(index) {
-            if (scale) {
-                $(this).css("max-width", "1024px");
-            }else {
-                $(this).css("max-width", "768px");
-            }
-        });
-        $(".entry-title").each(function(index) {
-            $(this).toggleClass("text-center");
-        });
-        scale = !scale;
-    });
-
     $('div#tag-archive-list').click(function() {
         $('#tag-hidelist').toggle();
         var i = $("div#tag-archive-list").children('i');

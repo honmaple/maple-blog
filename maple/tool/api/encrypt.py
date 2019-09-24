@@ -6,21 +6,20 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-03-17 17:52:05 (CST)
-# Last Update: Wednesday 2018-11-21 11:25:44 (CST)
+# Last Update: Monday 2019-09-23 17:08:05 (CST)
 #          By:
 # Description:
 # ********************************************************************************
-from flask import request, current_app
-from flask.views import MethodView
 from base64 import urlsafe_b64encode
 
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-
-from maple.extension import csrf
+from flask import current_app, request
 from flask_maple.response import HTTP
+from maple.extension import csrf
+from maple.utils import MethodView
 
 
 class Encrypt(object):

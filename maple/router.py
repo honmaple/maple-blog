@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-24 22:46:38 (CST)
-# Last Update: Wednesday 2019-05-29 00:25:30 (CST)
+# Last Update: Wednesday 2019-09-11 12:16:35 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -52,7 +52,7 @@ class LoginView(MethodView):
 
 
 class LogoutView(MethodView):
-    cache = False
+    cache_time = 0
 
     def get(self):
         user = request.user

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-06-30 14:29+0800\n"
+"POT-Creation-Date: 2019-09-24 14:48+0800\n"
 "PO-Revision-Date: 2016-04-16 13:45+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -23,40 +23,45 @@ msgstr ""
 msgid "honmaple"
 msgstr "紅楓"
 
+#: maple/api.py:52 maple/router.py:49
+msgid "Username or Password Error"
+msgstr "用户名或密码错误"
+
 #: maple/default.py:16
 msgid "紅楓"
-msgstr ""
+msgstr "honmaple"
 
 #: maple/default.py:17
-msgid "爱情诚可贵，自由价更高"
+msgid "风落花语风落天，花落风雨花落田."
 msgstr ""
 
-#: maple/default.py:25 maple/default.py:55
+#: maple/default.py:26 maple/default.py:58
 msgid "Poem"
 msgstr "诗词"
 
-#: maple/default.py:29
+#: maple/default.py:30
 msgid "Cloud"
 msgstr "物联网云"
 
-#: maple/blog/templates/timelines.html:7 maple/default.py:33
-#: maple/default.py:58 maple/tool/templates/pvp/pvp.html:7
+#: maple/blog/templates/timelines.html:3 maple/blog/templates/timelines.html:9
+#: maple/default.py:34 maple/default.py:61 maple/tool/templates/pvp/pvp.html:7
 msgid "TimeLine"
 msgstr "时间轴"
 
-#: maple/default.py:37
+#: maple/blog/templates/archives.html:3 maple/default.py:38
 msgid "Archives"
 msgstr "归档"
 
-#: maple/default.py:41 templates/index/about.html:6
+#: maple/default.py:42 templates/index/about.html:8
 msgid "About me"
 msgstr "关于我"
 
-#: maple/default.py:49 templates/index/friends.html:6
+#: maple/default.py:52 templates/index/friends.html:3
+#: templates/index/friends.html:8
 msgid "Friends"
 msgstr "友链"
 
-#: maple/default.py:52
+#: maple/default.py:55
 msgid "Contact"
 msgstr "联系"
 
@@ -64,51 +69,47 @@ msgstr "联系"
 msgid "just now"
 msgstr "刚刚"
 
-#: maple/router.py:49
-msgid "Username or Password Error"
-msgstr "用户名或密码错误"
-
-#: maple/blog/templates/archives.html:7
+#: maple/blog/templates/archives.html:9
 msgid "Archives By Datetime"
 msgstr "按时间归档"
 
-#: maple/blog/templates/archives.html:41
+#: maple/blog/templates/archives.html:43
 msgid "Archives By Category"
 msgstr "按分类归档"
 
-#: maple/blog/templates/archives.html:57
+#: maple/blog/templates/archives.html:59
 msgid "Archives By Tags"
 msgstr "按节点归档"
 
-#: maple/blog/templates/archives.html:75
+#: maple/blog/templates/archives.html:77
 msgid "open"
 msgstr "展开"
 
-#: maple/blog/templates/article.html:16
+#: maple/blog/templates/article.html:18
 msgid "Author"
 msgstr "作者"
 
-#: maple/blog/templates/article.html:21
+#: maple/blog/templates/article.html:23
 msgid "Link"
 msgstr "链接"
 
-#: maple/blog/templates/article.html:26
+#: maple/blog/templates/article.html:28
 msgid "Copyright"
 msgstr "版权"
 
-#: maple/blog/templates/article.html:28
+#: maple/blog/templates/article.html:30
 msgid "CC BY-NC-SA 4.0"
 msgstr "知识共享署名-非商业性使用-相同方式共享4.0国际许可协议"
 
-#: maple/blog/templates/article.html:59
+#: maple/blog/templates/article.html:61
 msgid "Contents"
 msgstr "目录"
 
-#: maple/blog/templates/article.html:60
+#: maple/blog/templates/article.html:62
 msgid "Site"
 msgstr "站点"
 
-#: maple/blog/templates/article.html:64
+#: maple/blog/templates/article.html:66
 msgid "NO CONTENTS"
 msgstr "暂无目录"
 
@@ -133,15 +134,15 @@ msgstr "阅读"
 msgid "Please login to access this page."
 msgstr "请登录后访问"
 
-#: maple/storage/router.py:153
+#: maple/storage/api/file.py:72
 #, python-format
 msgid "%(name)s unsupported extension"
 msgstr "%(name)s 不允许的扩展"
 
-#: maple/storage/router.py:161
+#: maple/storage/api/file.py:80
 #, python-format
-msgid "%(name)s file is exists"
-msgstr "%(name)s 文件已存在"
+msgid "%(name)s file is exists, use force to override file"
+msgstr "%(name)s 文件已存在，使用force覆盖文件"
 
 #: templates/base/base.html:4
 msgid "honmaple's blog"
@@ -151,7 +152,11 @@ msgstr ""
 msgid "Search Content"
 msgstr "搜索内容"
 
-#: templates/index/contact.html:6
+#: templates/index/about.html:3
+msgid "About"
+msgstr "关于"
+
+#: templates/index/contact.html:3 templates/index/contact.html:8
 msgid "Contact me"
 msgstr "联系我"
 
@@ -450,4 +455,16 @@ msgstr "联系我"
 #~ msgstr ""
 
 #~ msgid "%(name)s"
+#~ msgstr ""
+
+#~ msgid "爱情诚可贵，自由价更高"
+#~ msgstr ""
+
+#~ msgid "%(name)s file is exists"
+#~ msgstr "%(name)s 文件已存在"
+
+#~ msgid "Concat"
+#~ msgstr "联系我"
+
+#~ msgid "Concat me"
 #~ msgstr ""

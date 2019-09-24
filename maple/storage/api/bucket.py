@@ -6,19 +6,19 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-05-13 16:36:36 (CST)
-# Last Update: Thursday 2019-07-04 14:15:20 (CST)
+# Last Update: Monday 2019-09-23 17:11:18 (CST)
 #          By:
 # Description:
 # ********************************************************************************
 from flask import request
 from flask_maple.response import HTTP
-from flask_maple.views import IsAuthMethodView
+from maple.utils import AuthMethodView
 from maple.storage.db import Bucket
 from maple.storage.serializer import BucketSerializer
 from maple.utils import check_params, filter_maybe, update_maybe
 
 
-class BucketListView(IsAuthMethodView):
+class BucketListView(AuthMethodView):
     def get(self):
         data = request.data
         user = request.user
@@ -46,7 +46,7 @@ class BucketListView(IsAuthMethodView):
         return HTTP.OK(data=rep)
 
 
-class BucketView(IsAuthMethodView):
+class BucketView(AuthMethodView):
     def get(self, pk):
         user = request.user
         ins = user.buckets.filter_by(id=pk).get_or_404("bucket not found")

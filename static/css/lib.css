@@ -12,6 +12,22 @@ ul.list-group,li.list-group-item,nav.navbar,ul.dropdown-menu {
 .panel-default > .panel-heading{
     background-color: #fff;
 }
+.navbar-default .navbar-nav {
+    margin-left:-15px;
+}
+.navbar-default .navbar-nav > li > a {
+    font-weight:bold;
+}
+.navbar-default .navbar-header {
+    float:none;
+}
+.navbar-default .navbar-brand {
+    font-size: 1.8em;
+    font-family: 'Lobster', cursive;
+}
+.navbar-default .navbar-text {
+    padding-top:0.2em;
+}
 .panel-body-border {
     border-bottom:1px solid #eea;
     padding-left:30px;padding-right:30px;

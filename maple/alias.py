@@ -6,14 +6,15 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2019-07-13 00:29:40 (CST)
-# Last Update: Saturday 2019-07-13 03:16:09 (CST)
+# Last Update: Tuesday 2019-09-24 18:09:14 (CST)
 #          By:
 # Description:
 # ********************************************************************************
-from flask import abort, current_app, redirect, request
-from werkzeug.routing import MethodNotAllowed, NotFound, RequestRedirect
-from functools import wraps
 import hashlib
+from functools import wraps
+
+from flask import abort, current_app, request
+from werkzeug.routing import MethodNotAllowed, NotFound, RequestRedirect
 
 FUNCTION = dict()
 

@@ -1,0 +1,42 @@
+<div class="navbar-text entry-night" data-toggle="dropdown"><i class="fa fa-font"></i></div>
+<div class="dropdown-menu entry-night-menu">
+  <div class="entry-table">
+    <div class="entry-table-row">
+      <div class="entry-table-cell">
+        <i class="fa fa-font" id="entry-font-minus"></i>
+      </div>
+      <div class="entry-table-cell">
+        <i class="fa fa-font" id="entry-font"></i>
+      </div>
+      <div class="entry-table-cell">
+        <i class="fa fa-font" id="entry-font-plus"></i>
+      </div>
+    </div>
+    <div class="entry-table-row">
+      <div class="entry-table-cell">
+        <i class="fa fa-adjust"></i>
+      </div>
+      <div class="entry-table-cell">
+        <i class="fa fa-circle"></i>
+      </div>
+      <div class="entry-table-cell">
+        <i class="fa fa-circle-o"></i>
+      </div>
+    </div>
+    <div class="entry-table-row">
+      <div class="entry-table-cell">
+        <i class="fa fa-bars" id="entry-scale-minus"></i>
+      </div>
+      <div class="entry-table-cell">
+        {% if request.path.startswith("/en") %}
+          <a href="{{ request.path[3:] }}"><i class="fa fa-language"></i></a>
+        {% else %}
+          <a href="{{ "/en" + request.path }}"><i class="fa fa-language"></i></a>
+        {% endif %}
+      </div>
+      <div class="entry-table-cell">
+        <i class="fa fa-th-list" id="entry-scale-plus"></i>
+      </div>
+    </div>
+  </div>
+</div>

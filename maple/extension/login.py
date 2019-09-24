@@ -6,7 +6,7 @@
 # Author: jianglin
 # Email: mail@honmaple.com
 # Created: 2018-01-25 11:49:01 (CST)
-# Last Update: Sunday 2019-06-30 14:12:04 (CST)
+# Last Update: Saturday 2019-07-20 01:36:25 (CST)
 #          By:
 # Description:
 # ********************************************************************************
@@ -26,7 +26,7 @@ def user_loader(id):
 @login_manager.request_loader
 def request_loader(request):
     from maple.model import User
-    token = request.headers.get('MapleToken', request.args.get('maple_token'))
+    token = request.headers.get('Maple-Token', request.args.get('maple_token'))
     user = None
     if token:
         user = User.check_token(token)
