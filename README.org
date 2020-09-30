@@ -1,12 +1,12 @@
-* maple-blog
+* Maple-blog
   [[license][https://img.shields.io/badge/license-GPL3.0-blue.svg]]
   [[https://www.python.org/download/releases/3.0/][https://img.shields.io/badge/python-3.5-green.svg]]
 
-  This is my own blog website by flask  
+  This is my own blog website by flask.  
 
-  You can have a look [[https://honmaple.com][here]]
+  You can have a look here - [[https://honmaple.com][here]]
 
-* How to use
+* How to use?
   
 ** Install necessary package
    #+BEGIN_SRC python
