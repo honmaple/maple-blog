@@ -1,4 +1,4 @@
-bleach==1.4.3
+bleach==3.3.0
 blinker==1.4
 certifi==2019.3.9
 cffi==1.7.0
