@@ -9,7 +9,7 @@ Flask-Admin==1.5.3
 Flask-Assets==0.12
 Flask-Babel==0.12.2
 Flask-Caching==1.4.0
-Flask-Cors==3.0.6
+Flask-Cors==3.0.9
 Flask-Login==0.4.0
 Flask-Mail==0.9.1
 Flask-Maple==0.5.6
