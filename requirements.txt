@@ -19,7 +19,7 @@ Flask-WTF==0.14.2
 gunicorn==19.6.0
 Markdown==3.0.1
 org-python==0.2.7
-Pillow==5.4.1
+Pillow==9.0.0
 pytz==2018.7
 redis==2.10.5
 requests==2.21.0
