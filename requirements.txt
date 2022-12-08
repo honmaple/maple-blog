@@ -1,6 +1,6 @@
 bleach==1.4.3
 blinker==1.4
-certifi==2019.3.9
+certifi==2022.12.7
 cffi==1.7.0
 cssmin==0.2.0
 jsmin==2.2.1
